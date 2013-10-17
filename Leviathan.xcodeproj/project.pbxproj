@@ -163,9 +163,9 @@
 				9490D81C181054EE006ECA5E /* Tab.xib */,
 				9490D81A181054EE006ECA5E /* LVTabController.h */,
 				9490D81B181054EE006ECA5E /* LVTabController.m */,
+				9490D82118105B2D006ECA5E /* Editor.xib */,
 				9490D81F18105B2D006ECA5E /* LVEditorViewController.h */,
 				9490D82018105B2D006ECA5E /* LVEditorViewController.m */,
-				9490D82118105B2D006ECA5E /* Editor.xib */,
 				9490D7EA18104D58006ECA5E /* Images.xcassets */,
 				9490D7D918104D58006ECA5E /* Supporting Files */,
 			);

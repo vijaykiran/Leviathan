@@ -14,4 +14,7 @@
 
 - (void) startWithEditor:(LVEditorViewController*)editor;
 
+- (void) saveFirstResponder;
+- (void) restoreFirstResponder;
+
 @end

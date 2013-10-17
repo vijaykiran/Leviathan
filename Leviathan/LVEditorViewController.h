@@ -16,4 +16,6 @@
 
 + (LVEditorViewController*) editorForFile:(LVFile*)file;
 
+- (void) makeFirstResponder;
+
 @end

@@ -10,6 +10,8 @@
 
 @interface LVEditorViewController ()
 
+@property IBOutlet NSTextView* textView;
+
 @end
 
 @implementation LVEditorViewController
@@ -24,6 +26,14 @@
     c.title = @"Untitled";
     // TODO: set title based on file
     return c;
+}
+
+- (void) makeFirstResponder {
+    [[self.view window] makeFirstResponder: self.textView];
+}
+
+- (void) dealloc {
+    NSLog(@"bye");
 }
 
 @end

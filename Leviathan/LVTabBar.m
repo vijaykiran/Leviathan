@@ -94,7 +94,25 @@
 }
 
 - (void) closeCurrentTab {
+    NSUInteger newIndex = [self.tabs indexOfObject:self.selectedTab];
     
+    [self.selectedTab removeFromSuperlayer];
+    [self.tabs removeObject:self.selectedTab]; // TODO: animate this
+    
+    if (newIndex == [self.tabs count])
+        newIndex--;
+    
+    [self selectTabLayer:[self.tabs objectAtIndex:newIndex]];
+    
+    int i = 0;
+    for (CALayer* tab in self.tabs) {
+        NSRect r = [tab frame];
+        if (r.origin.x != i * (SD_TAB_WIDTH + 1.0)) {
+            r.origin.x = i * (SD_TAB_WIDTH + 1.0);
+            tab.frame = r;
+        }
+        i++;
+    }
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {

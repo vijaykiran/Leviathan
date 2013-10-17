@@ -13,6 +13,8 @@
 @property LVTabBar* tabBar;
 @property NSView* bodyView;
 
+@property (weak) LVTabController* currentTab;
+
 @end
 
 @implementation LVTabView
@@ -42,13 +44,15 @@
     [self addSubview:self.bodyView];
 }
 
-- (void) addTab:(NSViewController*)tab {
+- (void) addTab:(LVTabController*)tab {
     [self.tabs addObject:tab];
     [self.tabBar addTab: tab.title];
     [self switchToTab:tab];
 }
 
-- (void) switchToTab:(NSViewController*)tab {
+- (void) switchToTab:(LVTabController*)tab {
+    [self.currentTab saveFirstResponder];
+    
     tab.view.frame = self.bodyView.bounds;
     
     [[self.bodyView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -56,7 +60,9 @@
     
     self.nextResponder = tab;
     
+    self.currentTab = tab;
     
+    [self.currentTab restoreFirstResponder];
 }
 
 - (void) movedTab:(NSUInteger)from to:(NSUInteger)to {
@@ -71,6 +77,15 @@
 
 - (void) closeCurrentTab {
     [self.tabBar closeCurrentTab];
+    
+    NSUInteger newIndex = [self.tabs indexOfObject:self.currentTab];
+    
+    [self.tabs removeObject:self.currentTab];
+    
+    if (newIndex == [self.tabs count])
+        newIndex--;
+    
+    [self switchToTab:[self.tabs objectAtIndex:newIndex]];
 }
 
 @end

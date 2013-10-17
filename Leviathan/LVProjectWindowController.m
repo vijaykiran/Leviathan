@@ -44,7 +44,13 @@
 }
 
 - (IBAction) closeProjectTab:(id)sender {
-    
+    if ([self.tabView.tabs count] == 1) {
+        [self closeProjectWindow:sender];
+    }
+    else {
+        // TODO: check for unsaved files in tab
+        [self.tabView closeCurrentTab];
+    }
 }
 
 - (IBAction) openProjectTab:(id)sender {
@@ -58,7 +64,7 @@
 }
 
 - (IBAction) closeProjectWindow:(id)sender {
-    // TODO: check for unsaved files first
+    // TODO: check for unsaved files in all tabs and their splits
     [self close];
 }
 
