@@ -404,28 +404,31 @@
                     </menu>
                 </menuItem>
                 <menuItem title="Window" id="19">
-                    <menu key="submenu" title="Window" systemMenu="window" id="24">
+                    <menu key="submenu" title="Window" systemMenu="window" id="YSR-bW-Z8o">
                         <items>
-                            <menuItem title="Minimize" keyEquivalent="m" id="23">
+                            <menuItem title="Minimize" keyEquivalent="m" id="EJz-vE-Qhs">
                                 <connections>
-                                    <action selector="performMiniaturize:" target="-1" id="37"/>
+                                    <action selector="performMiniaturize:" target="-1" id="um4-Te-Ymt"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Zoom" id="239">
+                            <menuItem title="Zoom" id="k5g-vI-gxA">
                                 <connections>
-                                    <action selector="performZoom:" target="-1" id="240"/>
+                                    <action selector="performZoom:" target="-1" id="tXm-AO-FVG"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="92">
+                            <menuItem isSeparatorItem="YES" id="dgU-2T-y9D">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Bring All to Front" id="5">
+                            <menuItem title="Bring All to Front" id="632-Pg-YQJ">
                                 <connections>
-                                    <action selector="arrangeInFront:" target="-1" id="39"/>
+                                    <action selector="arrangeInFront:" target="-1" id="7iu-7n-pit"/>
                                 </connections>
                             </menuItem>
                         </items>
                     </menu>
+                </menuItem>
+                <menuItem title="Paredit" id="nCZ-af-ajM">
+                    <menu key="submenu" title="Paredit" systemMenu="window" id="a2h-OO-P7H"/>
                 </menuItem>
                 <menuItem title="Help" id="490">
                     <modifierMask key="keyEquivalentModifierMask"/>
