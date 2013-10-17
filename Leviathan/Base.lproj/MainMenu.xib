@@ -79,6 +79,11 @@
                                     <action selector="jumpToFile:" target="-1" id="how-74-Zxo"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Jump to Definition…" keyEquivalent="O" id="ubF-Gc-mtR">
+                                <connections>
+                                    <action selector="jumpToDefinition:" target="-1" id="B4n-hb-kzd"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="79">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>

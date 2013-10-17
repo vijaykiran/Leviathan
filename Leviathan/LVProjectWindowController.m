@@ -71,6 +71,10 @@
                   }];
 }
 
+- (IBAction) jumpToDefinition:(id)sender {
+    
+}
+
 - (void) replaceCurrentEditorWithFile:(LVFile*)file {
     // TODO: dont do it if it's unsaved!
     
