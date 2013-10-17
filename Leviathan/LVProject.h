@@ -8,8 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#import "LVFile.h"
+
 @interface LVProject : NSObject
 
 @property NSURL *projectURL;
+@property NSMutableArray* files;
+
++ (LVProject*) openProjectAtURL:(NSURL*)url;
+
+- (LVFile*) openNewFile;
 
 @end

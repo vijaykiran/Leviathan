@@ -71,6 +71,11 @@
                                     <action selector="newDocument:" target="-1" id="373"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="New Tab" keyEquivalent="t" id="bgk-tp-9oT">
+                                <connections>
+                                    <action selector="openProjectTab:" target="-1" id="aB4-iL-hf9"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Open…" keyEquivalent="o" id="72">
                                 <connections>
                                     <action selector="openDocument:" target="-1" id="374"/>
@@ -90,9 +95,22 @@
                             <menuItem isSeparatorItem="YES" id="79">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Close" keyEquivalent="w" id="73">
+                            <menuItem title="Close Window" keyEquivalent="W" id="73">
                                 <connections>
-                                    <action selector="performClose:" target="-1" id="193"/>
+                                    <action selector="closeProjectWindow:" target="-1" id="96v-O2-DpQ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Close Tab" keyEquivalent="w" id="tzN-Tt-urc">
+                                <connections>
+                                    <action selector="closeProjectTab:" target="-1" id="Liw-rd-uqd"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="8wd-Vl-yEV">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Close" keyEquivalent="w" id="ygs-ZB-Sl7">
+                                <connections>
+                                    <action selector="performClose:" target="-1" id="bVb-ow-EOl"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Save…" keyEquivalent="s" id="75">

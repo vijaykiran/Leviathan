@@ -10,13 +10,15 @@
 
 #import "LVProject.h"
 
-@class LVProjectWindowController;
 
+@class LVProjectWindowController;
 @protocol LVProjectWindowController <NSObject>
 
 - (void) projectWindowClosed:(LVProjectWindowController*)controller;
 
 @end
+
+
 
 @interface LVProjectWindowController : NSWindowController <NSWindowDelegate>
 

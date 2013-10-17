@@ -23,6 +23,12 @@
 		9490D80D18104E81006ECA5E /* LVProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D80C18104E81006ECA5E /* LVProject.m */; };
 		9490D81018105023006ECA5E /* LVTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D80F18105023006ECA5E /* LVTabView.m */; };
 		9490D813181050AA006ECA5E /* LVTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D812181050AA006ECA5E /* LVTabBar.m */; };
+		9490D819181053F2006ECA5E /* LVFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D818181053F2006ECA5E /* LVFile.m */; };
+		9490D81D181054EE006ECA5E /* LVTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D81B181054EE006ECA5E /* LVTabController.m */; };
+		9490D81E181054EE006ECA5E /* Tab.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D81C181054EE006ECA5E /* Tab.xib */; };
+		9490D82218105B2D006ECA5E /* LVEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D82018105B2D006ECA5E /* LVEditorViewController.m */; };
+		9490D82318105B2D006ECA5E /* Editor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D82118105B2D006ECA5E /* Editor.xib */; };
+		9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D82418105EBB006ECA5E /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +70,15 @@
 		9490D80F18105023006ECA5E /* LVTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTabView.m; sourceTree = "<group>"; };
 		9490D811181050AA006ECA5E /* LVTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTabBar.h; sourceTree = "<group>"; };
 		9490D812181050AA006ECA5E /* LVTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTabBar.m; sourceTree = "<group>"; };
+		9490D817181053F2006ECA5E /* LVFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVFile.h; sourceTree = "<group>"; };
+		9490D818181053F2006ECA5E /* LVFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVFile.m; sourceTree = "<group>"; };
+		9490D81A181054EE006ECA5E /* LVTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTabController.h; sourceTree = "<group>"; };
+		9490D81B181054EE006ECA5E /* LVTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTabController.m; sourceTree = "<group>"; };
+		9490D81C181054EE006ECA5E /* Tab.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Tab.xib; sourceTree = "<group>"; };
+		9490D81F18105B2D006ECA5E /* LVEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVEditorViewController.h; sourceTree = "<group>"; };
+		9490D82018105B2D006ECA5E /* LVEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVEditorViewController.m; sourceTree = "<group>"; };
+		9490D82118105B2D006ECA5E /* Editor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Editor.xib; sourceTree = "<group>"; };
+		9490D82418105EBB006ECA5E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */,
 				9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,6 +125,7 @@
 		9490D7D118104D58006ECA5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9490D82418105EBB006ECA5E /* QuartzCore.framework */,
 				9490D7D218104D58006ECA5E /* Cocoa.framework */,
 				9490D7F118104D59006ECA5E /* XCTest.framework */,
 				9490D7D418104D58006ECA5E /* Other Frameworks */,
@@ -129,18 +146,26 @@
 		9490D7D818104D58006ECA5E /* Leviathan */ = {
 			isa = PBXGroup;
 			children = (
+				9490D7E718104D58006ECA5E /* MainMenu.xib */,
 				9490D7E418104D58006ECA5E /* LVAppDelegate.h */,
 				9490D7E518104D58006ECA5E /* LVAppDelegate.m */,
+				9490D80818104DE1006ECA5E /* ProjectWindow.xib */,
 				9490D80618104DE1006ECA5E /* LVProjectWindowController.h */,
 				9490D80718104DE1006ECA5E /* LVProjectWindowController.m */,
 				9490D80B18104E81006ECA5E /* LVProject.h */,
 				9490D80C18104E81006ECA5E /* LVProject.m */,
+				9490D817181053F2006ECA5E /* LVFile.h */,
+				9490D818181053F2006ECA5E /* LVFile.m */,
 				9490D80E18105023006ECA5E /* LVTabView.h */,
 				9490D80F18105023006ECA5E /* LVTabView.m */,
 				9490D811181050AA006ECA5E /* LVTabBar.h */,
 				9490D812181050AA006ECA5E /* LVTabBar.m */,
-				9490D80818104DE1006ECA5E /* ProjectWindow.xib */,
-				9490D7E718104D58006ECA5E /* MainMenu.xib */,
+				9490D81C181054EE006ECA5E /* Tab.xib */,
+				9490D81A181054EE006ECA5E /* LVTabController.h */,
+				9490D81B181054EE006ECA5E /* LVTabController.m */,
+				9490D81F18105B2D006ECA5E /* LVEditorViewController.h */,
+				9490D82018105B2D006ECA5E /* LVEditorViewController.m */,
+				9490D82118105B2D006ECA5E /* Editor.xib */,
 				9490D7EA18104D58006ECA5E /* Images.xcassets */,
 				9490D7D918104D58006ECA5E /* Supporting Files */,
 			);
@@ -257,6 +282,8 @@
 				9490D7DD18104D58006ECA5E /* InfoPlist.strings in Resources */,
 				9490D7EB18104D58006ECA5E /* Images.xcassets in Resources */,
 				9490D7E318104D58006ECA5E /* Credits.rtf in Resources */,
+				9490D82318105B2D006ECA5E /* Editor.xib in Resources */,
+				9490D81E181054EE006ECA5E /* Tab.xib in Resources */,
 				9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */,
 				9490D7E918104D58006ECA5E /* MainMenu.xib in Resources */,
 			);
@@ -279,10 +306,13 @@
 			files = (
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
+				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
 				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
 				9490D80D18104E81006ECA5E /* LVProject.m in Sources */,
+				9490D82218105B2D006ECA5E /* LVEditorViewController.m in Sources */,
+				9490D81D181054EE006ECA5E /* LVTabController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

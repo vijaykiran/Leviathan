@@ -9,6 +9,8 @@
 #import "LVProjectWindowController.h"
 
 #import "LVTabView.h"
+#import "LVTabController.h"
+#import "LVEditorViewController.h"
 
 @interface LVProjectWindowController ()
 
@@ -21,8 +23,7 @@
 
 + (LVProjectWindowController*) openWith:(NSURL*)url delegate:(id<LVProjectWindowController>)delegate {
     LVProjectWindowController* c = [[LVProjectWindowController alloc] init];
-    c.project = [[LVProject alloc] init];
-    c.project.projectURL = url;
+    c.project = [LVProject openProjectAtURL:url];
     c.delegate = delegate;
     [c showWindow:nil];
     return c;
@@ -34,10 +35,31 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
+    
+    [self openProjectTab:nil];
 }
 
 - (void) windowWillClose:(NSNotification *)notification {
     [self.delegate projectWindowClosed:self];
+}
+
+- (IBAction) closeProjectTab:(id)sender {
+    
+}
+
+- (IBAction) openProjectTab:(id)sender {
+    LVFile* file = [self.project openNewFile];
+    LVEditorViewController* editorController = [LVEditorViewController editorForFile:file];
+    
+    LVTabController* tab = [[LVTabController alloc] init];
+    [tab startWithEditor: editorController];
+    
+    [self.tabView addTab:tab];
+}
+
+- (IBAction) closeProjectWindow:(id)sender {
+    // TODO: check for unsaved files first
+    [self close];
 }
 
 @end
