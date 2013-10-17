@@ -22,4 +22,6 @@
 - (void) addTab:(NSString*)title;
 - (void) closeCurrentTab;
 
+- (void) manuallySelectTab:(NSUInteger)tabIndex;
+
 @end

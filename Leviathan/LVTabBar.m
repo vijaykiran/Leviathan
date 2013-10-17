@@ -214,4 +214,8 @@
     self.draggingTab = nil;
 }
 
+- (void) manuallySelectTab:(NSUInteger)tabIndex {
+    [self selectTabLayer:[self.tabs objectAtIndex:tabIndex]];
+}
+
 @end

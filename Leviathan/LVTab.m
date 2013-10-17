@@ -38,13 +38,19 @@
     
     [self.editorControllers addObject:editor];
     
-    self.title = editor.title;
-    // TODO: when editor's title changes, tab's title should change too
-    
     [self.topLevelSplitView addSubview: editor.view];
     [self.topLevelSplitView adjustSubviews];
     
+    [self switchToEditor:editor];
+}
+
+- (void) switchToEditor:(LVEditor*)editor {
     self.currentEditor = editor;
+    self.nextResponder = self.currentEditor;
+    
+    self.title = editor.title;
+    // TODO: when editor's title changes, tab's title should change too
+    
 }
 
 - (void) saveFirstResponder {

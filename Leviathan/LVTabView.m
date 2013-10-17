@@ -44,6 +44,26 @@
     [self addSubview:self.bodyView];
 }
 
+- (IBAction) selectNextTabViewItem:(id)sender {
+    NSUInteger idx = [self.tabs indexOfObject: self.currentTab];
+    idx++;
+    if (idx == [self.tabs count])
+        idx = 0;
+    
+    [self switchToTab:[self.tabs objectAtIndex:idx]];
+    [self.tabBar manuallySelectTab:idx];
+}
+
+- (IBAction) selectPreviousTabViewItem:(id)sender {
+    NSUInteger idx = [self.tabs indexOfObject: self.currentTab];
+    idx--;
+    if (idx == -1)
+        idx = [self.tabs count] - 1;
+    
+    [self switchToTab:[self.tabs objectAtIndex:idx]];
+    [self.tabBar manuallySelectTab:idx];
+}
+
 - (void) addTab:(LVTab*)tab {
     [self.tabs addObject:tab];
     [self.tabBar addTab: tab.title];
