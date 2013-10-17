@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LVProjectWindowController">
             <connections>
+                <outlet property="tabView" destination="hbW-xw-717" id="vSW-9o-DCj"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>

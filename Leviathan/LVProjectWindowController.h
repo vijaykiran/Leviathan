@@ -18,7 +18,7 @@
 
 @end
 
-@interface LVProjectWindowController : NSWindowController
+@interface LVProjectWindowController : NSWindowController <NSWindowDelegate>
 
 + (LVProjectWindowController*) openWith:(NSURL*)url delegate:(id<LVProjectWindowController>)delegate;
 

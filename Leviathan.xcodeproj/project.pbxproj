@@ -22,6 +22,7 @@
 		9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D80818104DE1006ECA5E /* ProjectWindow.xib */; };
 		9490D80D18104E81006ECA5E /* LVProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D80C18104E81006ECA5E /* LVProject.m */; };
 		9490D81018105023006ECA5E /* LVTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D80F18105023006ECA5E /* LVTabView.m */; };
+		9490D813181050AA006ECA5E /* LVTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D812181050AA006ECA5E /* LVTabBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,8 @@
 		9490D80C18104E81006ECA5E /* LVProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVProject.m; sourceTree = "<group>"; };
 		9490D80E18105023006ECA5E /* LVTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTabView.h; sourceTree = "<group>"; };
 		9490D80F18105023006ECA5E /* LVTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTabView.m; sourceTree = "<group>"; };
+		9490D811181050AA006ECA5E /* LVTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTabBar.h; sourceTree = "<group>"; };
+		9490D812181050AA006ECA5E /* LVTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTabBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +137,8 @@
 				9490D80C18104E81006ECA5E /* LVProject.m */,
 				9490D80E18105023006ECA5E /* LVTabView.h */,
 				9490D80F18105023006ECA5E /* LVTabView.m */,
+				9490D811181050AA006ECA5E /* LVTabBar.h */,
+				9490D812181050AA006ECA5E /* LVTabBar.m */,
 				9490D80818104DE1006ECA5E /* ProjectWindow.xib */,
 				9490D7E718104D58006ECA5E /* MainMenu.xib */,
 				9490D7EA18104D58006ECA5E /* Images.xcassets */,
@@ -275,6 +280,7 @@
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
+				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
 				9490D80D18104E81006ECA5E /* LVProject.m in Sources */,
 			);

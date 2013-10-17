@@ -1,5 +1,5 @@
 //
-//  LVTabView.h
+//  LVTabBar.h
 //  Leviathan
 //
 //  Created by Steven Degutis on 10/17/13.
@@ -8,11 +8,17 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "LVTabBar.h"
+@protocol LVTabBarDelegate <NSObject>
 
-@interface LVTabView : NSView <LVTabBarDelegate>
+// uhh...
 
-- (void) addTab:(NSViewController*)tab;
+@end
+
+@interface LVTabBar : NSView
+
+@property (weak) id<LVTabBarDelegate> delegate;
+
+- (void) addTab:(NSString*)title;
 - (void) closeCurrentTab;
 
 @end

@@ -8,9 +8,12 @@
 
 #import "LVProjectWindowController.h"
 
+#import "LVTabView.h"
+
 @interface LVProjectWindowController ()
 
-@property id<LVProjectWindowController> delegate;
+@property (weak) id<LVProjectWindowController> delegate;
+@property (weak) IBOutlet LVTabView* tabView;
 
 @end
 
@@ -31,6 +34,10 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
+}
+
+- (void) windowWillClose:(NSNotification *)notification {
+    [self.delegate projectWindowClosed:self];
 }
 
 @end

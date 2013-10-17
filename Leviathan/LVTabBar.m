@@ -1,18 +1,21 @@
 //
-//  LVTabView.h
+//  LVTabBar.m
 //  Leviathan
 //
 //  Created by Steven Degutis on 10/17/13.
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "LVTabBar.h"
 
-@interface LVTabView : NSView <LVTabBarDelegate>
+@implementation LVTabBar
 
-- (void) addTab:(NSViewController*)tab;
-- (void) closeCurrentTab;
+- (void) addTab:(NSString*)title {
+    
+}
+
+- (void) closeCurrentTab {
+    
+}
 
 @end
