@@ -29,6 +29,7 @@
 		9490D82218105B2D006ECA5E /* LVEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D82018105B2D006ECA5E /* LVEditor.m */; };
 		9490D82318105B2D006ECA5E /* Editor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D82118105B2D006ECA5E /* Editor.xib */; };
 		9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D82418105EBB006ECA5E /* QuartzCore.framework */; };
+		9490D82D1810781D006ECA5E /* LVTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D82C1810781D006ECA5E /* LVTextView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,8 @@
 		9490D82018105B2D006ECA5E /* LVEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVEditor.m; sourceTree = "<group>"; };
 		9490D82118105B2D006ECA5E /* Editor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Editor.xib; sourceTree = "<group>"; };
 		9490D82418105EBB006ECA5E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		9490D82B1810781D006ECA5E /* LVTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTextView.h; sourceTree = "<group>"; };
+		9490D82C1810781D006ECA5E /* LVTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +199,8 @@
 				9490D82118105B2D006ECA5E /* Editor.xib */,
 				9490D81F18105B2D006ECA5E /* LVEditor.h */,
 				9490D82018105B2D006ECA5E /* LVEditor.m */,
+				9490D82B1810781D006ECA5E /* LVTextView.h */,
+				9490D82C1810781D006ECA5E /* LVTextView.m */,
 			);
 			name = Editor;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
+				9490D82D1810781D006ECA5E /* LVTextView.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,

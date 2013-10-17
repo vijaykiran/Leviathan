@@ -10,7 +10,7 @@
 
 @interface LVEditor ()
 
-@property IBOutlet NSTextView* textView;
+@property IBOutlet LVTextView* textView;
 
 @end
 
@@ -30,6 +30,10 @@
 
 - (void) makeFirstResponder {
     [[self.view window] makeFirstResponder: self.textView];
+}
+
+- (void) textViewWasFocused:(NSTextView*)view {
+    [self.delegate editorWasSelected:self];
 }
 
 @end

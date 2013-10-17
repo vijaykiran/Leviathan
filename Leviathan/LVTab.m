@@ -40,6 +40,8 @@
 - (void) startWithEditor:(LVEditor*)editor {
     [self view]; // force loading view :(
     
+    editor.delegate = self;
+    
     [self.editorControllers addObject: editor];
     
     [self.topLevelSplitView addSubview: editor.view];
@@ -74,6 +76,8 @@
 }
 
 - (void) addEditor:(LVEditor*)editor inDirection:(LVSplitDirection)dir {
+    editor.delegate = self;
+    
     [self.editorControllers addObject: editor];
     
     [self.topLevelSplitView addSubview: editor.view];
@@ -105,7 +109,10 @@
     [self.editorControllers removeObject:self.currentEditor];
     [self switchToEditor:[self.editorControllers lastObject]];
     [self.currentEditor makeFirstResponder];
-    // TODO: this is BROKEN, it sometimes closes the wrong one! because self.currentEditor isn't changed when you MANULLY switch to another one by clicking inside it's textview with the mouse.
+}
+
+- (void) editorWasSelected:(LVEditor*)editor {
+    self.currentEditor = editor;
 }
 
 @end

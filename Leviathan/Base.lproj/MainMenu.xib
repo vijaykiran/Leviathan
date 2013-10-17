@@ -130,7 +130,7 @@
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
                             <menuItem title="Add Split to East" keyEquivalent="" id="ibT-X5-xKX">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                 <connections>
                                     <action selector="addSplitToEast:" target="-1" id="GDs-x4-8Gg"/>
                                 </connections>

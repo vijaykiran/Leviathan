@@ -10,9 +10,20 @@
 
 #import "LVFile.h"
 
-@interface LVEditor : NSViewController
+#import "LVTextView.h"
+
+@class LVEditor;
+
+@protocol LVEditorDelegate <NSObject>
+
+- (void) editorWasSelected:(LVEditor*)editor;
+
+@end
+
+@interface LVEditor : NSViewController <LVTextViewDelegate>
 
 @property LVFile* file;
+@property id<LVEditorDelegate> delegate;
 
 + (LVEditor*) editorForFile:(LVFile*)file;
 

@@ -17,7 +17,7 @@ typedef enum __LVSplitDirection {
     LVSplitDirectionSouth,
 } LVSplitDirection;
 
-@interface LVTab : NSViewController
+@interface LVTab : NSViewController <LVEditorDelegate>
 
 - (NSArray*) splits;
 
