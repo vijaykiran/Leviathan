@@ -104,15 +104,25 @@
     
     [self selectTabLayer:[self.tabs objectAtIndex:newIndex]];
     
+    [self repositionTabs];
+}
+
+- (void) repositionTabs:(NSArray*)tabs {
     int i = 0;
-    for (CALayer* tab in self.tabs) {
-        NSRect r = [tab frame];
-        if (r.origin.x != i * (SD_TAB_WIDTH + 1.0)) {
-            r.origin.x = i * (SD_TAB_WIDTH + 1.0);
-            tab.frame = r;
+    for (CALayer* tab in tabs) {
+        if (tab != self.draggingTab) {
+            NSRect r = [tab frame];
+            if (r.origin.x != i * (SD_TAB_WIDTH + 1.0)) {
+                r.origin.x = i * (SD_TAB_WIDTH + 1.0);
+                tab.frame = r;
+            }
         }
         i++;
     }
+}
+
+- (void) repositionTabs {
+    [self repositionTabs:self.tabs];
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
@@ -147,17 +157,7 @@
     [tmpTabs removeObject:self.draggingTab];
     [tmpTabs insertObject:self.draggingTab atIndex:idx];
     
-    int i = 0;
-    for (CALayer* tab in tmpTabs) {
-        if (tab != self.draggingTab) {
-            NSRect r = [tab frame];
-            if (r.origin.x != i * (SD_TAB_WIDTH + 1.0)) {
-                r.origin.x = i * (SD_TAB_WIDTH + 1.0);
-                tab.frame = r;
-            }
-        }
-        i++;
-    }
+    [self repositionTabs:tmpTabs];
     
     [CATransaction begin];
     [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
@@ -199,23 +199,25 @@
         [self.delegate selectedTab:[tmpTabs indexOfObject:self.selectedTab]];
     }
     
-    int i = 0;
-    for (CALayer* tab in tmpTabs) {
-        NSRect r = [tab frame];
-        if (r.origin.x != i * (SD_TAB_WIDTH + 1.0)) {
-            r.origin.x = i * (SD_TAB_WIDTH + 1.0);
-            tab.frame = r;
-        }
-        i++;
-    }
-    
     self.tabs = tmpTabs;
-    
     self.draggingTab = nil;
+    
+    [self repositionTabs];
 }
+
+// tabview-initated actions
 
 - (void) manuallySelectTab:(NSUInteger)tabIndex {
     [self selectTabLayer:[self.tabs objectAtIndex:tabIndex]];
+}
+
+- (void) moveTab:(NSUInteger)from to:(NSUInteger)to {
+    id tab = [self.tabs objectAtIndex:from];
+    
+    [self.tabs removeObject:tab];
+    [self.tabs insertObject:tab atIndex:to];
+    
+    [self repositionTabs];
 }
 
 @end

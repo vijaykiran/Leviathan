@@ -64,6 +64,35 @@
     [self.tabBar manuallySelectTab:idx];
 }
 
+- (void) moveTab:(NSUInteger)from to:(NSUInteger)to {
+    id tab = [self.tabs objectAtIndex:from];
+    
+    [self.tabs removeObject:tab];
+    [self.tabs insertObject:tab atIndex:to];
+    
+    [self.tabBar moveTab:from to:to];
+}
+
+- (IBAction) moveTabToLeft:(id)sender {
+    NSUInteger from = [self.tabs indexOfObject: self.currentTab];
+    
+    NSUInteger to = from - 1;
+    if (to == -1)
+        to = [self.tabs count] - 1;
+    
+    [self moveTab:from to:to];
+}
+
+- (IBAction) moveTabToRight:(id)sender {
+    NSUInteger from = [self.tabs indexOfObject: self.currentTab];
+    
+    NSUInteger to = from + 1;
+    if (to == [self.tabs count])
+        to = 0;
+    
+    [self moveTab:from to:to];
+}
+
 - (void) addTab:(LVTab*)tab {
     [self.tabs addObject:tab];
     [self.tabBar addTab: tab.title];

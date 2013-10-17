@@ -108,10 +108,25 @@
                             <menuItem isSeparatorItem="YES" id="8wd-Vl-yEV">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Select Previous Tab" keyEquivalent="[" id="chH-05-eaj">
+                            <menuItem title="Move Tab Left" keyEquivalent="" id="chH-05-eaj">
                                 <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
-                                    <action selector="selectPreviousTabViewItem:" target="-1" id="1MP-O4-Gk5"/>
+                                    <action selector="moveTabToLeft:" target="-1" id="IKc-oj-Ihn"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move Tab Right" keyEquivalent="" id="ibT-X5-xKX">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                <connections>
+                                    <action selector="moveTabToRight:" target="-1" id="ISy-vI-Yne"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="epi-hf-3MJ">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Select Previous Tab" keyEquivalent="[" id="rN6-LQ-G18">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                <connections>
+                                    <action selector="selectPreviousTabViewItem:" target="-1" id="Fhv-Jn-IoR"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Select Next Tab" keyEquivalent="]" id="V5J-70-sse">
