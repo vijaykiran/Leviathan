@@ -33,10 +33,14 @@
     return @"Tab";
 }
 
+- (NSArray*) splits {
+    return self.editorControllers;
+}
+
 - (void) startWithEditor:(LVEditor*)editor {
     [self view]; // force loading view :(
     
-    [self.editorControllers addObject:editor];
+    [self.editorControllers addObject: editor];
     
     [self.topLevelSplitView addSubview: editor.view];
     [self.topLevelSplitView adjustSubviews];
@@ -51,6 +55,9 @@
     self.title = editor.title;
     // TODO: when editor's title changes, tab's title should change too
     
+    [self.currentEditor makeFirstResponder];
+    
+    // TODO: uhh.. more stuff?
 }
 
 - (void) saveFirstResponder {
@@ -64,6 +71,41 @@
     else {
         [self.currentEditor makeFirstResponder];
     }
+}
+
+- (void) addEditor:(LVEditor*)editor inDirection:(LVSplitDirection)dir {
+    [self.editorControllers addObject: editor];
+    
+    [self.topLevelSplitView addSubview: editor.view];
+    [self.topLevelSplitView adjustSubviews];
+    
+    [self switchToEditor:editor];
+}
+
+- (IBAction) selectNextSplit:(id)sender {
+    NSUInteger idx = [self.editorControllers indexOfObject:self.currentEditor];
+    idx++;
+    if (idx == [self.editorControllers count])
+        idx = 0;
+    
+    [self switchToEditor:[self.editorControllers objectAtIndex:idx]];
+}
+
+- (IBAction) selectPreviousSplit:(id)sender {
+    NSUInteger idx = [self.editorControllers indexOfObject:self.currentEditor];
+    idx--;
+    if (idx == -1)
+        idx = [self.editorControllers count] - 1;
+    
+    [self switchToEditor:[self.editorControllers objectAtIndex:idx]];
+}
+
+- (void) closeCurrentSplit {
+    [self.currentEditor.view removeFromSuperview];
+    [self.editorControllers removeObject:self.currentEditor];
+    [self switchToEditor:[self.editorControllers lastObject]];
+    [self.currentEditor makeFirstResponder];
+    // TODO: this is BROKEN, it sometimes closes the wrong one! because self.currentEditor isn't changed when you MANULLY switch to another one by clicking inside it's textview with the mouse.
 }
 
 @end

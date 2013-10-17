@@ -10,11 +10,24 @@
 
 #import "LVEditor.h"
 
+typedef enum __LVSplitDirection {
+    LVSplitDirectionEast,
+    LVSplitDirectionWest,
+    LVSplitDirectionNorth,
+    LVSplitDirectionSouth,
+} LVSplitDirection;
+
 @interface LVTab : NSViewController
+
+- (NSArray*) splits;
 
 - (void) startWithEditor:(LVEditor*)editor;
 
+- (void) addEditor:(LVEditor*)editor inDirection:(LVSplitDirection)dir;
+
 - (void) saveFirstResponder;
 - (void) restoreFirstResponder;
+
+- (void) closeCurrentSplit;
 
 @end

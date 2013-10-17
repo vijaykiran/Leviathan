@@ -43,6 +43,16 @@
     [self.delegate projectWindowClosed:self];
 }
 
+- (IBAction) closeProjectTabSplit:(id)sender {
+    if ([[self.tabView.currentTab splits] count] == 1) {
+        [self closeProjectTab:sender];
+    }
+    else {
+        // TODO: check for unsaved file in split (it always has exactly one file)
+        [self.tabView.currentTab closeCurrentSplit];
+    }
+}
+
 - (IBAction) closeProjectTab:(id)sender {
     if ([self.tabView.tabs count] == 1) {
         [self closeProjectWindow:sender];
@@ -66,6 +76,14 @@
 - (IBAction) closeProjectWindow:(id)sender {
     // TODO: check for unsaved files in all tabs and their splits
     [self close];
+}
+
+- (IBAction) addSplitToEast:(id)sender {
+    LVFile* file = [self.project openNewFile];
+    LVEditor* editorController = [LVEditor editorForFile:file];
+    
+    [self.tabView.currentTab addEditor:editorController
+                           inDirection:LVSplitDirectionEast];
 }
 
 @end
