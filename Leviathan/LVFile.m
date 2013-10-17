@@ -37,6 +37,11 @@
     else {
         self.textStorage = [[NSTextStorage alloc] initWithString:@""];
     }
+    
+    NSFont* font = [NSFont fontWithName:@"Menlo" size:13]; // TODO: replace this with NSUserDefaults somehow
+    fo
+    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
+    [self.textStorage addAttribute:NSFontAttributeName value:font range:fullRange];
 }
 
 - (void) highlight {
