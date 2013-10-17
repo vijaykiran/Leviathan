@@ -19,11 +19,7 @@
 }
 
 - (LVFile*) openNewFile {
-    LVFile* file = [[LVFile alloc] init];
-    
-    file.shortName = @"Untitled";
-    file.longName = @"";
-    
+    LVFile* file = [LVFile fileWithURL:nil shortName:@"Untitled" longName:@""];
     [self.files addObject:file];
     return file;
 }
@@ -56,19 +52,14 @@
             }
         }
         else {
-            NSMutableString* longName = [[theURL path] mutableCopy];
-            [longName deleteCharactersInRange:NSMakeRange(0, baselen)];
-            
             BOOL isClojure = [[theURL pathExtension] isEqualToString:@"clj"];
             
             if (isClojure) {
-                LVFile* file = [[LVFile alloc] init];
-                file.fileURL = theURL;
-                file.longName = longName;
-                file.shortName = shortName;
-                [self.files addObject:file];
+                NSMutableString* longName = [[theURL path] mutableCopy];
+                [longName deleteCharactersInRange:NSMakeRange(0, baselen)];
                 
-                [file parseFromFile];
+                LVFile* file = [LVFile fileWithURL:theURL shortName:shortName longName:longName];
+                [self.files addObject:file];
             }
         }
     }

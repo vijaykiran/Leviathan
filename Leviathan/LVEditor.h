@@ -25,10 +25,8 @@
 @property LVFile* file;
 @property id<LVEditorDelegate> delegate;
 
-+ (LVEditor*) editorForFile:(LVFile*)file;
+- (void) startEditingFile:(LVFile*)file;
 
 - (void) makeFirstResponder;
-
-- (void) startEditingOtherFile:(LVFile*)file;
 
 @end

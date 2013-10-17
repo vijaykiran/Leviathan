@@ -20,12 +20,13 @@
     return @"Editor";
 }
 
-+ (LVEditor*) editorForFile:(LVFile*)file {
-    LVEditor* c = [[LVEditor alloc] init];
-    c.file = file;
-    c.title = file.shortName;
-    // TODO: set title based on file
-    return c;
+- (void) startEditingFile:(LVFile*)file {
+    self.file = file;
+    self.title = file.shortName;
+    self.textView.file = file;
+    
+    [[self.textView layoutManager] replaceTextStorage:file.textStorage];
+    [self.file highlight];
 }
 
 - (void) makeFirstResponder {
@@ -36,9 +37,8 @@
     [self.delegate editorWasSelected:self];
 }
 
-- (void) startEditingOtherFile:(LVFile*)file {
-    self.title = file.shortName;
-    [[self.textView layoutManager] replaceTextStorage:file.textStorage];
+- (void)textDidChange:(NSNotification *)notification {
+    [self.file highlight];
 }
 
 @end

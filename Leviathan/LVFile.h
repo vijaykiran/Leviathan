@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SDColl.h"
+
 @interface LVFile : NSObject
+
++ (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName;
 
 @property NSURL* fileURL;
 @property NSString* longName;
@@ -16,9 +20,9 @@
 
 @property NSTextStorage* textStorage;
 
-//@property SDColl* topLevelElement;
+@property SDColl* topLevelElement;
 
 - (void) parseFromFile;
-- (void) highlight:(NSTextView*)tv;
+- (void) highlight;
 
 @end

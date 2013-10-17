@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "LVFile.h"
+
 @protocol LVTextViewDelegate <NSObject>
 
 - (void) textViewWasFocused:(NSTextView*)view;
@@ -19,5 +21,7 @@
 @interface LVTextView : NSTextView
 
 @property (weak) IBOutlet id<LVTextViewDelegate> customDelegate;
+
+@property (weak) LVFile* file;
 
 @end

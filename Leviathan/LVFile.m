@@ -8,33 +8,54 @@
 
 #import "LVFile.h"
 
+#import "SDParser.h"
+
+#import "SDTheme.h"
+
 @implementation LVFile
 
-- (void) parseFromFile {
-    NSString* rawString = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
-    self.textStorage = [[NSTextStorage alloc] initWithString:rawString];
++ (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName {
+    LVFile* file = [[LVFile alloc] init];
     
-//    SDParseError* error;
-//    self.topLevelElement = [SDParser parse:rawString error:&error];
+    file.fileURL = theURL;
+    file.longName = longName;
+    file.shortName = shortName;
+    
+    [file parseFromFile];
+    
+    return file;
 }
 
-- (void) highlight:(NSTextView*)tv {
-//    NSString* rawString = [[tv textStorage] string];
-//    
-//    [[tv textStorage] beginEditing];
-//    
-//    SDParseError* error;
-//    self.topLevelElement = [SDParser parse:rawString error:&error];
-//    
-//    if (error) {
-//        self.topLevelElement = nil;
-//        SDApplyStyle([tv textStorage], SDThemeForSyntaxError, error.offendingToken.range, 1);
-//    }
-//    else {
-//        [self.topLevelElement highlightIn:[tv textStorage] atLevel:0];
-//    }
-//    
-//    [[tv textStorage] endEditing];
+- (void) parseFromFile {
+    if (self.fileURL) {
+        NSString* rawString = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
+        self.textStorage = [[NSTextStorage alloc] initWithString:rawString];
+        
+        SDParseError* error;
+        self.topLevelElement = [SDParser parse:rawString error:&error];
+    }
+    else {
+        self.textStorage = [[NSTextStorage alloc] initWithString:@""];
+    }
+}
+
+- (void) highlight {
+    NSString* rawString = [self.textStorage string];
+    
+    [self.textStorage beginEditing];
+    
+    SDParseError* error;
+    self.topLevelElement = [SDParser parse:rawString error:&error];
+    
+    if (error) {
+        self.topLevelElement = nil;
+        SDApplyStyle(self.textStorage, SDThemeForSyntaxError, error.offendingToken.range, 1);
+    }
+    else {
+        [self.topLevelElement highlightIn:self.textStorage atLevel:0];
+    }
+    
+    [self.textStorage endEditing];
 }
 
 @end

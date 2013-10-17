@@ -78,7 +78,7 @@
 - (void) replaceCurrentEditorWithFile:(LVFile*)file {
     // TODO: dont do it if it's unsaved!
     
-    [self.tabView.currentTab.currentEditor startEditingOtherFile:file];
+    [self.tabView.currentTab.currentEditor startEditingFile:file];
     [self.tabView titlesChanged];
 }
 
@@ -94,10 +94,12 @@
 
 - (IBAction) openProjectTab:(id)sender {
     LVFile* file = [self.project openNewFile];
-    LVEditor* editorController = [LVEditor editorForFile:file];
+    LVEditor* editorController = [[LVEditor alloc] init];
     
     LVTab* tab = [[LVTab alloc] init];
     [tab startWithEditor: editorController];
+    
+    [editorController startEditingFile:file];
     
     [self.tabView addTab:tab];
 }
@@ -109,7 +111,8 @@
 
 - (IBAction) addSplitToEast:(id)sender {
     LVFile* file = [self.project openNewFile];
-    LVEditor* editorController = [LVEditor editorForFile:file];
+    LVEditor* editorController = [[LVEditor alloc] init];
+    [editorController startEditingFile:file];
     
     [self.tabView.currentTab addEditor:editorController
                            inDirection:LVSplitDirectionEast];
