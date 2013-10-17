@@ -6,21 +6,21 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "LVTabController.h"
+#import "LVTab.h"
 
-@interface LVTabController ()
+@interface LVTab ()
 
 @property (weak) IBOutlet NSSplitView* topLevelSplitView;
 
 @property NSMutableArray* editorControllers;
 
-@property (weak) LVEditorViewController* currentEditor;
+@property (weak) LVEditor* currentEditor;
 
 @property id savedFirstResponder; // TODO: might cause a leak! cant make weak though, usually is NSTextView
 
 @end
 
-@implementation LVTabController
+@implementation LVTab
 
 - (id) init {
     if (self = [super init]) {
@@ -33,7 +33,7 @@
     return @"Tab";
 }
 
-- (void) startWithEditor:(LVEditorViewController*)editor {
+- (void) startWithEditor:(LVEditor*)editor {
     [self view]; // force loading view :(
     
     [self.editorControllers addObject:editor];

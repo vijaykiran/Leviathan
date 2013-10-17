@@ -10,11 +10,11 @@
 
 #import "LVFile.h"
 
-@interface LVEditorViewController : NSViewController
+@interface LVEditor : NSViewController
 
 @property LVFile* file;
 
-+ (LVEditorViewController*) editorForFile:(LVFile*)file;
++ (LVEditor*) editorForFile:(LVFile*)file;
 
 - (void) makeFirstResponder;
 

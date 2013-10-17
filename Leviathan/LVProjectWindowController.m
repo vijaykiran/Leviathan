@@ -9,8 +9,8 @@
 #import "LVProjectWindowController.h"
 
 #import "LVTabView.h"
-#import "LVTabController.h"
-#import "LVEditorViewController.h"
+#import "LVTab.h"
+#import "LVEditor.h"
 
 @interface LVProjectWindowController ()
 
@@ -55,9 +55,9 @@
 
 - (IBAction) openProjectTab:(id)sender {
     LVFile* file = [self.project openNewFile];
-    LVEditorViewController* editorController = [LVEditorViewController editorForFile:file];
+    LVEditor* editorController = [LVEditor editorForFile:file];
     
-    LVTabController* tab = [[LVTabController alloc] init];
+    LVTab* tab = [[LVTab alloc] init];
     [tab startWithEditor: editorController];
     
     [self.tabView addTab:tab];

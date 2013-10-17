@@ -8,11 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "LVEditorViewController.h"
+#import "LVEditor.h"
 
-@interface LVTabController : NSViewController
+@interface LVTab : NSViewController
 
-- (void) startWithEditor:(LVEditorViewController*)editor;
+- (void) startWithEditor:(LVEditor*)editor;
 
 - (void) saveFirstResponder;
 - (void) restoreFirstResponder;

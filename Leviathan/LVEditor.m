@@ -6,22 +6,22 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "LVEditorViewController.h"
+#import "LVEditor.h"
 
-@interface LVEditorViewController ()
+@interface LVEditor ()
 
 @property IBOutlet NSTextView* textView;
 
 @end
 
-@implementation LVEditorViewController
+@implementation LVEditor
 
 - (NSString*) nibName {
     return @"Editor";
 }
 
-+ (LVEditorViewController*) editorForFile:(LVFile*)file {
-    LVEditorViewController* c = [[LVEditorViewController alloc] init];
++ (LVEditor*) editorForFile:(LVFile*)file {
+    LVEditor* c = [[LVEditor alloc] init];
     c.file = file;
     c.title = @"Untitled";
     // TODO: set title based on file

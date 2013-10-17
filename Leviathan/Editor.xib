@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="LVEditorViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="LVEditor">
             <connections>
                 <outlet property="textView" destination="WPG-ko-I8k" id="goF-KX-ThK"/>
                 <outlet property="view" destination="1" id="2"/>

@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="LVTabController">
+        <customObject id="-2" userLabel="File's Owner" customClass="LVTab">
             <connections>
                 <outlet property="topLevelSplitView" destination="pFu-DI-BaM" id="zYT-6z-bHB"/>
                 <outlet property="view" destination="pFu-DI-BaM" id="0I2-LR-g50"/>

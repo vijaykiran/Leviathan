@@ -13,7 +13,7 @@
 @property LVTabBar* tabBar;
 @property NSView* bodyView;
 
-@property (weak) LVTabController* currentTab;
+@property (weak) LVTab* currentTab;
 
 @end
 
@@ -44,13 +44,13 @@
     [self addSubview:self.bodyView];
 }
 
-- (void) addTab:(LVTabController*)tab {
+- (void) addTab:(LVTab*)tab {
     [self.tabs addObject:tab];
     [self.tabBar addTab: tab.title];
     [self switchToTab:tab];
 }
 
-- (void) switchToTab:(LVTabController*)tab {
+- (void) switchToTab:(LVTab*)tab {
     [self.currentTab saveFirstResponder];
     
     tab.view.frame = self.bodyView.bounds;

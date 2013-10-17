@@ -9,15 +9,15 @@
 #import <Cocoa/Cocoa.h>
 
 #import "LVTabBar.h"
-#import "LVTabController.h"
+#import "LVTab.h"
 
 @interface LVTabView : NSView <LVTabBarDelegate>
 
-@property (weak, readonly) LVTabController* currentTab;
+@property (weak, readonly) LVTab* currentTab;
 
 @property NSMutableArray* tabs;
 
-- (void) addTab:(LVTabController*)tab;
+- (void) addTab:(LVTab*)tab;
 - (void) closeCurrentTab;
 
 @end
