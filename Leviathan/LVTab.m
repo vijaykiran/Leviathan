@@ -55,8 +55,9 @@
     self.nextResponder = self.currentEditor;
     
     [self.currentEditor makeFirstResponder];
+    [self.delegate currentEditorChanged: self];
     
-    // TODO: uhh.. more stuff?
+    // TODO: uhh.. do more stuff here?
 }
 
 - (void) saveFirstResponder {
@@ -110,6 +111,7 @@
 
 - (void) editorWasSelected:(LVEditor*)editor {
     self.currentEditor = editor;
+    [self.delegate currentEditorChanged: self];
 }
 
 - (NSRect)splitView:(NSSplitView *)splitView effectiveRect:(NSRect)proposedEffectiveRect forDrawnRect:(NSRect)drawnRect ofDividerAtIndex:(NSInteger)dividerIndex {

@@ -11,7 +11,7 @@
 #import "LVTabBar.h"
 #import "LVTab.h"
 
-@interface LVTabView : NSView <LVTabBarDelegate>
+@interface LVTabView : NSView <LVTabBarDelegate, LVTabDelegate>
 
 @property (weak, readonly) LVTab* currentTab;
 

@@ -17,7 +17,19 @@ typedef enum __LVSplitDirection {
     LVSplitDirectionSouth,
 } LVSplitDirection;
 
+
+@class LVTab;
+
+@protocol LVTabDelegate <NSObject>
+
+- (void) currentEditorChanged:(LVTab*)tab;
+
+@end
+
+
 @interface LVTab : NSViewController <LVEditorDelegate>
+
+@property id<LVTabDelegate> delegate;
 
 @property (readonly, weak) LVEditor* currentEditor;
 

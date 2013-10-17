@@ -44,6 +44,10 @@
     [self addSubview:self.bodyView];
 }
 
+- (void) currentEditorChanged:(LVTab*)tab {
+    [self titlesChanged];
+}
+
 - (IBAction) selectNextTabViewItem:(id)sender {
     NSUInteger idx = [self.tabs indexOfObject: self.currentTab];
     idx++;
@@ -94,6 +98,8 @@
 }
 
 - (void) addTab:(LVTab*)tab {
+    tab.delegate = self;
+    
     [self.tabs addObject:tab];
     [self.tabBar addTab: tab.currentEditor.title];
     [self switchToTab:tab];
