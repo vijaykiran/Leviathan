@@ -122,6 +122,7 @@
         }
         i++;
     }
+//    self.draggingTab.zPosition = 2;
 }
 
 - (void) repositionTabs {
@@ -141,8 +142,6 @@
     for (CALayer* tab in self.tabs) {
         tab.zPosition = 0;
     }
-    
-    self.draggingTab.zPosition = 1;
 }
 
 - (void) mouseDragged:(NSEvent *)theEvent {

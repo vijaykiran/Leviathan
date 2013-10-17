@@ -16,6 +16,9 @@
         <splitView dividerStyle="thin" vertical="YES" id="pFu-DI-BaM">
             <rect key="frame" x="0.0" y="0.0" width="366" height="186"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <connections>
+                <outlet property="delegate" destination="-2" id="9F5-2a-7qV"/>
+            </connections>
         </splitView>
     </objects>
 </document>

@@ -8,6 +8,8 @@
 
 #import "LVTextView.h"
 
+#import "SDTheme.h"
+
 @implementation LVTextView
 
 - (BOOL) becomeFirstResponder {
@@ -16,6 +18,16 @@
         [self.customDelegate textViewWasFocused:self];
     }
     return did;
+}
+
+- (void) awakeFromNib {
+    self.enclosingScrollView.verticalScroller.knobStyle = NSScrollerKnobStyleLight;
+    self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
+    
+    self.font = [NSFont fontWithName:@"Menlo" size:13];
+    self.backgroundColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeBackgroundColor]);
+    self.insertionPointColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeCursorColor]);
+    self.selectedTextAttributes = @{NSBackgroundColorAttributeName: SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeSelectionColor])};
 }
 
 @end

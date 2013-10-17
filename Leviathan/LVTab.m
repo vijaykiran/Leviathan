@@ -115,4 +115,12 @@
     self.currentEditor = editor;
 }
 
+- (NSRect)splitView:(NSSplitView *)splitView effectiveRect:(NSRect)proposedEffectiveRect forDrawnRect:(NSRect)drawnRect ofDividerAtIndex:(NSInteger)dividerIndex {
+    CGFloat r = 6.0;
+    
+    proposedEffectiveRect.origin.x -= r;
+    proposedEffectiveRect.size.width += (r * 2.0);
+    return proposedEffectiveRect;
+}
+
 @end
