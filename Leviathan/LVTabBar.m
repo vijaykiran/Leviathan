@@ -109,6 +109,21 @@
     [self repositionTabs];
 }
 
+- (void) changeTitles:(NSArray*)titles {
+    [CATransaction begin];
+    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    
+    for (int i = 0; i < [titles count]; i++) {
+        CALayer* tabLayer = [self.tabs objectAtIndex:i];
+        NSString* title = [titles objectAtIndex:i];
+        CATextLayer* titleLayer = [[tabLayer sublayers] lastObject];
+        
+        titleLayer.string = title;
+    }
+    
+    [CATransaction commit];
+}
+
 - (void) repositionTabs:(NSArray*)tabs {
     int i = 0;
     for (CALayer* tab in tabs) {

@@ -23,7 +23,7 @@
 + (LVEditor*) editorForFile:(LVFile*)file {
     LVEditor* c = [[LVEditor alloc] init];
     c.file = file;
-    c.title = @"Untitled";
+    c.title = file.shortName;
     // TODO: set title based on file
     return c;
 }
@@ -37,9 +37,7 @@
 }
 
 - (void) startEditingOtherFile:(LVFile*)file {
-    // TODO: when self's title changes, the tab its inside's title should change too (if this = current split), and the visible tab layer's title should chane too
     self.title = file.shortName;
-    
     [[self.textView layoutManager] replaceTextStorage:file.textStorage];
 }
 

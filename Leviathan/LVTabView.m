@@ -95,8 +95,12 @@
 
 - (void) addTab:(LVTab*)tab {
     [self.tabs addObject:tab];
-    [self.tabBar addTab: tab.title];
+    [self.tabBar addTab: tab.currentEditor.title];
     [self switchToTab:tab];
+}
+
+- (void) titlesChanged {
+    [self.tabBar changeTitles:[self.tabs valueForKeyPath:@"currentEditor.title"]];
 }
 
 - (void) switchToTab:(LVTab*)tab {

@@ -72,13 +72,14 @@
 }
 
 - (IBAction) jumpToDefinition:(id)sender {
-    
+    NSLog(@"not implemented yet...");
 }
 
 - (void) replaceCurrentEditorWithFile:(LVFile*)file {
     // TODO: dont do it if it's unsaved!
     
     [self.tabView.currentTab.currentEditor startEditingOtherFile:file];
+    [self.tabView titlesChanged];
 }
 
 - (IBAction) closeProjectTab:(id)sender {

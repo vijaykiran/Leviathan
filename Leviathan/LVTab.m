@@ -54,9 +54,6 @@
     self.currentEditor = editor;
     self.nextResponder = self.currentEditor;
     
-    self.title = editor.title;
-    // TODO: when editor's title changes, tab's title should change too
-    
     [self.currentEditor makeFirstResponder];
     
     // TODO: uhh.. more stuff?

@@ -22,6 +22,8 @@
 - (void) addTab:(NSString*)title;
 - (void) closeCurrentTab;
 
+- (void) changeTitles:(NSArray*)titles;
+
 // tabview-initiated actions
 - (void) manuallySelectTab:(NSUInteger)tabIndex;
 - (void) moveTab:(NSUInteger)from to:(NSUInteger)to;
