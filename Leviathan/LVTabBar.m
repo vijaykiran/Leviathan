@@ -57,9 +57,11 @@
 
 - (void) selectTabLayer:(CALayer*)tabLayer {
     for (CALayer* tab in self.tabs) {
+        tab.zPosition = 0;
         tab.backgroundColor = [NSColor colorWithCalibratedWhite:0.52 alpha:1.0].CGColor;
     }
     
+    self.selectedTab.zPosition = 1;
     self.selectedTab = tabLayer;
     self.selectedTab.backgroundColor = [NSColor colorWithCalibratedWhite:0.82 alpha:1.0].CGColor;
 }
@@ -85,7 +87,7 @@
         double delayInSeconds = 0.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            tabLayer.zPosition = 0;
+            tabLayer.zPosition = 1;
             tabLayer.frame = tabFrame;
         });
     }
@@ -110,6 +112,7 @@
 - (void) repositionTabs:(NSArray*)tabs {
     int i = 0;
     for (CALayer* tab in tabs) {
+        tab.zPosition = (tab == self.selectedTab ? 1 : 0);
         if (tab != self.draggingTab) {
             NSRect r = [tab frame];
             if (r.origin.x != i * (SD_TAB_WIDTH + 1.0)) {
