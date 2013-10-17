@@ -12,6 +12,8 @@
 #import "LVTab.h"
 #import "LVEditor.h"
 
+#import "SDFuzzyMatcher.h"
+
 @interface LVProjectWindowController ()
 
 @property (weak) id<LVProjectWindowController> delegate;
@@ -51,6 +53,28 @@
         // TODO: check for unsaved file in split (it always has exactly one file)
         [self.tabView.currentTab closeCurrentSplit];
     }
+}
+
+- (IBAction) jumpToFile:(id)sender {
+    NSArray* files = [self.project.files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"fileURL != NULL"]];
+    
+    NSArray* names = [files valueForKey:@"longName"];
+    CGFloat maxLen = [[files valueForKeyPath:@"longName.@max.length"] doubleValue];
+    
+    [SDFuzzyMatcher showChoices:names
+                      charsWide:maxLen * 2.2 / 3.0
+                      linesTall:10
+                    windowTitle:@"Jump to File"
+                  choseCallback:^(long chosenIndex) {
+                      LVFile* file = [files objectAtIndex:chosenIndex];
+                      [self replaceCurrentEditorWithFile:file];
+                  }];
+}
+
+- (void) replaceCurrentEditorWithFile:(LVFile*)file {
+    // TODO: dont do it if it's unsaved!
+    
+    [self.tabView.currentTab.currentEditor startEditingOtherFile:file];
 }
 
 - (IBAction) closeProjectTab:(id)sender {

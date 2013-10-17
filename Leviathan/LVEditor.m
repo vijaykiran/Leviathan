@@ -36,4 +36,11 @@
     [self.delegate editorWasSelected:self];
 }
 
+- (void) startEditingOtherFile:(LVFile*)file {
+    // TODO: when self's title changes, the tab its inside's title should change too (if this = current split), and the visible tab layer's title should chane too
+    self.title = file.shortName;
+    
+    [[self.textView layoutManager] replaceTextStorage:file.textStorage];
+}
+
 @end

@@ -19,6 +19,14 @@
                                                                        delegate:self];
     
     [self.projectWindowControllers addObject:controller];
+    
+    
+    
+    double delayInSeconds = 60.0 * 5.0; // quit after 5 mins
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [NSApp terminate:self];
+    });
 }
 
 - (void) projectWindowClosed:(LVProjectWindowController *)controller {

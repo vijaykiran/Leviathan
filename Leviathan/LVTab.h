@@ -19,6 +19,8 @@ typedef enum __LVSplitDirection {
 
 @interface LVTab : NSViewController <LVEditorDelegate>
 
+@property (readonly, weak) LVEditor* currentEditor;
+
 - (NSArray*) splits;
 
 - (void) startWithEditor:(LVEditor*)editor;

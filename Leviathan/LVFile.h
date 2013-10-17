@@ -10,4 +10,15 @@
 
 @interface LVFile : NSObject
 
+@property NSURL* fileURL;
+@property NSString* longName;
+@property NSString* shortName;
+
+@property NSTextStorage* textStorage;
+
+//@property SDColl* topLevelElement;
+
+- (void) parseFromFile;
+- (void) highlight:(NSTextView*)tv;
+
 @end

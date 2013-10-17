@@ -29,4 +29,6 @@
 
 - (void) makeFirstResponder;
 
+- (void) startEditingOtherFile:(LVFile*)file;
+
 @end
