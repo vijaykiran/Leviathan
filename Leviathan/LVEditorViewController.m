@@ -32,8 +32,4 @@
     [[self.view window] makeFirstResponder: self.textView];
 }
 
-- (void) dealloc {
-    NSLog(@"bye");
-}
-
 @end
