@@ -13,8 +13,6 @@
 @property LVTabBar* tabBar;
 @property NSView* bodyView;
 
-@property NSMutableArray* tabs;
-
 @end
 
 @implementation LVTabView
@@ -46,15 +44,29 @@
 
 - (void) addTab:(NSViewController*)tab {
     [self.tabs addObject:tab];
-    
     [self.tabBar addTab: tab.title];
-    
+    [self switchToTab:tab];
+}
+
+- (void) switchToTab:(NSViewController*)tab {
     tab.view.frame = self.bodyView.bounds;
     
     [[self.bodyView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.bodyView addSubview:tab.view];
     
+    self.nextResponder = tab;
     
+    
+}
+
+- (void) movedTab:(NSUInteger)from to:(NSUInteger)to {
+    id tab = [self.tabs objectAtIndex:from];
+    [self.tabs removeObject:tab];
+    [self.tabs insertObject:tab atIndex:to];
+}
+
+- (void) selectedTab:(NSUInteger)tabIndex {
+    [self switchToTab:[self.tabs objectAtIndex:tabIndex]];
 }
 
 - (void) closeCurrentTab {

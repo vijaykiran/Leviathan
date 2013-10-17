@@ -162,14 +162,24 @@
         idx = [self.tabs count] - 1;
     
     BOOL didntMove = self.draggingTab == [self.tabs objectAtIndex:idx];
-    if (self.draggingTab != self.selectedTab && didntMove) {
+    BOOL switchingTabs = (self.draggingTab != self.selectedTab && didntMove);
+    if (switchingTabs) {
         [self selectTabLayer:self.draggingTab];
     }
     
     NSMutableArray* tmpTabs = [self.tabs mutableCopy];
     
+    NSUInteger from = [tmpTabs indexOfObject:self.draggingTab];
+    NSUInteger to = idx;
+    
+    [self.delegate movedTab:from to:to];
+    
     [tmpTabs removeObject:self.draggingTab];
     [tmpTabs insertObject:self.draggingTab atIndex:idx];
+    
+    if (switchingTabs) {
+        [self.delegate selectedTab:[tmpTabs indexOfObject:self.selectedTab]];
+    }
     
     int i = 0;
     for (CALayer* tab in tmpTabs) {

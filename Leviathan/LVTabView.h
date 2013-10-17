@@ -12,6 +12,8 @@
 
 @interface LVTabView : NSView <LVTabBarDelegate>
 
+@property NSMutableArray* tabs;
+
 - (void) addTab:(NSViewController*)tab;
 - (void) closeCurrentTab;
 

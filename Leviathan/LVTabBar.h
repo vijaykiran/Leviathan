@@ -10,7 +10,8 @@
 
 @protocol LVTabBarDelegate <NSObject>
 
-// uhh...
+- (void) movedTab:(NSUInteger)from to:(NSUInteger)to;
+- (void) selectedTab:(NSUInteger)tabIndex;
 
 @end
 
