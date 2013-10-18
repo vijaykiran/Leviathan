@@ -198,7 +198,10 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
             NSUInteger prefixIndentation = collParentForBeginningOfLine.openingToken.range.location - openingTokenRecentNewline;
             
             if (collParentForBeginningOfLine.collType == LVCollTypeList) {
-                if ([[collParentForBeginningOfLine childElements] count] >= 2 && childIndexOfFirstElementOnLine >= 2) {
+                if ([collParentForBeginningOfLine isKindOfClass:[LVDefinition self]]) {
+                    expectedStartSpaces = prefixIndentation + 2;
+                }
+                else if ([[collParentForBeginningOfLine childElements] count] >= 2 && childIndexOfFirstElementOnLine >= 2) {
                     id<LVElement> secondChild = [[collParentForBeginningOfLine childElements] objectAtIndex: 1];
                     NSUInteger childBeginning = [secondChild fullyEnclosedRange].location;
                     NSUInteger newlineBeforeSecondChild = LVFirstNewlineBefore(wholeString, childBeginning);
