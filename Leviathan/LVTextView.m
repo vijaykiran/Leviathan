@@ -98,12 +98,19 @@ NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
     return NSMakeRange(r.location + len, r.length - len);
 }
 
+
+
+
+
+
+
 NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
     return NSMakeRange(pos, r.length + (r.location - pos));
 }
 
-NSRange LVSubrangeFrom(NSRange r, NSUInteger absPosWithin) {
-    return NSMakeRange(absPosWithin, r.length - absPosWithin);
+NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absPosWithin) {
+    // 1 [2 -3- 4 5]
+    return NSMakeRange(absPosWithin, NSMaxRange(r) - absPosWithin);
 }
 
 - (void) indentCurrentBody {
@@ -127,18 +134,26 @@ NSRange LVSubrangeFrom(NSRange r, NSUInteger absPosWithin) {
     
     wholeBlockRange = LVExtendRangeToBeginningPos(wholeBlockRange, firstNewlinePosition);
     
-    NSString* relevantString = [wholeString substringWithRange:wholeBlockRange];
-//    NSLog(@"[%@]", relevantString);
+//    NSString* relevantString = [wholeString substringWithRange:wholeBlockRange];
+//    NSLog(@"[%@]", [wholeString substringWithRange:wholeBlockRange]);
+    
+//    NSLog(@"%@", NSStringFromRange(wholeBlockRange));
+    
+//    return;
     
     
     NSUInteger currentPos = wholeBlockRange.location;
     
     while (NSLocationInRange(currentPos, wholeBlockRange)) {
-        NSRange remainingRange = LVSubrangeFrom(wholeBlockRange, currentPos);
+        NSRange remainingRange = LVRangeWithNewAbsoluteLocationButSameEndPoint(wholeBlockRange, currentPos);
         
-        NSUInteger nextNewlinePosition = [relevantString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-                                                                         options:0
-                                                                           range:remainingRange].location;
+//        NSLog(@"%@", NSStringFromRange(remainingRange));
+        
+//        break;
+        
+        NSUInteger nextNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+                                                                      options:0
+                                                                        range:remainingRange].location;
         
         if (nextNewlinePosition == NSNotFound)
             nextNewlinePosition = NSMaxRange(wholeBlockRange);
@@ -148,6 +163,22 @@ NSRange LVSubrangeFrom(NSRange r, NSUInteger absPosWithin) {
         NSRange currentLineRange = NSMakeRange(currentPos, nextNewlinePosition - currentPos);
         
         
+        
+        
+        NSUInteger firstNonSpaceCharPos = [wholeString rangeOfCharacterFromSet:[[NSCharacterSet whitespaceCharacterSet] invertedSet]
+                                                                       options:0
+                                                                         range:currentLineRange].location;
+        
+        NSLog(@"%ld", firstNonSpaceCharPos);
+        
+//        NSUInteger childIndexOfFirstElementOnLine; // this will be helpful
+//        LVColl* collParentForBeginningOfLine = [self.file.topLevelElement deepestCollAtPos:currentLineBeginningAbsolutePos childsIndex:&childIndexOfFirstElementOnLine];
+
+        
+        
+        
+        
+        // done doing things, ready to loop again.
         
         currentPos = nextNewlinePosition;
         
