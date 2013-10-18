@@ -171,10 +171,10 @@
                     break;
                 }
                 else {
-                    *error = [SDParseError kind:SDParseErrorTypeUnfinishedDispatch with:NSMakeRange(i, 1)];
-                    return nil;
+                    [tokens addObject: [SDToken token:BW_TOK_READER_MACRO_START at:i len:2]];
+                    i++;
+                    break;
                 }
-                
             }
             case ' ': case '\t': case '\r': case '\n': break;
             case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
