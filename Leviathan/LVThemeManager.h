@@ -9,25 +9,25 @@
 #import <Foundation/Foundation.h>
 
 
-static NSString* SDThemeBackgroundColor = @"background_color";
-//static NSString* SDThemeSelectionColor = @"selection_background_color";
-static NSString* SDThemeCursorColor = @"cursor_color";
+static NSString* LVStyleBackgroundColor = @"background_color";
+static NSString* LVStyleForSelection = @"selection_style";
+static NSString* LVStyleCursorColor = @"cursor_color";
 
-static NSString* SDThemeForSymbol = @"symbol_style";
-static NSString* SDThemeForDef = @"def_keyord_style";
-static NSString* SDThemeForDefName = @"def_name_style";
-static NSString* SDThemeForKeyword = @"keyword_style";
-static NSString* SDThemeForComment = @"comment_style";
-static NSString* SDThemeForTypeOp = @"typehint_style";
-static NSString* SDThemeForQuote = @"quote_style";
-static NSString* SDThemeForUnquote = @"unquote_style";
-static NSString* SDThemeForSyntaxQuote = @"syntaxquote_style";
-static NSString* SDThemeForNumber = @"number_style";
-static NSString* SDThemeForSyntaxError = @"syntax_error_style";
-static NSString* SDThemeForRainbowParens = @"rainbow_parens_styles";
-static NSString* SDThemeForString = @"string_style";
-static NSString* SDThemeForRegex = @"regex_style";
-static NSString* SDThemeForSplice = @"splice_style";
+static NSString* LVStyleForSymbol = @"symbol_style";
+static NSString* LVStyleForDef = @"def_keyord_style";
+static NSString* LVStyleForDefName = @"def_name_style";
+static NSString* LVStyleForKeyword = @"keyword_style";
+static NSString* LVStyleForComment = @"comment_style";
+static NSString* LVStyleForTypeOp = @"typehint_style";
+static NSString* LVStyleForQuote = @"quote_style";
+static NSString* LVStyleForUnquote = @"unquote_style";
+static NSString* LVStyleForSyntaxQuote = @"syntaxquote_style";
+static NSString* LVStyleForNumber = @"number_style";
+static NSString* LVStyleForSyntaxError = @"syntax_error_style";
+static NSString* LVStyleForRainbowParens = @"rainbow_parens_styles";
+static NSString* LVStyleForString = @"string_style";
+static NSString* LVStyleForRegex = @"regex_style";
+static NSString* LVStyleForSplice = @"splice_style";
 
 
 @interface LVThemeManager : NSObject

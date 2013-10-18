@@ -19,8 +19,8 @@
         LVColl* coll = element;
         
         if (coll.collType != LVCollTypeTopLevel) {
-            LVApplyStyle(attrString, SDThemeForRainbowParens, coll.openingToken.range, deepness);
-            LVApplyStyle(attrString, SDThemeForRainbowParens, coll.closingToken.range, deepness);
+            LVApplyStyle(attrString, LVStyleForRainbowParens, coll.openingToken.range, deepness);
+            LVApplyStyle(attrString, LVStyleForRainbowParens, coll.closingToken.range, deepness);
         }
         
         for (id<LVElement> child in coll.childElements) {
@@ -29,28 +29,28 @@
         
         if ([element isKindOfClass:[LVDefinition self]]) {
             LVDefinition* def = element;
-            LVApplyStyle(attrString, SDThemeForDef, def.defType.token.range, deepness);
-            LVApplyStyle(attrString, SDThemeForDefName, def.defName.token.range, deepness);
+            LVApplyStyle(attrString, LVStyleForDef, def.defType.token.range, deepness);
+            LVApplyStyle(attrString, LVStyleForDefName, def.defName.token.range, deepness);
         }
     }
     else if ([element isKindOfClass:[LVAtom self]]) {
         LVAtom* atom = element;
         
         switch (atom.atomType) {
-            case LVAtomTypeSymbol: LVApplyStyle(attrString, SDThemeForSymbol, atom.token.range, deepness); break;
-            case LVAtomTypeKeyword: LVApplyStyle(attrString, SDThemeForKeyword, atom.token.range, deepness); break;
-            case LVAtomTypeString: LVApplyStyle(attrString, SDThemeForString, atom.token.range, deepness); break;
-            case LVAtomTypeRegex: LVApplyStyle(attrString, SDThemeForRegex, atom.token.range, deepness); break;
-            case LVAtomTypeNumber: LVApplyStyle(attrString, SDThemeForNumber, atom.token.range, deepness); break;
-            case LVAtomTypeTrue: LVApplyStyle(attrString, SDThemeForNumber, atom.token.range, deepness); break; // TODO: true, false, and nil should have their own theme keys
-            case LVAtomTypeFalse: LVApplyStyle(attrString, SDThemeForNumber, atom.token.range, deepness); break;
-            case LVAtomTypeNil: LVApplyStyle(attrString, SDThemeForNumber, atom.token.range, deepness); break;
-            case LVAtomTypeComment: LVApplyStyle(attrString, SDThemeForComment, atom.token.range, deepness); break;
-            case LVAtomTypeTypeOp: LVApplyStyle(attrString, SDThemeForTypeOp, atom.token.range, deepness); break;
-            case LVAtomTypeQuote: LVApplyStyle(attrString, SDThemeForQuote, atom.token.range, deepness); break;
-            case LVAtomTypeUnquote: LVApplyStyle(attrString, SDThemeForUnquote, atom.token.range, deepness); break;
-            case LVAtomTypeSyntaxQuote: LVApplyStyle(attrString, SDThemeForSyntaxQuote, atom.token.range, deepness); break;
-            case LVAtomTypeSplice: LVApplyStyle(attrString, SDThemeForSplice, atom.token.range, deepness); break;
+            case LVAtomTypeSymbol: LVApplyStyle(attrString, LVStyleForSymbol, atom.token.range, deepness); break;
+            case LVAtomTypeKeyword: LVApplyStyle(attrString, LVStyleForKeyword, atom.token.range, deepness); break;
+            case LVAtomTypeString: LVApplyStyle(attrString, LVStyleForString, atom.token.range, deepness); break;
+            case LVAtomTypeRegex: LVApplyStyle(attrString, LVStyleForRegex, atom.token.range, deepness); break;
+            case LVAtomTypeNumber: LVApplyStyle(attrString, LVStyleForNumber, atom.token.range, deepness); break;
+            case LVAtomTypeTrue: LVApplyStyle(attrString, LVStyleForNumber, atom.token.range, deepness); break; // TODO: true, false, and nil should have their own theme keys
+            case LVAtomTypeFalse: LVApplyStyle(attrString, LVStyleForNumber, atom.token.range, deepness); break;
+            case LVAtomTypeNil: LVApplyStyle(attrString, LVStyleForNumber, atom.token.range, deepness); break;
+            case LVAtomTypeComment: LVApplyStyle(attrString, LVStyleForComment, atom.token.range, deepness); break;
+            case LVAtomTypeTypeOp: LVApplyStyle(attrString, LVStyleForTypeOp, atom.token.range, deepness); break;
+            case LVAtomTypeQuote: LVApplyStyle(attrString, LVStyleForQuote, atom.token.range, deepness); break;
+            case LVAtomTypeUnquote: LVApplyStyle(attrString, LVStyleForUnquote, atom.token.range, deepness); break;
+            case LVAtomTypeSyntaxQuote: LVApplyStyle(attrString, LVStyleForSyntaxQuote, atom.token.range, deepness); break;
+            case LVAtomTypeSplice: LVApplyStyle(attrString, LVStyleForSplice, atom.token.range, deepness); break;
         }
     }
 }
@@ -75,7 +75,7 @@ NSFont* LVFixFont(NSFont* font, BOOL haveIt, int trait) {
 void LVApplyStyle(NSMutableAttributedString* attrString, NSString* styleName, NSRange range, NSUInteger deepness) {
     NSDictionary* customAttrs;
     
-    if (styleName == SDThemeForRainbowParens) {
+    if (styleName == LVStyleForRainbowParens) {
         NSArray* attrsList = [[[LVThemeManager sharedThemeManager] currentTheme] objectForKey: styleName];
         customAttrs = [attrsList objectAtIndex: deepness % [attrsList count]];
     }

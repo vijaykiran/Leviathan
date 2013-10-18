@@ -40,11 +40,11 @@
     self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
     self.font = [LVPreferences userFont];
-    self.backgroundColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:SDThemeBackgroundColor]);
-    self.insertionPointColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:SDThemeCursorColor]);
+    self.backgroundColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleBackgroundColor]);
+    self.insertionPointColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleCursorColor]);
     
     {
-        NSDictionary* style = [[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:@"selection_style"];
+        NSDictionary* style = [[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleForSelection];
         NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
         
         if ([style objectForKey:@"ForegroundColor"])

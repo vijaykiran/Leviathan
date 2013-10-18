@@ -58,7 +58,7 @@
     
     if (error) {
         self.topLevelElement = nil;
-        LVApplyStyle(self.textStorage, SDThemeForSyntaxError, error.badRange, 1);
+        LVApplyStyle(self.textStorage, LVStyleForSyntaxError, error.badRange, 1);
     }
     else {
         [LVHighlighter highlight:self.topLevelElement
