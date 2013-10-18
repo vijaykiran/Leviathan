@@ -123,6 +123,9 @@
 // opening complex things
 
 - (IBAction) openTestInSplit:(id)sender {
+    if ([self.tabView.currentTab.currentEditor.file fileURL] == nil)
+        return;
+    
     NSString* path = self.tabView.currentTab.currentEditor.file.longName;
     
     path = [path substringWithRange:NSMakeRange(4, [path length] - 4 - 4)];
