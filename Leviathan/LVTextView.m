@@ -133,14 +133,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
     
     NSRange wholeBlockRange = highestParentColl.fullyEnclosedRange;
     
-    NSUInteger firstNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-                                                                   options:NSBackwardsSearch
-                                                                     range:NSMakeRange(0, wholeBlockRange.location)].location;
-    
-    if (firstNewlinePosition == NSNotFound)
-        firstNewlinePosition = 0;
-    else
-        firstNewlinePosition++;
+    NSUInteger firstNewlinePosition = LVFirstNewlineBefore(wholeString, wholeBlockRange.location);
     
     wholeBlockRange = LVExtendRangeToBeginningPos(wholeBlockRange, firstNewlinePosition);
     
@@ -193,34 +186,14 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
             expectedStartSpaces = 0;
         }
         else {
-            NSUInteger openingTokenRecentNewline = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-                                                                                options:NSBackwardsSearch
-                                                                                  range:NSMakeRange(0, collParentForBeginningOfLine.openingToken.range.location)].location;
-            if (openingTokenRecentNewline == NSNotFound)
-                openingTokenRecentNewline = 0;
-            else
-                openingTokenRecentNewline++;
-            
+            NSUInteger openingTokenRecentNewline = LVFirstNewlineBefore(wholeString, collParentForBeginningOfLine.openingToken.range.location);
             NSUInteger prefixIndentation = collParentForBeginningOfLine.openingToken.range.location - openingTokenRecentNewline;
-            
-            
             
             if (collParentForBeginningOfLine.collType == LVCollTypeList) {
                 if ([[collParentForBeginningOfLine childElements] count] >= 2 && childIndexOfFirstElementOnLine >= 2) {
                     id<LVElement> secondChild = [[collParentForBeginningOfLine childElements] objectAtIndex: 1];
                     NSUInteger childBeginning = [secondChild fullyEnclosedRange].location;
-                    
-                    NSUInteger newlineBeforeSecondChild = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-                                                                                       options:NSBackwardsSearch
-                                                                                         range:NSMakeRange(0, childBeginning)].location;
-                    if (newlineBeforeSecondChild == NSNotFound)
-                        newlineBeforeSecondChild = 0;
-                    else
-                        newlineBeforeSecondChild++;
-                    
-//                    NSUInteger listBeginning = collParentForBeginningOfLine.openingToken.range.location;
-                    
-//                    NSLog(@"%ld, %ld", listBeginning, childBeginning);
+                    NSUInteger newlineBeforeSecondChild = LVFirstNewlineBefore(wholeString, childBeginning);
                     
                     expectedStartSpaces = childBeginning - newlineBeforeSecondChild;
                 }
