@@ -85,10 +85,10 @@
 
 
 
-//- (void) insertNewline:(id)sender {
-//    [super insertNewline:sender];
-//    [self indentCurrentBody];
-//}
+- (void) insertNewline:(id)sender {
+    [super insertNewline:sender];
+    [self indentCurrentBody];
+}
 
 
 
@@ -98,6 +98,18 @@
 //    [self indentCurrentBody];
 //}
 
+
+NSUInteger LVFirstNewlineBefore(NSString* str, NSUInteger pos) {
+    NSUInteger found = [str rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+                                            options:NSBackwardsSearch
+                                              range:NSMakeRange(0, pos)].location;
+    if (found == NSNotFound)
+        found = 0;
+    else
+        found++;
+    
+    return found;
+}
 
 
 NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
@@ -110,6 +122,8 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 }
 
 - (void) indentCurrentBody {
+//    return;
+    
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
     LVColl* currentColl = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
@@ -187,30 +201,37 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
             else
                 openingTokenRecentNewline++;
             
+            NSUInteger prefixIndentation = collParentForBeginningOfLine.openingToken.range.location - openingTokenRecentNewline;
             
             
-            NSUInteger specificIndentation;
             
             if (collParentForBeginningOfLine.collType == LVCollTypeList) {
                 if ([[collParentForBeginningOfLine childElements] count] >= 2 && childIndexOfFirstElementOnLine >= 2) {
                     id<LVElement> secondChild = [[collParentForBeginningOfLine childElements] objectAtIndex: 1];
                     NSUInteger childBeginning = [secondChild fullyEnclosedRange].location;
                     
-                    NSUInteger listBeginning = collParentForBeginningOfLine.openingToken.range.location;
+                    NSUInteger newlineBeforeSecondChild = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+                                                                                       options:NSBackwardsSearch
+                                                                                         range:NSMakeRange(0, childBeginning)].location;
+                    if (newlineBeforeSecondChild == NSNotFound)
+                        newlineBeforeSecondChild = 0;
+                    else
+                        newlineBeforeSecondChild++;
                     
-                    specificIndentation = childBeginning - listBeginning;
+//                    NSUInteger listBeginning = collParentForBeginningOfLine.openingToken.range.location;
+                    
+//                    NSLog(@"%ld, %ld", listBeginning, childBeginning);
+                    
+                    expectedStartSpaces = childBeginning - newlineBeforeSecondChild;
                 }
                 else {
-                    specificIndentation = 2;
+                    expectedStartSpaces = prefixIndentation + 2;
                 }
             }
             else {
-                specificIndentation = 1;
+                expectedStartSpaces = prefixIndentation + 1;
             }
             
-            NSUInteger prefixIndentation = collParentForBeginningOfLine.openingToken.range.location - openingTokenRecentNewline;
-            
-            expectedStartSpaces = specificIndentation + prefixIndentation;
         }
         
         NSInteger spacesToAdd = expectedStartSpaces - firstNonSpaceCharPosRelative;

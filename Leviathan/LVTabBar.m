@@ -10,7 +10,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#define SD_TAB_WIDTH (140.0)
+#define SD_TAB_WIDTH (200.0)
 
 @interface LVTabBar ()
 
