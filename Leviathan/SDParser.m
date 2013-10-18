@@ -52,6 +52,36 @@
         child.parent = coll;
         child.idx = idx++;
     }
+    
+    BOOL isDef = NO;
+    SDAtom* defType;
+    SDAtom* defName;
+    
+    if (collType == SDCollTypeList) {
+        if ([children count] >= 2) {
+            SDAtom* firstChild = [children objectAtIndex:0];
+            if ([firstChild isAtom]) {
+                if ([[[firstChild token] val] hasPrefix:@"def"]) {
+                    isDef = YES;
+                    defType = firstChild;
+                    
+                    for (NSUInteger i = 1; i < [children count]; i++) {
+                        SDAtom* child = [children objectAtIndex:i];
+                        
+                        if ([child isKindOfClass:[SDAtomSymbol self]]) {
+                            defName = child;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    if (isDef) {
+//        NSLog(@"%@ %@", defType.token.val, defName.token.val);
+    }
+    
     return coll;
 }
 
