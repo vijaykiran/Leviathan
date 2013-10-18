@@ -56,6 +56,9 @@
 }
 
 - (void) selectTabLayer:(CALayer*)tabLayer {
+    [CATransaction begin];
+    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    
     for (CALayer* tab in self.tabs) {
         tab.zPosition = 0;
         tab.backgroundColor = [NSColor colorWithCalibratedWhite:0.52 alpha:1.0].CGColor;
@@ -64,6 +67,8 @@
     self.selectedTab.zPosition = 1;
     self.selectedTab = tabLayer;
     self.selectedTab.backgroundColor = [NSColor colorWithCalibratedWhite:0.82 alpha:1.0].CGColor;
+    
+    [CATransaction commit];
 }
 
 - (void) addTab:(NSString*)title {
