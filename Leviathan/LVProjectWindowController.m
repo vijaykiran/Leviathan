@@ -72,7 +72,16 @@
 }
 
 - (IBAction) jumpToDefinition:(id)sender {
-    NSLog(@"not implemented yet...");
+//    LVFile* file = self.tabView.currentTab.currentEditor.file;
+    
+    for (LVFile* file in self.project.files) {
+        NSMutableArray* defs = [NSMutableArray array];
+        [[file topLevelElement] findDefinitions:defs];
+//        NSLog(@"%@ - %@", [file topLevelElement], file.fileURL);
+//        NSLog(@"%@", defs);
+    }
+    
+//    NSLog(@"not implemented yet... %@", file);
 }
 
 - (void) replaceCurrentEditorWithFile:(LVFile*)file {

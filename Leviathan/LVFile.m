@@ -34,6 +34,10 @@
         SDParseError* error;
         self.topLevelElement = [SDParser parse:rawString error:&error];
         
+        if (error) {
+            NSLog(@"error %d %@", error.errorType, self.fileURL);
+        }
+        
 //        NSLog(@"%d, %ld - %ld, %@", error.errorType, error.badRange.location, error.badRange.length, self.fileURL);
     }
     else {

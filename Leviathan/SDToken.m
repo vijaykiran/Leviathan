@@ -155,6 +155,21 @@
                     i++;
                     break;
                 }
+                else if ([raw characterAtIndex:i+1] == '(') {
+                    [tokens addObject: [SDToken token:BW_TOK_ANON_FN_START at:i len:2]];
+                    i++;
+                    break;
+                }
+                else if ([raw characterAtIndex:i+1] == '{') {
+                    [tokens addObject: [SDToken token:BW_TOK_SET_START at:i len:2]];
+                    i++;
+                    break;
+                }
+                else if ([raw characterAtIndex:i+1] == '\'') {
+                    [tokens addObject: [SDToken token:BW_TOK_VAR_START at:i len:2]];
+                    i++;
+                    break;
+                }
                 else {
                     *error = [SDParseError kind:SDParseErrorTypeUnfinishedDispatch with:NSMakeRange(i, 1)];
                     return nil;

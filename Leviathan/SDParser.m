@@ -122,6 +122,19 @@
         SDToken* tok = [SDToken token:BW_TOK_COMMENT at:fullRange.location len:fullRange.length];
         return [SDAtom with:tok of:LVAtomTypeComment];
     }
+    else if (token.type == BW_TOK_VAR_START) {
+        id<SDElement> next = [self parseOne:tokens start:i + 1 ended:ended error:error];
+        if (*error) {
+            if ((*error).errorType == SDParseErrorTypeUnexpectedEnd) {
+                *error = [SDParseError kind:SDParseErrorTypeUnopenedCloser with:token.range];
+            }
+            return nil;
+        }
+        
+        NSRange fullRange = NSUnionRange(token.range, [next fullyEnclosedRange]);
+        SDToken* tok = [SDToken token:BW_TOK_COMMENT at:fullRange.location len:fullRange.length];
+        return [SDAtom with:tok of:LVAtomTypeComment]; // TODO: this is really a var
+    }
     else if (token.type == BW_TOK_NUMBER) {
         *ended = i + 1;
         return [SDAtom with:token of:LVAtomTypeNumber];
@@ -179,6 +192,14 @@
     }
     else if (token.type == BW_TOK_LBRACE) {
         return [self parseColl:tokens start:i ended:ended collType:SDCollTypeMap endType:BW_TOK_RBRACE error:error];
+    }
+    else if (token.type == BW_TOK_ANON_FN_START) {
+        // TODO: return new FN coll type
+        return [self parseColl:tokens start:i ended:ended collType:SDCollTypeList endType:BW_TOK_RPAREN error:error];
+    }
+    else if (token.type == BW_TOK_SET_START) {
+        // TODO: return new Set coll type
+        return [self parseColl:tokens start:i ended:ended collType:SDCollTypeList endType:BW_TOK_RBRACE error:error];
     }
     
     [NSException raise:@"ParserFoundBadToken" format:@"Parser doesn't handle token: %@", [token description]];

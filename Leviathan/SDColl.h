@@ -27,6 +27,8 @@ typedef enum __SDCollType {
 
 - (SDColl*) deepestCollAtPos:(NSUInteger)pos childsIndex:(NSUInteger*)childsIndex;
 
+- (void) findDefinitions:(NSMutableArray*)defs;
+
 @end
 
 

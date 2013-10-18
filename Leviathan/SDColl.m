@@ -70,6 +70,18 @@
     return self;
 }
 
+- (void) findDefinitions:(NSMutableArray*)defs {
+    for (id<SDElement> child in self.childElements) {
+        if ([child isKindOfClass:[SDDefinition self]]) {
+            [defs addObject:child];
+        }
+        
+        if ([child isColl]) {
+            [[child asColl] findDefinitions:defs];
+        }
+    }
+}
+
 @end
 
 @implementation SDDefinition

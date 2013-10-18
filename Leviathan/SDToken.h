@@ -29,6 +29,9 @@ typedef enum __BWTokenType {
     BW_TOK_TYPEOP,
     BW_TOK_COMMENT,
     BW_TOK_READER_COMMENT,
+    BW_TOK_ANON_FN_START,
+    BW_TOK_SET_START,
+    BW_TOK_VAR_START,
     BW_TOK_FILE_BEGIN,
     BW_TOK_FILE_END,
 } BWTokenType;
