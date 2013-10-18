@@ -19,7 +19,7 @@
 - (LVColl*) asColl;
 - (LVAtom*) asAtom;
 
-@property id<LVElement> parent;
+@property LVColl* parent;
 @property NSUInteger idx;
 
 @property NSRange fullyEnclosedRange;
