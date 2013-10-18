@@ -51,7 +51,7 @@
 }
 
 - (IBAction) closeProjectTabSplit:(id)sender {
-    if ([[self.tabView.currentTab splits] count] == 1) {
+    if ([[self.tabView.currentTab editors] count] == 1) {
         [self closeProjectTab:sender];
     }
     else {
@@ -122,7 +122,7 @@
 
 - (BOOL) switchToOpenFile:(LVFile*)file {
     for (LVTab* tab in self.tabView.tabs) {
-        for (LVEditor* editor in [tab splits]) {
+        for (LVEditor* editor in [tab editors]) {
             if (editor.file == file) {
                 [self.tabView selectTab:tab];
                 [editor makeFirstResponder];

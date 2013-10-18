@@ -12,7 +12,7 @@
 
 @property (weak) IBOutlet NSSplitView* topLevelSplitView;
 
-@property NSMutableArray* editorControllers;
+@property NSMutableArray* editors;
 
 @property (weak) LVEditor* currentEditor;
 
@@ -20,9 +20,11 @@
 
 @implementation LVTab
 
+@synthesize editors = sd_editors;
+
 - (id) init {
     if (self = [super init]) {
-        self.editorControllers = [NSMutableArray array];
+        self.editors = [NSMutableArray array];
     }
     return self;
 }
@@ -31,16 +33,12 @@
     return @"Tab";
 }
 
-- (NSArray*) splits {
-    return self.editorControllers;
-}
-
 - (void) startWithEditor:(LVEditor*)editor {
     [self view]; // force loading view :(
     
     editor.delegate = self;
     
-    [self.editorControllers addObject: editor];
+    [self.editors addObject: editor];
     
     [self.topLevelSplitView addSubview: editor.view];
     [self.topLevelSplitView adjustSubviews];
@@ -65,7 +63,7 @@
 - (void) addEditor:(LVEditor*)editor inDirection:(LVSplitDirection)dir {
     editor.delegate = self;
     
-    [self.editorControllers addObject: editor];
+    [self.editors addObject: editor];
     
     [self.topLevelSplitView addSubview: editor.view];
     [self.topLevelSplitView adjustSubviews];
@@ -74,27 +72,27 @@
 }
 
 - (IBAction) selectNextSplit:(id)sender {
-    NSUInteger idx = [self.editorControllers indexOfObject:self.currentEditor];
+    NSUInteger idx = [self.editors indexOfObject:self.currentEditor];
     idx++;
-    if (idx == [self.editorControllers count])
+    if (idx == [self.editors count])
         idx = 0;
     
-    [self switchToEditor:[self.editorControllers objectAtIndex:idx]];
+    [self switchToEditor:[self.editors objectAtIndex:idx]];
 }
 
 - (IBAction) selectPreviousSplit:(id)sender {
-    NSUInteger idx = [self.editorControllers indexOfObject:self.currentEditor];
+    NSUInteger idx = [self.editors indexOfObject:self.currentEditor];
     idx--;
     if (idx == -1)
-        idx = [self.editorControllers count] - 1;
+        idx = [self.editors count] - 1;
     
-    [self switchToEditor:[self.editorControllers objectAtIndex:idx]];
+    [self switchToEditor:[self.editors objectAtIndex:idx]];
 }
 
 - (void) closeCurrentSplit {
     [self.currentEditor.view removeFromSuperview];
-    [self.editorControllers removeObject:self.currentEditor];
-    [self switchToEditor:[self.editorControllers lastObject]];
+    [self.editors removeObject:self.currentEditor];
+    [self switchToEditor:[self.editors lastObject]];
     [self.currentEditor makeFirstResponder];
 }
 

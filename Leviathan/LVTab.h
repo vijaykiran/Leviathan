@@ -31,9 +31,8 @@ typedef enum __LVSplitDirection {
 
 @property id<LVTabDelegate> delegate;
 
+@property (readonly) NSMutableArray* editors; // don't modify this
 @property (readonly, weak) LVEditor* currentEditor;
-
-- (NSArray*) splits;
 
 - (void) startWithEditor:(LVEditor*)editor;
 
