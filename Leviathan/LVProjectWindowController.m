@@ -29,7 +29,10 @@
     LVProjectWindowController* c = [[LVProjectWindowController alloc] init];
     c.project = [LVProject openProjectAtURL:url];
     c.delegate = delegate;
+    
+    [c setWindowFrameAutosaveName:[url path]];
     [c showWindow:nil];
+    
     return c;
 }
 
