@@ -45,7 +45,7 @@
 }
 
 - (void) currentEditorChanged:(LVTab*)tab {
-    [self titlesChanged];
+    [self updateTabTitles];
 }
 
 - (IBAction) selectNextTabViewItem:(id)sender {
@@ -105,7 +105,7 @@
     [self switchToTab:tab];
 }
 
-- (void) titlesChanged {
+- (void) updateTabTitles {
     [self.tabBar changeTitles:[self.tabs valueForKeyPath:@"currentEditor.title"]];
 }
 

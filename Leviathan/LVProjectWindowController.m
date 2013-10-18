@@ -46,6 +46,12 @@
     [self openProjectTab:nil];
 }
 
+
+
+
+
+// closing things
+
 - (void) windowWillClose:(NSNotification *)notification {
     [self.delegate projectWindowClosed:self];
 }
@@ -59,6 +65,45 @@
         [self.tabView.currentTab closeCurrentSplit];
     }
 }
+
+- (IBAction) closeProjectTab:(id)sender {
+    if ([self.tabView.tabs count] == 1) {
+        [self closeProjectWindow:sender];
+    }
+    else {
+        // TODO: check for unsaved files in tab
+        [self.tabView closeCurrentTab];
+    }
+}
+
+- (IBAction) closeProjectWindow:(id)sender {
+    // TODO: check for unsaved files in all tabs and their splits
+    
+    [[self window] performClose:sender];
+}
+
+
+
+
+
+// opening basic things
+
+- (IBAction) addSplitToEast:(id)sender {
+    [self editFile:[self.project openNewFile]
+       inDirection:LVSplitDirectionEast];
+}
+
+- (IBAction) openProjectTab:(id)sender {
+    [self editFileInNewTab:[self.project openNewFile]];
+}
+
+
+
+
+
+
+
+// opening complex things
 
 - (IBAction) openTestInSplit:(id)sender {
     NSString* path = self.tabView.currentTab.currentEditor.file.longName;
@@ -76,13 +121,8 @@
     }
     
     if (found) {
-        LVEditor* editorController = [[LVEditor alloc] init];
-        
-        [self.tabView.currentTab addEditor:editorController
-                               inDirection:LVSplitDirectionEast];
-        
-        [editorController startEditingFile:found];
-        [self.tabView titlesChanged];
+        [self editFile:found
+           inDirection:LVSplitDirectionEast];
     }
 }
 
@@ -98,24 +138,8 @@
                     windowTitle:@"Jump to File"
                   choseCallback:^(long chosenIndex) {
                       LVFile* file = [files objectAtIndex:chosenIndex];
-                      [self replaceCurrentEditorWithFile:file];
+                      [self editFileInCurrentEditor:file];
                   }];
-}
-
-- (void) openDefinition:(LVDefinition*)def inFile:(LVFile*)file {
-    if (![self switchToOpenFile:file]) {
-        LVEditor* editorController = [[LVEditor alloc] init];
-        
-        LVTab* tab = [[LVTab alloc] init];
-        [tab startWithEditor: editorController];
-        
-        [self.tabView addTab:tab];
-        
-        [editorController startEditingFile:file];
-        [self.tabView titlesChanged];
-    }
-    
-    [self.tabView.currentTab.currentEditor jumpToDefinition:def];
 }
 
 - (IBAction) jumpToDefinition:(id)sender {
@@ -146,6 +170,53 @@
                   }];
 }
 
+- (void) openDefinition:(LVDefinition*)def inFile:(LVFile*)file {
+    if (![self switchToOpenFile:file]) {
+        [self editFileInNewTab:file];
+    }
+    
+    [self.tabView.currentTab.currentEditor jumpToDefinition:def];
+}
+
+
+
+
+
+
+
+
+
+// low level
+
+- (void) editFileInNewTab:(LVFile*)file {
+    LVEditor* editorController = [[LVEditor alloc] init];
+    
+    LVTab* tab = [[LVTab alloc] init];
+    [tab startWithEditor: editorController];
+    
+    [self.tabView addTab:tab];
+    
+    [editorController startEditingFile:file];
+    [self.tabView updateTabTitles];
+}
+
+- (void) editFile:(LVFile*)file inDirection:(LVSplitDirection)dir {
+    LVEditor* editorController = [[LVEditor alloc] init];
+    
+    [self.tabView.currentTab addEditor:editorController
+                           inDirection:dir];
+    
+    [editorController startEditingFile:file];
+    [self.tabView updateTabTitles];
+}
+
+- (void) editFileInCurrentEditor:(LVFile*)file {
+    if (![self switchToOpenFile:file]) {
+        [self.tabView.currentTab.currentEditor startEditingFile:file];
+        [self.tabView updateTabTitles];
+    }
+}
+
 - (BOOL) switchToOpenFile:(LVFile*)file {
     for (LVTab* tab in self.tabView.tabs) {
         for (LVEditor* editor in [tab editors]) {
@@ -159,55 +230,6 @@
     }
     
     return NO;
-}
-
-- (void) replaceCurrentEditorWithFile:(LVFile*)file {
-    // TODO: dont do it if it's unsaved!
-    
-    if (![self switchToOpenFile:file]) {
-        [self.tabView.currentTab.currentEditor startEditingFile:file];
-        [self.tabView titlesChanged];
-    }
-}
-
-- (IBAction) closeProjectTab:(id)sender {
-    if ([self.tabView.tabs count] == 1) {
-        [self closeProjectWindow:sender];
-    }
-    else {
-        // TODO: check for unsaved files in tab
-        [self.tabView closeCurrentTab];
-    }
-}
-
-- (IBAction) openProjectTab:(id)sender {
-    LVFile* file = [self.project openNewFile];
-    LVEditor* editorController = [[LVEditor alloc] init];
-    
-    LVTab* tab = [[LVTab alloc] init];
-    [tab startWithEditor: editorController];
-    
-    [self.tabView addTab:tab];
-    
-    [editorController startEditingFile:file];
-    [self.tabView titlesChanged];
-}
-
-- (IBAction) closeProjectWindow:(id)sender {
-    // TODO: check for unsaved files in all tabs and their splits
-    
-    [[self window] performClose:sender];
-}
-
-- (IBAction) addSplitToEast:(id)sender {
-    LVFile* file = [self.project openNewFile];
-    LVEditor* editorController = [[LVEditor alloc] init];
-    
-    [self.tabView.currentTab addEditor:editorController
-                           inDirection:LVSplitDirectionEast];
-    
-    [editorController startEditingFile:file];
-    [self.tabView titlesChanged];
 }
 
 @end

@@ -22,6 +22,6 @@
 
 - (void) selectTab:(LVTab*)tab;
 
-- (void) titlesChanged;
+- (void) updateTabTitles;
 
 @end

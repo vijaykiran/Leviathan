@@ -88,6 +88,9 @@
                                     <action selector="jumpToDefinition:" target="-1" id="B4n-hb-kzd"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Jump to Definition At Point" keyEquivalent="e" id="Adx-cO-jdD">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="79">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
