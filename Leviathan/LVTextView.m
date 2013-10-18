@@ -90,14 +90,10 @@
     [self indentCurrentBody];
 }
 
-
-
-
 - (void) insertText:(id)insertString {
     [super insertText:insertString];
     [self indentCurrentBody];
 }
-
 
 - (void) deleteWordBackward:(id)sender {
     [super deleteWordBackward:sender];
