@@ -455,7 +455,14 @@
                 </menuItem>
             </items>
         </menu>
-        <customObject id="494" customClass="LVAppDelegate"/>
+        <customObject id="494" customClass="LVAppDelegate">
+            <connections>
+                <outlet property="closeItem" destination="ygs-ZB-Sl7" id="syF-Me-sTr"/>
+                <outlet property="closeSplitItem" destination="XxB-As-YfA" id="CtP-Ak-r8z"/>
+                <outlet property="closeTabItem" destination="tzN-Tt-urc" id="MPi-01-aqV"/>
+                <outlet property="closeWindowItem" destination="73" id="i1b-IQ-3yc"/>
+            </connections>
+        </customObject>
         <customObject id="420" customClass="NSFontManager"/>
     </objects>
 </document>

@@ -11,6 +11,15 @@
 #import "LVPreferencesWindowController.h"
 #import "LVPreferences.h"
 
+@interface LVAppDelegate ()
+
+@property IBOutlet NSMenuItem* closeWindowItem;
+@property IBOutlet NSMenuItem* closeTabItem;
+@property IBOutlet NSMenuItem* closeSplitItem;
+@property IBOutlet NSMenuItem* closeItem;
+
+@end
+
 @implementation LVAppDelegate
 
 - (NSDictionary*) defaultDefaults {
@@ -21,6 +30,11 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultDefaults]];
     [[NSFontManager sharedFontManager] setTarget:self];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(windowDidBecomeKey:)
+                                                 name:NSWindowDidBecomeKeyNotification
+                                               object:nil];
     
     self.projectWindowControllers = [NSMutableArray array];
     
@@ -50,6 +64,24 @@
 
 - (void)changeFont:(id)sender {
     [LVPreferences setUserFont: [sender convertFont:[LVPreferences userFont]]];
+}
+
+- (void) windowDidBecomeKey:(NSNotification*)note {
+    NSWindow* window = [note object];
+    
+    BOOL isProjectWindow = [[window windowController] isKindOfClass:[LVProjectWindowController self]];
+    if (isProjectWindow) {
+        [self.closeItem setKeyEquivalent:@""];
+        [self.closeSplitItem setKeyEquivalent:@"w"];
+        [self.closeTabItem setKeyEquivalent:@"w"];
+        [self.closeWindowItem setKeyEquivalent:@"W"];
+    }
+    else {
+        [self.closeItem setKeyEquivalent:@"w"];
+        [self.closeSplitItem setKeyEquivalent:@""];
+        [self.closeTabItem setKeyEquivalent:@""];
+        [self.closeWindowItem setKeyEquivalent:@""];
+    }
 }
 
 @end
