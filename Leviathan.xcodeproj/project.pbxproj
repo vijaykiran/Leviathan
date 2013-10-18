@@ -70,6 +70,7 @@
 		94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79460181125F1003307F4 /* NSString+BMOEDN.m */; };
 		94D79477181125F1003307F4 /* NSUUID+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */; };
 		94D7947A18112CC0003307F4 /* LVHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7947918112CC0003307F4 /* LVHighlighter.m */; };
+		94EF5CF81811E744004836A0 /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EF5CF71811E744004836A0 /* LVTheme.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -201,6 +202,8 @@
 		94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+BMOEDN.m"; sourceTree = "<group>"; };
 		94D7947818112CC0003307F4 /* LVHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVHighlighter.h; sourceTree = "<group>"; };
 		94D7947918112CC0003307F4 /* LVHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVHighlighter.m; sourceTree = "<group>"; };
+		94EF5CF61811E744004836A0 /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
+		94EF5CF71811E744004836A0 /* LVTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTheme.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -391,6 +394,8 @@
 				94855A0C1811048E00220186 /* default_leviathan_theme.clj */,
 				94D794321811226D003307F4 /* LVThemeManager.h */,
 				94D794331811226D003307F4 /* LVThemeManager.m */,
+				94EF5CF61811E744004836A0 /* LVTheme.h */,
+				94EF5CF71811E744004836A0 /* LVTheme.m */,
 				94D7947818112CC0003307F4 /* LVHighlighter.h */,
 				94D7947918112CC0003307F4 /* LVHighlighter.m */,
 			);
@@ -632,6 +637,7 @@
 				9490D84118107FD6006ECA5E /* SDChoiceTableView.m in Sources */,
 				9490D82218105B2D006ECA5E /* LVEditor.m in Sources */,
 				94D79466181125F1003307F4 /* BMOEDNKeyword.m in Sources */,
+				94EF5CF81811E744004836A0 /* LVTheme.m in Sources */,
 				9493D97118108BC80080E3C0 /* LVColl.m in Sources */,
 				94D79470181125F1003307F4 /* BMOEDNWriterState.m in Sources */,
 				9490D81D181054EE006ECA5E /* LVTab.m in Sources */,

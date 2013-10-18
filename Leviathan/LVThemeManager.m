@@ -11,9 +11,6 @@
 #import "edn-objc/edn-objc.h"
 
 @interface LVThemeManager ()
-
-@property NSMutableArray* themes;
-
 @end
 
 @implementation LVThemeManager
@@ -23,7 +20,6 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedThemeManager = [[LVThemeManager alloc] init];
-        sharedThemeManager.themes = [NSMutableArray array];
     });
     return sharedThemeManager;
 }
@@ -75,16 +71,15 @@
     NSData* data = [NSData dataWithContentsOfURL:[self currentThemeFile]];
     
     NSError* __autoreleasing error;
-    NSDictionary* theme = [BMOEDNSerialization ednObjectWithData:data options:0 error:&error];
+    NSDictionary* themeData = [BMOEDNSerialization ednObjectWithData:data options:0 error:&error];
     
-    [self.themes addObject:theme];
-    self.currentTheme = theme;
-    
-    if (theme == nil) {
+    if (themeData == nil) {
         [NSApp presentError:error];
         [NSApp terminate:self];
         return;
     }
+    
+    self.currentTheme = [LVTheme themeFromData:themeData];;
 }
 
 @end

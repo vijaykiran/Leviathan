@@ -41,20 +41,20 @@
     self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
     self.font = [LVPreferences userFont];
-    self.backgroundColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleBackgroundColor]);
-    self.insertionPointColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleCursorColor]);
     
-    self.textColor = LVColorFromHex([[[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleForSymbol] objectForKey:@"Color"]);
+    self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
+    self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
+    
+    self.textColor = [LVThemeManager sharedThemeManager].currentTheme.symbol.color;
     
     {
-        NSDictionary* style = [[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleForSelection];
         NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
         
-        if ([style objectForKey:@"ForegroundColor"])
-            selectionAttrs[NSForegroundColorAttributeName] = LVColorFromHex([style objectForKey:@"ForegroundColor"]);
+        if ([LVThemeManager sharedThemeManager].currentTheme.selection.foregroundColor)
+            selectionAttrs[NSForegroundColorAttributeName] = [LVThemeManager sharedThemeManager].currentTheme.selection.foregroundColor;
         
-        if ([style objectForKey:@"BackgroundColor"])
-            selectionAttrs[NSBackgroundColorAttributeName] = LVColorFromHex([style objectForKey:@"BackgroundColor"]);
+        if ([LVThemeManager sharedThemeManager].currentTheme.selection.backgroundColor)
+            selectionAttrs[NSBackgroundColorAttributeName] = [LVThemeManager sharedThemeManager].currentTheme.selection.backgroundColor;
         
         self.selectedTextAttributes = selectionAttrs;
     }
@@ -94,10 +94,10 @@
 }
 
 - (void) insertText:(id)insertString {
-//    [[self textStorage] beginEditing];
-    [super insertText:insertString];
-    [self indentCurrentBody];
-//    [[self textStorage] endEditing];
+    @autoreleasepool {
+        [super insertText:insertString];
+        [self indentCurrentBody];
+    }
 }
 
 - (void) deleteWordBackward:(id)sender {
@@ -155,7 +155,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 
 - (void) indentCurrentBody {
 //    return;
-//    NSLog(@"indenting body");
+    NSLog(@"indenting");
     
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;

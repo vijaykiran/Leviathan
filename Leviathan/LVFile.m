@@ -70,6 +70,7 @@
 }
 
 - (void) highlight {
+//    NSLog(@"highlight called");
     NSString* rawString = [self.textStorage string];
     
     [self.textStorage beginEditing];
@@ -79,7 +80,10 @@
     
     if (error) {
         self.topLevelElement = nil;
-        LVApplyStyle(self.textStorage, LVStyleForSyntaxError, error.badRange, 1);
+        
+        [[LVThemeManager sharedThemeManager].currentTheme.syntaxerror highlightIn:self.textStorage
+                                                                            range:error.badRange
+                                                                            depth:1];
     }
     else {
         [LVHighlighter highlight:self.topLevelElement
