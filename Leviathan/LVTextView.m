@@ -108,7 +108,7 @@ NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
     NSString* relevantString = [wholeString substringWithRange:highestParentColl.fullyEnclosedRange];
     
     NSRange currentSeekRange = NSMakeRange(0, highestParentColl.fullyEnclosedRange.length);
-    LVColl* lastKnownParent = highestParentColl.parent;
+//    LVColl* lastKnownParent = highestParentColl.parent; // TODO: don't think i need this anymore now that im examining from the beginning of the line instead
     
     while (currentSeekRange.length > 0) {
         NSUInteger nextNewlinePosition = [relevantString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
@@ -126,12 +126,37 @@ NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
                                                                           options:0
                                                                             range:currentLineRange].location;
         
-        NSLog(@"%ld", firstNonSpaceCharPos);
+//        NSLog(@"%ld", firstNonSpaceCharPos);
+        
+        NSUInteger currentLineBeginningAbsolutePos = currentLineRange.location + highestParentColl.fullyEnclosedRange.location;
         
         NSUInteger childIndexOfFirstElementOnLine; // this will be helpful
-        LVColl* collParentForEndOfLine = [self.file.topLevelElement deepestCollAtPos:currentLineRange.location childsIndex:&childIndexOfFirstElementOnLine];
+        LVColl* collParentForBeginningOfLine = [self.file.topLevelElement deepestCollAtPos:currentLineBeginningAbsolutePos childsIndex:&childIndexOfFirstElementOnLine];
         
-        NSLog(@"[%@]", [wholeString substringWithRange:collParentForEndOfLine.fullyEnclosedRange]);
+//        NSLog(@"%d", collParentForBeginningOfLine.collType);
+        
+        NSUInteger expectedStartSpaces;
+        
+        if (collParentForBeginningOfLine.collType == LVCollTypeTopLevel) {
+            expectedStartSpaces = 0;
+        }
+        else {
+            NSUInteger indent;
+            if (collParentForBeginningOfLine.collType == LVCollTypeList) {
+                indent = 2;
+            }
+            else {
+                indent = 1;
+            }
+            
+            NSUInteger openingTokenRelativePos = (collParentForBeginningOfLine.openingToken.range.location - highestParentColl.fullyEnclosedRange.location);
+            
+            // TODO: make that variable *actually* relative somehow.
+            
+            NSLog(@"open = %ld", openingTokenRelativePos);
+        }
+        
+//        NSLog(@"[%@]", [wholeString substringWithRange:collParentForEndOfLine.fullyEnclosedRange]);
         
         
         // - figure out the proper number of spaces between currentLineRange's start and it's first non-whitespace char
