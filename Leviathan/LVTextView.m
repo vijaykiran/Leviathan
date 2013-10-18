@@ -93,10 +93,17 @@
 
 
 
-//- (void) insertText:(id)insertString {
-//    [super insertText:insertString];
-//    [self indentCurrentBody];
-//}
+- (void) insertText:(id)insertString {
+    [super insertText:insertString];
+    [self indentCurrentBody];
+}
+
+
+- (void) deleteWordBackward:(id)sender {
+    [super deleteWordBackward:sender];
+    [self indentCurrentBody];
+}
+
 
 
 NSUInteger LVFirstNewlineBefore(NSString* str, NSUInteger pos) {
@@ -123,6 +130,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 
 - (void) indentCurrentBody {
 //    return;
+//    NSLog(@"indenting body");
     
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;

@@ -61,7 +61,6 @@
 
 - (void)textDidChange:(NSNotification *)notification {
     [self.file highlight];
-//    [self.textView indentCurrentBody];
 }
 
 - (IBAction) saveDocument:(id)sender {

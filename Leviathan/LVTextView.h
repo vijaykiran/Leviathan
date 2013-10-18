@@ -24,6 +24,4 @@
 
 @property (weak) LVFile* file;
 
-- (void) indentCurrentBody;
-
 @end
