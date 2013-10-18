@@ -68,7 +68,7 @@
     LVColl* coll;
     
     if (isDef) {
-        SDDefinition* def = [[SDDefinition alloc] init];
+        LVDefinition* def = [[LVDefinition alloc] init];
         
         def.defName = defName;
         def.defType = defType;

@@ -24,6 +24,4 @@
 
 @property NSRange fullyEnclosedRange;
 
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness;
-
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "LVToken.h"
-#import "SDElement.h"
+#import "LVElement.h"
 
 typedef enum __LVCollType {
     LVCollTypeTopLevel,
@@ -33,7 +33,7 @@ typedef enum __LVCollType {
 
 
 
-@interface SDDefinition : LVColl
+@interface LVDefinition : LVColl
 
 @property LVAtom* defType;
 @property LVAtom* defName;

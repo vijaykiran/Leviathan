@@ -10,7 +10,7 @@
 
 #import "LVToken.h"
 
-#import "SDElement.h"
+#import "LVElement.h"
 #import "LVColl.h"
 #import "LVAtom.h"
 #import "LVParserError.h"

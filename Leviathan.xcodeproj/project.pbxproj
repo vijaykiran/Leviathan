@@ -37,7 +37,6 @@
 		9490D82318105B2D006ECA5E /* Editor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D82118105B2D006ECA5E /* Editor.xib */; };
 		9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D82418105EBB006ECA5E /* QuartzCore.framework */; };
 		9490D82D1810781D006ECA5E /* LVTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D82C1810781D006ECA5E /* LVTextView.m */; };
-		9490D83118107DCC006ECA5E /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83018107DCC006ECA5E /* LVTheme.m */; };
 		9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83418107FD6006ECA5E /* SDFuzzyMatcher.m */; };
 		9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D83518107FD6006ECA5E /* SDFuzzyMatcherWindow.xib */; };
 		9490D84018107FD6006ECA5E /* SDFuzzyMatcherWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83718107FD6006ECA5E /* SDFuzzyMatcherWindowController.m */; };
@@ -70,6 +69,7 @@
 		94D79475181125F1003307F4 /* NSObject+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7945E181125F1003307F4 /* NSObject+BMOEDN.m */; };
 		94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79460181125F1003307F4 /* NSString+BMOEDN.m */; };
 		94D79477181125F1003307F4 /* NSUUID+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */; };
+		94D7947A18112CC0003307F4 /* LVHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7947918112CC0003307F4 /* LVHighlighter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,8 +132,6 @@
 		9490D82418105EBB006ECA5E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9490D82B1810781D006ECA5E /* LVTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTextView.h; sourceTree = "<group>"; };
 		9490D82C1810781D006ECA5E /* LVTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTextView.m; sourceTree = "<group>"; };
-		9490D82F18107DCC006ECA5E /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
-		9490D83018107DCC006ECA5E /* LVTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTheme.m; sourceTree = "<group>"; };
 		9490D83318107FD6006ECA5E /* SDFuzzyMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFuzzyMatcher.h; sourceTree = "<group>"; };
 		9490D83418107FD6006ECA5E /* SDFuzzyMatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFuzzyMatcher.m; sourceTree = "<group>"; };
 		9490D83518107FD6006ECA5E /* SDFuzzyMatcherWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SDFuzzyMatcherWindow.xib; sourceTree = "<group>"; };
@@ -149,7 +147,7 @@
 		9493D96718108BC80080E3C0 /* LVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVParser.m; sourceTree = "<group>"; };
 		9493D96818108BC80080E3C0 /* LVToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVToken.h; sourceTree = "<group>"; };
 		9493D96918108BC80080E3C0 /* LVToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVToken.m; sourceTree = "<group>"; };
-		9493D96A18108BC80080E3C0 /* SDElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDElement.h; sourceTree = "<group>"; };
+		9493D96A18108BC80080E3C0 /* LVElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVElement.h; sourceTree = "<group>"; };
 		9493D96B18108BC80080E3C0 /* LVColl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVColl.h; sourceTree = "<group>"; };
 		9493D96C18108BC80080E3C0 /* LVColl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVColl.m; sourceTree = "<group>"; };
 		9493D96D18108BC80080E3C0 /* LVAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVAtom.h; sourceTree = "<group>"; };
@@ -201,6 +199,8 @@
 		94D79460181125F1003307F4 /* NSString+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BMOEDN.m"; sourceTree = "<group>"; };
 		94D79461181125F1003307F4 /* NSUUID+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+BMOEDN.h"; sourceTree = "<group>"; };
 		94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+BMOEDN.m"; sourceTree = "<group>"; };
+		94D7947818112CC0003307F4 /* LVHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVHighlighter.h; sourceTree = "<group>"; };
+		94D7947918112CC0003307F4 /* LVHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVHighlighter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -391,8 +391,8 @@
 				94855A0C1811048E00220186 /* default_leviathan_theme.clj */,
 				94D794321811226D003307F4 /* LVThemeManager.h */,
 				94D794331811226D003307F4 /* LVThemeManager.m */,
-				9490D82F18107DCC006ECA5E /* LVTheme.h */,
-				9490D83018107DCC006ECA5E /* LVTheme.m */,
+				94D7947818112CC0003307F4 /* LVHighlighter.h */,
+				94D7947918112CC0003307F4 /* LVHighlighter.m */,
 			);
 			name = Theme;
 			sourceTree = "<group>";
@@ -422,7 +422,7 @@
 				9493D96718108BC80080E3C0 /* LVParser.m */,
 				9493D96818108BC80080E3C0 /* LVToken.h */,
 				9493D96918108BC80080E3C0 /* LVToken.m */,
-				9493D96A18108BC80080E3C0 /* SDElement.h */,
+				9493D96A18108BC80080E3C0 /* LVElement.h */,
 				9493D96B18108BC80080E3C0 /* LVColl.h */,
 				9493D96C18108BC80080E3C0 /* LVColl.m */,
 				9493D96D18108BC80080E3C0 /* LVAtom.h */,
@@ -608,6 +608,7 @@
 				94D79468181125F1003307F4 /* BMOEDNReader.m in Sources */,
 				94D79464181125F1003307F4 /* BMOEDNCoder.m in Sources */,
 				94D7946B181125F1003307F4 /* BMOEDNRoot.m in Sources */,
+				94D7947A18112CC0003307F4 /* LVHighlighter.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
 				94D7946E181125F1003307F4 /* BMOEDNTaggedElement.m in Sources */,
 				94D79469181125F1003307F4 /* BMOEDNReaderState.m in Sources */,
@@ -624,7 +625,6 @@
 				94D7946C181125F1003307F4 /* BMOEDNSerialization.m in Sources */,
 				9490D84318107FD6006ECA5E /* NSString+Score.m in Sources */,
 				9490D80D18104E81006ECA5E /* LVProject.m in Sources */,
-				9490D83118107DCC006ECA5E /* LVTheme.m in Sources */,
 				94D7946D181125F1003307F4 /* BMOEDNSymbol.m in Sources */,
 				94D79463181125F1003307F4 /* BMOEDNCharacter.m in Sources */,
 				94D79467181125F1003307F4 /* BMOEDNList.m in Sources */,

@@ -102,7 +102,7 @@
                   }];
 }
 
-- (void) openDefinition:(SDDefinition*)def inFile:(LVFile*)file {
+- (void) openDefinition:(LVDefinition*)def inFile:(LVFile*)file {
     if (![self switchToOpenFile:file]) {
         LVEditor* editorController = [[LVEditor alloc] init];
         
@@ -127,7 +127,7 @@
         NSMutableArray* defs = [NSMutableArray array];
         [[file topLevelElement] findDefinitions:defs];
         
-        for (SDDefinition* def in defs) {
+        for (LVDefinition* def in defs) {
             [defFiles addObject:file];
             [defDefs addObject:def];
             [readableNames addObject:[NSString stringWithFormat:@"%@ %@", def.defType.token.val, def.defName.token.val]];

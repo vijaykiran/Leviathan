@@ -10,7 +10,8 @@
 
 #import "LVParser.h"
 
-#import "LVTheme.h"
+#import "LVThemeManager.h"
+#import "LVHighlighter.h"
 
 #import "LVPreferences.h"
 
@@ -57,10 +58,12 @@
     
     if (error) {
         self.topLevelElement = nil;
-        SDApplyStyle(self.textStorage, SDThemeForSyntaxError, error.badRange, 1);
+        LVApplyStyle(self.textStorage, SDThemeForSyntaxError, error.badRange, 1);
     }
     else {
-        [self.topLevelElement highlightIn:self.textStorage atLevel:0];
+        [LVHighlighter highlight:self.topLevelElement
+                              in:self.textStorage
+                         atLevel:0];
     }
     
     [self.textStorage endEditing];

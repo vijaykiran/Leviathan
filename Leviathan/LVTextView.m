@@ -8,7 +8,8 @@
 
 #import "LVTextView.h"
 
-#import "LVTheme.h"
+#import "LVThemeManager.h"
+#import "LVHighlighter.h"
 #import "LVPreferences.h"
 
 @implementation LVTextView
@@ -39,18 +40,18 @@
     self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
     self.font = [LVPreferences userFont];
-    self.backgroundColor = SDColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:SDThemeBackgroundColor]);
-    self.insertionPointColor = SDColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:SDThemeCursorColor]);
+    self.backgroundColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:SDThemeBackgroundColor]);
+    self.insertionPointColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:SDThemeCursorColor]);
     
     {
         NSDictionary* style = [[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:@"selection_style"];
         NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
         
         if ([style objectForKey:@"ForegroundColor"])
-            selectionAttrs[NSForegroundColorAttributeName] = SDColorFromHex([style objectForKey:@"ForegroundColor"]);
+            selectionAttrs[NSForegroundColorAttributeName] = LVColorFromHex([style objectForKey:@"ForegroundColor"]);
         
         if ([style objectForKey:@"BackgroundColor"])
-            selectionAttrs[NSBackgroundColorAttributeName] = SDColorFromHex([style objectForKey:@"BackgroundColor"]);
+            selectionAttrs[NSBackgroundColorAttributeName] = LVColorFromHex([style objectForKey:@"BackgroundColor"]);
         
         self.selectedTextAttributes = selectionAttrs;
     }

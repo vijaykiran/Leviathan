@@ -8,7 +8,8 @@
 
 #import "LVColl.h"
 
-#import "LVTheme.h"
+#import "LVThemeManager.h"
+#import "LVHighlighter.h"
 
 #import "LVAtom.h"
 
@@ -23,17 +24,6 @@
 - (BOOL) isAtom { return NO; }
 - (LVColl*) asColl { return self; }
 - (LVAtom*) asAtom { return nil; }
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    if (self.collType != LVCollTypeTopLevel) {
-        SDApplyStyle(attrString, SDThemeForRainbowParens, self.openingToken.range, deepness);
-        SDApplyStyle(attrString, SDThemeForRainbowParens, self.closingToken.range, deepness);
-    }
-    
-    for (id<LVElement> child in self.childElements) {
-        [child highlightIn:attrString atLevel:deepness + 1];
-    }
-}
 
 - (LVColl*) deepestCollAtPos:(NSUInteger)pos childsIndex:(NSUInteger*)childsIndex {
     int i = 0;
@@ -72,7 +62,7 @@
 
 - (void) findDefinitions:(NSMutableArray*)defs {
     for (id<LVElement> child in self.childElements) {
-        if ([child isKindOfClass:[SDDefinition self]]) {
+        if ([child isKindOfClass:[LVDefinition self]]) {
             [defs addObject:child];
         }
         
@@ -84,13 +74,6 @@
 
 @end
 
-@implementation SDDefinition
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    [super highlightIn:attrString atLevel:deepness];
-    
-    SDApplyStyle(attrString, SDThemeForDef, self.defType.token.range, deepness);
-    SDApplyStyle(attrString, SDThemeForDefName, self.defName.token.range, deepness);
-}
+@implementation LVDefinition
 
 @end

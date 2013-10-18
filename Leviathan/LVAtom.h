@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SDElement.h"
+#import "LVElement.h"
 #import "LVToken.h"
 
 typedef enum __LVAtomType {

@@ -24,7 +24,7 @@
     return @"Editor";
 }
 
-- (void) jumpToDefinition:(SDDefinition*)def {
+- (void) jumpToDefinition:(LVDefinition*)def {
     self.textView.selectedRange = NSMakeRange(def.defName.token.range.location, 0);
     [self.textView scrollRangeToVisible:self.textView.selectedRange];
 }
