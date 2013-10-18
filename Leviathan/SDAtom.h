@@ -11,25 +11,28 @@
 #import "SDElement.h"
 #import "SDToken.h"
 
+typedef enum __LVAtomType {
+    LVAtomTypeSymbol,
+    LVAtomTypeKeyword,
+    LVAtomTypeString,
+    LVAtomTypeRegex,
+    LVAtomTypeNumber,
+    LVAtomTypeTrue,
+    LVAtomTypeFalse,
+    LVAtomTypeNil,
+    LVAtomTypeComment,
+    LVAtomTypeTypeOp,
+    LVAtomTypeQuote,
+    LVAtomTypeUnquote,
+    LVAtomTypeSyntaxQuote,
+    LVAtomTypeSplice,
+} LVAtomType;
+
 @interface SDAtom : NSObject <SDElement>
 
 @property SDToken* token;
-+ (SDAtom*) with:(SDToken*)tok;
+@property LVAtomType atomType;
+
++ (SDAtom*) with:(SDToken*)tok of:(LVAtomType)atomType;
 
 @end
-
-
-@interface SDAtomSymbol : SDAtom @end
-@interface SDAtomKeyword : SDAtom @end
-@interface SDAtomString : SDAtom @end
-@interface SDAtomRegex : SDAtom @end
-@interface SDAtomNumber : SDAtom @end
-@interface SDAtomTrue : SDAtom @end
-@interface SDAtomFalse : SDAtom @end
-@interface SDAtomNil : SDAtom @end
-@interface SDAtomComment : SDAtom @end
-@interface SDAtomTypeOp : SDAtom @end
-@interface SDAtomQuote : SDAtom @end
-@interface SDAtomUnquote : SDAtom @end
-@interface SDAtomSyntaxQuote : SDAtom @end
-@interface SDAtomSplice : SDAtom @end

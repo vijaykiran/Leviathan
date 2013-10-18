@@ -55,7 +55,7 @@
                     for (NSUInteger i = 1; i < [children count]; i++) {
                         SDAtom* child = [children objectAtIndex:i];
                         
-                        if ([child isKindOfClass:[SDAtomSymbol self]]) {
+                        if (child.atomType == LVAtomTypeSymbol) {
                             defName = child;
                             break;
                         }
@@ -101,13 +101,13 @@
         *ended = i + 1;
         
         if ([token.val isEqualToString: @"true"])
-            return [SDAtomTrue with:token];
+            return [SDAtom with:token of:LVAtomTypeTrue];
         else if ([token.val isEqualToString: @"false"])
-            return [SDAtomFalse with:token];
+            return [SDAtom with:token of:LVAtomTypeFalse];
         else if ([token.val isEqualToString: @"nil"])
-            return [SDAtomNil with:token];
+            return [SDAtom with:token of:LVAtomTypeNil];
         else
-            return [SDAtomSymbol with:token];
+            return [SDAtom with:token of:LVAtomTypeSymbol];
     }
     else if (token.type == BW_TOK_READER_COMMENT) {
         id<SDElement> next = [self parseOne:tokens start:i + 1 ended:ended error:error];
@@ -120,47 +120,47 @@
         
         NSRange fullRange = NSUnionRange(token.range, [next fullyEnclosedRange]);
         SDToken* tok = [SDToken token:BW_TOK_COMMENT at:fullRange.location len:fullRange.length];
-        return [SDAtomComment with:tok];
+        return [SDAtom with:tok of:LVAtomTypeComment];
     }
     else if (token.type == BW_TOK_NUMBER) {
         *ended = i + 1;
-        return [SDAtomNumber with:token];
+        return [SDAtom with:token of:LVAtomTypeNumber];
     }
     else if (token.type == BW_TOK_TYPEOP) {
         *ended = i + 1;
-        return [SDAtomTypeOp with:token];
+        return [SDAtom with:token of:LVAtomTypeTypeOp];
     }
     else if (token.type == BW_TOK_QUOTE) {
         *ended = i + 1;
-        return [SDAtomQuote with:token];
+        return [SDAtom with:token of:LVAtomTypeQuote];
     }
     else if (token.type == BW_TOK_UNQUOTE) {
         *ended = i + 1;
-        return [SDAtomUnquote with:token];
+        return [SDAtom with:token of:LVAtomTypeUnquote];
     }
     else if (token.type == BW_TOK_SYNTAXQUOTE) {
         *ended = i + 1;
-        return [SDAtomSyntaxQuote with:token];
+        return [SDAtom with:token of:LVAtomTypeSyntaxQuote];
     }
     else if (token.type == BW_TOK_SPLICE) {
         *ended = i + 1;
-        return [SDAtomSplice with:token];
+        return [SDAtom with:token of:LVAtomTypeSplice];
     }
     else if (token.type == BW_TOK_STRING) {
         *ended = i + 1;
-        return [SDAtomString with:token];
+        return [SDAtom with:token of:LVAtomTypeString];
     }
     else if (token.type == BW_TOK_REGEX) {
         *ended = i + 1;
-        return [SDAtomRegex with:token];
+        return [SDAtom with:token of:LVAtomTypeRegex];
     }
     else if (token.type == BW_TOK_COMMENT) {
         *ended = i + 1;
-        return [SDAtomComment with:token];
+        return [SDAtom with:token of:LVAtomTypeComment];
     }
     else if (token.type == BW_TOK_KEYWORD) {
         *ended = i + 1;
-        return [SDAtomKeyword with:token];
+        return [SDAtom with:token of:LVAtomTypeKeyword];
     }
     else if (token.type == BW_TOK_FILE_END) {
         NSLog(@"reached end");

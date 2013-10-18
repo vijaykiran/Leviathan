@@ -23,128 +23,31 @@
 - (SDColl*) asColl { return nil; }
 - (SDAtom*) asAtom { return self; }
 
-+ (SDAtom*) with:(SDToken*)tok {
++ (SDAtom*) with:(SDToken*)tok of:(LVAtomType)atomType {
     SDAtom* atom = [[self alloc] init];
     atom.token = tok;
+    atom.atomType = atomType;
     atom.fullyEnclosedRange = tok.range;
     return atom;
 }
 
 - (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-}
-
-@end
-
-
-
-@implementation SDAtomSymbol
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForSymbol, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomKeyword
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForKeyword, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomString
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForString, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomRegex
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForRegex, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomNumber
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForNumber, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomTrue
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForNumber, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomFalse
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForNumber, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomNil
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForNumber, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomComment
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForComment, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomTypeOp
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForTypeOp, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomQuote
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForQuote, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomUnquote
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForUnquote, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomSyntaxQuote
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForSyntaxQuote, self.token.range, deepness);
-}
-
-@end
-
-@implementation SDAtomSplice
-
-- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    SDApplyStyle(attrString, SDThemeForSplice, self.token.range, deepness);
+    switch (self.atomType) {
+        case LVAtomTypeSymbol: SDApplyStyle(attrString, SDThemeForSymbol, self.token.range, deepness); break;
+        case LVAtomTypeKeyword: SDApplyStyle(attrString, SDThemeForKeyword, self.token.range, deepness); break;
+        case LVAtomTypeString: SDApplyStyle(attrString, SDThemeForString, self.token.range, deepness); break;
+        case LVAtomTypeRegex: SDApplyStyle(attrString, SDThemeForRegex, self.token.range, deepness); break;
+        case LVAtomTypeNumber: SDApplyStyle(attrString, SDThemeForNumber, self.token.range, deepness); break;
+        case LVAtomTypeTrue: SDApplyStyle(attrString, SDThemeForNumber, self.token.range, deepness); break;
+        case LVAtomTypeFalse: SDApplyStyle(attrString, SDThemeForNumber, self.token.range, deepness); break;
+        case LVAtomTypeNil: SDApplyStyle(attrString, SDThemeForNumber, self.token.range, deepness); break;
+        case LVAtomTypeComment: SDApplyStyle(attrString, SDThemeForComment, self.token.range, deepness); break;
+        case LVAtomTypeTypeOp: SDApplyStyle(attrString, SDThemeForTypeOp, self.token.range, deepness); break;
+        case LVAtomTypeQuote: SDApplyStyle(attrString, SDThemeForQuote, self.token.range, deepness); break;
+        case LVAtomTypeUnquote: SDApplyStyle(attrString, SDThemeForUnquote, self.token.range, deepness); break;
+        case LVAtomTypeSyntaxQuote: SDApplyStyle(attrString, SDThemeForSyntaxQuote, self.token.range, deepness); break;
+        case LVAtomTypeSplice: SDApplyStyle(attrString, SDThemeForSplice, self.token.range, deepness); break;
+    }
 }
 
 @end
