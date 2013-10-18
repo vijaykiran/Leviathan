@@ -10,6 +10,8 @@
 
 #import "SDTheme.h"
 
+#import "SDAtom.h"
+
 @implementation SDColl
 
 @synthesize parent;
@@ -66,6 +68,17 @@
     
     *childsIndex = i;
     return self;
+}
+
+@end
+
+@implementation SDDefinition
+
+- (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
+    [super highlightIn:attrString atLevel:deepness];
+    
+    SDApplyStyle(attrString, SDThemeForDef, self.defType.token.range, deepness);
+    SDApplyStyle(attrString, SDThemeForDefName, self.defName.token.range, deepness);
 }
 
 @end

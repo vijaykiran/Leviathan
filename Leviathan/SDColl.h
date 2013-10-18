@@ -28,3 +28,12 @@ typedef enum __SDCollType {
 - (SDColl*) deepestCollAtPos:(NSUInteger)pos childsIndex:(NSUInteger*)childsIndex;
 
 @end
+
+
+
+@interface SDDefinition : SDColl
+
+@property SDAtom* defType;
+@property SDAtom* defName;
+
+@end

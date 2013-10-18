@@ -40,19 +40,6 @@
         i = *ended;
     }
     
-    SDColl* coll = [[SDColl alloc] init];
-    coll.collType = collType;
-    coll.openingToken = firstToken;
-    coll.closingToken = endToken;
-    coll.childElements = children;
-    coll.fullyEnclosedRange = NSUnionRange(coll.openingToken.range, coll.closingToken.range);
-    
-    NSUInteger idx = 0;
-    for (id<SDElement> child in coll.childElements) {
-        child.parent = coll;
-        child.idx = idx++;
-    }
-    
     BOOL isDef = NO;
     SDAtom* defType;
     SDAtom* defName;
@@ -78,8 +65,30 @@
         }
     }
     
+    SDColl* coll;
+    
     if (isDef) {
-//        NSLog(@"%@ %@", defType.token.val, defName.token.val);
+        SDDefinition* def = [[SDDefinition alloc] init];
+        
+        def.defName = defName;
+        def.defType = defType;
+        
+        coll = def;
+    }
+    else {
+        coll = [[SDColl alloc] init];
+    }
+    
+    coll.collType = collType;
+    coll.openingToken = firstToken;
+    coll.closingToken = endToken;
+    coll.childElements = children;
+    coll.fullyEnclosedRange = NSUnionRange(coll.openingToken.range, coll.closingToken.range);
+    
+    NSUInteger idx = 0;
+    for (id<SDElement> child in coll.childElements) {
+        child.parent = coll;
+        child.idx = idx++;
     }
     
     return coll;

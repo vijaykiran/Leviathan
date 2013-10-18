@@ -40,24 +40,7 @@
 @implementation SDAtomSymbol
 
 - (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    if ([self.token.val hasPrefix:@"def"]
-        && [self.parent isColl]
-        && self.parent.asColl.collType == SDCollTypeList
-        && self.idx == 0)
-    {
-        SDApplyStyle(attrString, SDThemeForDef, self.token.range, deepness);
-    }
-    else if (self.idx == 1
-             && self.parent.asColl.collType == SDCollTypeList
-             && [[self.parent.asColl.childElements objectAtIndex:0] isAtom]
-             && [[[self.parent.asColl.childElements objectAtIndex:0] asAtom] isKindOfClass: [SDAtomSymbol self]]
-             && [[[[[self.parent.asColl.childElements objectAtIndex:0] asAtom] token] val] hasPrefix: @"def"])
-    {
-        SDApplyStyle(attrString, SDThemeForDefName, self.token.range, deepness);
-    }
-    else {
-        SDApplyStyle(attrString, SDThemeForSymbol, self.token.range, deepness);
-    }
+    SDApplyStyle(attrString, SDThemeForSymbol, self.token.range, deepness);
 }
 
 @end
