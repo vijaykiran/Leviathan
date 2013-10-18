@@ -98,6 +98,10 @@ NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
     return NSMakeRange(r.location + len, r.length - len);
 }
 
+NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
+    return NSMakeRange(r.location - pos, r.length + pos);
+}
+
 - (void) indentCurrentBody {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
@@ -105,9 +109,26 @@ NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
     LVColl* highestParentColl = [currentColl highestParentColl];
     
     NSString* wholeString = [[self textStorage] string];
-    NSString* relevantString = [wholeString substringWithRange:highestParentColl.fullyEnclosedRange];
     
-    NSRange currentSeekRange = NSMakeRange(0, highestParentColl.fullyEnclosedRange.length);
+    NSRange relevantRange = highestParentColl.fullyEnclosedRange;
+    
+    NSUInteger firstNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+                                                                   options:NSBackwardsSearch
+                                                                     range:NSMakeRange(0, relevantRange.location)].location;
+    
+    NSLog(@"%ld", firstNewlinePosition);
+    
+    if (firstNewlinePosition == NSNotFound)
+        firstNewlinePosition = 0;
+    
+    NSLog(@"%@", NSStringFromRange(relevantRange));
+    relevantRange = LVExtendRangeToBeginningPos(relevantRange, firstNewlinePosition);
+    
+    NSLog(@"%@", NSStringFromRange(relevantRange));
+    
+    NSString* relevantString = [wholeString substringWithRange:relevantRange];
+    
+    NSRange currentSeekRange = relevantRange;
 //    LVColl* lastKnownParent = highestParentColl.parent; // TODO: don't think i need this anymore now that im examining from the beginning of the line instead
     
     while (currentSeekRange.length > 0) {
@@ -128,7 +149,7 @@ NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
         
 //        NSLog(@"%ld", firstNonSpaceCharPos);
         
-        NSUInteger currentLineBeginningAbsolutePos = currentLineRange.location + highestParentColl.fullyEnclosedRange.location;
+        NSUInteger currentLineBeginningAbsolutePos = currentLineRange.location + relevantRange.location;
         
         NSUInteger childIndexOfFirstElementOnLine; // this will be helpful
         LVColl* collParentForBeginningOfLine = [self.file.topLevelElement deepestCollAtPos:currentLineBeginningAbsolutePos childsIndex:&childIndexOfFirstElementOnLine];
@@ -149,10 +170,10 @@ NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
                 indent = 1;
             }
             
-            NSUInteger openingTokenRelativePos = (collParentForBeginningOfLine.openingToken.range.location - highestParentColl.fullyEnclosedRange.location);
+            NSUInteger openingTokenRelativePos = (collParentForBeginningOfLine.openingToken.range.location - relevantRange.location);
             
-            // TODO: make that variable *actually* relative somehow.
-            
+            NSLog(@"a = %ld", collParentForBeginningOfLine.openingToken.range.location);
+            NSLog(@"b = %ld", relevantRange.location);
             NSLog(@"open = %ld", openingTokenRelativePos);
         }
         
