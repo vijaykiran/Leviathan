@@ -99,7 +99,7 @@ NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
 }
 
 NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
-    return NSMakeRange(r.location - pos, r.length + pos);
+    return NSMakeRange(pos, r.length + (r.location - pos));
 }
 
 - (void) indentCurrentBody {
@@ -110,6 +110,63 @@ NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
     
     NSString* wholeString = [[self textStorage] string];
     
+    NSRange relevantRange = highestParentColl.fullyEnclosedRange;
+    
+    NSUInteger firstNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+                                                                   options:NSBackwardsSearch
+                                                                     range:NSMakeRange(0, relevantRange.location)].location;
+    
+    if (firstNewlinePosition == NSNotFound)
+        firstNewlinePosition = 0;
+    else
+        firstNewlinePosition++;
+    
+    relevantRange = LVExtendRangeToBeginningPos(relevantRange, firstNewlinePosition);
+    
+    NSString* relevantString = [wholeString substringWithRange:relevantRange];
+    NSLog(@"[%@]", relevantString);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    return;
+    {
     NSRange relevantRange = highestParentColl.fullyEnclosedRange;
     
     NSUInteger firstNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
@@ -189,7 +246,7 @@ NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
     }
     
     NSLog(@"done with loop");
-    
+    }
 //    NSLog(@"%@", NSStringFromRange(newlineRange));
 }
 

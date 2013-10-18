@@ -78,7 +78,10 @@
     while (coll.parent.parent)
         coll = coll.parent;
     
-    return coll;
+    if (coll.collType == LVCollTypeTopLevel)
+        return nil;
+    else
+        return coll;
 }
 
 @end
