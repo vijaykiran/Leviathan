@@ -15,6 +15,7 @@ typedef enum __SDParseErrorType {
     SDParseErrorTypeUnfinishedDispatch,
     SDParseErrorTypeUnclosedString,
     SDParseErrorTypeUnclosedRegex,
+    SDParseErrorTypeUnexpectedEnd,
 } SDParseErrorType;
 
 

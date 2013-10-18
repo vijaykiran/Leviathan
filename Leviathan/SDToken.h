@@ -28,6 +28,7 @@ typedef enum __BWTokenType {
     BW_TOK_SPLICE,
     BW_TOK_TYPEOP,
     BW_TOK_COMMENT,
+    BW_TOK_READER_COMMENT,
     BW_TOK_FILE_BEGIN,
     BW_TOK_FILE_END,
 } BWTokenType;

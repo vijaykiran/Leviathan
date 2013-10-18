@@ -70,6 +70,19 @@
         else
             return [SDAtomSymbol with:token];
     }
+    else if (token.type == BW_TOK_READER_COMMENT) {
+        id<SDElement> next = [self parseOne:tokens start:i + 1 ended:ended error:error];
+        if (*error) {
+            if ((*error).errorType == SDParseErrorTypeUnexpectedEnd) {
+                *error = [SDParseError kind:SDParseErrorTypeUnopenedCloser with:token.range];
+            }
+            return nil;
+        }
+        
+        NSRange fullRange = NSUnionRange(token.range, [next fullyEnclosedRange]);
+        SDToken* tok = [SDToken token:BW_TOK_COMMENT at:fullRange.location len:fullRange.length];
+        return [SDAtomComment with:tok];
+    }
     else if (token.type == BW_TOK_NUMBER) {
         *ended = i + 1;
         return [SDAtomNumber with:token];
@@ -109,6 +122,10 @@
     else if (token.type == BW_TOK_KEYWORD) {
         *ended = i + 1;
         return [SDAtomKeyword with:token];
+    }
+    else if (token.type == BW_TOK_FILE_END) {
+        *error = [SDParseError kind:SDParseErrorTypeUnexpectedEnd with:NSMakeRange(i - 1, 0)];
+        return nil;
     }
     else if (token.type == BW_TOK_RPAREN || token.type == BW_TOK_RBRACKET || token.type == BW_TOK_RBRACE) {
         *error = [SDParseError kind:SDParseErrorTypeUnopenedCloser with:token.range];

@@ -83,7 +83,7 @@
     
     static NSCharacterSet* endAtomCharSet;
     if (!endAtomCharSet)
-        endAtomCharSet = [NSCharacterSet characterSetWithCharactersInString:@"()[]{}, \r\n\t;"];
+        endAtomCharSet = [NSCharacterSet characterSetWithCharactersInString:@"()[]{}, \"\r\n\t;"];
     
     NSUInteger i = 0;
     while (i < [raw length]) {
@@ -118,29 +118,40 @@
                 }
                 
                 if ([raw characterAtIndex:i+1] == '"') {
-                    i += 2;
-                    NSUInteger loc = i;
+                    NSUInteger start = i;
+                    NSUInteger current = start + 2;
                     
                     while (true) {
-                        if (loc == [raw length])
-                            break;
+                        if (current == [raw length]) {
+                            *error = [SDParseError kind:SDParseErrorTypeUnclosedString with:NSMakeRange(start, (current - start))];
+                            return nil;
+                        }
                         
-                        unichar next = [raw characterAtIndex:loc];
+                        unichar nextChar = [raw characterAtIndex:current];
                         
-                        if (next == '\\') {
-                            loc += 2;
+                        if (nextChar == '\\') {
+                            if (current + 1 == [raw length]) {
+                                *error = [SDParseError kind:SDParseErrorTypeUnclosedString with:NSMakeRange(start, (current - start) + 1)];
+                                return nil;
+                            }
+                            current += 2;
                             continue;
                         }
                         
-                        if (next == '"')
+                        if (nextChar == '"')
                             break;
                         
-                        loc++;
+                        current++;
                     }
                     
-                    [tokens addObject: [SDToken regex:[raw substringWithRange:NSMakeRange(i - 2, loc - i + 3)] at:i - 2]]; // janky
-                    i = loc;
+                    i = current + 1;
                     
+                    [tokens addObject: [SDToken regex:[raw substringWithRange:NSMakeRange(start, i - start)] at:start]];
+                    break;
+                }
+                else if ([raw characterAtIndex:i+1] == '_') {
+                    [tokens addObject: [SDToken token:BW_TOK_READER_COMMENT at:i len:2]];
+                    i++;
                     break;
                 }
                 else {
@@ -148,7 +159,6 @@
                     return nil;
                 }
                 
-//                break;
             }
             case ' ': case '\t': case '\r': case '\n': break;
             case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
@@ -175,33 +185,35 @@
                 break;
             }
             case '"': {
-                i++;
-                NSUInteger loc = i;
+                NSUInteger start = i;
+                NSUInteger current = start + 1;
                 
                 while (true) {
-                    NSLog(@"%ld, %ld", loc, [raw length]);
-                    
-                    if (loc == [raw length] - 1) {
-                        break;
-                        *error = [SDParseError kind:SDParseErrorTypeUnfinishedDispatch with:NSMakeRange(i, loc - i)];
+                    if (current == [raw length]) {
+                        *error = [SDParseError kind:SDParseErrorTypeUnclosedString with:NSMakeRange(start, (current - start))];
                         return nil;
                     }
                     
-                    unichar next = [raw characterAtIndex:loc];
+                    unichar nextChar = [raw characterAtIndex:current];
                     
-                    if (next == '\\') {
-                        loc += 2;
+                    if (nextChar == '\\') {
+                        if (current + 1 == [raw length]) {
+                            *error = [SDParseError kind:SDParseErrorTypeUnclosedString with:NSMakeRange(start, (current - start) + 1)];
+                            return nil;
+                        }
+                        current += 2;
                         continue;
                     }
                     
-                    if (next == '"')
+                    if (nextChar == '"')
                         break;
                     
-                    loc++;
+                    current++;
                 }
                 
-                [tokens addObject: [SDToken string:[raw substringWithRange:NSMakeRange(i - 1, loc - i + 2)] at:i - 1]]; // janky
-                i = loc;
+                i = current + 1;
+                
+                [tokens addObject: [SDToken string:[raw substringWithRange:NSMakeRange(start, i - start)] at:start]];
                 
                 break;
             }
