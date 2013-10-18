@@ -29,7 +29,7 @@ typedef enum __LVSplitDirection {
 
 @interface LVTab : NSViewController <LVEditorDelegate>
 
-@property id<LVTabDelegate> delegate;
+@property (weak) id<LVTabDelegate> delegate;
 
 @property (readonly) NSMutableArray* editors; // don't modify this
 @property (readonly, weak) LVEditor* currentEditor;
