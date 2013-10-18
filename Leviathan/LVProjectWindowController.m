@@ -112,10 +112,11 @@
 - (IBAction) addSplitToEast:(id)sender {
     LVFile* file = [self.project openNewFile];
     LVEditor* editorController = [[LVEditor alloc] init];
-    [editorController startEditingFile:file];
     
     [self.tabView.currentTab addEditor:editorController
                            inDirection:LVSplitDirectionEast];
+    
+    [editorController startEditingFile:file];
 }
 
 @end
