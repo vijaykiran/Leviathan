@@ -90,7 +90,7 @@
             [self editFileInNewTab:file];
         }
         
-        NSInteger result = NSRunAlertPanel(@"Unsaved Files", @"You have some unsaved files. I opened them for you so you can check them out.", @"Close window", @"Check them out", nil);
+        NSInteger result = NSRunAlertPanel(@"Unsaved Files", @"You have some unsaved files. I opened them for you so you can take a look.", @"Close window", @"Take a look", nil);
         
         if (result != NSAlertDefaultReturn)
             return NO;
@@ -190,13 +190,6 @@
                   }];
 }
 
-- (void) openDefinition:(LVDefinition*)def inFile:(LVFile*)file {
-    if (![self switchToOpenFile:file]) {
-        [self editFileInNewTab:file];
-    }
-    
-    [self.tabView.currentTab.currentEditor jumpToDefinition:def];
-}
 
 
 
@@ -235,6 +228,11 @@
         [self.tabView.currentTab.currentEditor startEditingFile:file];
         [self.tabView updateTabTitles];
     }
+}
+
+- (void) openDefinition:(LVDefinition*)def inFile:(LVFile*)file {
+    [self editFileInCurrentEditor:file];
+    [self.tabView.currentTab.currentEditor jumpToDefinition:def];
 }
 
 - (BOOL) switchToOpenFile:(LVFile*)file {
