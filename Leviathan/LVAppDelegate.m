@@ -28,6 +28,21 @@
              @"fontSize": @12};
 }
 
+- (IBAction) openDocument:(id)sender {
+    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+    openPanel.canChooseDirectories = YES;
+    openPanel.canChooseFiles = NO;
+    openPanel.allowsMultipleSelection = NO;
+    if ([openPanel runModal] == NSFileHandlingPanelOKButton) {
+        [self openProjectForURL:[openPanel URL]];
+    }
+}
+
+- (void) openProjectForURL:(NSURL*)url {
+    LVProjectWindowController* controller = [LVProjectWindowController openWith:url delegate:self];
+    [self.projectWindowControllers addObject:controller];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultDefaults]];
     [[NSFontManager sharedFontManager] setTarget:self];
@@ -42,11 +57,7 @@
     self.projectWindowControllers = [NSMutableArray array];
     
     NSURL* tempURL = [NSURL fileURLWithPath:@"/Users/sdegutis/Dropbox/projects/cleancoders.com"];
-    
-    LVProjectWindowController* controller = [LVProjectWindowController openWith:tempURL
-                                                                       delegate:self];
-    
-    [self.projectWindowControllers addObject:controller];
+    [self openProjectForURL:tempURL];
     
     
     

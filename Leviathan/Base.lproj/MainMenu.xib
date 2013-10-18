@@ -70,13 +70,19 @@
                 <menuItem title="File" id="83">
                     <menu key="submenu" title="File" id="81">
                         <items>
-                            <menuItem title="New Tab" keyEquivalent="t" id="bgk-tp-9oT">
+                            <menuItem title="Open Project" id="bgk-tp-9oT">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="openProjectTab:" target="-1" id="aB4-iL-hf9"/>
+                                    <action selector="openDocument:" target="494" id="UKy-cN-c2N"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="qOw-i6-0J9">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="New Tab" keyEquivalent="t" id="oSH-JF-6ma">
+                                <connections>
+                                    <action selector="openProjectTab:" target="-1" id="vLQ-Tp-YEn"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Jump to File…" keyEquivalent="o" id="72">
                                 <connections>

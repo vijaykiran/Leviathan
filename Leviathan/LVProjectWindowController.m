@@ -30,6 +30,7 @@
     c.project = [LVProject openProjectAtURL:url];
     c.delegate = delegate;
     
+    [[c window] setTitleWithRepresentedFilename:[url path]];
     [c setWindowFrameAutosaveName:[url path]];
     [c showWindow:nil];
     
