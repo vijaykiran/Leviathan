@@ -29,4 +29,6 @@
 
 - (void) makeFirstResponder;
 
+- (void) jumpToDefinition:(SDDefinition*)def;
+
 @end

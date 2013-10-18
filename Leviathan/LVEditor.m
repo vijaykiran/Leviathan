@@ -8,6 +8,8 @@
 
 #import "LVEditor.h"
 
+#import "SDAtom.h"
+
 @interface LVEditor ()
 
 @property IBOutlet LVTextView* textView;
@@ -18,6 +20,11 @@
 
 - (NSString*) nibName {
     return @"Editor";
+}
+
+- (void) jumpToDefinition:(SDDefinition*)def {
+    self.textView.selectedRange = NSMakeRange(def.defName.token.range.location, 0);
+    [self.textView scrollRangeToVisible:self.textView.selectedRange];
 }
 
 - (void) startEditingFile:(LVFile*)file {

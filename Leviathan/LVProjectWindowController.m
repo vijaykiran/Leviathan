@@ -14,6 +14,8 @@
 
 #import "SDFuzzyMatcher.h"
 
+#import "SDAtom.h"
+
 @interface LVProjectWindowController ()
 
 @property (weak) id<LVProjectWindowController> delegate;
@@ -71,17 +73,46 @@
                   }];
 }
 
+- (void) openDefinition:(SDDefinition*)def inFile:(LVFile*)file {
+    LVEditor* editorController = [[LVEditor alloc] init];
+    
+    LVTab* tab = [[LVTab alloc] init];
+    [tab startWithEditor: editorController];
+    
+    [self.tabView addTab:tab];
+    
+    [editorController startEditingFile:file];
+    [self.tabView titlesChanged];
+    
+    [editorController jumpToDefinition:def];
+}
+
 - (IBAction) jumpToDefinition:(id)sender {
-//    LVFile* file = self.tabView.currentTab.currentEditor.file;
+    NSMutableArray* defFiles = [NSMutableArray array];
+    NSMutableArray* defDefs = [NSMutableArray array];
+    NSMutableArray* readableNames = [NSMutableArray array];
     
     for (LVFile* file in self.project.files) {
         NSMutableArray* defs = [NSMutableArray array];
         [[file topLevelElement] findDefinitions:defs];
-//        NSLog(@"%@ - %@", [file topLevelElement], file.fileURL);
-//        NSLog(@"%@", defs);
+        
+        for (SDDefinition* def in defs) {
+            [defFiles addObject:file];
+            [defDefs addObject:def];
+            [readableNames addObject:[NSString stringWithFormat:@"%@ %@", def.defType.token.val, def.defName.token.val]];
+        }
     }
     
-//    NSLog(@"not implemented yet... %@", file);
+    CGFloat maxLen = [[readableNames valueForKeyPath:@"@max.length"] doubleValue];
+    
+    [SDFuzzyMatcher showChoices:readableNames
+                      charsWide:maxLen * 2.2 / 3.0
+                      linesTall:10
+                    windowTitle:@"Jump to File"
+                  choseCallback:^(long chosenIndex) {
+                      [self openDefinition:[defDefs objectAtIndex:chosenIndex]
+                                    inFile:[defFiles objectAtIndex:chosenIndex]];
+                  }];
 }
 
 - (void) replaceCurrentEditorWithFile:(LVFile*)file {
