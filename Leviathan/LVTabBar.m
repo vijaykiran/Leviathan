@@ -45,7 +45,11 @@
     
     CATextLayer* textLayer = [CATextLayer layer];
     
+    NSFont* font = [NSFont fontWithName:@"Helvetica Neue" size:14.0];
+    font = [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSFontBoldTrait];
+    
     textLayer.string = title;
+    textLayer.font = (__bridge CGFontRef)font;
     textLayer.fontSize = 14.0;
     textLayer.foregroundColor = [NSColor blackColor].CGColor;
     textLayer.contentsScale = self.layer.contentsScale;
