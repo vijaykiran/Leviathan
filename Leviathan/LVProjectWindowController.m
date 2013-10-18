@@ -166,7 +166,8 @@
 
 - (IBAction) closeProjectWindow:(id)sender {
     // TODO: check for unsaved files in all tabs and their splits
-    [self close];
+    
+    [[self window] performClose:sender];
 }
 
 - (IBAction) addSplitToEast:(id)sender {
