@@ -104,6 +104,16 @@
     [self indentCurrentBody];
 }
 
+- (void) deleteBackward:(id)sender {
+    [super deleteBackward:sender];
+    [self indentCurrentBody];
+}
+
+
+
+
+
+
 
 
 NSUInteger LVFirstNewlineBefore(NSString* str, NSUInteger pos) {
