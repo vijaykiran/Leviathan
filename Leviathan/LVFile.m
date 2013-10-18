@@ -32,8 +32,17 @@
     file.shortName = shortName;
     
     [file parseFromFile];
+    [file setFont];
+    file.textStorage.delegate = file;
     
     return file;
+}
+
+- (void) setFont {
+    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
+    [self.textStorage addAttribute:NSFontAttributeName
+                             value:[LVPreferences userFont]
+                             range:fullRange];
 }
 
 - (void) parseFromFile {
@@ -54,6 +63,10 @@
         self.textOnDisk = @"";
         self.textStorage = [[NSTextStorage alloc] initWithString:@""];
     }
+}
+
+- (void) textStorageDidProcessEditing:(NSNotification*)note {
+    [self highlight];
 }
 
 - (void) highlight {

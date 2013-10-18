@@ -10,7 +10,7 @@
 
 #import "LVColl.h"
 
-@interface LVFile : NSObject
+@interface LVFile : NSObject <NSTextStorageDelegate>
 
 + (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName;
 
@@ -23,7 +23,6 @@
 
 @property LVColl* topLevelElement;
 
-- (void) parseFromFile;
 - (void) highlight;
 
 - (void) save;

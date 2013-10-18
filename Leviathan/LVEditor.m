@@ -44,11 +44,6 @@
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
     
     [self.file highlight];
-    
-    NSRange fullRange = NSMakeRange(0, [self.file.textStorage length]);
-    [self.file.textStorage addAttribute:NSFontAttributeName
-                                  value:[LVPreferences userFont]
-                                  range:fullRange];
 }
 
 - (void) makeFirstResponder {
@@ -57,10 +52,6 @@
 
 - (void) textViewWasFocused:(NSTextView*)view {
     [self.delegate editorWasSelected:self];
-}
-
-- (void)textDidChange:(NSNotification *)notification {
-    [self.file highlight];
 }
 
 - (IBAction) saveDocument:(id)sender {

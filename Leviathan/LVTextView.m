@@ -44,6 +44,8 @@
     self.backgroundColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleBackgroundColor]);
     self.insertionPointColor = LVColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleCursorColor]);
     
+    self.textColor = LVColorFromHex([[[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleForSymbol] objectForKey:@"Color"]);
+    
     {
         NSDictionary* style = [[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:LVStyleForSelection];
         NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
@@ -92,8 +94,10 @@
 }
 
 - (void) insertText:(id)insertString {
+//    [[self textStorage] beginEditing];
     [super insertText:insertString];
     [self indentCurrentBody];
+//    [[self textStorage] endEditing];
 }
 
 - (void) deleteWordBackward:(id)sender {
