@@ -144,9 +144,10 @@
                         current++;
                     }
                     
-                    i = current + 1;
+                    i = current;
                     
-                    [tokens addObject: [SDToken regex:[raw substringWithRange:NSMakeRange(start, i - start)] at:start]];
+                    NSRange strRange = NSMakeRange(start, (i - start) + 1);
+                    [tokens addObject: [SDToken regex:[raw substringWithRange:strRange] at:start]];
                     break;
                 }
                 else if ([raw characterAtIndex:i+1] == '_') {
@@ -211,9 +212,10 @@
                     current++;
                 }
                 
-                i = current + 1;
+                i = current;
                 
-                [tokens addObject: [SDToken string:[raw substringWithRange:NSMakeRange(start, i - start)] at:start]];
+                NSRange strRange = NSMakeRange(start, (i - start) + 1);
+                [tokens addObject: [SDToken string:[raw substringWithRange:strRange] at:start]];
                 
                 break;
             }

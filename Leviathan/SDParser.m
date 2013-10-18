@@ -154,6 +154,7 @@
         return [SDAtomKeyword with:token];
     }
     else if (token.type == BW_TOK_FILE_END) {
+        NSLog(@"reached end");
         *error = [SDParseError kind:SDParseErrorTypeUnexpectedEnd with:NSMakeRange(i - 1, 0)];
         return nil;
     }

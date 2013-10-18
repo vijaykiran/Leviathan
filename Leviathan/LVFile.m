@@ -33,6 +33,8 @@
         
         SDParseError* error;
         self.topLevelElement = [SDParser parse:rawString error:&error];
+        
+//        NSLog(@"%d, %ld - %ld, %@", error.errorType, error.badRange.location, error.badRange.length, self.fileURL);
     }
     else {
         self.textStorage = [[NSTextStorage alloc] initWithString:@""];
