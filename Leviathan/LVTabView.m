@@ -149,7 +149,24 @@
     if (newIndex == [self.tabs count])
         newIndex--;
     
+    [self.window.windowController setNextResponder:nil];
+    [[self.bodyView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    if ([self.tabs count] == 0)
+        return;
+    
     [self switchToTab:[self.tabs objectAtIndex:newIndex]];
+}
+
+- (void) closeAllTabs {
+    NSDisableScreenUpdates();
+    
+    NSUInteger total = [self.tabs count];
+    for (int i = 0; i < total; i++) {
+        [self closeCurrentTab];
+    }
+    
+    NSEnableScreenUpdates();
 }
 
 @end

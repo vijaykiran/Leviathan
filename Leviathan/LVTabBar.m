@@ -113,6 +113,9 @@
     if (newIndex == [self.tabs count])
         newIndex--;
     
+    if ([self.tabs count] == 0)
+        return;
+    
     [self selectTabLayer:[self.tabs objectAtIndex:newIndex]];
     
     [self repositionTabs];

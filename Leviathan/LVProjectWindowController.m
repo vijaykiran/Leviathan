@@ -77,13 +77,18 @@
 - (IBAction) closeProjectWindow:(id)sender {
     NSArray* unsavedFiles = [self.project.files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.hasChanges = TRUE"]];
     
-    NSLog(@"%@", unsavedFiles);
-    
-//    if ([file hasChanges]) {
-//        NSInteger result = NSRunAlertPanel(@"Close split?", @"This file has unsaved changes.", @"Close", @"Never mind", nil);
-//        if (result == NSAlertDefaultReturn) {
-//        }
-//    }
+    if ([unsavedFiles count] > 0) {
+        [self.tabView closeAllTabs];
+        
+        for (LVFile* file in unsavedFiles) {
+            [self editFileInNewTab:file];
+        }
+        
+        NSInteger result = NSRunAlertPanel(@"Unsaved Files", @"You have some unsaved files. I opened them for you so you can check them out.", @"Close window", @"Check them out", nil);
+        
+        if (result != NSAlertDefaultReturn)
+            return;
+    }
     
     [[self window] performClose:sender];
 }

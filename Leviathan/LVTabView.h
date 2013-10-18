@@ -19,6 +19,7 @@
 
 - (void) addTab:(LVTab*)tab;
 - (void) closeCurrentTab;
+- (void) closeAllTabs;
 
 - (void) selectTab:(LVTab*)tab;
 
