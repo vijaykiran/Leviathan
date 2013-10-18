@@ -8,7 +8,7 @@
 
 #import "LVTextView.h"
 
-#import "SDTheme.h"
+#import "LVTheme.h"
 #import "LVPreferences.h"
 
 @implementation LVTextView
@@ -33,17 +33,17 @@
 }
 
 - (void) awakeFromNib {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:SDDefaultsFontChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     
     self.enclosingScrollView.verticalScroller.knobStyle = NSScrollerKnobStyleLight;
     self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
     self.font = [LVPreferences userFont];
-    self.backgroundColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeBackgroundColor]);
-    self.insertionPointColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeCursorColor]);
+    self.backgroundColor = SDColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:SDThemeBackgroundColor]);
+    self.insertionPointColor = SDColorFromHex([[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:SDThemeCursorColor]);
     
     {
-        NSDictionary* style = [[[SDTheme temporaryTheme] attributes] objectForKey:@"selection_style"];
+        NSDictionary* style = [[[LVThemeManager sharedThemeManager] currentTheme] objectForKey:@"selection_style"];
         NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
         
         if ([style objectForKey:@"ForegroundColor"])

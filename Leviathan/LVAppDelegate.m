@@ -10,6 +10,7 @@
 
 #import "LVPreferencesWindowController.h"
 #import "LVPreferences.h"
+#import "LVThemeManager.h"
 
 @interface LVAppDelegate ()
 
@@ -35,6 +36,8 @@
                                              selector:@selector(windowDidBecomeKey:)
                                                  name:NSWindowDidBecomeKeyNotification
                                                object:nil];
+    
+    [[LVThemeManager sharedThemeManager] loadThemes];
     
     self.projectWindowControllers = [NSMutableArray array];
     
@@ -64,6 +67,13 @@
 
 - (void)changeFont:(id)sender {
     [LVPreferences setUserFont: [sender convertFont:[LVPreferences userFont]]];
+}
+
+- (IBAction) reloadCurrentTheme:(id)sender {
+    // TODO: hook this up to a menu item somewhere
+    [[LVThemeManager sharedThemeManager] loadThemes];
+    
+    // TODO: send notification of LVCurrentThemeChangedNotification! (meh, boring)
 }
 
 - (void) windowDidBecomeKey:(NSNotification*)note {

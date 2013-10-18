@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import "LVThemeManager.h"
 
 static NSString* SDThemeBackgroundColor = @"background_color";
-static NSString* SDThemeSelectionColor = @"selection_background_color";
+//static NSString* SDThemeSelectionColor = @"selection_background_color";
 static NSString* SDThemeCursorColor = @"cursor_color";
 
 static NSString* SDThemeForSymbol = @"symbol_style";
@@ -29,14 +30,6 @@ static NSString* SDThemeForString = @"string_style";
 static NSString* SDThemeForRegex = @"regex_style";
 static NSString* SDThemeForSplice = @"splice_style";
 
-@interface SDTheme : NSObject
-
-@property NSMutableDictionary* attributes;
-
-+ (SDTheme*) temporaryTheme;
-- (void) setup;
-
-@end
 
 NSColor* SDColorFromHex(NSString* hex);
 NSFont* SDFixFont(NSFont* font, BOOL haveIt, int trait);

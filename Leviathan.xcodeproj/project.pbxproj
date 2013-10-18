@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
 		94855A0B1810DAE100220186 /* LVParserError.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A0A1810DAE100220186 /* LVParserError.m */; };
-		94855A0D1811048E00220186 /* default_leviathan_theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.json */; };
-		94855A0E1811049B00220186 /* default_leviathan_theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.json */; };
+		94855A0D1811048E00220186 /* default_leviathan_theme.clj in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.clj */; };
+		94855A0E1811049B00220186 /* default_leviathan_theme.clj in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.clj */; };
 		94855A12181109A700220186 /* LVPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A10181109A700220186 /* LVPreferencesWindowController.m */; };
 		94855A13181109A700220186 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94855A11181109A700220186 /* PreferencesWindow.xib */; };
 		94855A1718110E2200220186 /* LVPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A1618110E2200220186 /* LVPreferences.m */; };
@@ -37,7 +37,7 @@
 		9490D82318105B2D006ECA5E /* Editor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D82118105B2D006ECA5E /* Editor.xib */; };
 		9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D82418105EBB006ECA5E /* QuartzCore.framework */; };
 		9490D82D1810781D006ECA5E /* LVTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D82C1810781D006ECA5E /* LVTextView.m */; };
-		9490D83118107DCC006ECA5E /* SDTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83018107DCC006ECA5E /* SDTheme.m */; };
+		9490D83118107DCC006ECA5E /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83018107DCC006ECA5E /* LVTheme.m */; };
 		9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83418107FD6006ECA5E /* SDFuzzyMatcher.m */; };
 		9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D83518107FD6006ECA5E /* SDFuzzyMatcherWindow.xib */; };
 		9490D84018107FD6006ECA5E /* SDFuzzyMatcherWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83718107FD6006ECA5E /* SDFuzzyMatcherWindowController.m */; };
@@ -48,6 +48,28 @@
 		9493D97018108BC80080E3C0 /* LVToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96918108BC80080E3C0 /* LVToken.m */; };
 		9493D97118108BC80080E3C0 /* LVColl.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96C18108BC80080E3C0 /* LVColl.m */; };
 		9493D97218108BC80080E3C0 /* LVAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96E18108BC80080E3C0 /* LVAtom.m */; };
+		94D794341811226D003307F4 /* LVThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D794331811226D003307F4 /* LVThemeManager.m */; };
+		94D79463181125F1003307F4 /* BMOEDNCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79437181125F1003307F4 /* BMOEDNCharacter.m */; };
+		94D79464181125F1003307F4 /* BMOEDNCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79439181125F1003307F4 /* BMOEDNCoder.m */; };
+		94D79465181125F1003307F4 /* BMOEDNError.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7943B181125F1003307F4 /* BMOEDNError.m */; };
+		94D79466181125F1003307F4 /* BMOEDNKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7943D181125F1003307F4 /* BMOEDNKeyword.m */; };
+		94D79467181125F1003307F4 /* BMOEDNList.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7943F181125F1003307F4 /* BMOEDNList.m */; };
+		94D79468181125F1003307F4 /* BMOEDNReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79441181125F1003307F4 /* BMOEDNReader.m */; };
+		94D79469181125F1003307F4 /* BMOEDNReaderState.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79443181125F1003307F4 /* BMOEDNReaderState.m */; };
+		94D7946A181125F1003307F4 /* BMOEDNRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79445181125F1003307F4 /* BMOEDNRegistry.m */; };
+		94D7946B181125F1003307F4 /* BMOEDNRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79448181125F1003307F4 /* BMOEDNRoot.m */; };
+		94D7946C181125F1003307F4 /* BMOEDNSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7944A181125F1003307F4 /* BMOEDNSerialization.m */; };
+		94D7946D181125F1003307F4 /* BMOEDNSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7944C181125F1003307F4 /* BMOEDNSymbol.m */; };
+		94D7946E181125F1003307F4 /* BMOEDNTaggedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7944E181125F1003307F4 /* BMOEDNTaggedElement.m */; };
+		94D7946F181125F1003307F4 /* BMOEDNWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79450181125F1003307F4 /* BMOEDNWriter.m */; };
+		94D79470181125F1003307F4 /* BMOEDNWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79452181125F1003307F4 /* BMOEDNWriterState.m */; };
+		94D79471181125F1003307F4 /* BMOLazyEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79454181125F1003307F4 /* BMOLazyEnumerator.m */; };
+		94D79472181125F1003307F4 /* NSData+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79458181125F1003307F4 /* NSData+BMOEDN.m */; };
+		94D79473181125F1003307F4 /* NSDate+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7945A181125F1003307F4 /* NSDate+BMOEDN.m */; };
+		94D79474181125F1003307F4 /* NSInputStream+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7945C181125F1003307F4 /* NSInputStream+BMOEDN.m */; };
+		94D79475181125F1003307F4 /* NSObject+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7945E181125F1003307F4 /* NSObject+BMOEDN.m */; };
+		94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79460181125F1003307F4 /* NSString+BMOEDN.m */; };
+		94D79477181125F1003307F4 /* NSUUID+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +87,7 @@
 		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
 		94855A091810DAE100220186 /* LVParserError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVParserError.h; sourceTree = "<group>"; };
 		94855A0A1810DAE100220186 /* LVParserError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVParserError.m; sourceTree = "<group>"; };
-		94855A0C1811048E00220186 /* default_leviathan_theme.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_leviathan_theme.json; sourceTree = "<group>"; };
+		94855A0C1811048E00220186 /* default_leviathan_theme.clj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default_leviathan_theme.clj; sourceTree = "<group>"; };
 		94855A0F181109A700220186 /* LVPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVPreferencesWindowController.h; sourceTree = "<group>"; };
 		94855A10181109A700220186 /* LVPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVPreferencesWindowController.m; sourceTree = "<group>"; };
 		94855A11181109A700220186 /* PreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
@@ -110,8 +132,8 @@
 		9490D82418105EBB006ECA5E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9490D82B1810781D006ECA5E /* LVTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTextView.h; sourceTree = "<group>"; };
 		9490D82C1810781D006ECA5E /* LVTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTextView.m; sourceTree = "<group>"; };
-		9490D82F18107DCC006ECA5E /* SDTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTheme.h; sourceTree = "<group>"; };
-		9490D83018107DCC006ECA5E /* SDTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTheme.m; sourceTree = "<group>"; };
+		9490D82F18107DCC006ECA5E /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
+		9490D83018107DCC006ECA5E /* LVTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTheme.m; sourceTree = "<group>"; };
 		9490D83318107FD6006ECA5E /* SDFuzzyMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDFuzzyMatcher.h; sourceTree = "<group>"; };
 		9490D83418107FD6006ECA5E /* SDFuzzyMatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDFuzzyMatcher.m; sourceTree = "<group>"; };
 		9490D83518107FD6006ECA5E /* SDFuzzyMatcherWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SDFuzzyMatcherWindow.xib; sourceTree = "<group>"; };
@@ -132,6 +154,53 @@
 		9493D96C18108BC80080E3C0 /* LVColl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVColl.m; sourceTree = "<group>"; };
 		9493D96D18108BC80080E3C0 /* LVAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVAtom.h; sourceTree = "<group>"; };
 		9493D96E18108BC80080E3C0 /* LVAtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVAtom.m; sourceTree = "<group>"; };
+		94D794321811226D003307F4 /* LVThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeManager.h; sourceTree = "<group>"; };
+		94D794331811226D003307F4 /* LVThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeManager.m; sourceTree = "<group>"; };
+		94D79436181125F1003307F4 /* BMOEDNCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNCharacter.h; sourceTree = "<group>"; };
+		94D79437181125F1003307F4 /* BMOEDNCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNCharacter.m; sourceTree = "<group>"; };
+		94D79438181125F1003307F4 /* BMOEDNCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNCoder.h; sourceTree = "<group>"; };
+		94D79439181125F1003307F4 /* BMOEDNCoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNCoder.m; sourceTree = "<group>"; };
+		94D7943A181125F1003307F4 /* BMOEDNError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNError.h; sourceTree = "<group>"; };
+		94D7943B181125F1003307F4 /* BMOEDNError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNError.m; sourceTree = "<group>"; };
+		94D7943C181125F1003307F4 /* BMOEDNKeyword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNKeyword.h; sourceTree = "<group>"; };
+		94D7943D181125F1003307F4 /* BMOEDNKeyword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNKeyword.m; sourceTree = "<group>"; };
+		94D7943E181125F1003307F4 /* BMOEDNList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNList.h; sourceTree = "<group>"; };
+		94D7943F181125F1003307F4 /* BMOEDNList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNList.m; sourceTree = "<group>"; };
+		94D79440181125F1003307F4 /* BMOEDNReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNReader.h; sourceTree = "<group>"; };
+		94D79441181125F1003307F4 /* BMOEDNReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNReader.m; sourceTree = "<group>"; };
+		94D79442181125F1003307F4 /* BMOEDNReaderState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNReaderState.h; sourceTree = "<group>"; };
+		94D79443181125F1003307F4 /* BMOEDNReaderState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNReaderState.m; sourceTree = "<group>"; };
+		94D79444181125F1003307F4 /* BMOEDNRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNRegistry.h; sourceTree = "<group>"; };
+		94D79445181125F1003307F4 /* BMOEDNRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNRegistry.m; sourceTree = "<group>"; };
+		94D79446181125F1003307F4 /* BMOEDNRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNRepresentation.h; sourceTree = "<group>"; };
+		94D79447181125F1003307F4 /* BMOEDNRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNRoot.h; sourceTree = "<group>"; };
+		94D79448181125F1003307F4 /* BMOEDNRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNRoot.m; sourceTree = "<group>"; };
+		94D79449181125F1003307F4 /* BMOEDNSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNSerialization.h; sourceTree = "<group>"; };
+		94D7944A181125F1003307F4 /* BMOEDNSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNSerialization.m; sourceTree = "<group>"; };
+		94D7944B181125F1003307F4 /* BMOEDNSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNSymbol.h; sourceTree = "<group>"; };
+		94D7944C181125F1003307F4 /* BMOEDNSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNSymbol.m; sourceTree = "<group>"; };
+		94D7944D181125F1003307F4 /* BMOEDNTaggedElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNTaggedElement.h; sourceTree = "<group>"; };
+		94D7944E181125F1003307F4 /* BMOEDNTaggedElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNTaggedElement.m; sourceTree = "<group>"; };
+		94D7944F181125F1003307F4 /* BMOEDNWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNWriter.h; sourceTree = "<group>"; };
+		94D79450181125F1003307F4 /* BMOEDNWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNWriter.m; sourceTree = "<group>"; };
+		94D79451181125F1003307F4 /* BMOEDNWriterState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNWriterState.h; sourceTree = "<group>"; };
+		94D79452181125F1003307F4 /* BMOEDNWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNWriterState.m; sourceTree = "<group>"; };
+		94D79453181125F1003307F4 /* BMOLazyEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOLazyEnumerator.h; sourceTree = "<group>"; };
+		94D79454181125F1003307F4 /* BMOLazyEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOLazyEnumerator.m; sourceTree = "<group>"; };
+		94D79455181125F1003307F4 /* edn-objc-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "edn-objc-Prefix.pch"; sourceTree = "<group>"; };
+		94D79456181125F1003307F4 /* edn-objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "edn-objc.h"; sourceTree = "<group>"; };
+		94D79457181125F1003307F4 /* NSData+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+BMOEDN.h"; sourceTree = "<group>"; };
+		94D79458181125F1003307F4 /* NSData+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+BMOEDN.m"; sourceTree = "<group>"; };
+		94D79459181125F1003307F4 /* NSDate+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+BMOEDN.h"; sourceTree = "<group>"; };
+		94D7945A181125F1003307F4 /* NSDate+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+BMOEDN.m"; sourceTree = "<group>"; };
+		94D7945B181125F1003307F4 /* NSInputStream+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInputStream+BMOEDN.h"; sourceTree = "<group>"; };
+		94D7945C181125F1003307F4 /* NSInputStream+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInputStream+BMOEDN.m"; sourceTree = "<group>"; };
+		94D7945D181125F1003307F4 /* NSObject+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BMOEDN.h"; sourceTree = "<group>"; };
+		94D7945E181125F1003307F4 /* NSObject+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BMOEDN.m"; sourceTree = "<group>"; };
+		94D7945F181125F1003307F4 /* NSString+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BMOEDN.h"; sourceTree = "<group>"; };
+		94D79460181125F1003307F4 /* NSString+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BMOEDN.m"; sourceTree = "<group>"; };
+		94D79461181125F1003307F4 /* NSUUID+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+BMOEDN.h"; sourceTree = "<group>"; };
+		94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+BMOEDN.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +283,7 @@
 				9490D7E718104D58006ECA5E /* MainMenu.xib */,
 				9490D7E418104D58006ECA5E /* LVAppDelegate.h */,
 				9490D7E518104D58006ECA5E /* LVAppDelegate.m */,
+				94D79435181125F1003307F4 /* edn-objc */,
 				94855A14181109AE00220186 /* Preferences */,
 				9490D83218107FCD006ECA5E /* Fuzzy Matcher */,
 				9490D82E18107DC5006ECA5E /* Theme */,
@@ -318,9 +388,11 @@
 		9490D82E18107DC5006ECA5E /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				94855A0C1811048E00220186 /* default_leviathan_theme.json */,
-				9490D82F18107DCC006ECA5E /* SDTheme.h */,
-				9490D83018107DCC006ECA5E /* SDTheme.m */,
+				94855A0C1811048E00220186 /* default_leviathan_theme.clj */,
+				94D794321811226D003307F4 /* LVThemeManager.h */,
+				94D794331811226D003307F4 /* LVThemeManager.m */,
+				9490D82F18107DCC006ECA5E /* LVTheme.h */,
+				9490D83018107DCC006ECA5E /* LVTheme.m */,
 			);
 			name = Theme;
 			sourceTree = "<group>";
@@ -359,6 +431,58 @@
 				94855A0A1810DAE100220186 /* LVParserError.m */,
 			);
 			name = Parser;
+			sourceTree = "<group>";
+		};
+		94D79435181125F1003307F4 /* edn-objc */ = {
+			isa = PBXGroup;
+			children = (
+				94D79436181125F1003307F4 /* BMOEDNCharacter.h */,
+				94D79437181125F1003307F4 /* BMOEDNCharacter.m */,
+				94D79438181125F1003307F4 /* BMOEDNCoder.h */,
+				94D79439181125F1003307F4 /* BMOEDNCoder.m */,
+				94D7943A181125F1003307F4 /* BMOEDNError.h */,
+				94D7943B181125F1003307F4 /* BMOEDNError.m */,
+				94D7943C181125F1003307F4 /* BMOEDNKeyword.h */,
+				94D7943D181125F1003307F4 /* BMOEDNKeyword.m */,
+				94D7943E181125F1003307F4 /* BMOEDNList.h */,
+				94D7943F181125F1003307F4 /* BMOEDNList.m */,
+				94D79440181125F1003307F4 /* BMOEDNReader.h */,
+				94D79441181125F1003307F4 /* BMOEDNReader.m */,
+				94D79442181125F1003307F4 /* BMOEDNReaderState.h */,
+				94D79443181125F1003307F4 /* BMOEDNReaderState.m */,
+				94D79444181125F1003307F4 /* BMOEDNRegistry.h */,
+				94D79445181125F1003307F4 /* BMOEDNRegistry.m */,
+				94D79446181125F1003307F4 /* BMOEDNRepresentation.h */,
+				94D79447181125F1003307F4 /* BMOEDNRoot.h */,
+				94D79448181125F1003307F4 /* BMOEDNRoot.m */,
+				94D79449181125F1003307F4 /* BMOEDNSerialization.h */,
+				94D7944A181125F1003307F4 /* BMOEDNSerialization.m */,
+				94D7944B181125F1003307F4 /* BMOEDNSymbol.h */,
+				94D7944C181125F1003307F4 /* BMOEDNSymbol.m */,
+				94D7944D181125F1003307F4 /* BMOEDNTaggedElement.h */,
+				94D7944E181125F1003307F4 /* BMOEDNTaggedElement.m */,
+				94D7944F181125F1003307F4 /* BMOEDNWriter.h */,
+				94D79450181125F1003307F4 /* BMOEDNWriter.m */,
+				94D79451181125F1003307F4 /* BMOEDNWriterState.h */,
+				94D79452181125F1003307F4 /* BMOEDNWriterState.m */,
+				94D79453181125F1003307F4 /* BMOLazyEnumerator.h */,
+				94D79454181125F1003307F4 /* BMOLazyEnumerator.m */,
+				94D79455181125F1003307F4 /* edn-objc-Prefix.pch */,
+				94D79456181125F1003307F4 /* edn-objc.h */,
+				94D79457181125F1003307F4 /* NSData+BMOEDN.h */,
+				94D79458181125F1003307F4 /* NSData+BMOEDN.m */,
+				94D79459181125F1003307F4 /* NSDate+BMOEDN.h */,
+				94D7945A181125F1003307F4 /* NSDate+BMOEDN.m */,
+				94D7945B181125F1003307F4 /* NSInputStream+BMOEDN.h */,
+				94D7945C181125F1003307F4 /* NSInputStream+BMOEDN.m */,
+				94D7945D181125F1003307F4 /* NSObject+BMOEDN.h */,
+				94D7945E181125F1003307F4 /* NSObject+BMOEDN.m */,
+				94D7945F181125F1003307F4 /* NSString+BMOEDN.h */,
+				94D79460181125F1003307F4 /* NSString+BMOEDN.m */,
+				94D79461181125F1003307F4 /* NSUUID+BMOEDN.h */,
+				94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */,
+			);
+			path = "edn-objc";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -443,7 +567,7 @@
 				9490D7E318104D58006ECA5E /* Credits.rtf in Resources */,
 				9490D82318105B2D006ECA5E /* Editor.xib in Resources */,
 				94855A13181109A700220186 /* PreferencesWindow.xib in Resources */,
-				94855A0D1811048E00220186 /* default_leviathan_theme.json in Resources */,
+				94855A0D1811048E00220186 /* default_leviathan_theme.clj in Resources */,
 				9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */,
 				9490D81E181054EE006ECA5E /* Tab.xib in Resources */,
 				9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */,
@@ -456,7 +580,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9490D7FB18104D59006ECA5E /* InfoPlist.strings in Resources */,
-				94855A0E1811049B00220186 /* default_leviathan_theme.json in Resources */,
+				94855A0E1811049B00220186 /* default_leviathan_theme.clj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,24 +594,46 @@
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				9490D82D1810781D006ECA5E /* LVTextView.m in Sources */,
 				9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */,
+				94D794341811226D003307F4 /* LVThemeManager.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
 				94855A0B1810DAE100220186 /* LVParserError.m in Sources */,
+				94D79471181125F1003307F4 /* BMOLazyEnumerator.m in Sources */,
+				94D79473181125F1003307F4 /* NSDate+BMOEDN.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
+				94D79477181125F1003307F4 /* NSUUID+BMOEDN.m in Sources */,
+				94D79465181125F1003307F4 /* BMOEDNError.m in Sources */,
 				9493D97018108BC80080E3C0 /* LVToken.m in Sources */,
 				94855A12181109A700220186 /* LVPreferencesWindowController.m in Sources */,
+				94D79468181125F1003307F4 /* BMOEDNReader.m in Sources */,
+				94D79464181125F1003307F4 /* BMOEDNCoder.m in Sources */,
+				94D7946B181125F1003307F4 /* BMOEDNRoot.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
+				94D7946E181125F1003307F4 /* BMOEDNTaggedElement.m in Sources */,
+				94D79469181125F1003307F4 /* BMOEDNReaderState.m in Sources */,
 				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
+				94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
 				9493D96F18108BC80080E3C0 /* LVParser.m in Sources */,
+				94D79472181125F1003307F4 /* NSData+BMOEDN.m in Sources */,
+				94D79475181125F1003307F4 /* NSObject+BMOEDN.m in Sources */,
 				9490D84018107FD6006ECA5E /* SDFuzzyMatcherWindowController.m in Sources */,
 				94855A1718110E2200220186 /* LVPreferences.m in Sources */,
+				94D7946F181125F1003307F4 /* BMOEDNWriter.m in Sources */,
+				94D79474181125F1003307F4 /* NSInputStream+BMOEDN.m in Sources */,
+				94D7946C181125F1003307F4 /* BMOEDNSerialization.m in Sources */,
 				9490D84318107FD6006ECA5E /* NSString+Score.m in Sources */,
 				9490D80D18104E81006ECA5E /* LVProject.m in Sources */,
-				9490D83118107DCC006ECA5E /* SDTheme.m in Sources */,
+				9490D83118107DCC006ECA5E /* LVTheme.m in Sources */,
+				94D7946D181125F1003307F4 /* BMOEDNSymbol.m in Sources */,
+				94D79463181125F1003307F4 /* BMOEDNCharacter.m in Sources */,
+				94D79467181125F1003307F4 /* BMOEDNList.m in Sources */,
+				94D7946A181125F1003307F4 /* BMOEDNRegistry.m in Sources */,
 				9490D84118107FD6006ECA5E /* SDChoiceTableView.m in Sources */,
 				9490D82218105B2D006ECA5E /* LVEditor.m in Sources */,
+				94D79466181125F1003307F4 /* BMOEDNKeyword.m in Sources */,
 				9493D97118108BC80080E3C0 /* LVColl.m in Sources */,
+				94D79470181125F1003307F4 /* BMOEDNWriterState.m in Sources */,
 				9490D81D181054EE006ECA5E /* LVTab.m in Sources */,
 				9493D97218108BC80080E3C0 /* LVAtom.m in Sources */,
 			);

@@ -10,7 +10,7 @@
 
 #import "LVParser.h"
 
-#import "SDTheme.h"
+#import "LVTheme.h"
 
 #import "LVPreferences.h"
 

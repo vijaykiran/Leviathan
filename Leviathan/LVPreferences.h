@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* SDDefaultsFontChangedNotification;
+extern NSString* LVDefaultsFontChangedNotification;
+extern NSString* LVCurrentThemeChangedNotification;
 
 @interface LVPreferences : NSObject
 

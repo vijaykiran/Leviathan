@@ -8,7 +8,7 @@
 
 #import "LVPreferences.h"
 
-NSString* SDDefaultsFontChangedNotification = @"SDDefaultsFontChangedNotification";
+NSString* LVDefaultsFontChangedNotification = @"SDDefaultsFontChangedNotification";
 
 @implementation LVPreferences
 
@@ -21,7 +21,7 @@ NSString* SDDefaultsFontChangedNotification = @"SDDefaultsFontChangedNotificatio
 + (void) setUserFont:(NSFont*)font {
     [[NSUserDefaults standardUserDefaults] setDouble:[font pointSize] forKey:@"fontSize"];
     [[NSUserDefaults standardUserDefaults] setObject:[font fontName] forKey:@"fontName"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:SDDefaultsFontChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LVDefaultsFontChangedNotification object:nil];
 }
 
 @end
