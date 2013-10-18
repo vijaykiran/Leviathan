@@ -23,7 +23,7 @@
 @interface LVEditor : NSViewController <LVTextViewDelegate>
 
 @property LVFile* file;
-@property id<LVEditorDelegate> delegate;
+@property (weak) id<LVEditorDelegate> delegate;
 
 - (void) startEditingFile:(LVFile*)file;
 

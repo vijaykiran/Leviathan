@@ -26,5 +26,6 @@
 - (void) highlight;
 
 - (void) save;
+- (BOOL) hasChanges;
 
 @end

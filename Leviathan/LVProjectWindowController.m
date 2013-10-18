@@ -61,7 +61,6 @@
         [self closeProjectTab:sender];
     }
     else {
-        // TODO: check for unsaved file in split (it always has exactly one file)
         [self.tabView.currentTab closeCurrentSplit];
     }
 }
@@ -71,13 +70,20 @@
         [self closeProjectWindow:sender];
     }
     else {
-        // TODO: check for unsaved files in tab
         [self.tabView closeCurrentTab];
     }
 }
 
 - (IBAction) closeProjectWindow:(id)sender {
-    // TODO: check for unsaved files in all tabs and their splits
+    NSArray* unsavedFiles = [self.project.files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.hasChanges = TRUE"]];
+    
+    NSLog(@"%@", unsavedFiles);
+    
+//    if ([file hasChanges]) {
+//        NSInteger result = NSRunAlertPanel(@"Close split?", @"This file has unsaved changes.", @"Close", @"Never mind", nil);
+//        if (result == NSAlertDefaultReturn) {
+//        }
+//    }
     
     [[self window] performClose:sender];
 }
@@ -96,7 +102,6 @@
 - (IBAction) openProjectTab:(id)sender {
     [self editFileInNewTab:[self.project openNewFile]];
 }
-
 
 
 
