@@ -134,22 +134,12 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
     
     wholeBlockRange = LVExtendRangeToBeginningPos(wholeBlockRange, firstNewlinePosition);
     
-//    NSString* relevantString = [wholeString substringWithRange:wholeBlockRange];
 //    NSLog(@"[%@]", [wholeString substringWithRange:wholeBlockRange]);
-    
-//    NSLog(@"%@", NSStringFromRange(wholeBlockRange));
-    
-//    return;
-    
     
     NSUInteger currentPos = wholeBlockRange.location;
     
     while (NSLocationInRange(currentPos, wholeBlockRange)) {
         NSRange remainingRange = LVRangeWithNewAbsoluteLocationButSameEndPoint(wholeBlockRange, currentPos);
-        
-//        NSLog(@"%@", NSStringFromRange(remainingRange));
-        
-//        break;
         
         NSUInteger nextNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
                                                                       options:0
@@ -163,20 +153,81 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         NSRange currentLineRange = NSMakeRange(currentPos, nextNewlinePosition - currentPos);
         
         
-        
+        // get first non-space char's pos (absolute)
         
         NSUInteger firstNonSpaceCharPos = [wholeString rangeOfCharacterFromSet:[[NSCharacterSet whitespaceCharacterSet] invertedSet]
                                                                        options:0
                                                                          range:currentLineRange].location;
         
-        NSLog(@"%ld", firstNonSpaceCharPos);
+        // get that val relative
         
-//        NSUInteger childIndexOfFirstElementOnLine; // this will be helpful
-//        LVColl* collParentForBeginningOfLine = [self.file.topLevelElement deepestCollAtPos:currentLineBeginningAbsolutePos childsIndex:&childIndexOfFirstElementOnLine];
-
+        NSUInteger firstNonSpaceCharPosRelative = firstNonSpaceCharPos - currentPos;
+        
+        // get coll parent for beginning of line (its type info and indentation info will be helpful soon)
+        
+        NSUInteger childIndexOfFirstElementOnLine;
+        LVColl* collParentForBeginningOfLine = [self.file.topLevelElement deepestCollAtPos:currentPos childsIndex:&childIndexOfFirstElementOnLine];
         
         
         
+        // figure out proper indentation level
+        
+        
+        NSUInteger expectedStartSpaces;
+        
+        if (collParentForBeginningOfLine.collType == LVCollTypeTopLevel) {
+            expectedStartSpaces = 0;
+        }
+        else {
+            NSUInteger specificIndentation;
+            
+            if (collParentForBeginningOfLine.collType == LVCollTypeList) {
+                specificIndentation = 2;
+            }
+            else {
+                specificIndentation = 1;
+            }
+            
+            NSUInteger openingTokenAbsolutePos = collParentForBeginningOfLine.openingToken.range.location;
+            NSUInteger openingTokenRecentNewline = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+                                                                                options:NSBackwardsSearch
+                                                                                  range:NSMakeRange(0, collParentForBeginningOfLine.openingToken.range.location)].location;
+            
+            if (openingTokenRecentNewline == NSNotFound)
+                openingTokenRecentNewline = 0;
+            
+            NSUInteger prefixIndentation = openingTokenAbsolutePos - openingTokenRecentNewline;
+            
+            expectedStartSpaces = specificIndentation + prefixIndentation;
+        }
+        
+        NSInteger spacesToAdd = expectedStartSpaces - firstNonSpaceCharPosRelative;
+        
+        NSLog(@"%ld", spacesToAdd);
+        
+        if (spacesToAdd != 0) {
+            if (spacesToAdd > 0) {
+                NSString* spaces = [@"" stringByPaddingToLength:spacesToAdd withString:@" " startingAtIndex:0];
+                NSRange tempRange = NSMakeRange(currentPos, 0);
+                
+                if ([self shouldChangeTextInRange:tempRange replacementString:spaces]) {
+                    [[self textStorage] replaceCharactersInRange:tempRange withString:spaces];
+                    [self didChangeText];
+                }
+            }
+            if (spacesToAdd < 0) {
+                // really spaces to delete, now.
+                NSRange tempRange = NSMakeRange(currentPos, spacesToAdd);
+                
+                if ([self shouldChangeTextInRange:tempRange replacementString:@""]) {
+                    [[self textStorage] replaceCharactersInRange:tempRange withString:@""];
+                    [self didChangeText];
+                }
+            }
+            
+            wholeBlockRange.length += spacesToAdd;
+            nextNewlinePosition += spacesToAdd;
+        }
         
         // done doing things, ready to loop again.
         
@@ -184,7 +235,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         
     }
     
-    
+    printf("\n");
     
     
     
