@@ -10,7 +10,7 @@
 
 
 static NSString* SDThemeBackgroundColor = @"background_color";
-static NSString* SDThemeSelectionColor = @"selection_color";
+static NSString* SDThemeSelectionColor = @"selection_background_color";
 static NSString* SDThemeCursorColor = @"cursor_color";
 
 static NSString* SDThemeForSymbol = @"symbol_style";

@@ -37,7 +37,9 @@
     "Color" : "edd400",
     "Bold" : true
   },
-  "selection_color" : "5c3566",
+  "selection_style" : {
+    "BackgroundColor" : "5c3566"
+  },
   "splice_style" : {
     "Color" : "edd400",
     "Bold" : true

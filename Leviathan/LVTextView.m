@@ -27,7 +27,20 @@
     self.font = [NSFont fontWithName:@"Menlo" size:12]; // TODO: replace this with NSUserDefaults somehow
     self.backgroundColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeBackgroundColor]);
     self.insertionPointColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeCursorColor]);
-    self.selectedTextAttributes = @{NSBackgroundColorAttributeName: SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeSelectionColor])};
+    
+    {
+        NSDictionary* style = [[[SDTheme temporaryTheme] attributes] objectForKey:@"selection_style"];
+        NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
+        
+        if ([style objectForKey:@"ForegroundColor"])
+            selectionAttrs[NSForegroundColorAttributeName] = SDColorFromHex([style objectForKey:@"ForegroundColor"]);
+        
+        if ([style objectForKey:@"BackgroundColor"])
+            selectionAttrs[NSBackgroundColorAttributeName] = SDColorFromHex([style objectForKey:@"BackgroundColor"]);
+        
+        self.selectedTextAttributes = selectionAttrs;
+    }
+    
     
     
     
