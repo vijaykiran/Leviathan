@@ -19,6 +19,8 @@
 @property IBOutlet NSMenuItem* closeSplitItem;
 @property IBOutlet NSMenuItem* closeItem;
 
+@property BOOL quitting;
+
 @end
 
 @implementation LVAppDelegate
@@ -29,11 +31,16 @@
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-    for (LVProjectWindowController* c in self.projectWindowControllers) {
+    self.quitting = YES;
+    
+    BOOL anyCantClose = NO;
+    
+    for (LVProjectWindowController* c in [self.projectWindowControllers copy]) {
         if (![c tryClosingCompletely])
-            return NSTerminateCancel;
+            anyCantClose = YES;
     }
-    return NSTerminateNow;
+    
+    return (anyCantClose ? NSTerminateCancel : NSTerminateNow);
 }
 
 - (IBAction) openDocument:(id)sender {
@@ -46,9 +53,25 @@
     }
 }
 
+- (void) saveProjects {
+    NSArray* projectURLs = [self.projectWindowControllers valueForKeyPath:@"project.projectURL"];
+    NSData* data = [NSKeyedArchiver archivedDataWithRootObject:projectURLs];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"savedProjects"];
+}
+
+- (void) restoreProjects {
+    NSData* data = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedProjects"];
+    NSArray* projectURLs = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    
+    for (NSURL* url in projectURLs) {
+        [self openProjectForURL:url];
+    }
+}
+
 - (void) openProjectForURL:(NSURL*)url {
     LVProjectWindowController* controller = [LVProjectWindowController openWith:url delegate:self];
     [self.projectWindowControllers addObject:controller];
+    [self saveProjects];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -64,10 +87,7 @@
     
     self.projectWindowControllers = [NSMutableArray array];
     
-    NSURL* tempURL = [NSURL fileURLWithPath:@"/Users/sdegutis/Dropbox/projects/cleancoders.com"];
-    [self openProjectForURL:tempURL];
-    
-    
+    [self restoreProjects];
     
     double delayInSeconds = 60.0 * 5.0; // quit after 5 mins
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -78,6 +98,9 @@
 
 - (void) projectWindowClosed:(LVProjectWindowController *)controller {
     [self.projectWindowControllers removeObject:controller];
+    
+    if (!self.quitting)
+        [self saveProjects];
 }
 
 - (IBAction) showPreferencesWindow:(id)sender {
