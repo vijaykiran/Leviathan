@@ -25,4 +25,6 @@
 - (void) parseFromFile;
 - (void) highlight;
 
+- (void) save;
+
 @end

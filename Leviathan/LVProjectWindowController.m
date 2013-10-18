@@ -99,9 +99,10 @@
     LVTab* tab = [[LVTab alloc] init];
     [tab startWithEditor: editorController];
     
-    [editorController startEditingFile:file];
-    
     [self.tabView addTab:tab];
+    
+    [editorController startEditingFile:file];
+    [self.tabView titlesChanged];
 }
 
 - (IBAction) closeProjectWindow:(id)sender {

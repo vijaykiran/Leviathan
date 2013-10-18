@@ -117,9 +117,9 @@
     [[self.bodyView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.bodyView addSubview:tab.view];
     
-    self.nextResponder = tab;
-    
     self.currentTab = tab;
+    
+    [self.window.windowController setNextResponder:self.currentTab];
     
     [self.currentTab restoreFirstResponder];
 }

@@ -10,21 +10,6 @@
 
 #import "SDToken.h"
 
-
-
-@implementation SDParseError
-
-+ (SDParseError*) kind:(SDParseErrorType)kind with:(SDToken*)tok {
-    SDParseError* err = [[SDParseError alloc] init];
-    err.offendingToken = tok;
-    err.errorType = kind;
-    return err;
-}
-
-@end
-
-
-
 @implementation SDParser
 
 + (id) parseColl:(NSArray*)tokens start:(NSUInteger)i ended:(NSUInteger*)ended collType:(SDCollType)collType endType:(BWTokenType)endType error:(SDParseError*__autoreleasing*)error {
@@ -43,7 +28,7 @@
             break;
         }
         else if (endToken.type == BW_TOK_FILE_END) {
-            *error = [SDParseError kind:SDParseErrorTypeUnclosedOpener with:firstToken];
+            *error = [SDParseError kind:SDParseErrorTypeUnclosedOpener with:firstToken.range];
             return nil;
         }
         
@@ -126,7 +111,7 @@
         return [SDAtomKeyword with:token];
     }
     else if (token.type == BW_TOK_RPAREN || token.type == BW_TOK_RBRACKET || token.type == BW_TOK_RBRACE) {
-        *error = [SDParseError kind:SDParseErrorTypeUnopenedCloser with:token];
+        *error = [SDParseError kind:SDParseErrorTypeUnopenedCloser with:token.range];
         return nil;
     }
     else if (token.type == BW_TOK_LPAREN) {
@@ -144,7 +129,11 @@
 }
 
 + (SDColl*) parse:(NSString*)raw error:(SDParseError*__autoreleasing*)error {
-    NSArray* tokens = [SDToken tokenize:raw];
+    NSArray* tokens = [SDToken tokenize:raw error:error];
+    
+    if (*error)
+        return nil;
+    
     NSUInteger ended;
     return [self parseColl:tokens start:0 ended:&ended collType:SDCollTypeTopLevel endType:BW_TOK_FILE_END error:error];
 }

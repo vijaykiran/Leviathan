@@ -13,19 +13,7 @@
 #import "SDElement.h"
 #import "SDColl.h"
 #import "SDAtom.h"
-
-typedef enum __SDParseErrorType {
-    SDParseErrorTypeUnopenedCloser,
-    SDParseErrorTypeUnclosedOpener,
-    SDParseErrorTypeUnfinishedKeyword,
-} SDParseErrorType;
-
-@interface SDParseError : NSObject
-@property SDToken* offendingToken;
-@property SDParseErrorType errorType;
-@end
-
-
+#import "SDParserError.h"
 
 @interface SDParser : NSObject
 

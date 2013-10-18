@@ -26,6 +26,10 @@
     self.textView.file = file;
     
     [[self.textView layoutManager] replaceTextStorage:file.textStorage];
+    [[self.textView undoManager] removeAllActions];
+    
+    [self.textView setSelectedRange:NSMakeRange(0, 0)];
+    
     [self.file highlight];
 }
 
@@ -39,6 +43,10 @@
 
 - (void)textDidChange:(NSNotification *)notification {
     [self.file highlight];
+}
+
+- (IBAction) saveDocument:(id)sender {
+    [self.file save];
 }
 
 @end

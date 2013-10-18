@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SDParserError.h"
+
 typedef enum __BWTokenType {
     BW_TOK_LPAREN,
     BW_TOK_RPAREN,
@@ -41,6 +43,6 @@ typedef enum __BWTokenType {
 + (SDToken*) number:(NSString*)val at:(NSUInteger)i;
 + (SDToken*) string:(NSString*)val at:(NSUInteger)i;
 
-+ (NSArray*) tokenize:(NSString*)raw;
++ (NSArray*) tokenize:(NSString*)raw error:(SDParseError*__autoreleasing*)error;
 
 @end

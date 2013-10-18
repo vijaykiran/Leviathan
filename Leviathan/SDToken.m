@@ -76,7 +76,7 @@
 //    return NSMakeRange(start, loc - start);
 //}
 
-+ (NSArray*) tokenize:(NSString*)raw {
++ (NSArray*) tokenize:(NSString*)raw error:(SDParseError*__autoreleasing*)error {
     NSMutableArray* tokens = [NSMutableArray array];
     
     [tokens addObject: [SDToken token:BW_TOK_FILE_BEGIN at:0 len:0]];
@@ -112,6 +112,11 @@
                 break;
             }
             case '#': {
+                if (i == [raw length] - 1) {
+                    *error = [SDParseError kind:SDParseErrorTypeUnfinishedDispatch with:NSMakeRange(i, 1)];
+                    return nil;
+                }
+                
                 if ([raw characterAtIndex:i+1] == '"') {
                     i += 2;
                     NSUInteger loc = i;
@@ -139,6 +144,8 @@
                     break;
                 }
                 else {
+                    *error = [SDParseError kind:SDParseErrorTypeUnfinishedDispatch with:NSMakeRange(i, 1)];
+                    return nil;
                 }
                 
 //                break;
@@ -172,8 +179,13 @@
                 NSUInteger loc = i;
                 
                 while (true) {
-                    if (loc == [raw length])
+                    NSLog(@"%ld, %ld", loc, [raw length]);
+                    
+                    if (loc == [raw length] - 1) {
                         break;
+                        *error = [SDParseError kind:SDParseErrorTypeUnfinishedDispatch with:NSMakeRange(i, loc - i)];
+                        return nil;
+                    }
                     
                     unichar next = [raw characterAtIndex:loc];
                     

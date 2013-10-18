@@ -38,7 +38,7 @@
         self.textStorage = [[NSTextStorage alloc] initWithString:@""];
     }
     
-    NSFont* font = [NSFont fontWithName:@"Menlo" size:13]; // TODO: replace this with NSUserDefaults somehow
+    NSFont* font = [NSFont fontWithName:@"Menlo" size:12]; // TODO: replace this with NSUserDefaults somehow
     
     NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
     [self.textStorage addAttribute:NSFontAttributeName value:font range:fullRange];
@@ -54,13 +54,32 @@
     
     if (error) {
         self.topLevelElement = nil;
-        SDApplyStyle(self.textStorage, SDThemeForSyntaxError, error.offendingToken.range, 1);
+        SDApplyStyle(self.textStorage, SDThemeForSyntaxError, error.badRange, 1);
     }
     else {
         [self.topLevelElement highlightIn:self.textStorage atLevel:0];
     }
     
     [self.textStorage endEditing];
+}
+
+- (void) save {
+    if (self.fileURL) {
+        NSError* __autoreleasing error;
+        
+        BOOL success =
+        [[self.textStorage string] writeToURL:self.fileURL
+                                   atomically:YES
+                                     encoding:NSUTF8StringEncoding
+                                        error:&error];
+        
+        if (!success) {
+            [NSApp presentError:error];
+        }
+    }
+    else {
+        // TODO: save it based on the namespace
+    }
 }
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
+		94855A0B1810DAE100220186 /* SDParserError.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A0A1810DAE100220186 /* SDParserError.m */; };
 		9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D7D218104D58006ECA5E /* Cocoa.framework */; };
 		9490D7DD18104D58006ECA5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9490D7DB18104D58006ECA5E /* InfoPlist.strings */; };
 		9490D7DF18104D58006ECA5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D7DE18104D58006ECA5E /* main.m */; };
@@ -54,6 +56,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		94855A061810D92500220186 /* SDExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDExpectation.h; sourceTree = "<group>"; };
+		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
+		94855A091810DAE100220186 /* SDParserError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDParserError.h; sourceTree = "<group>"; };
+		94855A0A1810DAE100220186 /* SDParserError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDParserError.m; sourceTree = "<group>"; };
 		9490D7CF18104D58006ECA5E /* Leviathan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leviathan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9490D7D218104D58006ECA5E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		9490D7D518104D58006ECA5E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -214,6 +220,8 @@
 		9490D7F618104D59006ECA5E /* LeviathanTests */ = {
 			isa = PBXGroup;
 			children = (
+				94855A061810D92500220186 /* SDExpectation.h */,
+				94855A071810D92500220186 /* SDExpectation.m */,
 				9490D7FC18104D59006ECA5E /* LeviathanTests.m */,
 				9490D7F718104D59006ECA5E /* Supporting Files */,
 			);
@@ -322,6 +330,8 @@
 				9493D96C18108BC80080E3C0 /* SDColl.m */,
 				9493D96D18108BC80080E3C0 /* SDAtom.h */,
 				9493D96E18108BC80080E3C0 /* SDAtom.m */,
+				94855A091810DAE100220186 /* SDParserError.h */,
+				94855A0A1810DAE100220186 /* SDParserError.m */,
 			);
 			name = Parser;
 			sourceTree = "<group>";
@@ -434,6 +444,7 @@
 				9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
+				94855A0B1810DAE100220186 /* SDParserError.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
 				9493D97018108BC80080E3C0 /* SDToken.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
@@ -457,6 +468,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9490D7FD18104D59006ECA5E /* LeviathanTests.m in Sources */,
+				94855A081810D92500220186 /* SDExpectation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -604,6 +616,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Leviathan.app/Contents/MacOS/Leviathan";
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -626,6 +639,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Leviathan.app/Contents/MacOS/Leviathan";
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",

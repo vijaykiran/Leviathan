@@ -24,7 +24,7 @@
     self.enclosingScrollView.verticalScroller.knobStyle = NSScrollerKnobStyleLight;
     self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
-    self.font = [NSFont fontWithName:@"Menlo" size:13]; // TODO: replace this with NSUserDefaults somehow
+    self.font = [NSFont fontWithName:@"Menlo" size:12]; // TODO: replace this with NSUserDefaults somehow
     self.backgroundColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeBackgroundColor]);
     self.insertionPointColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeCursorColor]);
     self.selectedTextAttributes = @{NSBackgroundColorAttributeName: SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeSelectionColor])};
