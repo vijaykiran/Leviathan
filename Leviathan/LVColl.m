@@ -72,6 +72,15 @@
     }
 }
 
+- (LVColl*) highestParentColl {
+    LVColl* coll = self;
+    
+    while (coll.parent.parent)
+        coll = coll.parent;
+    
+    return coll;
+}
+
 @end
 
 @implementation LVDefinition

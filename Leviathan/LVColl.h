@@ -29,6 +29,8 @@ typedef enum __LVCollType {
 
 - (void) findDefinitions:(NSMutableArray*)defs;
 
+- (LVColl*) highestParentColl;
+
 @end
 
 
