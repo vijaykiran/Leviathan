@@ -186,6 +186,8 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
             
             if (openingTokenRecentNewline == NSNotFound)
                 openingTokenRecentNewline = 0;
+            else
+                openingTokenRecentNewline++;
             
             NSUInteger prefixIndentation = openingTokenAbsolutePos - openingTokenRecentNewline;
             
