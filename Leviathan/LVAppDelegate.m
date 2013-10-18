@@ -28,6 +28,14 @@
              @"fontSize": @12};
 }
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+    for (LVProjectWindowController* c in self.projectWindowControllers) {
+        if (![c tryClosingCompletely])
+            return NSTerminateCancel;
+    }
+    return NSTerminateNow;
+}
+
 - (IBAction) openDocument:(id)sender {
     NSOpenPanel* openPanel = [NSOpenPanel openPanel];
     openPanel.canChooseDirectories = YES;

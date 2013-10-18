@@ -26,4 +26,6 @@
 
 @property LVProject* project;
 
+- (BOOL) tryClosingCompletely;
+
 @end

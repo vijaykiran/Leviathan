@@ -76,6 +76,11 @@
 }
 
 - (IBAction) closeProjectWindow:(id)sender {
+    [self tryClosingCompletely];
+}
+
+
+- (BOOL) tryClosingCompletely {
     NSArray* unsavedFiles = [self.project.files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.hasChanges = TRUE"]];
     
     if ([unsavedFiles count] > 0) {
@@ -88,12 +93,13 @@
         NSInteger result = NSRunAlertPanel(@"Unsaved Files", @"You have some unsaved files. I opened them for you so you can check them out.", @"Close window", @"Check them out", nil);
         
         if (result != NSAlertDefaultReturn)
-            return;
+            return NO;
     }
     
-    [[self window] performClose:sender];
+    [[self window] performClose:self];
+    
+    return YES;
 }
-
 
 
 
