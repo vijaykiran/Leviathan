@@ -55,7 +55,7 @@
                     for (NSUInteger i = 1; i < [children count]; i++) {
                         LVAtom* child = [children objectAtIndex:i];
                         
-                        if (child.atomType == LVAtomTypeSymbol) {
+                        if ([child isAtom] && child.atomType == LVAtomTypeSymbol) {
                             defName = child;
                             break;
                         }
