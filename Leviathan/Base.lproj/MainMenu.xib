@@ -26,7 +26,11 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
+                            <menuItem title="Preferences…" keyEquivalent="," id="129">
+                                <connections>
+                                    <action selector="showPreferencesWindow:" target="494" id="kVX-Ze-eeO"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -398,6 +402,13 @@
                             <menuItem title="Bigger" tag="3" keyEquivalent="+" id="u7d-mC-0TM">
                                 <connections>
                                     <action selector="modifyFont:" target="420" id="1vs-cA-ypS"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="hcH-Rs-CNG"/>
+                            <menuItem title="Change Font" tag="3" id="7Xm-uE-tj9">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="orderFrontFontPanel:" target="-1" id="WPq-Mx-UbN"/>
                                 </connections>
                             </menuItem>
                         </items>

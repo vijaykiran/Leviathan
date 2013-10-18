@@ -9,6 +9,7 @@
 #import "LVTextView.h"
 
 #import "SDTheme.h"
+#import "LVPreferences.h"
 
 @implementation LVTextView
 
@@ -20,11 +21,24 @@
     return did;
 }
 
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void) defaultsFontChanged:(NSNotification*)note {
+    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
+    [self.textStorage addAttribute:NSFontAttributeName
+                             value:[LVPreferences userFont]
+                             range:fullRange];
+}
+
 - (void) awakeFromNib {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:SDDefaultsFontChangedNotification object:nil];
+    
     self.enclosingScrollView.verticalScroller.knobStyle = NSScrollerKnobStyleLight;
     self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
-    self.font = [NSFont fontWithName:@"Menlo" size:12]; // TODO: replace this with NSUserDefaults somehow
+    self.font = [LVPreferences userFont];
     self.backgroundColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeBackgroundColor]);
     self.insertionPointColor = SDColorFromHex([[[SDTheme temporaryTheme] attributes] objectForKey:SDThemeCursorColor]);
     

@@ -10,6 +10,8 @@
 
 #import "LVAtom.h"
 
+#import "LVPreferences.h"
+
 @interface LVEditor ()
 
 @property IBOutlet LVTextView* textView;
@@ -38,6 +40,11 @@
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
     
     [self.file highlight];
+    
+    NSRange fullRange = NSMakeRange(0, [self.file.textStorage length]);
+    [self.file.textStorage addAttribute:NSFontAttributeName
+                                  value:[LVPreferences userFont]
+                                  range:fullRange];
 }
 
 - (void) makeFirstResponder {

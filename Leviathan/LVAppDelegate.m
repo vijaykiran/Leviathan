@@ -8,9 +8,20 @@
 
 #import "LVAppDelegate.h"
 
+#import "LVPreferencesWindowController.h"
+#import "LVPreferences.h"
+
 @implementation LVAppDelegate
 
+- (NSDictionary*) defaultDefaults {
+    return @{@"fontName": @"Menlo",
+             @"fontSize": @12};
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultDefaults]];
+    [[NSFontManager sharedFontManager] setTarget:self];
+    
     self.projectWindowControllers = [NSMutableArray array];
     
     NSURL* tempURL = [NSURL fileURLWithPath:@"/Users/sdegutis/Dropbox/projects/cleancoders.com"];
@@ -31,6 +42,14 @@
 
 - (void) projectWindowClosed:(LVProjectWindowController *)controller {
     [self.projectWindowControllers removeObject:controller];
+}
+
+- (IBAction) showPreferencesWindow:(id)sender {
+    [[LVPreferencesWindowController sharedPreferencesWindowController] showWindow:sender];
+}
+
+- (void)changeFont:(id)sender {
+    [LVPreferences setUserFont: [sender convertFont:[LVPreferences userFont]]];
 }
 
 @end

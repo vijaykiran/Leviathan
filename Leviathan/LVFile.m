@@ -12,6 +12,8 @@
 
 #import "SDTheme.h"
 
+#import "LVPreferences.h"
+
 @implementation LVFile
 
 + (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName {
@@ -43,11 +45,6 @@
     else {
         self.textStorage = [[NSTextStorage alloc] initWithString:@""];
     }
-    
-    NSFont* font = [NSFont fontWithName:@"Menlo" size:12]; // TODO: replace this with NSUserDefaults somehow
-    
-    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
-    [self.textStorage addAttribute:NSFontAttributeName value:font range:fullRange];
 }
 
 - (void) highlight {
