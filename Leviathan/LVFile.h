@@ -18,6 +18,7 @@
 @property NSString* longName;
 @property NSString* shortName;
 
+@property NSUndoManager* undoManager;
 @property NSTextStorage* textStorage;
 
 @property LVColl* topLevelElement;
