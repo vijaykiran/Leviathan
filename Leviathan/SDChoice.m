@@ -32,7 +32,7 @@
 }
 
 - (void) updateScore {
-    NSStringScoreOption opts = NSStringScoreOptionFavorSmallerWords & NSStringScoreOptionReducedLongStringPenalty;
+    NSStringScoreOption opts = NSStringScoreOptionNone;
 //    NSStringScoreOption opts = NSStringScoreOptionReducedLongStringPenalty;
 //    NSStringScoreOption opts = NSStringScoreOptionFavorSmallerWords;
     

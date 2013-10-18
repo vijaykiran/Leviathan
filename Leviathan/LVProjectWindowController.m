@@ -117,6 +117,7 @@
                            inDirection:LVSplitDirectionEast];
     
     [editorController startEditingFile:file];
+    [self.tabView titlesChanged];
 }
 
 @end
