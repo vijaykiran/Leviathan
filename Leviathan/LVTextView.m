@@ -102,6 +102,10 @@ NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
     return NSMakeRange(pos, r.length + (r.location - pos));
 }
 
+NSRange LVSubrangeFrom(NSRange r, NSUInteger absPosWithin) {
+    return NSMakeRange(absPosWithin, r.length - absPosWithin);
+}
+
 - (void) indentCurrentBody {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
@@ -110,24 +114,44 @@ NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
     
     NSString* wholeString = [[self textStorage] string];
     
-    NSRange relevantRange = highestParentColl.fullyEnclosedRange;
+    NSRange wholeBlockRange = highestParentColl.fullyEnclosedRange;
     
     NSUInteger firstNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
                                                                    options:NSBackwardsSearch
-                                                                     range:NSMakeRange(0, relevantRange.location)].location;
+                                                                     range:NSMakeRange(0, wholeBlockRange.location)].location;
     
     if (firstNewlinePosition == NSNotFound)
         firstNewlinePosition = 0;
     else
         firstNewlinePosition++;
     
-    relevantRange = LVExtendRangeToBeginningPos(relevantRange, firstNewlinePosition);
+    wholeBlockRange = LVExtendRangeToBeginningPos(wholeBlockRange, firstNewlinePosition);
     
-    NSString* relevantString = [wholeString substringWithRange:relevantRange];
-    NSLog(@"[%@]", relevantString);
+    NSString* relevantString = [wholeString substringWithRange:wholeBlockRange];
+//    NSLog(@"[%@]", relevantString);
     
     
+    NSUInteger currentPos = wholeBlockRange.location;
     
+    while (NSLocationInRange(currentPos, wholeBlockRange)) {
+        NSRange remainingRange = LVSubrangeFrom(wholeBlockRange, currentPos);
+        
+        NSUInteger nextNewlinePosition = [relevantString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+                                                                         options:0
+                                                                           range:remainingRange].location;
+        
+        if (nextNewlinePosition == NSNotFound)
+            nextNewlinePosition = NSMaxRange(wholeBlockRange);
+        else
+            nextNewlinePosition++;
+        
+        NSRange currentLineRange = NSMakeRange(currentPos, nextNewlinePosition - currentPos);
+        
+        
+        
+        currentPos = nextNewlinePosition;
+        
+    }
     
     
     
