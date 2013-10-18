@@ -60,6 +60,32 @@
     }
 }
 
+- (IBAction) openTestInSplit:(id)sender {
+    NSString* path = self.tabView.currentTab.currentEditor.file.longName;
+    
+    path = [path substringWithRange:NSMakeRange(4, [path length] - 4 - 4)];
+    path = [NSString stringWithFormat:@"test/%@_test.clj", path];
+    
+    LVFile* found;
+    
+    for (LVFile* file in self.project.files) {
+        if ([file.longName isEqualToString: path]) {
+            found = file;
+            break;
+        }
+    }
+    
+    if (found) {
+        LVEditor* editorController = [[LVEditor alloc] init];
+        
+        [self.tabView.currentTab addEditor:editorController
+                               inDirection:LVSplitDirectionEast];
+        
+        [editorController startEditingFile:found];
+        [self.tabView titlesChanged];
+    }
+}
+
 - (IBAction) jumpToFile:(id)sender {
     NSArray* files = [self.project.files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"fileURL != NULL"]];
     

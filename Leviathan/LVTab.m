@@ -68,6 +68,14 @@
     [self.topLevelSplitView addSubview: editor.view];
     [self.topLevelSplitView adjustSubviews];
     
+    NSUInteger numEditors = [self.editors count];
+    
+    for (int i = 0; i < numEditors - 1; i++) {
+        CGFloat percent = ((i + 1.0f) / (CGFloat)numEditors);
+        [self.topLevelSplitView setPosition:([self.topLevelSplitView frame].size.width * percent)
+                           ofDividerAtIndex:i];
+    }
+    
     [self switchToEditor:editor];
 }
 

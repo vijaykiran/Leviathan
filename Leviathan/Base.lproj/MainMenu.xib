@@ -169,6 +169,14 @@
                             <menuItem isSeparatorItem="YES" id="t6Z-Sa-whx">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
+                            <menuItem title="Open Test in Split" keyEquivalent="T" id="MqP-MD-xQC">
+                                <connections>
+                                    <action selector="openTestInSplit:" target="-1" id="8wK-dk-dyj"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="BBc-zi-dTN">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
                             <menuItem title="Save…" keyEquivalent="s" id="75">
                                 <connections>
                                     <action selector="saveDocument:" target="-1" id="362"/>
