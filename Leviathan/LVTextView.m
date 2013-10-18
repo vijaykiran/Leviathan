@@ -8,6 +8,7 @@
 
 #import "LVTextView.h"
 
+#import "LVAtom.h"
 #import "LVThemeManager.h"
 #import "LVHighlighter.h"
 #import "LVPreferences.h"
@@ -124,6 +125,20 @@ NSUInteger LVFirstNewlineBefore(NSString* str, NSUInteger pos) {
     return found;
 }
 
+BOOL LVIsFunctionLike(LVColl* coll) {
+    // we already assume its a coll with 2+ childs
+    id<LVElement> firstChild = [[coll childElements] objectAtIndex:0];
+    if (![firstChild isAtom])
+        return NO;
+    
+    LVAtom* atomChild = firstChild;
+    
+    static NSArray* functionLikes;
+    if (!functionLikes)
+        functionLikes = @[@"let", @"if", @"if-let", @"cond", @"case"];
+    
+    return ([functionLikes containsObject: [atomChild token].val]);
+}
 
 NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
     return NSMakeRange(pos, r.length + (r.location - pos));
@@ -204,7 +219,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
             NSUInteger prefixIndentation = collParentForBeginningOfLine.openingToken.range.location - openingTokenRecentNewline;
             
             if (collParentForBeginningOfLine.collType == LVCollTypeList) {
-                if ([collParentForBeginningOfLine isKindOfClass:[LVDefinition self]]) {
+                if ([collParentForBeginningOfLine isKindOfClass:[LVDefinition self]] || LVIsFunctionLike(collParentForBeginningOfLine)) {
                     expectedStartSpaces = prefixIndentation + 2;
                 }
                 else if ([[collParentForBeginningOfLine childElements] count] >= 2 && childIndexOfFirstElementOnLine >= 2) {
