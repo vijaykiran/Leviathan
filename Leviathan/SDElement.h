@@ -8,18 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@class SDColl;
-@class SDAtom;
+@class LVColl;
+@class LVAtom;
 
-@protocol SDElement <NSObject>
+@protocol LVElement <NSObject>
 
 - (BOOL) isColl;
 - (BOOL) isAtom;
 
-- (SDColl*) asColl;
-- (SDAtom*) asAtom;
+- (LVColl*) asColl;
+- (LVAtom*) asAtom;
 
-@property id<SDElement> parent;
+@property id<LVElement> parent;
 @property NSUInteger idx;
 
 @property NSRange fullyEnclosedRange;

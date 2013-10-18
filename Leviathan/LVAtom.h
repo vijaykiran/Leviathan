@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "SDElement.h"
-#import "SDToken.h"
+#import "LVToken.h"
 
 typedef enum __LVAtomType {
     LVAtomTypeSymbol,
@@ -28,11 +28,11 @@ typedef enum __LVAtomType {
     LVAtomTypeSplice,
 } LVAtomType;
 
-@interface SDAtom : NSObject <SDElement>
+@interface LVAtom : NSObject <LVElement>
 
-@property SDToken* token;
+@property LVToken* token;
 @property LVAtomType atomType;
 
-+ (SDAtom*) with:(SDToken*)tok of:(LVAtomType)atomType;
++ (LVAtom*) with:(LVToken*)tok of:(LVAtomType)atomType;
 
 @end

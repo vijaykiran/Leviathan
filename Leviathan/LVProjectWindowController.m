@@ -14,7 +14,7 @@
 
 #import "SDFuzzyMatcher.h"
 
-#import "SDAtom.h"
+#import "LVAtom.h"
 
 @interface LVProjectWindowController ()
 

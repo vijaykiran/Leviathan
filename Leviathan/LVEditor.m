@@ -8,7 +8,7 @@
 
 #import "LVEditor.h"
 
-#import "SDAtom.h"
+#import "LVAtom.h"
 
 @interface LVEditor ()
 

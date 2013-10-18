@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "SDColl.h"
+#import "LVColl.h"
 
 #import "SDTheme.h"
 
-#import "SDAtom.h"
+#import "LVAtom.h"
 
-@implementation SDColl
+@implementation LVColl
 
 @synthesize parent;
 @synthesize idx;
@@ -21,21 +21,21 @@
 
 - (BOOL) isColl { return YES; }
 - (BOOL) isAtom { return NO; }
-- (SDColl*) asColl { return self; }
-- (SDAtom*) asAtom { return nil; }
+- (LVColl*) asColl { return self; }
+- (LVAtom*) asAtom { return nil; }
 
 - (void) highlightIn:(NSTextStorage*)attrString atLevel:(int)deepness {
-    if (self.collType != SDCollTypeTopLevel) {
+    if (self.collType != LVCollTypeTopLevel) {
         SDApplyStyle(attrString, SDThemeForRainbowParens, self.openingToken.range, deepness);
         SDApplyStyle(attrString, SDThemeForRainbowParens, self.closingToken.range, deepness);
     }
     
-    for (id<SDElement> child in self.childElements) {
+    for (id<LVElement> child in self.childElements) {
         [child highlightIn:attrString atLevel:deepness + 1];
     }
 }
 
-- (SDColl*) deepestCollAtPos:(NSUInteger)pos childsIndex:(NSUInteger*)childsIndex {
+- (LVColl*) deepestCollAtPos:(NSUInteger)pos childsIndex:(NSUInteger*)childsIndex {
     int i = 0;
     
     if (pos <= NSMaxRange(self.openingToken.range)) {
@@ -43,7 +43,7 @@
         return self;
     }
     
-    for (id<SDElement> child in self.childElements) {
+    for (id<LVElement> child in self.childElements) {
         
         if (pos < NSMaxRange([child fullyEnclosedRange])) {
             
@@ -71,7 +71,7 @@
 }
 
 - (void) findDefinitions:(NSMutableArray*)defs {
-    for (id<SDElement> child in self.childElements) {
+    for (id<LVElement> child in self.childElements) {
         if ([child isKindOfClass:[SDDefinition self]]) {
             [defs addObject:child];
         }

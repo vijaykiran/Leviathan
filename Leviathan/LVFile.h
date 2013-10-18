@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SDColl.h"
+#import "LVColl.h"
 
 @interface LVFile : NSObject
 
@@ -20,7 +20,7 @@
 
 @property NSTextStorage* textStorage;
 
-@property SDColl* topLevelElement;
+@property LVColl* topLevelElement;
 
 - (void) parseFromFile;
 - (void) highlight;

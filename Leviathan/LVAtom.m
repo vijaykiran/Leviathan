@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "SDAtom.h"
+#import "LVAtom.h"
 
-#import "SDColl.h"
+#import "LVColl.h"
 #import "SDTheme.h"
 
-@implementation SDAtom
+@implementation LVAtom
 
 @synthesize parent;
 @synthesize idx;
@@ -20,11 +20,11 @@
 
 - (BOOL) isColl { return NO; }
 - (BOOL) isAtom { return YES; }
-- (SDColl*) asColl { return nil; }
-- (SDAtom*) asAtom { return self; }
+- (LVColl*) asColl { return nil; }
+- (LVAtom*) asAtom { return self; }
 
-+ (SDAtom*) with:(SDToken*)tok of:(LVAtomType)atomType {
-    SDAtom* atom = [[self alloc] init];
++ (LVAtom*) with:(LVToken*)tok of:(LVAtomType)atomType {
+    LVAtom* atom = [[self alloc] init];
     atom.token = tok;
     atom.atomType = atomType;
     atom.fullyEnclosedRange = tok.range;

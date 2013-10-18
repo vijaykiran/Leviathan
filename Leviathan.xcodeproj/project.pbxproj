@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
-		94855A0B1810DAE100220186 /* SDParserError.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A0A1810DAE100220186 /* SDParserError.m */; };
+		94855A0B1810DAE100220186 /* LVParserError.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A0A1810DAE100220186 /* LVParserError.m */; };
 		9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D7D218104D58006ECA5E /* Cocoa.framework */; };
 		9490D7DD18104D58006ECA5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9490D7DB18104D58006ECA5E /* InfoPlist.strings */; };
 		9490D7DF18104D58006ECA5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D7DE18104D58006ECA5E /* main.m */; };
@@ -39,10 +39,10 @@
 		9490D84118107FD6006ECA5E /* SDChoiceTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83918107FD6006ECA5E /* SDChoiceTableView.m */; };
 		9490D84218107FD6006ECA5E /* SDChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83B18107FD6006ECA5E /* SDChoice.m */; };
 		9490D84318107FD6006ECA5E /* NSString+Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83D18107FD6006ECA5E /* NSString+Score.m */; };
-		9493D96F18108BC80080E3C0 /* SDParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96718108BC80080E3C0 /* SDParser.m */; };
-		9493D97018108BC80080E3C0 /* SDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96918108BC80080E3C0 /* SDToken.m */; };
-		9493D97118108BC80080E3C0 /* SDColl.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96C18108BC80080E3C0 /* SDColl.m */; };
-		9493D97218108BC80080E3C0 /* SDAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96E18108BC80080E3C0 /* SDAtom.m */; };
+		9493D96F18108BC80080E3C0 /* LVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96718108BC80080E3C0 /* LVParser.m */; };
+		9493D97018108BC80080E3C0 /* LVToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96918108BC80080E3C0 /* LVToken.m */; };
+		9493D97118108BC80080E3C0 /* LVColl.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96C18108BC80080E3C0 /* LVColl.m */; };
+		9493D97218108BC80080E3C0 /* LVAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96E18108BC80080E3C0 /* LVAtom.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,8 +58,8 @@
 /* Begin PBXFileReference section */
 		94855A061810D92500220186 /* SDExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDExpectation.h; sourceTree = "<group>"; };
 		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
-		94855A091810DAE100220186 /* SDParserError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDParserError.h; sourceTree = "<group>"; };
-		94855A0A1810DAE100220186 /* SDParserError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDParserError.m; sourceTree = "<group>"; };
+		94855A091810DAE100220186 /* LVParserError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVParserError.h; sourceTree = "<group>"; };
+		94855A0A1810DAE100220186 /* LVParserError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVParserError.m; sourceTree = "<group>"; };
 		9490D7CF18104D58006ECA5E /* Leviathan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leviathan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9490D7D218104D58006ECA5E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		9490D7D518104D58006ECA5E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -112,15 +112,15 @@
 		9490D83B18107FD6006ECA5E /* SDChoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDChoice.m; sourceTree = "<group>"; };
 		9490D83C18107FD6006ECA5E /* NSString+Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Score.h"; sourceTree = "<group>"; };
 		9490D83D18107FD6006ECA5E /* NSString+Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Score.m"; sourceTree = "<group>"; };
-		9493D96618108BC80080E3C0 /* SDParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDParser.h; sourceTree = "<group>"; };
-		9493D96718108BC80080E3C0 /* SDParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDParser.m; sourceTree = "<group>"; };
-		9493D96818108BC80080E3C0 /* SDToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDToken.h; sourceTree = "<group>"; };
-		9493D96918108BC80080E3C0 /* SDToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDToken.m; sourceTree = "<group>"; };
+		9493D96618108BC80080E3C0 /* LVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVParser.h; sourceTree = "<group>"; };
+		9493D96718108BC80080E3C0 /* LVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVParser.m; sourceTree = "<group>"; };
+		9493D96818108BC80080E3C0 /* LVToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVToken.h; sourceTree = "<group>"; };
+		9493D96918108BC80080E3C0 /* LVToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVToken.m; sourceTree = "<group>"; };
 		9493D96A18108BC80080E3C0 /* SDElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDElement.h; sourceTree = "<group>"; };
-		9493D96B18108BC80080E3C0 /* SDColl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDColl.h; sourceTree = "<group>"; };
-		9493D96C18108BC80080E3C0 /* SDColl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDColl.m; sourceTree = "<group>"; };
-		9493D96D18108BC80080E3C0 /* SDAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAtom.h; sourceTree = "<group>"; };
-		9493D96E18108BC80080E3C0 /* SDAtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAtom.m; sourceTree = "<group>"; };
+		9493D96B18108BC80080E3C0 /* LVColl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVColl.h; sourceTree = "<group>"; };
+		9493D96C18108BC80080E3C0 /* LVColl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVColl.m; sourceTree = "<group>"; };
+		9493D96D18108BC80080E3C0 /* LVAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVAtom.h; sourceTree = "<group>"; };
+		9493D96E18108BC80080E3C0 /* LVAtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVAtom.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -321,17 +321,17 @@
 		9493D96518108BBE0080E3C0 /* Parser */ = {
 			isa = PBXGroup;
 			children = (
-				9493D96618108BC80080E3C0 /* SDParser.h */,
-				9493D96718108BC80080E3C0 /* SDParser.m */,
-				9493D96818108BC80080E3C0 /* SDToken.h */,
-				9493D96918108BC80080E3C0 /* SDToken.m */,
+				9493D96618108BC80080E3C0 /* LVParser.h */,
+				9493D96718108BC80080E3C0 /* LVParser.m */,
+				9493D96818108BC80080E3C0 /* LVToken.h */,
+				9493D96918108BC80080E3C0 /* LVToken.m */,
 				9493D96A18108BC80080E3C0 /* SDElement.h */,
-				9493D96B18108BC80080E3C0 /* SDColl.h */,
-				9493D96C18108BC80080E3C0 /* SDColl.m */,
-				9493D96D18108BC80080E3C0 /* SDAtom.h */,
-				9493D96E18108BC80080E3C0 /* SDAtom.m */,
-				94855A091810DAE100220186 /* SDParserError.h */,
-				94855A0A1810DAE100220186 /* SDParserError.m */,
+				9493D96B18108BC80080E3C0 /* LVColl.h */,
+				9493D96C18108BC80080E3C0 /* LVColl.m */,
+				9493D96D18108BC80080E3C0 /* LVAtom.h */,
+				9493D96E18108BC80080E3C0 /* LVAtom.m */,
+				94855A091810DAE100220186 /* LVParserError.h */,
+				94855A0A1810DAE100220186 /* LVParserError.m */,
 			);
 			name = Parser;
 			sourceTree = "<group>";
@@ -444,22 +444,22 @@
 				9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
-				94855A0B1810DAE100220186 /* SDParserError.m in Sources */,
+				94855A0B1810DAE100220186 /* LVParserError.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
-				9493D97018108BC80080E3C0 /* SDToken.m in Sources */,
+				9493D97018108BC80080E3C0 /* LVToken.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
 				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
-				9493D96F18108BC80080E3C0 /* SDParser.m in Sources */,
+				9493D96F18108BC80080E3C0 /* LVParser.m in Sources */,
 				9490D84018107FD6006ECA5E /* SDFuzzyMatcherWindowController.m in Sources */,
 				9490D84318107FD6006ECA5E /* NSString+Score.m in Sources */,
 				9490D80D18104E81006ECA5E /* LVProject.m in Sources */,
 				9490D83118107DCC006ECA5E /* SDTheme.m in Sources */,
 				9490D84118107FD6006ECA5E /* SDChoiceTableView.m in Sources */,
 				9490D82218105B2D006ECA5E /* LVEditor.m in Sources */,
-				9493D97118108BC80080E3C0 /* SDColl.m in Sources */,
+				9493D97118108BC80080E3C0 /* LVColl.m in Sources */,
 				9490D81D181054EE006ECA5E /* LVTab.m in Sources */,
-				9493D97218108BC80080E3C0 /* SDAtom.m in Sources */,
+				9493D97218108BC80080E3C0 /* LVAtom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

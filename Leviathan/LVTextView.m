@@ -62,10 +62,10 @@
 - (IBAction) raiseSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     if (childIndex < [coll.childElements count]) {
-        id<SDElement> child = [coll.childElements objectAtIndex:childIndex];
+        id<LVElement> child = [coll.childElements objectAtIndex:childIndex];
         
         NSString* newStr = [[[self textStorage] string] substringWithRange:[child fullyEnclosedRange]];
         
@@ -142,10 +142,10 @@
 - (void) wrapNextInThing:(NSString*)thing {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     if (childIndex < [coll.childElements count]) {
-        id<SDElement> element = [coll.childElements objectAtIndex:childIndex];
+        id<LVElement> element = [coll.childElements objectAtIndex:childIndex];
         
         NSRange rangeToTempDelete = [element fullyEnclosedRange];
         NSString* theStr = [[[self textStorage] string] substringWithRange:rangeToTempDelete];
@@ -164,7 +164,7 @@
 - (IBAction) spliceSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     NSRange outerRange = coll.fullyEnclosedRange;
     NSUInteger start = NSMaxRange(coll.openingToken.range);
@@ -183,10 +183,10 @@
 - (IBAction) extendSelectionToNext:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:NSMaxRange(selection) childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:NSMaxRange(selection) childsIndex:&childIndex];
     
     if (childIndex < [coll.childElements count]) {
-        id<SDElement> child = [coll.childElements objectAtIndex:childIndex];
+        id<LVElement> child = [coll.childElements objectAtIndex:childIndex];
         NSRange newRange = NSUnionRange(selection, [child fullyEnclosedRange]);
         
         self.selectedRange = newRange;
@@ -213,10 +213,10 @@
 - (IBAction) forwardSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     if (childIndex < [coll.childElements count]) {
-        id<SDElement> element = [coll.childElements objectAtIndex:childIndex];
+        id<LVElement> element = [coll.childElements objectAtIndex:childIndex];
         self.selectedRange = NSMakeRange(NSMaxRange([element fullyEnclosedRange]), 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
@@ -228,10 +228,10 @@
 - (IBAction) backwardSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     if (childIndex > 0) {
-        id<SDElement> element = [coll.childElements objectAtIndex:childIndex - 1];
+        id<LVElement> element = [coll.childElements objectAtIndex:childIndex - 1];
         self.selectedRange = NSMakeRange([element fullyEnclosedRange].location, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
@@ -243,7 +243,7 @@
 - (IBAction) outBackwardSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     self.selectedRange = NSMakeRange([coll fullyEnclosedRange].location, 0);
     [self scrollRangeToVisible:self.selectedRange];
@@ -252,7 +252,7 @@
 - (IBAction) outForwardSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     self.selectedRange = NSMakeRange(NSMaxRange([coll fullyEnclosedRange]), 0);
     [self scrollRangeToVisible:self.selectedRange];
@@ -261,12 +261,12 @@
 - (IBAction) inForwardSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     if (childIndex < [coll.childElements count]) {
-        SDColl* childColl;
+        LVColl* childColl;
         for (NSUInteger i = childIndex; i < [[coll childElements] count]; i++) {
-            id<SDElement> child = [[coll childElements] objectAtIndex:i];
+            id<LVElement> child = [[coll childElements] objectAtIndex:i];
             if ([child isColl]) {
                 childColl = child;
                 break;
@@ -283,12 +283,12 @@
 - (IBAction) inBackwardSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     if (childIndex > 0) {
-        SDColl* childColl;
+        LVColl* childColl;
         for (NSInteger i = childIndex - 1; i >= 0; i--) {
-            id<SDElement> child = [[coll childElements] objectAtIndex:i];
+            id<LVElement> child = [[coll childElements] objectAtIndex:i];
             if ([child isColl]) {
                 childColl = child;
                 break;
@@ -305,10 +305,10 @@
 - (IBAction) killNextSexp:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     if (childIndex < [coll.childElements count]) {
-        id<SDElement> element = [coll.childElements objectAtIndex:childIndex];
+        id<LVElement> element = [coll.childElements objectAtIndex:childIndex];
         
         NSRange rangeToDelete = [element fullyEnclosedRange];
         self.selectedRange = rangeToDelete;
@@ -321,7 +321,7 @@
 - (void) deleteToEndOfParagraph:(id)sender {
     NSRange selection = self.selectedRange;
     NSUInteger childIndex;
-    SDColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
     
     if (childIndex < [coll.childElements count]) {
         //        NSArray* deleteChildren = [coll.childElements subarrayWithRange:NSMakeRange(childIndex, [coll.childElements count] - childIndex)];

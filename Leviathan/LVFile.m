@@ -8,7 +8,7 @@
 
 #import "LVFile.h"
 
-#import "SDParser.h"
+#import "LVParser.h"
 
 #import "SDTheme.h"
 
@@ -31,8 +31,8 @@
         NSString* rawString = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
         self.textStorage = [[NSTextStorage alloc] initWithString:rawString];
         
-        SDParseError* error;
-        self.topLevelElement = [SDParser parse:rawString error:&error];
+        LVParseError* error;
+        self.topLevelElement = [LVParser parse:rawString error:&error];
         
 //        if (error) {
 //            NSLog(@"error %d %@", error.errorType, self.fileURL);
@@ -55,8 +55,8 @@
     
     [self.textStorage beginEditing];
     
-    SDParseError* error;
-    self.topLevelElement = [SDParser parse:rawString error:&error];
+    LVParseError* error;
+    self.topLevelElement = [LVParser parse:rawString error:&error];
     
     if (error) {
         self.topLevelElement = nil;
