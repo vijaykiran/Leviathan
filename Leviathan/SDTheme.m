@@ -20,43 +20,57 @@
     return theme;
 }
 
+- (NSURL*) currentThemeFile {
+    NSError *error;
+    NSURL *appSupportDir = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory
+                                                                  inDomain:NSUserDomainMask
+                                                         appropriateForURL:nil
+                                                                    create:YES
+                                                                     error:&error];
+    
+    NSURL* dataDirURL = [[appSupportDir URLByAppendingPathComponent:@"Leviathan"] URLByAppendingPathComponent:@"Themes"];
+    
+    [[NSFileManager defaultManager] createDirectoryAtURL:dataDirURL
+                             withIntermediateDirectories:YES
+                                              attributes:nil
+                                                   error:NULL];
+    
+    return [dataDirURL URLByAppendingPathComponent:@"CURRENT_THEME.json"];
+}
+
+- (void) copyFileOrElse:(NSURL*)from to:(NSURL*)to {
+    NSError*__autoreleasing error;
+    if (![[NSFileManager defaultManager] copyItemAtURL:from toURL:to error:&error]) {
+        [NSApp presentError:error];
+        return; // TODO: probably should just quit actually
+    }
+}
+
+- (void) copyDefaultThemeMaybe {
+    NSURL* currentThemeInAppSupport = [self currentThemeFile];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[currentThemeInAppSupport path]]) {
+        NSURL* defaultThemeInBundle = [[NSBundle mainBundle] URLForResource:@"default_leviathan_theme" withExtension:@"json"];
+        
+        [self copyFileOrElse:defaultThemeInBundle to:currentThemeInAppSupport];
+        [self copyFileOrElse:defaultThemeInBundle to:[[currentThemeInAppSupport URLByDeletingLastPathComponent] URLByAppendingPathComponent:@"DefaultTheme.json"]];
+    }
+}
+
+- (void) loadCurrentTheme {
+    NSData* data = [NSData dataWithContentsOfURL:[self currentThemeFile]];
+    
+    NSError* __autoreleasing error;
+    self.attributes = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    
+    if (self.attributes == nil) {
+        [NSApp presentError:error];
+    }
+}
+
 - (void) setup {
-    self.attributes = [NSMutableDictionary dictionary];
-    
-    self.attributes[SDThemeBackgroundColor] = @"252A2B";
-    self.attributes[SDThemeSelectionColor] = @"5c3566";
-    self.attributes[SDThemeCursorColor] = @"babdb6";
-    
-    self.attributes[SDThemeForDef] = @{ @"Bold": @YES, @"Color": @"729fcf" };
-    self.attributes[SDThemeForDefName] = @{ @"Bold": @YES, @"Color": @"edd400" };
-    self.attributes[SDThemeForSymbol] = @{ @"Bold": @NO, @"Color": @"eeeeec" };
-    
-    self.attributes[SDThemeForKeyword] = @{ @"Bold": @NO, @"Color": @"73d216" };
-    self.attributes[SDThemeForComment] = @{ @"Bold": @NO, @"Color": @"999999" };
-    self.attributes[SDThemeForNumber] = @{ @"Bold": @NO, @"Color": @"99bbff" };
-    self.attributes[SDThemeForString] = @{ @"Bold": @NO, @"Color": @"ad7fa8" };
-    self.attributes[SDThemeForRegex] = @{ @"Bold": @NO, @"Color": @"e9b96e" };
-    
-    self.attributes[SDThemeForTypeOp] = @{ @"Bold": @YES, @"Color": @"edd400" };
-    self.attributes[SDThemeForQuote] = @{ @"Bold": @YES, @"Color": @"edd400" };
-    self.attributes[SDThemeForUnquote] = @{ @"Bold": @YES, @"Color": @"edd400" };
-    self.attributes[SDThemeForSyntaxQuote] = @{ @"Bold": @YES, @"Color": @"edd400" };
-    self.attributes[SDThemeForSplice] = @{ @"Bold": @YES, @"Color": @"edd400" };
-    
-    self.attributes[SDThemeForSyntaxError] = @{ @"Bold": @YES, @"Color": @"ef2929" };
-    
-    self.attributes[SDThemeForRainbowParens] = @[@{ @"Bold": @NO, @"Color": @"729fcf" },
-                                                 @{ @"Bold": @NO, @"Color": @"8ae234" },
-                                                 @{ @"Bold": @NO, @"Color": @"fce94f" },
-                                                 @{ @"Bold": @NO, @"Color": @"ad7fa8" },
-                                                 @{ @"Bold": @NO, @"Color": @"e9b96e" },
-                                                 @{ @"Bold": @NO, @"Color": @"fcaf3e" },
-                                                 @{ @"Bold": @NO, @"Color": @"3465a4" },
-                                                 @{ @"Bold": @NO, @"Color": @"73d216" },
-                                                 @{ @"Bold": @NO, @"Color": @"f57900" },
-                                                 @{ @"Bold": @NO, @"Color": @"75507b" },
-                                                 @{ @"Bold": @NO, @"Color": @"c17d11" }];
-    
+    [self copyDefaultThemeMaybe];
+    [self loadCurrentTheme];
 }
 
 @end

@@ -9,25 +9,25 @@
 #import <Foundation/Foundation.h>
 
 
-static NSString* SDThemeBackgroundColor = @"SDThemeBackgroundColor";
-static NSString* SDThemeSelectionColor = @"SDThemeSelectionColor";
-static NSString* SDThemeCursorColor = @"SDThemeCursorColor";
+static NSString* SDThemeBackgroundColor = @"background_color";
+static NSString* SDThemeSelectionColor = @"selection_color";
+static NSString* SDThemeCursorColor = @"cursor_color";
 
-static NSString* SDThemeForSymbol = @"SDThemeForSymbol";
-static NSString* SDThemeForDef = @"SDThemeForDef";
-static NSString* SDThemeForDefName = @"SDThemeForDefName";
-static NSString* SDThemeForKeyword = @"SDThemeForKeyword";
-static NSString* SDThemeForComment = @"SDThemeForComment";
-static NSString* SDThemeForTypeOp = @"SDThemeForTypeOp";
-static NSString* SDThemeForQuote = @"SDThemeForQuote";
-static NSString* SDThemeForUnquote = @"SDThemeForUnquote";
-static NSString* SDThemeForSyntaxQuote = @"SDThemeForSyntaxQuote";
-static NSString* SDThemeForNumber = @"SDThemeForNumber";
-static NSString* SDThemeForSyntaxError = @"SDThemeForSyntaxError";
-static NSString* SDThemeForRainbowParens = @"SDThemeForRainbowParens";
-static NSString* SDThemeForString = @"SDThemeForString";
-static NSString* SDThemeForRegex = @"SDThemeForRegex";
-static NSString* SDThemeForSplice = @"SDThemeForSplice";
+static NSString* SDThemeForSymbol = @"symbol_style";
+static NSString* SDThemeForDef = @"def_keyord_style";
+static NSString* SDThemeForDefName = @"def_name_style";
+static NSString* SDThemeForKeyword = @"keyword_style";
+static NSString* SDThemeForComment = @"comment_style";
+static NSString* SDThemeForTypeOp = @"typehint_style";
+static NSString* SDThemeForQuote = @"quote_style";
+static NSString* SDThemeForUnquote = @"unquote_style";
+static NSString* SDThemeForSyntaxQuote = @"syntaxquote_style";
+static NSString* SDThemeForNumber = @"number_style";
+static NSString* SDThemeForSyntaxError = @"syntax_error_style";
+static NSString* SDThemeForRainbowParens = @"rainbow_parens_styles";
+static NSString* SDThemeForString = @"string_style";
+static NSString* SDThemeForRegex = @"regex_style";
+static NSString* SDThemeForSplice = @"splice_style";
 
 @interface SDTheme : NSObject
 

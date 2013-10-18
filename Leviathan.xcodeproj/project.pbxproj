@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
 		94855A0B1810DAE100220186 /* LVParserError.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A0A1810DAE100220186 /* LVParserError.m */; };
+		94855A0D1811048E00220186 /* default_leviathan_theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.json */; };
+		94855A0E1811049B00220186 /* default_leviathan_theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.json */; };
 		9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D7D218104D58006ECA5E /* Cocoa.framework */; };
 		9490D7DD18104D58006ECA5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9490D7DB18104D58006ECA5E /* InfoPlist.strings */; };
 		9490D7DF18104D58006ECA5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D7DE18104D58006ECA5E /* main.m */; };
@@ -60,6 +62,7 @@
 		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
 		94855A091810DAE100220186 /* LVParserError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVParserError.h; sourceTree = "<group>"; };
 		94855A0A1810DAE100220186 /* LVParserError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVParserError.m; sourceTree = "<group>"; };
+		94855A0C1811048E00220186 /* default_leviathan_theme.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_leviathan_theme.json; sourceTree = "<group>"; };
 		9490D7CF18104D58006ECA5E /* Leviathan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leviathan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9490D7D218104D58006ECA5E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		9490D7D518104D58006ECA5E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -294,6 +297,7 @@
 		9490D82E18107DC5006ECA5E /* Theme */ = {
 			isa = PBXGroup;
 			children = (
+				94855A0C1811048E00220186 /* default_leviathan_theme.json */,
 				9490D82F18107DCC006ECA5E /* SDTheme.h */,
 				9490D83018107DCC006ECA5E /* SDTheme.m */,
 			);
@@ -417,6 +421,7 @@
 				9490D7EB18104D58006ECA5E /* Images.xcassets in Resources */,
 				9490D7E318104D58006ECA5E /* Credits.rtf in Resources */,
 				9490D82318105B2D006ECA5E /* Editor.xib in Resources */,
+				94855A0D1811048E00220186 /* default_leviathan_theme.json in Resources */,
 				9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */,
 				9490D81E181054EE006ECA5E /* Tab.xib in Resources */,
 				9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */,
@@ -429,6 +434,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9490D7FB18104D59006ECA5E /* InfoPlist.strings in Resources */,
+				94855A0E1811049B00220186 /* default_leviathan_theme.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
