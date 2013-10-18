@@ -85,13 +85,18 @@
 
 
 
-- (void) insertNewline:(id)sender {
-    [super insertNewline:sender];
-    [self indentCurrentBody];
-}
+//- (void) insertNewline:(id)sender {
+//    [super insertNewline:sender];
+//    [self indentCurrentBody];
+//}
 
 
 
+
+//- (void) insertText:(id)insertString {
+//    [super insertText:insertString];
+//    [self indentCurrentBody];
+//}
 
 
 
@@ -149,6 +154,10 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         NSUInteger firstNonSpaceCharPos = [wholeString rangeOfCharacterFromSet:[[NSCharacterSet whitespaceCharacterSet] invertedSet]
                                                                        options:0
                                                                          range:currentLineRange].location;
+        
+        if (firstNonSpaceCharPos == NSNotFound) {
+            firstNonSpaceCharPos = NSMaxRange(currentLineRange);
+        }
         
         // get that val relative
         
