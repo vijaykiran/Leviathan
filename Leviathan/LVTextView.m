@@ -194,7 +194,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         
         NSInteger spacesToAdd = expectedStartSpaces - firstNonSpaceCharPosRelative;
         
-        NSLog(@"%ld", spacesToAdd);
+//        NSLog(@"%ld", spacesToAdd);
         
         if (spacesToAdd != 0) {
             if (spacesToAdd > 0) {
@@ -208,7 +208,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
             }
             if (spacesToAdd < 0) {
                 // really spaces to delete, now.
-                NSRange tempRange = NSMakeRange(currentPos, spacesToAdd);
+                NSRange tempRange = NSMakeRange(currentPos, labs(spacesToAdd));
                 
                 if ([self shouldChangeTextInRange:tempRange replacementString:@""]) {
                     [[self textStorage] replaceCharactersInRange:tempRange withString:@""];
