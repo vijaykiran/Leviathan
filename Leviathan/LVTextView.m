@@ -170,26 +170,36 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
             expectedStartSpaces = 0;
         }
         else {
-            NSUInteger specificIndentation;
-            
-            if (collParentForBeginningOfLine.collType == LVCollTypeList) {
-                specificIndentation = 2;
-            }
-            else {
-                specificIndentation = 1;
-            }
-            
-            NSUInteger openingTokenAbsolutePos = collParentForBeginningOfLine.openingToken.range.location;
             NSUInteger openingTokenRecentNewline = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
                                                                                 options:NSBackwardsSearch
                                                                                   range:NSMakeRange(0, collParentForBeginningOfLine.openingToken.range.location)].location;
-            
             if (openingTokenRecentNewline == NSNotFound)
                 openingTokenRecentNewline = 0;
             else
                 openingTokenRecentNewline++;
             
-            NSUInteger prefixIndentation = openingTokenAbsolutePos - openingTokenRecentNewline;
+            
+            
+            NSUInteger specificIndentation;
+            
+            if (collParentForBeginningOfLine.collType == LVCollTypeList) {
+                if ([[collParentForBeginningOfLine childElements] count] >= 2 && childIndexOfFirstElementOnLine >= 2) {
+                    id<LVElement> secondChild = [[collParentForBeginningOfLine childElements] objectAtIndex: 1];
+                    NSUInteger childBeginning = [secondChild fullyEnclosedRange].location;
+                    
+                    NSUInteger listBeginning = collParentForBeginningOfLine.openingToken.range.location;
+                    
+                    specificIndentation = childBeginning - listBeginning;
+                }
+                else {
+                    specificIndentation = 2;
+                }
+            }
+            else {
+                specificIndentation = 1;
+            }
+            
+            NSUInteger prefixIndentation = collParentForBeginningOfLine.openingToken.range.location - openingTokenRecentNewline;
             
             expectedStartSpaces = specificIndentation + prefixIndentation;
         }
@@ -202,20 +212,12 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
             if (spacesToAdd > 0) {
                 NSString* spaces = [@"" stringByPaddingToLength:spacesToAdd withString:@" " startingAtIndex:0];
                 NSRange tempRange = NSMakeRange(currentPos, 0);
-                
-                if ([self shouldChangeTextInRange:tempRange replacementString:spaces]) {
-                    [[self textStorage] replaceCharactersInRange:tempRange withString:spaces];
-                    [self didChangeText];
-                }
+                [self replaceRange:tempRange withString:spaces];
             }
             if (spacesToAdd < 0) {
-                // really spaces to delete, now.
+                // its really spaces to delete, now.
                 NSRange tempRange = NSMakeRange(currentPos, labs(spacesToAdd));
-                
-                if ([self shouldChangeTextInRange:tempRange replacementString:@""]) {
-                    [[self textStorage] replaceCharactersInRange:tempRange withString:@""];
-                    [self didChangeText];
-                }
+                [self replaceRange:tempRange withString:@""];
             }
             
             wholeBlockRange.length += spacesToAdd;
@@ -228,7 +230,14 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         
     }
     
-    printf("\n");
+//    printf("\n");
+}
+
+- (void) replaceRange:(NSRange)r withString:(NSString*)str {
+    if ([self shouldChangeTextInRange:r replacementString:str]) {
+        [[self textStorage] replaceCharactersInRange:r withString:str];
+        [self didChangeText];
+    }
 }
 
 
