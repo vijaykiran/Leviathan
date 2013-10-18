@@ -39,8 +39,7 @@ typedef enum __LVSplitDirection {
 
 - (void) addEditor:(LVEditor*)editor inDirection:(LVSplitDirection)dir;
 
-- (void) saveFirstResponder;
-- (void) restoreFirstResponder;
+- (void) makeFirstResponder;
 
 - (void) closeCurrentSplit;
 

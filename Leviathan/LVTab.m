@@ -16,8 +16,6 @@
 
 @property (weak) LVEditor* currentEditor;
 
-@property id savedFirstResponder; // TODO: might cause a leak! cant make weak though, usually is NSTextView
-
 @end
 
 @implementation LVTab
@@ -60,17 +58,8 @@
     // TODO: uhh.. do more stuff here?
 }
 
-- (void) saveFirstResponder {
-    self.savedFirstResponder = [[self.view window] firstResponder];
-}
-
-- (void) restoreFirstResponder {
-    if (self.savedFirstResponder) {
-        [[self.view window] makeFirstResponder:self.savedFirstResponder];
-    }
-    else {
-        [self.currentEditor makeFirstResponder];
-    }
+- (void) makeFirstResponder {
+    [self.currentEditor makeFirstResponder];
 }
 
 - (void) addEditor:(LVEditor*)editor inDirection:(LVSplitDirection)dir {

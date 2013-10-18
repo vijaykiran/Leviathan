@@ -115,7 +115,7 @@
 }
 
 - (void) switchToTab:(LVTab*)tab {
-    [self.currentTab saveFirstResponder];
+    [self.currentTab makeFirstResponder];
     
     tab.view.frame = self.bodyView.bounds;
     
@@ -126,7 +126,7 @@
     
     [self.window.windowController setNextResponder:self.currentTab];
     
-    [self.currentTab restoreFirstResponder];
+    [self.currentTab makeFirstResponder];
 }
 
 - (void) movedTab:(NSUInteger)from to:(NSUInteger)to {
