@@ -90,15 +90,6 @@
     [self indentCurrentBody];
 }
 
-NSRange LVRangeWithPoints(NSUInteger loc1, NSUInteger loc2) {
-    return NSMakeRange(loc1, loc2 - loc1);
-}
-
-NSRange LVRangeChoppingOffFront(NSRange r, NSUInteger len) {
-    return NSMakeRange(r.location + len, r.length - len);
-}
-
-
 
 
 
@@ -236,128 +227,8 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
     }
     
     printf("\n");
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    return;
-    {
-    NSRange relevantRange = highestParentColl.fullyEnclosedRange;
-    
-    NSUInteger firstNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-                                                                   options:NSBackwardsSearch
-                                                                     range:NSMakeRange(0, relevantRange.location)].location;
-    
-    NSLog(@"%ld", firstNewlinePosition);
-    
-    if (firstNewlinePosition == NSNotFound)
-        firstNewlinePosition = 0;
-    
-    NSLog(@"%@", NSStringFromRange(relevantRange));
-    relevantRange = LVExtendRangeToBeginningPos(relevantRange, firstNewlinePosition);
-    
-    NSLog(@"%@", NSStringFromRange(relevantRange));
-    
-    NSString* relevantString = [wholeString substringWithRange:relevantRange];
-    
-    NSRange currentSeekRange = relevantRange;
-//    LVColl* lastKnownParent = highestParentColl.parent; // TODO: don't think i need this anymore now that im examining from the beginning of the line instead
-    
-    while (currentSeekRange.length > 0) {
-        NSUInteger nextNewlinePosition = [relevantString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-                                                                         options:0
-                                                                           range:currentSeekRange].location;
-        
-        if (nextNewlinePosition == NSNotFound)
-            nextNewlinePosition = NSMaxRange(currentSeekRange);
-        else
-            nextNewlinePosition++;
-        
-        NSRange currentLineRange = LVRangeWithPoints(currentSeekRange.location, nextNewlinePosition);
-        
-        NSUInteger firstNonSpaceCharPos = [relevantString rangeOfCharacterFromSet:[[NSCharacterSet whitespaceCharacterSet] invertedSet]
-                                                                          options:0
-                                                                            range:currentLineRange].location;
-        
-//        NSLog(@"%ld", firstNonSpaceCharPos);
-        
-        NSUInteger currentLineBeginningAbsolutePos = currentLineRange.location + relevantRange.location;
-        
-        NSUInteger childIndexOfFirstElementOnLine; // this will be helpful
-        LVColl* collParentForBeginningOfLine = [self.file.topLevelElement deepestCollAtPos:currentLineBeginningAbsolutePos childsIndex:&childIndexOfFirstElementOnLine];
-        
-//        NSLog(@"%d", collParentForBeginningOfLine.collType);
-        
-        NSUInteger expectedStartSpaces;
-        
-        if (collParentForBeginningOfLine.collType == LVCollTypeTopLevel) {
-            expectedStartSpaces = 0;
-        }
-        else {
-            NSUInteger indent;
-            if (collParentForBeginningOfLine.collType == LVCollTypeList) {
-                indent = 2;
-            }
-            else {
-                indent = 1;
-            }
-            
-            NSUInteger openingTokenRelativePos = (collParentForBeginningOfLine.openingToken.range.location - relevantRange.location);
-            
-            NSLog(@"a = %ld", collParentForBeginningOfLine.openingToken.range.location);
-            NSLog(@"b = %ld", relevantRange.location);
-            NSLog(@"open = %ld", openingTokenRelativePos);
-        }
-        
-//        NSLog(@"[%@]", [wholeString substringWithRange:collParentForEndOfLine.fullyEnclosedRange]);
-        
-        
-        // - figure out the proper number of spaces between currentLineRange's start and it's first non-whitespace char
-        // - if the range length is different than this, alter the string! (but probably do it in a temp string so our numbers dont skew)
-        
-//        NSLog(@"%@ --- %@", NSStringFromRange(currentSeekRange), NSStringFromRange(currentLineRange));
-        
-        currentSeekRange = LVRangeChoppingOffFront(currentSeekRange, currentLineRange.length);
-    }
-    
-    NSLog(@"done with loop");
-    }
-//    NSLog(@"%@", NSStringFromRange(newlineRange));
 }
 
-//(foo
-//)
 
 
 
