@@ -109,6 +109,11 @@
     [self.tabBar changeTitles:[self.tabs valueForKeyPath:@"currentEditor.title"]];
 }
 
+- (void) selectTab:(LVTab*)tab {
+    [self switchToTab:tab];
+    [self.tabBar manuallySelectTab:[self.tabs indexOfObject:tab]];
+}
+
 - (void) switchToTab:(LVTab*)tab {
     [self.currentTab saveFirstResponder];
     

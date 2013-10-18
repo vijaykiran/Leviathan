@@ -74,17 +74,19 @@
 }
 
 - (void) openDefinition:(SDDefinition*)def inFile:(LVFile*)file {
-    LVEditor* editorController = [[LVEditor alloc] init];
+    if (![self switchToOpenFile:file]) {
+        LVEditor* editorController = [[LVEditor alloc] init];
+        
+        LVTab* tab = [[LVTab alloc] init];
+        [tab startWithEditor: editorController];
+        
+        [self.tabView addTab:tab];
+        
+        [editorController startEditingFile:file];
+        [self.tabView titlesChanged];
+    }
     
-    LVTab* tab = [[LVTab alloc] init];
-    [tab startWithEditor: editorController];
-    
-    [self.tabView addTab:tab];
-    
-    [editorController startEditingFile:file];
-    [self.tabView titlesChanged];
-    
-    [editorController jumpToDefinition:def];
+    [self.tabView.currentTab.currentEditor jumpToDefinition:def];
 }
 
 - (IBAction) jumpToDefinition:(id)sender {
@@ -115,11 +117,28 @@
                   }];
 }
 
+- (BOOL) switchToOpenFile:(LVFile*)file {
+    for (LVTab* tab in self.tabView.tabs) {
+        for (LVEditor* editor in [tab splits]) {
+            if (editor.file == file) {
+                [self.tabView selectTab:tab];
+                [editor makeFirstResponder];
+                
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (void) replaceCurrentEditorWithFile:(LVFile*)file {
     // TODO: dont do it if it's unsaved!
     
-    [self.tabView.currentTab.currentEditor startEditingFile:file];
-    [self.tabView titlesChanged];
+    if (![self switchToOpenFile:file]) {
+        [self.tabView.currentTab.currentEditor startEditingFile:file];
+        [self.tabView titlesChanged];
+    }
 }
 
 - (IBAction) closeProjectTab:(id)sender {

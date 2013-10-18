@@ -20,6 +20,8 @@
 - (void) addTab:(LVTab*)tab;
 - (void) closeCurrentTab;
 
+- (void) selectTab:(LVTab*)tab;
+
 - (void) titlesChanged;
 
 @end
