@@ -271,6 +271,19 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         
     }
     
+    
+    // TODO: thoughts on a new plan for indentation:
+    //       - edit the list of tokens itself
+    //       - after each child in a coll, search for next newline, before either next child or closing token (if you're at end of coll).
+    //       - if there is no newline, do nothing (you're on the same line!)
+    //       - but if there IS a newline:
+    //           - delete all whitespace BEFORE the newline (yay)
+    //           - calculate the proper number of whitespace after the newline and before the next non-space char
+    //               - if the next non-space char is a newline, erase all those spaces
+    //               - otherwise, add/delete whitespace to make it match
+    //           - OH WAIT: this adding/removing means rewriting the parse-tree :(
+    
+    
 //    printf("\n");
 }
 
