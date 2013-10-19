@@ -66,11 +66,24 @@
 }
 
 - (void) textStorageDidProcessEditing:(NSNotification*)note {
-    [self highlight];
+    NSString* rawString = [self.textStorage string];
+    
+    LVParseError* error;
+    self.topLevelElement = [LVParser parse:rawString error:&error];
+    
+    if ([self.textStorage editedMask] & NSTextStorageEditedCharacters) {
+        [self highlight];
+    }
 }
 
 - (void) highlight {
 //    NSLog(@"highlight called");
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(reallyHighlight) object:nil];
+    [self performSelector:@selector(reallyHighlight) withObject:nil afterDelay:0.0];
+}
+
+- (void) reallyHighlight {
+//    NSLog(@"really-highlight called");
     NSString* rawString = [self.textStorage string];
     
     [self.textStorage beginEditing];
