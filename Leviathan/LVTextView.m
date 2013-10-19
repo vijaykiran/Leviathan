@@ -139,7 +139,9 @@ BOOL LVIsFunctionLike(LVColl* coll) {
     
     static NSArray* functionLikes;
     if (!functionLikes)
-        functionLikes = @[@"let", @"if", @"if-let", @"cond", @"case"];
+        functionLikes = @[@"let", @"if", @"if-let", @"cond", @"case"
+//    , @"let", @"describe"
+                          ];
     
     return ([functionLikes containsObject: [atomChild token].val]);
 }
