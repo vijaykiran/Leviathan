@@ -8,7 +8,7 @@
 
 #import "LVTestBed.h"
 
-#include "parser.h"
+#include "token.h"
 
 @implementation LVTestBed
 
