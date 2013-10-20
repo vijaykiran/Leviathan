@@ -55,6 +55,9 @@ namespace leviathan {
                         
                     default:
                     {
+                        // TODO: dont make the parser always have to do string-comparison! for things like (startswith "def"), we can figure that out here.
+                        //       so we need to do that calculation here, and somehow store it on a token. should every token have that info? maybe its just a new TokenType.
+                        
                         size_t n = raw.find_first_of(endAtomCharSet, i);
                         tokens.push_back(token{token::Symbol, raw.substr(i, n - i)});
                         i = n-1;
