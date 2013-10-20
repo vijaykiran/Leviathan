@@ -110,8 +110,6 @@ namespace leviathan {
                         
                         switch (next) {
                             case '"': {
-                                printf("hahah %ld\n", i);
-                                
                                 size_t look_from = i + 2;
                                 
                                 do {
@@ -130,7 +128,6 @@ namespace leviathan {
                             }
                                 
                             default:
-                                printf("uhh\n");
                                 break;
                         }
                         

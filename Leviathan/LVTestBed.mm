@@ -78,7 +78,10 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
     
     LVLexerShouldError("#\"yes", leviathan::ParserError::UnclosedRegex, NSMakeRange(0, 5));
     LVLexerShouldError("#\"yes\\\"", leviathan::ParserError::UnclosedRegex, NSMakeRange(0, 7));
-    LVLexerShouldError("yes#\"", leviathan::ParserError::UnclosedRegex, NSMakeRange(3, 2));
+    LVLexerShouldError("yes #\"", leviathan::ParserError::UnclosedRegex, NSMakeRange(4, 2));
+    
+    LVLexerShouldEqual("#\"yes\"", {{token::Regex, "#\"yes\""}});
+    LVLexerShouldEqual("#\"y\\\"es\"", {{token::Regex, "#\"y\\\"es\""}});
     
     printf("ok\n");
 }
