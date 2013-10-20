@@ -15,24 +15,24 @@
 + (void) runTests {
     {
         std::string raw = "(foobar)";
-        std::vector<leviathan::token> tokens = leviathan::lex(raw);
-        for( std::vector<leviathan::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
+        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+        for( std::vector<leviathan::lexer::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
             std::cout << *i << ' ';
         std::cout << std::endl;
     }
     
     {
         std::string raw = "foobar";
-        std::vector<leviathan::token> tokens = leviathan::lex(raw);
-        for( std::vector<leviathan::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
+        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+        for( std::vector<leviathan::lexer::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
             std::cout << *i << ' ';
         std::cout << std::endl;
     }
     
     {
         std::string raw = "(   foobar";
-        std::vector<leviathan::token> tokens = leviathan::lex(raw);
-        for( std::vector<leviathan::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
+        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+        for( std::vector<leviathan::lexer::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
             std::cout << *i << ' ';
         std::cout << std::endl;
     }
