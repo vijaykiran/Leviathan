@@ -51,7 +51,6 @@
 		949EC5251813811E001C9CAB /* lexer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC5231813811E001C9CAB /* lexer.mm */; };
 		949EC52818139226001C9CAB /* LVTestBed.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52718139226001C9CAB /* LVTestBed.mm */; };
 		949EC52A1813955B001C9CAB /* token_types.h in Resources */ = {isa = PBXBuildFile; fileRef = 949EC5291813955B001C9CAB /* token_types.h */; };
-		949EC52D1813B2D2001C9CAB /* parse_error.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52B1813B2D2001C9CAB /* parse_error.mm */; };
 		94D794341811226D003307F4 /* LVThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D794331811226D003307F4 /* LVThemeManager.m */; };
 		94D79463181125F1003307F4 /* BMOEDNCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79437181125F1003307F4 /* BMOEDNCharacter.m */; };
 		94D79464181125F1003307F4 /* BMOEDNCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79439181125F1003307F4 /* BMOEDNCoder.m */; };
@@ -165,7 +164,6 @@
 		949EC52618139226001C9CAB /* LVTestBed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTestBed.h; sourceTree = "<group>"; };
 		949EC52718139226001C9CAB /* LVTestBed.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LVTestBed.mm; sourceTree = "<group>"; };
 		949EC5291813955B001C9CAB /* token_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token_types.h; sourceTree = "<group>"; };
-		949EC52B1813B2D2001C9CAB /* parse_error.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = parse_error.mm; sourceTree = "<group>"; };
 		949EC52C1813B2D2001C9CAB /* parse_error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parse_error.h; sourceTree = "<group>"; };
 		94D794321811226D003307F4 /* LVThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeManager.h; sourceTree = "<group>"; };
 		94D794331811226D003307F4 /* LVThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeManager.m; sourceTree = "<group>"; };
@@ -451,7 +449,6 @@
 				94855A091810DAE100220186 /* LVParserError.h */,
 				94855A0A1810DAE100220186 /* LVParserError.m */,
 				949EC52C1813B2D2001C9CAB /* parse_error.h */,
-				949EC52B1813B2D2001C9CAB /* parse_error.mm */,
 				949EC5241813811E001C9CAB /* lexer.h */,
 				949EC5231813811E001C9CAB /* lexer.mm */,
 				949EC52118138102001C9CAB /* parser.h */,
@@ -648,7 +645,6 @@
 				94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
 				9493D96F18108BC80080E3C0 /* LVParser.m in Sources */,
-				949EC52D1813B2D2001C9CAB /* parse_error.mm in Sources */,
 				94D79472181125F1003307F4 /* NSData+BMOEDN.m in Sources */,
 				94D79475181125F1003307F4 /* NSObject+BMOEDN.m in Sources */,
 				9490D84018107FD6006ECA5E /* SDFuzzyMatcherWindowController.m in Sources */,
