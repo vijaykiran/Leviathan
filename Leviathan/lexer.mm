@@ -42,10 +42,13 @@ namespace leviathan {
                     case '\n': tokens.push_back({token::Newline, raw.substr(i, 1)}); break;
                         
                     case '~': {
-                        if (i + 1 < raw.length() && raw[i+1] == '@')
+                        if (i + 1 < raw.length() && raw[i+1] == '@') {
                             tokens.push_back({token::Splice, raw.substr(i, 2)});
-                        else
+                            i++;
+                        }
+                        else {
                             tokens.push_back({token::Unquote, raw.substr(i, 1)});
+                        }
                         break;
                     }
                         
