@@ -12,34 +12,9 @@
 #include <iostream>
 #include <vector>
 
-//#import "LVParserError.h"
+#include "parse_error.h"
 
 namespace leviathan {
-    
-    
-    
-    
-    
-    
-    
-    class ParserError: public std::exception {
-        
-    public:
-        
-        enum ParserErrorType {
-            UnclosedString,
-        };
-        
-        ParserErrorType type;
-        NSRange badRange;
-        
-        ParserError(ParserErrorType t, NSRange r) : type(t), badRange(r) {}
-        
-    };
-    
-    
-    
-    
     
     namespace lexer {
         
