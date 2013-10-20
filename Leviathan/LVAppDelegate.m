@@ -12,6 +12,8 @@
 #import "LVPreferences.h"
 #import "LVThemeManager.h"
 
+#import "LVTestBed.h"
+
 @interface LVAppDelegate ()
 
 @property IBOutlet NSMenuItem* closeWindowItem;
@@ -75,6 +77,8 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [LVTestBed runTests];
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultDefaults]];
     [[NSFontManager sharedFontManager] setTarget:self];
     
