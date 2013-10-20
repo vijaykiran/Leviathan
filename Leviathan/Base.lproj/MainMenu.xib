@@ -186,6 +186,21 @@
                             <menuItem isSeparatorItem="YES" id="BBc-zi-dTN">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
+                            <menuItem title="Open Project in Terminal" keyEquivalent="t" id="cit-gQ-pvN">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                                <connections>
+                                    <action selector="openProjectInTerminal:" target="-1" id="UsY-7w-rPr"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Open Project in GitX" keyEquivalent="g" id="GI8-xC-pxt">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                                <connections>
+                                    <action selector="openProjectInGitx:" target="-1" id="JEo-ud-Td0"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="0ru-tk-sgW">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
                             <menuItem title="Save…" keyEquivalent="s" id="75">
                                 <connections>
                                     <action selector="saveDocument:" target="-1" id="362"/>

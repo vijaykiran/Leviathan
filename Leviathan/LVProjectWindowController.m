@@ -196,6 +196,19 @@
 
 
 
+// open proj in whatever
+
+- (IBAction) openProjectInTerminal:(id)sender {
+    [[NSWorkspace sharedWorkspace] openFile:[self.project.projectURL path]
+                            withApplication:@"Terminal"];
+}
+
+- (IBAction) openProjectInGitx:(id)sender {
+    [[NSWorkspace sharedWorkspace] openFile:[self.project.projectURL path]
+                            withApplication:@"GitX"];
+}
+
+
 
 
 
