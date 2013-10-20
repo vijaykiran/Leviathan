@@ -26,8 +26,13 @@ namespace leviathan {
             switch (c) {
                 case '(': tokens.push_back(token{LParen, raw.substr(i, 1)}); break;
                 case ')': tokens.push_back(token{RParen, raw.substr(i, 1)}); break;
+                case ' ': break;
                     
                 default:
+                    size_t n = raw.find_first_of(endAtomCharSet, i);
+                    tokens.push_back(token{Symbol, raw.substr(i, n - i)});
+                    i = n-1;
+                    
                     break;
             }
             
