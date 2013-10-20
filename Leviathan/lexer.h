@@ -20,14 +20,14 @@ namespace leviathan {
         
         enum TokenType {
 #define X(a) a,
-#include "token_types.def"
+#include "token_types.h"
 #undef X
             TokensCount
         };
         
         char const* const tokens_strs[] = {
 #define X(a) #a,
-#include "token_types.def"
+#include "token_types.h"
 #undef X
             "",
         };

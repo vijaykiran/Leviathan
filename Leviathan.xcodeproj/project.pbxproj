@@ -50,7 +50,7 @@
 		949EC52218138102001C9CAB /* parser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52018138102001C9CAB /* parser.mm */; };
 		949EC5251813811E001C9CAB /* lexer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC5231813811E001C9CAB /* lexer.mm */; };
 		949EC52818139226001C9CAB /* LVTestBed.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52718139226001C9CAB /* LVTestBed.mm */; };
-		949EC52A1813955B001C9CAB /* token_types.def in Resources */ = {isa = PBXBuildFile; fileRef = 949EC5291813955B001C9CAB /* token_types.def */; };
+		949EC52A1813955B001C9CAB /* token_types.h in Resources */ = {isa = PBXBuildFile; fileRef = 949EC5291813955B001C9CAB /* token_types.h */; };
 		94D794341811226D003307F4 /* LVThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D794331811226D003307F4 /* LVThemeManager.m */; };
 		94D79463181125F1003307F4 /* BMOEDNCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79437181125F1003307F4 /* BMOEDNCharacter.m */; };
 		94D79464181125F1003307F4 /* BMOEDNCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79439181125F1003307F4 /* BMOEDNCoder.m */; };
@@ -163,7 +163,7 @@
 		949EC5241813811E001C9CAB /* lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
 		949EC52618139226001C9CAB /* LVTestBed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTestBed.h; sourceTree = "<group>"; };
 		949EC52718139226001C9CAB /* LVTestBed.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LVTestBed.mm; sourceTree = "<group>"; };
-		949EC5291813955B001C9CAB /* token_types.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = token_types.def; sourceTree = "<group>"; };
+		949EC5291813955B001C9CAB /* token_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token_types.h; sourceTree = "<group>"; };
 		94D794321811226D003307F4 /* LVThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeManager.h; sourceTree = "<group>"; };
 		94D794331811226D003307F4 /* LVThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeManager.m; sourceTree = "<group>"; };
 		94D79436181125F1003307F4 /* BMOEDNCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNCharacter.h; sourceTree = "<group>"; };
@@ -451,7 +451,7 @@
 				949EC5231813811E001C9CAB /* lexer.mm */,
 				949EC52118138102001C9CAB /* parser.h */,
 				949EC52018138102001C9CAB /* parser.mm */,
-				949EC5291813955B001C9CAB /* token_types.def */,
+				949EC5291813955B001C9CAB /* token_types.h */,
 			);
 			name = Parser;
 			sourceTree = "<group>";
@@ -594,7 +594,7 @@
 				9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */,
 				9490D81E181054EE006ECA5E /* Tab.xib in Resources */,
 				9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */,
-				949EC52A1813955B001C9CAB /* token_types.def in Resources */,
+				949EC52A1813955B001C9CAB /* token_types.h in Resources */,
 				9490D7E918104D58006ECA5E /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
