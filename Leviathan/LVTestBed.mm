@@ -16,13 +16,21 @@ static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserEr
     leviathan::ParserError e = result.second;
     if (e.type == leviathan::ParserError::NoError) {
         std::cout << "Didn't fail: " << raw << std::endl;
-        assert(false);
+        std::cout << tokens << std::endl;
+        exit(1);
     }
     else {
-//        printf("expected parser error %d == %d\n", e.type, leviathan::ParserError::UnclosedString);
-//        NSLog(@"thought: %@, got: %@", NSStringFromRange(badRange), NSStringFromRange(e.badRange));
-        assert(e.type == error);
-        assert(NSEqualRanges(badRange, e.badRange));
+        if (e.type != error) {
+            std::cout << raw << std::endl;
+            std::cout << tokens << std::endl;
+            printf("expected parser error to be %d, got %d\n", error, e.type);
+            exit(1);
+        }
+        if (!NSEqualRanges(badRange, e.badRange)) {
+            std::cout << tokens << std::endl;
+            NSLog(@"thought: %@, got: %@", NSStringFromRange(badRange), NSStringFromRange(e.badRange));
+            exit(1);
+        }
     }
 }
 
@@ -42,8 +50,8 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
         }
     }
     else {
-        std::cout << tokens << std::endl;
-        assert(false);
+        std::cout << "Got error: " << tokens << std::endl;
+        exit(1);
     }
 }
 
@@ -65,8 +73,12 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
     LVLexerShouldEqual("foo 123 :hello", {{token::Symbol, "foo"}, {token::Spaces, " "}, {token::Number, "123"}, {token::Spaces, " "}, {token::Keyword, ":hello"}});
     
     LVLexerShouldError("\"yes", leviathan::ParserError::UnclosedString, NSMakeRange(0, 4));
-    LVLexerShouldError("yes\"", leviathan::ParserError::UnclosedString, NSMakeRange(3, 1));
     LVLexerShouldError("\"yes\\\"", leviathan::ParserError::UnclosedString, NSMakeRange(0, 6));
+    LVLexerShouldError("yes\"", leviathan::ParserError::UnclosedString, NSMakeRange(3, 1));
+    
+    LVLexerShouldError("#\"yes", leviathan::ParserError::UnclosedRegex, NSMakeRange(0, 5));
+    LVLexerShouldError("#\"yes\\\"", leviathan::ParserError::UnclosedRegex, NSMakeRange(0, 7));
+    LVLexerShouldError("yes#\"", leviathan::ParserError::UnclosedRegex, NSMakeRange(3, 2));
     
     printf("ok\n");
 }

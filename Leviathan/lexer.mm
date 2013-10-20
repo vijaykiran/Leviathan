@@ -100,6 +100,43 @@ namespace leviathan {
                         break;
                     }
                         
+                    case '#': {
+                        if (i + 1 == raw.length()) {
+                            // unfinished_dispatch error
+                            printf("unfinished_dispatch error\n");
+                        }
+                        
+                        char next = raw[i + 1];
+                        
+                        switch (next) {
+                            case '"': {
+                                printf("hahah %ld\n", i);
+                                
+                                size_t look_from = i + 2;
+                                
+                                do {
+                                    look_from = raw.find('"', look_from + 1);
+                                    if (look_from == std::string::npos) {
+                                        error.type = ParserError::UnclosedRegex;
+                                        error.badRange = NSMakeRange(i, raw.length() - i);
+                                        return std::make_pair(tokens, error);
+                                    }
+                                } while (raw[look_from - 1] == '\\');
+                                
+                                tokens.push_back({token::Regex, raw.substr(i, look_from - i + 1)});
+                                i = look_from;
+                                
+                                break;
+                            }
+                                
+                            default:
+                                printf("uhh\n");
+                                break;
+                        }
+                        
+                        break;
+                    }
+                        
                     default: {
                         // TODO: dont make the parser always have to do string-comparison! for things like (startswith "def"), we can figure that out here.
                         //       so we need to do that calculation here, and somehow store it on a token. should every token have that info? maybe its just a new TokenType.

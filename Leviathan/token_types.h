@@ -11,6 +11,7 @@ X(String)
 X(Keyword)
 X(Symbol)
 X(Number)
+X(Regex)
 
 X(Quote)
 X(Unquote)

@@ -18,6 +18,7 @@ namespace leviathan {
         enum ParserErrorType {
             NoError,
             UnclosedString,
+            UnclosedRegex,
         };
         
         ParserErrorType type;
