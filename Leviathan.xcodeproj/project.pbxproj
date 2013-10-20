@@ -47,6 +47,8 @@
 		9493D97018108BC80080E3C0 /* LVToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96918108BC80080E3C0 /* LVToken.m */; };
 		9493D97118108BC80080E3C0 /* LVColl.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96C18108BC80080E3C0 /* LVColl.m */; };
 		9493D97218108BC80080E3C0 /* LVAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493D96E18108BC80080E3C0 /* LVAtom.m */; };
+		949EC52218138102001C9CAB /* parser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52018138102001C9CAB /* parser.mm */; };
+		949EC5251813811E001C9CAB /* token.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC5231813811E001C9CAB /* token.mm */; };
 		94D794341811226D003307F4 /* LVThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D794331811226D003307F4 /* LVThemeManager.m */; };
 		94D79463181125F1003307F4 /* BMOEDNCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79437181125F1003307F4 /* BMOEDNCharacter.m */; };
 		94D79464181125F1003307F4 /* BMOEDNCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79439181125F1003307F4 /* BMOEDNCoder.m */; };
@@ -153,6 +155,10 @@
 		9493D96C18108BC80080E3C0 /* LVColl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVColl.m; sourceTree = "<group>"; };
 		9493D96D18108BC80080E3C0 /* LVAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVAtom.h; sourceTree = "<group>"; };
 		9493D96E18108BC80080E3C0 /* LVAtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVAtom.m; sourceTree = "<group>"; };
+		949EC52018138102001C9CAB /* parser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = parser.mm; sourceTree = "<group>"; };
+		949EC52118138102001C9CAB /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
+		949EC5231813811E001C9CAB /* token.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = token.mm; sourceTree = "<group>"; };
+		949EC5241813811E001C9CAB /* token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token.h; sourceTree = "<group>"; };
 		94D794321811226D003307F4 /* LVThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeManager.h; sourceTree = "<group>"; };
 		94D794331811226D003307F4 /* LVThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeManager.m; sourceTree = "<group>"; };
 		94D79436181125F1003307F4 /* BMOEDNCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNCharacter.h; sourceTree = "<group>"; };
@@ -434,6 +440,10 @@
 				9493D96E18108BC80080E3C0 /* LVAtom.m */,
 				94855A091810DAE100220186 /* LVParserError.h */,
 				94855A0A1810DAE100220186 /* LVParserError.m */,
+				949EC5241813811E001C9CAB /* token.h */,
+				949EC5231813811E001C9CAB /* token.mm */,
+				949EC52118138102001C9CAB /* parser.h */,
+				949EC52018138102001C9CAB /* parser.mm */,
 			);
 			name = Parser;
 			sourceTree = "<group>";
@@ -606,6 +616,8 @@
 				94D79471181125F1003307F4 /* BMOLazyEnumerator.m in Sources */,
 				94D79473181125F1003307F4 /* NSDate+BMOEDN.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
+				949EC52218138102001C9CAB /* parser.mm in Sources */,
+				949EC5251813811E001C9CAB /* token.mm in Sources */,
 				94D79477181125F1003307F4 /* NSUUID+BMOEDN.m in Sources */,
 				94D79465181125F1003307F4 /* BMOEDNError.m in Sources */,
 				9493D97018108BC80080E3C0 /* LVToken.m in Sources */,
