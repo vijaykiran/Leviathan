@@ -18,13 +18,6 @@ namespace leviathan {
     
     namespace lexer {
         
-        enum TokenType {
-#define X(a) a,
-#include "token_types.h"
-#undef X
-            TokensCount
-        };
-        
         char const* const tokens_strs[] = {
 #define X(a) #a,
 #include "token_types.h"
@@ -36,6 +29,13 @@ namespace leviathan {
             
         public:
             
+            enum TokenType {
+#define X(a) a,
+#include "token_types.h"
+#undef X
+                TokensCount
+            };
+            
             TokenType type;
             std::string val;
             
@@ -43,8 +43,9 @@ namespace leviathan {
         
         std::vector<token> lex(std::string &raw);
         
-        std::ostream& operator<<(std::ostream& os, TokenType c);
+        std::ostream& operator<<(std::ostream& os, token::TokenType c);
         std::ostream& operator<<(std::ostream& os, token& t);
+        std::ostream& operator<<(std::ostream& os, std::vector<token> t);
         
     }
     

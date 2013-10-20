@@ -16,25 +16,31 @@
     {
         std::string raw = "(foobar)";
         std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
-        for( std::vector<leviathan::lexer::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
-            std::cout << *i << ' ';
-        std::cout << std::endl;
+        std::cout << tokens << std::endl;
     }
     
     {
         std::string raw = "foobar";
         std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
-        for( std::vector<leviathan::lexer::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
-            std::cout << *i << ' ';
-        std::cout << std::endl;
+        std::cout << tokens << std::endl;
     }
     
     {
         std::string raw = "(   foobar";
         std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
-        for( std::vector<leviathan::lexer::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
-            std::cout << *i << ' ';
-        std::cout << std::endl;
+        std::cout << tokens << std::endl;
+    }
+    
+    {
+        std::string raw = "\"yes\"";
+        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+        std::cout << tokens << std::endl;
+    }
+    
+    {
+        std::string raw = "\"yes";
+        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+        std::cout << tokens << std::endl;
     }
     
     printf("ok\n");
