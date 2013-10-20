@@ -102,8 +102,9 @@ namespace leviathan {
                         
                     case '#': {
                         if (i + 1 == raw.length()) {
-                            // unfinished_dispatch error
-                            printf("unfinished_dispatch error\n");
+                            error.type = ParserError::UnclosedDispatch;
+                            error.badRange = NSMakeRange(i, raw.length() - i);
+                            return std::make_pair(tokens, error);
                         }
                         
                         char next = raw[i + 1];
@@ -127,7 +128,21 @@ namespace leviathan {
                                 break;
                             }
                                 
+                            case '\'': {
+                                size_t n = raw.find_first_of(endAtomCharSet, i);
+                                tokens.push_back({token::Var, raw.substr(i, n - i)});
+                                i = n-1;
+                                break;
+                            }
+                                
+                            case '(': tokens.push_back({token::AnonFnStart, raw.substr(i++, 2)}); break;
+                            case '{': tokens.push_back({token::SetStart, raw.substr(i++, 2)}); break;
+                            case '_': tokens.push_back({token::ReaderCommentStart, raw.substr(i++, 2)}); break;
+                                
                             default:
+                                size_t n = raw.find_first_of(endAtomCharSet, i);
+                                tokens.push_back({token::ReaderMacro, raw.substr(i, n - i)});
+                                i = n-1;
                                 break;
                         }
                         

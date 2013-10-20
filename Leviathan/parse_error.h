@@ -19,6 +19,7 @@ namespace leviathan {
             NoError,
             UnclosedString,
             UnclosedRegex,
+            UnclosedDispatch,
         };
         
         ParserErrorType type;
