@@ -42,8 +42,8 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
     LVLexerShouldEqual("foobar", {token{token::Symbol, "foobar"}});
     LVLexerShouldEqual("(    foobar", {token{token::LParen, "("}, token{token::Spaces, "    "}, token{token::Symbol, "foobar"}});
     
-//    LVLexerShouldEqual("\"yes\"", {});
-//    LVLexerShouldEqual("\"y\\\"es\"", {});
+    LVLexerShouldEqual("\"yes\"", {token{token::String, "\"yes\""}});
+    LVLexerShouldEqual("\"y\\\"es\"", {token{token::String, "\"y\\\"es\""}});
     
     LVLexerShouldError("\"yes", leviathan::ParserError::UnclosedString, NSMakeRange(0, 4));
     LVLexerShouldError("yes\"", leviathan::ParserError::UnclosedString, NSMakeRange(3, 1));
