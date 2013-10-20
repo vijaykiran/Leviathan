@@ -10,9 +10,7 @@
 
 namespace leviathan {
     
-    std::pair<LVParseError*, std::vector<token>> lex(std::string &raw) {
-        std::pair<LVParseError*, std::vector<token>> retVal;
-        
+    std::vector<token> lex(std::string &raw) {
         std::vector<token> tokens;
         
         tokens.push_back(token{Begin, ""});
@@ -38,14 +36,17 @@ namespace leviathan {
         
         tokens.push_back(token{End, ""});
         
-        retVal.first = nil;
-        retVal.second = tokens;
-        return retVal;
+        return tokens;
     }
     
-    std::ostream& operator<<(std::ostream& os, Tokens c) {
+    std::ostream& operator<<(std::ostream& os, TokenType c) {
         if (c >= TokensCount || c < 0) return os << "???";
         return os << tokens_strs[c];
+    }
+    
+    std::ostream& operator<<(std::ostream& os, token t) {
+        assert(1 == 2);
+        return os << '{' << t.type << ',' << t.val << '}';
     }
     
 }

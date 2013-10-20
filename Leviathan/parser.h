@@ -12,11 +12,11 @@
 #include <iostream>
 #include <vector>
 
-#import "LVParserError.h"
+//#import "LVParserError.h"
 
 namespace leviathan {
     
-    enum Tokens {
+    enum TokenType {
 #define X(a) a,
 #include "token_types.def"
 #undef X
@@ -34,14 +34,16 @@ namespace leviathan {
         
     public:
         
-        Tokens type;
+        TokenType type;
         std::string val;
+        
+        friend std::ostream& operator<<(std::ostream& os, token t);
         
     };
     
-    std::pair<LVParseError*, std::vector<token>> lex(std::string &raw);
+    std::vector<token> lex(std::string &raw);
     
-    std::ostream& operator<<(std::ostream& os, Tokens c);
+    std::ostream& operator<<(std::ostream& os, TokenType c);
     
 }
 

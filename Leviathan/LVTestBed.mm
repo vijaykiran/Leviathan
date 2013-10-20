@@ -14,14 +14,12 @@
 
 + (void) runTests {
     std::string raw = "(foobar)";
-    std::pair<LVParseError*, std::vector<leviathan::token>> result = leviathan::lex(raw);
+    std::vector<leviathan::token> tokens = leviathan::lex(raw);
     
-    std::vector<leviathan::token> tokens = result.second;
-    
-//    std::cout << result.second;
+//    std::cout << leviathan::LParen << std::endl;
     
     for( std::vector<leviathan::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
-        std::cout << i->type << ' ';
+        std::cout << &i << ' ';
     
 //    NSLog(@"%ld", result.second.size());
     
