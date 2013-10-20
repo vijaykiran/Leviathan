@@ -16,6 +16,31 @@
 
 namespace leviathan {
     
+    
+    
+    
+    
+    
+    
+    class ParserError: public std::exception {
+        
+    public:
+        
+        enum ParserErrorType {
+            UnclosedString,
+        };
+        
+        ParserErrorType type;
+        NSRange badRange;
+        
+        ParserError(ParserErrorType t, NSRange r) : type(t), badRange(r) {}
+        
+    };
+    
+    
+    
+    
+    
     namespace lexer {
         
         char const* const tokens_strs[] = {

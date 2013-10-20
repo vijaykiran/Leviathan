@@ -38,9 +38,42 @@
     }
     
     {
-        std::string raw = "\"yes";
+        try {
+            std::string raw = "\"yes";
+            std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+            std::cout << tokens << std::endl;
+        }
+        catch (leviathan::ParserError &e) {
+            printf("expected parser error %d == %d\n", e.type, leviathan::ParserError::UnclosedString);
+        }
+    }
+    
+    {
+        try {
+            std::string raw = "yes\"";
+            std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+            std::cout << tokens << std::endl;
+        }
+        catch (leviathan::ParserError &e) {
+            printf("expected parser error %d == %d\n", e.type, leviathan::ParserError::UnclosedString);
+        }
+    }
+    
+    {
+        std::string raw = "\"y\\\"es\"";
         std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
         std::cout << tokens << std::endl;
+    }
+    
+    {
+        try {
+            std::string raw = "\"yes\\\"";
+            std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+            std::cout << tokens << std::endl;
+        }
+        catch (leviathan::ParserError &e) {
+            printf("expected parser error %d == %d\n", e.type, leviathan::ParserError::UnclosedString);
+        }
     }
     
     printf("ok\n");

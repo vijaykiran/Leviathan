@@ -19,7 +19,7 @@ namespace leviathan {
             
             static std::string endAtomCharSet = "()[]{}, \"\r\n\t;";
             
-            NSUInteger i = 0;
+            size_t i = 0;
             
             while (i < raw.length()) {
                 
@@ -32,9 +32,17 @@ namespace leviathan {
                         
                     case '"':
                     {
-                        size_t n = raw.find_first_of('"', i+1);
-                        tokens.push_back(token{token::String, raw.substr(i, n - i + 1)});
-                        i = n;
+                        size_t look_from = i;
+                        
+                        do {
+                            look_from = raw.find_first_of('"', look_from + 1);
+                            if (look_from == std::string::npos) {
+                                throw ParserError{ParserError::UnclosedString, NSMakeRange(i, raw.length() - i)};
+                            }
+                        } while (raw[look_from - 1] == '\\');
+                        
+                        tokens.push_back(token{token::String, raw.substr(i, look_from - i + 1)});
+                        i = look_from;
                         
                         break;
                     }
