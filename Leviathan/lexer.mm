@@ -12,8 +12,9 @@ namespace leviathan {
     
     namespace lexer {
         
-        std::vector<token> lex(std::string &raw) {
+        std::pair<std::vector<token>, ParserError> lex(std::string &raw) {
             std::vector<token> tokens;
+            ParserError error = ParserError{ParserError::NoError};
             
             tokens.push_back(token{token::Begin, ""});
             
@@ -43,7 +44,9 @@ namespace leviathan {
                         do {
                             look_from = raw.find_first_of('"', look_from + 1);
                             if (look_from == std::string::npos) {
-                                throw ParserError{ParserError::UnclosedString, NSMakeRange(i, raw.length() - i)};
+                                error.type = ParserError::UnclosedString;
+                                error.badRange = NSMakeRange(i, raw.length() - i);
+                                return std::make_pair(tokens, error);
                             }
                         } while (raw[look_from - 1] == '\\');
                         
@@ -71,7 +74,7 @@ namespace leviathan {
             
             tokens.push_back(token{token::End, ""});
             
-            return tokens;
+            return std::make_pair(tokens, error);
         }
         
         std::ostream& operator<<(std::ostream& os, token::TokenType c) {

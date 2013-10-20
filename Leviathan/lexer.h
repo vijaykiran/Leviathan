@@ -25,9 +25,7 @@ namespace leviathan {
             "",
         };
         
-        class token {
-            
-        public:
+        struct token {
             
             enum TokenType {
 #define X(a) a,
@@ -45,7 +43,7 @@ namespace leviathan {
             
         };
         
-        std::vector<token> lex(std::string &raw);
+        std::pair<std::vector<token>, ParserError> lex(std::string &raw);
         
         std::ostream& operator<<(std::ostream& os, token::TokenType c);
         std::ostream& operator<<(std::ostream& os, token& t);

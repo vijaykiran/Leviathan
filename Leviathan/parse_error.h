@@ -13,18 +13,15 @@
 
 namespace leviathan {
     
-    class ParserError: public std::exception {
-        
-    public:
+    struct ParserError {
         
         enum ParserErrorType {
+            NoError,
             UnclosedString,
         };
         
         ParserErrorType type;
         NSRange badRange;
-        
-        ParserError(ParserErrorType t, NSRange r) : type(t), badRange(r) {}
         
     };
     
