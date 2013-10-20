@@ -50,12 +50,14 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
 @implementation LVTestBed
 
 + (void) runTests {
-    LVLexerShouldEqual("(foobar)", {token{token::LParen, "("}, token{token::Symbol, "foobar"}, token{token::RParen, ")"}});
-    LVLexerShouldEqual("foobar", {token{token::Symbol, "foobar"}});
-    LVLexerShouldEqual("(    foobar", {token{token::LParen, "("}, token{token::Spaces, "    "}, token{token::Symbol, "foobar"}});
+    LVLexerShouldEqual("(foobar)", {{token::LParen, "("}, {token::Symbol, "foobar"}, {token::RParen, ")"}});
+    LVLexerShouldEqual("foobar", {{token::Symbol, "foobar"}});
+    LVLexerShouldEqual("(    foobar", {{token::LParen, "("}, {token::Spaces, "    "}, {token::Symbol, "foobar"}});
     
-    LVLexerShouldEqual("\"yes\"", {token{token::String, "\"yes\""}});
-    LVLexerShouldEqual("\"y\\\"es\"", {token{token::String, "\"y\\\"es\""}});
+    LVLexerShouldEqual("\"yes\"", {{token::String, "\"yes\""}});
+    LVLexerShouldEqual("\"y\\\"es\"", {{token::String, "\"y\\\"es\""}});
+    
+    LVLexerShouldEqual(";foobar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
     
     LVLexerShouldError("\"yes", leviathan::ParserError::UnclosedString, NSMakeRange(0, 4));
     LVLexerShouldError("yes\"", leviathan::ParserError::UnclosedString, NSMakeRange(3, 1));
