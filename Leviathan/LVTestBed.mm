@@ -19,9 +19,7 @@
 //    std::cout << leviathan::LParen << std::endl;
     
     for( std::vector<leviathan::token>::iterator i = tokens.begin(); i != tokens.end(); ++i)
-        std::cout << &i << ' ';
-    
-//    NSLog(@"%ld", result.second.size());
+        std::cout << *i << ' ';
     
     std::cout << std::endl;
     

@@ -44,9 +44,8 @@ namespace leviathan {
         return os << tokens_strs[c];
     }
     
-    std::ostream& operator<<(std::ostream& os, token t) {
-        assert(1 == 2);
-        return os << '{' << t.type << ',' << t.val << '}';
+    std::ostream& operator<<(std::ostream& os, token& t) {
+        return os << "{" << t.type << ",'" << t.val << "'}";
     }
     
 }

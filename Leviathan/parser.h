@@ -37,13 +37,12 @@ namespace leviathan {
         TokenType type;
         std::string val;
         
-        friend std::ostream& operator<<(std::ostream& os, token t);
-        
     };
     
     std::vector<token> lex(std::string &raw);
     
     std::ostream& operator<<(std::ostream& os, TokenType c);
+    std::ostream& operator<<(std::ostream& os, token& t);
     
 }
 
