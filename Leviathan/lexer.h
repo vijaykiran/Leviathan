@@ -39,6 +39,10 @@ namespace leviathan {
             TokenType type;
             std::string val;
             
+            bool operator==(const token &other) const {
+                return this->type == other.type && this->val == other.val;
+            }
+            
         };
         
         std::vector<token> lex(std::string &raw);

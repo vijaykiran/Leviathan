@@ -28,7 +28,13 @@ namespace leviathan {
                 switch (c) {
                     case '(': tokens.push_back(token{token::LParen, raw.substr(i, 1)}); break;
                     case ')': tokens.push_back(token{token::RParen, raw.substr(i, 1)}); break;
-                    case ' ': break;
+                    case ' ':
+                    {
+                        size_t n = raw.find_first_not_of(" ", i);
+                        tokens.push_back(token{token::Spaces, raw.substr(i, n - i)});
+                        i = n-1;
+                        break;
+                    }
                         
                     case '"':
                     {

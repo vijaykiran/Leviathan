@@ -24,38 +24,26 @@ static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserEr
     }
 }
 
+using namespace leviathan::lexer;
+
+static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::token> expected) {
+    expected.insert(expected.begin(), token{token::Begin, ""});
+    expected.push_back(token{token::End, ""});
+    std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+    if (tokens != expected) {
+        std::cout << tokens << std::endl;
+    }
+}
+
 @implementation LVTestBed
 
 + (void) runTests {
-    {
-        std::string raw = "(foobar)";
-        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
-        std::cout << tokens << std::endl;
-    }
+    LVLexerShouldEqual("(foobar)", {token{token::LParen, "("}, token{token::Symbol, "foobar"}, token{token::RParen, ")"}});
+    LVLexerShouldEqual("foobar", {token{token::Symbol, "foobar"}});
+    LVLexerShouldEqual("(    foobar", {token{token::LParen, "("}, token{token::Spaces, "    "}, token{token::Symbol, "foobar"}});
     
-    {
-        std::string raw = "foobar";
-        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
-        std::cout << tokens << std::endl;
-    }
-    
-    {
-        std::string raw = "(   foobar";
-        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
-        std::cout << tokens << std::endl;
-    }
-    
-    {
-        std::string raw = "\"yes\"";
-        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
-        std::cout << tokens << std::endl;
-    }
-    
-    {
-        std::string raw = "\"y\\\"es\"";
-        std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
-        std::cout << tokens << std::endl;
-    }
+//    LVLexerShouldEqual("\"yes\"", {});
+//    LVLexerShouldEqual("\"y\\\"es\"", {});
     
     LVLexerShouldError("\"yes", leviathan::ParserError::UnclosedString, NSMakeRange(0, 4));
     LVLexerShouldError("yes\"", leviathan::ParserError::UnclosedString, NSMakeRange(3, 1));
