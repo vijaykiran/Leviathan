@@ -77,7 +77,7 @@ namespace leviathan {
         }
         
         std::ostream& operator<<(std::ostream& os, token& t) {
-            return os << "{" << t.type << " '" << t.val << "'}";
+            return os << "(" << t.type << " '" << t.val << "')";
         }
         
         std::ostream& operator<<(std::ostream& os, std::vector<token> tokens) {

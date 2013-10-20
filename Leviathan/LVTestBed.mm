@@ -12,8 +12,8 @@
 
 static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserErrorType error, NSRange badRange) {
     try {
-        std::cout << "Testing: " << raw << std::endl;
         std::vector<leviathan::lexer::token> tokens = leviathan::lexer::lex(raw);
+        std::cout << "Didn't fail: " << raw << std::endl;
         assert(false);
     }
     catch (leviathan::ParserError &e) {
