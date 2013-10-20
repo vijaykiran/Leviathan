@@ -8,7 +8,7 @@
 
 #import "LVTestBed.h"
 
-#include "token.h"
+#include "lexer.h"
 
 @implementation LVTestBed
 

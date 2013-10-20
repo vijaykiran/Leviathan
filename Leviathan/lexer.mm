@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#include "token.h"
+#include "lexer.h"
 
 namespace leviathan {
     
