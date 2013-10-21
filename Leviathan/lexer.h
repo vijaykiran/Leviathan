@@ -41,11 +41,11 @@ namespace leviathan {
             
         };
         
-        std::pair<std::vector<token>, ParserError> lex(std::string &raw);
+        std::pair<std::vector<token*>, ParserError> lex(std::string &raw);
         
         std::ostream& operator<<(std::ostream& os, token::TokenType c);
         std::ostream& operator<<(std::ostream& os, token& t);
-        std::ostream& operator<<(std::ostream& os, std::vector<token> t);
+        std::ostream& operator<<(std::ostream& os, std::vector<token*> t);
         
     }
     

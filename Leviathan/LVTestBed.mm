@@ -12,8 +12,8 @@
 #include "atom.h"
 
 static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserErrorType error, NSRange badRange) {
-    std::pair<std::vector<leviathan::lexer::token>, leviathan::ParserError> result = leviathan::lexer::lex(raw);
-    std::vector<leviathan::lexer::token> tokens = result.first;
+    std::pair<std::vector<leviathan::lexer::token*>, leviathan::ParserError> result = leviathan::lexer::lex(raw);
+    std::vector<leviathan::lexer::token*> tokens = result.first;
     leviathan::ParserError e = result.second;
     if (e.type == leviathan::ParserError::NoError) {
         std::cout << "Didn't fail: " << raw << std::endl;
@@ -37,17 +37,33 @@ static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserEr
 
 using namespace leviathan::lexer;
 
-static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::token> expected) {
-    expected.insert(expected.begin(), token{token::Begin, ""});
-    expected.push_back(token{token::End, ""});
+static bool LVTokensEqual(std::vector<leviathan::lexer::token*> expected, std::vector<leviathan::lexer::token*> got) {
+    if (got.size() != expected.size()) {
+        return false;
+    }
     
-    std::pair<std::vector<leviathan::lexer::token>, leviathan::ParserError> result = leviathan::lexer::lex(raw);
-    std::vector<leviathan::lexer::token> tokens = result.first;
+    for (size_t i = 0; i < got.size(); i++) {
+        leviathan::lexer::token* t1 = got[i];
+        leviathan::lexer::token* t2 = expected[i];
+        if (!(*t1 == *t2)) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::token*> expected) {
+    expected.insert(expected.begin(), new token{token::Begin, ""});
+    expected.push_back(new token{token::End, ""});
+    
+    std::pair<std::vector<leviathan::lexer::token*>, leviathan::ParserError> result = leviathan::lexer::lex(raw);
+    std::vector<leviathan::lexer::token*> tokens = result.first;
     leviathan::ParserError e = result.second;
     
     if (e.type == leviathan::ParserError::NoError) {
-        if (tokens != expected) {
-            std::cout << tokens << std::endl;
+        if (!LVTokensEqual(expected, tokens)) {
+            std::cout << "Tokens not equal: " << tokens << std::endl;
         }
     }
     else {
@@ -59,19 +75,19 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
 @implementation LVTestBed
 
 + (void) runTests {
-    LVLexerShouldEqual("(foobar)", {{token::LParen, "("}, {token::Symbol, "foobar"}, {token::RParen, ")"}});
-    LVLexerShouldEqual("foobar", {{token::Symbol, "foobar"}});
-    LVLexerShouldEqual("(    foobar", {{token::LParen, "("}, {token::Spaces, "    "}, {token::Symbol, "foobar"}});
+    LVLexerShouldEqual("(foobar)", {new token{token::LParen, "("}, new token{token::Symbol, "foobar"}, new token{token::RParen, ")"}});
+    LVLexerShouldEqual("foobar", {new token{token::Symbol, "foobar"}});
+    LVLexerShouldEqual("(    foobar", {new token{token::LParen, "("}, new token{token::Spaces, "    "}, new token{token::Symbol, "foobar"}});
     
-    LVLexerShouldEqual("~", {{token::Unquote, "~"}});
-    LVLexerShouldEqual("~@", {{token::Splice, "~@"}});
+    LVLexerShouldEqual("~", {new token{token::Unquote, "~"}});
+    LVLexerShouldEqual("~@", {new token{token::Splice, "~@"}});
     
-    LVLexerShouldEqual("\"yes\"", {{token::String, "\"yes\""}});
-    LVLexerShouldEqual("\"y\\\"es\"", {{token::String, "\"y\\\"es\""}});
+    LVLexerShouldEqual("\"yes\"", {new token{token::String, "\"yes\""}});
+    LVLexerShouldEqual("\"y\\\"es\"", {new token{token::String, "\"y\\\"es\""}});
     
-    LVLexerShouldEqual(";foobar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
+    LVLexerShouldEqual(";foobar\nhello", {new token{token::Comment, ";foobar"}, new token{token::Newline, "\n"}, new token{token::Symbol, "hello"}});
     
-    LVLexerShouldEqual("foo 123 :hello", {{token::Symbol, "foo"}, {token::Spaces, " "}, {token::Number, "123"}, {token::Spaces, " "}, {token::Keyword, ":hello"}});
+    LVLexerShouldEqual("foo 123 :hello", {new token{token::Symbol, "foo"}, new token{token::Spaces, " "}, new token{token::Number, "123"}, new token{token::Spaces, " "}, new token{token::Keyword, ":hello"}});
     
     LVLexerShouldError("\"yes", leviathan::ParserError::UnclosedString, NSMakeRange(0, 4));
     LVLexerShouldError("\"yes\\\"", leviathan::ParserError::UnclosedString, NSMakeRange(0, 6));
@@ -83,20 +99,20 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
     
     LVLexerShouldError("foo #", leviathan::ParserError::UnclosedDispatch, NSMakeRange(4, 1));
     
-    LVLexerShouldEqual("#'foo", {{token::Var, "#'foo"}});
-    LVLexerShouldEqual("#(foo)", {{token::AnonFnStart, "#("}, {token::Symbol, "foo"}, {token::RParen, ")"}});
-    LVLexerShouldEqual("#{foo}", {{token::SetStart, "#{"}, {token::Symbol, "foo"}, {token::RBrace, "}"}});
-    LVLexerShouldEqual("#_foo", {{token::ReaderCommentStart, "#_"}, {token::Symbol, "foo"}});
-    LVLexerShouldEqual("#foo bar", {{token::ReaderMacro, "#foo"}, {token::Spaces, " "}, {token::Symbol, "bar"}});
+    LVLexerShouldEqual("#'foo", {new token{token::Var, "#'foo"}});
+    LVLexerShouldEqual("#(foo)", {new token{token::AnonFnStart, "#("}, new token{token::Symbol, "foo"}, new token{token::RParen, ")"}});
+    LVLexerShouldEqual("#{foo}", {new token{token::SetStart, "#{"}, new token{token::Symbol, "foo"}, new token{token::RBrace, "}"}});
+    LVLexerShouldEqual("#_foo", {new token{token::ReaderCommentStart, "#_"}, new token{token::Symbol, "foo"}});
+    LVLexerShouldEqual("#foo bar", {new token{token::ReaderMacro, "#foo"}, new token{token::Spaces, " "}, new token{token::Symbol, "bar"}});
     
-    LVLexerShouldEqual("#\"yes\"", {{token::Regex, "#\"yes\""}});
-    LVLexerShouldEqual("#\"y\\\"es\"", {{token::Regex, "#\"y\\\"es\""}});
+    LVLexerShouldEqual("#\"yes\"", {new token{token::Regex, "#\"yes\""}});
+    LVLexerShouldEqual("#\"y\\\"es\"", {new token{token::Regex, "#\"y\\\"es\""}});
     
     // bad test, delete me:
 //    LVLexerShouldEqual(";fo obar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
     
     printf("ok\n");
-//    [NSApp terminate:self];
+    [NSApp terminate:self];
 }
 
 @end
