@@ -9,6 +9,7 @@
 #import "LVTestBed.h"
 
 #include "lexer.h"
+#include "atom.h"
 
 static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserErrorType error, NSRange badRange) {
     std::pair<std::vector<leviathan::lexer::token>, leviathan::ParserError> result = leviathan::lexer::lex(raw);
@@ -91,7 +92,11 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
     LVLexerShouldEqual("#\"yes\"", {{token::Regex, "#\"yes\""}});
     LVLexerShouldEqual("#\"y\\\"es\"", {{token::Regex, "#\"y\\\"es\""}});
     
+    // bad test, delete me:
+//    LVLexerShouldEqual(";fo obar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
+    
     printf("ok\n");
+//    [NSApp terminate:self];
 }
 
 @end

@@ -20,7 +20,7 @@ namespace leviathan {
         
         char const* const tokens_strs[] = {
 #define X(a) #a,
-#include "token_types.h"
+#include "token_types.def"
 #undef X
         };
         
@@ -28,7 +28,7 @@ namespace leviathan {
             
             enum TokenType {
 #define X(a) a,
-#include "token_types.h"
+#include "token_types.def"
 #undef X
             };
             
@@ -52,17 +52,3 @@ namespace leviathan {
 }
 
 #endif /* defined(__Leviathan__token__) */
-
-// element will have:
-//   - parent (coll)
-//   - idx
-
-// atom will have:
-//   - atomType
-//   - token
-
-// coll will have:
-//   - collType
-//   - openToken
-//   - closeToken
-//   - children

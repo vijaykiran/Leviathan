@@ -78,7 +78,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [LVTestBed runTests];
-    [NSApp terminate:self];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultDefaults]];
     [[NSFontManager sharedFontManager] setTarget:self];

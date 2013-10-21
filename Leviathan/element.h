@@ -9,6 +9,17 @@
 #ifndef Leviathan_element_h
 #define Leviathan_element_h
 
-
+namespace leviathan {
+    
+    struct coll;
+    
+    struct element {
+        
+        coll& parent;
+        size_t index;
+        
+    };
+    
+}
 
 #endif
