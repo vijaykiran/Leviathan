@@ -11,4 +11,10 @@
 
 #include <iostream>
 
+namespace leviathan {
+    
+    
+    
+}
+
 #endif /* defined(__Leviathan__parser__) */

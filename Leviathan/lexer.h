@@ -22,7 +22,6 @@ namespace leviathan {
 #define X(a) #a,
 #include "token_types.h"
 #undef X
-            "",
         };
         
         struct token {
@@ -31,7 +30,6 @@ namespace leviathan {
 #define X(a) a,
 #include "token_types.h"
 #undef X
-                TokensCount
             };
             
             TokenType type;
@@ -55,7 +53,9 @@ namespace leviathan {
 
 #endif /* defined(__Leviathan__token__) */
 
-
+// element will have:
+//   - parent (coll)
+//   - idx
 
 // atom will have:
 //   - atomType

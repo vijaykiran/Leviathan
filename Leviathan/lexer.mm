@@ -170,7 +170,6 @@ namespace leviathan {
         }
         
         std::ostream& operator<<(std::ostream& os, token::TokenType c) {
-            if (c >= token::TokensCount || c < 0) return os << "???";
             return os << tokens_strs[c];
         }
         
