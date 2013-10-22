@@ -42,7 +42,7 @@ namespace Leviathan {
         Token* closeToken;
         iter++;
         
-        std::list<Element*> children;
+        Coll* coll = (live ? new Coll : NULL);
         
         for(Token* currentToken ; ; ) {
             
@@ -60,17 +60,15 @@ namespace Leviathan {
             
             Element* child = parseOne(live, iter);
             
-            children.push_back(child);
-            
+            if (live) {
+                coll->children.push_back(child);
+            }
         }
         
         if (live) {
-            Coll* coll = new Coll;
             coll->collType = collType;
             coll->open_token = openToken;
             coll->close_token = closeToken;
-            
-            std::move(children.begin(), children.end(), std::back_inserter(coll->children));
             
             size_t i = 0;
             for (Element* child : coll->children) {
