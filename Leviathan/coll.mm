@@ -23,14 +23,4 @@ namespace Leviathan {
         }
     }
     
-    std::ostream& operator<<(std::ostream& os, Coll::Type t) {
-        static char const* const coll_type_strs[] = {
-#define X(a) #a,
-#include "coll_types.def"
-#undef X
-        };
-        
-        return os << coll_type_strs[t];
-    }
-    
 }

@@ -17,6 +17,7 @@ namespace Leviathan {
         
         enum Type {
             NoError,
+            
             UnclosedString,
             UnclosedRegex,
             UnclosedDispatch,

@@ -21,18 +21,18 @@ static void LVLexerShouldError(std::string raw, ParserError::Type error, NSRange
     ParserError e = result.second;
     if (e.type == ParserError::NoError) {
         std::cout << "Didn't fail: " << raw << std::endl;
-        std::cout << tokens << std::endl;
+//        std::cout << tokens << std::endl;
         exit(1);
     }
     else {
         if (e.type != error) {
             std::cout << raw << std::endl;
-            std::cout << tokens << std::endl;
+//            std::cout << tokens << std::endl;
             printf("expected parser error to be %d, got %d\n", error, e.type);
             exit(1);
         }
         if (!NSEqualRanges(badRange, NSMakeRange(e.pos, e.len))) {
-            std::cout << tokens << std::endl;
+//            std::cout << tokens << std::endl;
             NSLog(@"thought: %@, got: %@", NSStringFromRange(badRange), NSStringFromRange(NSMakeRange(e.pos, e.len)));
             exit(1);
         }
@@ -65,11 +65,12 @@ static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
     
     if (e.type == ParserError::NoError) {
         if (!LVTokensEqual(expected, tokens)) {
-            std::cout << "Tokens not equal: " << tokens << std::endl;
+//            std::cout << "Tokens not equal: " << tokens << std::endl;
+            exit(1);
         }
     }
     else {
-        std::cout << "Got error: " << tokens << std::endl;
+//        std::cout << "Got error: " << tokens << std::endl;
         exit(1);
     }
 }

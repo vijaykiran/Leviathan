@@ -18,14 +18,17 @@ namespace Leviathan {
     
     struct Atom: public Element {
         
-        enum Type {
-#define X(a) a,
-#include "atom_types.def"
-#undef X
+        enum Type : uint64_t {
+            Symbol = 1 << 0,
+            String = 1 << 1,
+            Number = 1 << 2,
+            
+            Deflike = 1 << 3,
+            Ns      = 1 << 4,
         };
         
-        Type atomType; // TODO: this should actually be an OR'd list of types, so that it can be both Symbol and Deflike, or Symbol and Ns (or something)
-        Token* token; // TODO: we should probably use reference types for *everything* in all these data types.
+        int atomType; // TODO: this should actually be an OR'd list of types, so that it can be both Symbol and Deflike, or Symbol and Ns (or something)
+        Token* token;
         
     };
     

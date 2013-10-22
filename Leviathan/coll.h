@@ -19,10 +19,15 @@ namespace Leviathan {
     
     struct Coll: Element {
         
-        enum Type {
-#define X(a) a,
-#include "coll_types.def"
-#undef X
+        enum Type : uint64_t {
+            TopLevel   = 1 << 0,
+            
+            List       = 1 << 1,
+            Vector     = 1 << 2,
+            Map        = 1 << 3,
+            
+            Def        = 1 << 4,
+            Ns         = 1 << 5,
         };
         
         Type collType;
@@ -33,8 +38,6 @@ namespace Leviathan {
         ~Coll();
         
     };
-    
-    std::ostream& operator<<(std::ostream& os, Coll::Type t);
     
 }
 

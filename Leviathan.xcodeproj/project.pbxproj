@@ -50,7 +50,6 @@
 		949EC52218138102001C9CAB /* parser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52018138102001C9CAB /* parser.mm */; };
 		949EC5251813811E001C9CAB /* lexer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC5231813811E001C9CAB /* lexer.mm */; };
 		949EC52818139226001C9CAB /* LVTestBed.mm in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52718139226001C9CAB /* LVTestBed.mm */; };
-		949EC52A1813955B001C9CAB /* token_types.def in Resources */ = {isa = PBXBuildFile; fileRef = 949EC5291813955B001C9CAB /* token_types.def */; };
 		94ABB12F181463B6003415B5 /* atom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB12D181463B5003415B5 /* atom.mm */; };
 		94ABB132181463C4003415B5 /* coll.mm in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB130181463C4003415B5 /* coll.mm */; };
 		94D794341811226D003307F4 /* LVThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D794331811226D003307F4 /* LVThemeManager.m */; };
@@ -91,7 +90,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		940977FD1814F5AA00D0B9B1 /* coll_types.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = coll_types.def; sourceTree = "<group>"; };
 		94855A061810D92500220186 /* SDExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDExpectation.h; sourceTree = "<group>"; };
 		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
 		94855A091810DAE100220186 /* LVParserError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVParserError.h; sourceTree = "<group>"; };
@@ -167,14 +165,12 @@
 		949EC5241813811E001C9CAB /* lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
 		949EC52618139226001C9CAB /* LVTestBed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTestBed.h; sourceTree = "<group>"; };
 		949EC52718139226001C9CAB /* LVTestBed.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LVTestBed.mm; sourceTree = "<group>"; };
-		949EC5291813955B001C9CAB /* token_types.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = token_types.def; sourceTree = "<group>"; };
 		949EC52C1813B2D2001C9CAB /* parse_error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parse_error.h; sourceTree = "<group>"; };
 		94ABB12D181463B5003415B5 /* atom.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = atom.mm; sourceTree = "<group>"; };
 		94ABB12E181463B5003415B5 /* atom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atom.h; sourceTree = "<group>"; };
 		94ABB130181463C4003415B5 /* coll.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = coll.mm; sourceTree = "<group>"; };
 		94ABB131181463C4003415B5 /* coll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coll.h; sourceTree = "<group>"; };
 		94ABB133181463D3003415B5 /* element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = element.h; sourceTree = "<group>"; };
-		94ABB13418146E65003415B5 /* atom_types.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = atom_types.def; sourceTree = "<group>"; };
 		94D794321811226D003307F4 /* LVThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeManager.h; sourceTree = "<group>"; };
 		94D794331811226D003307F4 /* LVThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeManager.m; sourceTree = "<group>"; };
 		94D79436181125F1003307F4 /* BMOEDNCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNCharacter.h; sourceTree = "<group>"; };
@@ -546,7 +542,6 @@
 			children = (
 				94EB3DC918161106002E639F /* token.h */,
 				94EB3DC818161106002E639F /* token.mm */,
-				949EC5291813955B001C9CAB /* token_types.def */,
 			);
 			name = tokens;
 			sourceTree = "<group>";
@@ -556,7 +551,6 @@
 			children = (
 				94ABB131181463C4003415B5 /* coll.h */,
 				94ABB130181463C4003415B5 /* coll.mm */,
-				940977FD1814F5AA00D0B9B1 /* coll_types.def */,
 			);
 			name = colls;
 			sourceTree = "<group>";
@@ -566,7 +560,6 @@
 			children = (
 				94ABB12E181463B5003415B5 /* atom.h */,
 				94ABB12D181463B5003415B5 /* atom.mm */,
-				94ABB13418146E65003415B5 /* atom_types.def */,
 			);
 			name = atoms;
 			sourceTree = "<group>";
@@ -657,7 +650,6 @@
 				9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */,
 				9490D81E181054EE006ECA5E /* Tab.xib in Resources */,
 				9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */,
-				949EC52A1813955B001C9CAB /* token_types.def in Resources */,
 				9490D7E918104D58006ECA5E /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

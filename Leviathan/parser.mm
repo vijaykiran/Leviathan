@@ -16,7 +16,7 @@ namespace Leviathan {
     Element* parseOne(bool live, std::vector<Token*>::iterator& iter) {
         Token* currentToken = *iter;
         
-        std::cout << *currentToken << std::endl;
+//        std::cout << *currentToken << std::endl;
         
         if (currentToken->type & Token::Symbol) {
             iter++;
