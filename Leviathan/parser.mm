@@ -95,10 +95,14 @@ namespace Leviathan {
                 
                 // if we're still here, then there's no errors
                 
+                iter = tokens.begin();
                 top_level_coll = parseColl(true, iter, Coll::TopLevel, Token::FileEnd); // real thing
                 top_level_coll->parent = NULL;
             } catch (ParserError& e) {
                 error = e;
+                
+                std::cout << "uhh, error!" << std::endl;
+                
                 // delete tokens
             }
         }

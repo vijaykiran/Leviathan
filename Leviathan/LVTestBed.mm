@@ -125,7 +125,7 @@ static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
 //    if (0)
     {
         std::pair<Coll*, ParserError> result = parse("foo");
-        std::cout << result.first->collType << std::endl;
+//        std::cout << result.first->collType << std::endl;
         assert(result.second.type == ParserError::NoError);
         assert(result.first->collType == Coll::TopLevel);
         delete result.first;
