@@ -7,3 +7,14 @@
 //
 
 #include "parser.h"
+
+namespace leviathan {
+    
+    std::pair<coll*, ParserError> parse(std::string const& raw) {
+        coll* top_level_coll;
+        ParserError error;
+        
+        return std::make_pair(top_level_coll, error);
+    }
+    
+}

@@ -17,7 +17,7 @@
 
 namespace leviathan {
     
-    std::pair<std::vector<token*>, ParserError> lex(std::string &raw);
+    std::pair<std::vector<token*>, ParserError> lex(std::string const& raw);
     
 }
 

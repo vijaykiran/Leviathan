@@ -11,6 +11,7 @@
 #include "token.h"
 #include "lexer.h"
 #include "atom.h"
+#include "parser.h"
 
 static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserErrorType error, NSRange badRange) {
     std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex(raw);
@@ -114,13 +115,14 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::token*> e
     
     {
         // NOTE: this is how you delete a list of tokens (not that we generally want to!)
-        std::string str = "foobar";
-        std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex(str);
+        std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex("foobar");
         auto tokens = result.first;
         for (std::vector<leviathan::token*>::iterator i = tokens.begin(); i != tokens.end(); ++i) {
             delete *i;
         }
     }
+    
+    leviathan::parse("foo");
     
     printf("ok\n");
     [NSApp terminate:self];
