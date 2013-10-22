@@ -31,7 +31,7 @@ namespace leviathan {
 #undef X
         };
         
-        CollType listType;
+        CollType collType;
         token* open_token;
         token* close_token;
         std::list<element*> children;
