@@ -32,8 +32,8 @@ namespace Leviathan {
         };
         
         CollType collType;
-        token* open_token;
-        token* close_token;
+        Token* open_token;
+        Token* close_token;
         std::list<element*> children;
         
     };

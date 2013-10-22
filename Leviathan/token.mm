@@ -10,16 +10,16 @@
 
 namespace Leviathan {
     
-    std::ostream& operator<<(std::ostream& os, token::TokenType c) {
+    std::ostream& operator<<(std::ostream& os, Token::TokenType c) {
         return os << tokens_strs[c];
     }
     
-    std::ostream& operator<<(std::ostream& os, token& t) {
+    std::ostream& operator<<(std::ostream& os, Token& t) {
         return os << "(" << t.type << " '" << t.val << "')";
     }
     
-    std::ostream& operator<<(std::ostream& os, std::vector<token*> tokens) {
-        for( std::vector<token*>::iterator i = tokens.begin(); i != tokens.end(); ++i)
+    std::ostream& operator<<(std::ostream& os, std::vector<Token*> tokens) {
+        for( std::vector<Token*>::iterator i = tokens.begin(); i != tokens.end(); ++i)
             os << **i << ' ';
         return os;
     }

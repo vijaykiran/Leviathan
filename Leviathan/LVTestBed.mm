@@ -16,8 +16,8 @@
 using namespace Leviathan;
 
 static void LVLexerShouldError(std::string raw, ParserError::ParserErrorType error, NSRange badRange) {
-    std::pair<std::vector<token*>, ParserError> result = lex(raw);
-    std::vector<token*> tokens = result.first;
+    std::pair<std::vector<Token*>, ParserError> result = lex(raw);
+    std::vector<Token*> tokens = result.first;
     ParserError e = result.second;
     if (e.type == ParserError::NoError) {
         std::cout << "Didn't fail: " << raw << std::endl;
@@ -39,14 +39,14 @@ static void LVLexerShouldError(std::string raw, ParserError::ParserErrorType err
     }
 }
 
-static bool LVTokensEqual(std::vector<token*> expected, std::vector<token*> got) {
+static bool LVTokensEqual(std::vector<Token*> expected, std::vector<Token*> got) {
     if (got.size() != expected.size()) {
         return false;
     }
     
     for (size_t i = 0; i < got.size(); i++) {
-        token* t1 = got[i];
-        token* t2 = expected[i];
+        Token* t1 = got[i];
+        Token* t2 = expected[i];
         if (!(*t1 == *t2)) {
             return false;
         }
@@ -55,12 +55,12 @@ static bool LVTokensEqual(std::vector<token*> expected, std::vector<token*> got)
     return true;
 }
 
-static void LVLexerShouldEqual(std::string raw, std::vector<token*> expected) {
-    expected.insert(expected.begin(), new token{token::Begin, ""});
-    expected.push_back(new token{token::End, ""});
+static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
+    expected.insert(expected.begin(), new Token{Token::Begin, ""});
+    expected.push_back(new Token{Token::End, ""});
     
-    std::pair<std::vector<token*>, ParserError> result = lex(raw);
-    std::vector<token*> tokens = result.first;
+    std::pair<std::vector<Token*>, ParserError> result = lex(raw);
+    std::vector<Token*> tokens = result.first;
     ParserError e = result.second;
     
     if (e.type == ParserError::NoError) {
@@ -77,19 +77,19 @@ static void LVLexerShouldEqual(std::string raw, std::vector<token*> expected) {
 @implementation LVTestBed
 
 + (void) runTests {
-    LVLexerShouldEqual("(foobar)", {new token{token::LParen, "("}, new token{token::Symbol, "foobar"}, new token{token::RParen, ")"}});
-    LVLexerShouldEqual("foobar", {new token{token::Symbol, "foobar"}});
-    LVLexerShouldEqual("(    foobar", {new token{token::LParen, "("}, new token{token::Spaces, "    "}, new token{token::Symbol, "foobar"}});
+    LVLexerShouldEqual("(foobar)", {new Token{Token::LParen, "("}, new Token{Token::Symbol, "foobar"}, new Token{Token::RParen, ")"}});
+    LVLexerShouldEqual("foobar", {new Token{Token::Symbol, "foobar"}});
+    LVLexerShouldEqual("(    foobar", {new Token{Token::LParen, "("}, new Token{Token::Spaces, "    "}, new Token{Token::Symbol, "foobar"}});
     
-    LVLexerShouldEqual("~", {new token{token::Unquote, "~"}});
-    LVLexerShouldEqual("~@", {new token{token::Splice, "~@"}});
+    LVLexerShouldEqual("~", {new Token{Token::Unquote, "~"}});
+    LVLexerShouldEqual("~@", {new Token{Token::Splice, "~@"}});
     
-    LVLexerShouldEqual("\"yes\"", {new token{token::String, "\"yes\""}});
-    LVLexerShouldEqual("\"y\\\"es\"", {new token{token::String, "\"y\\\"es\""}});
+    LVLexerShouldEqual("\"yes\"", {new Token{Token::String, "\"yes\""}});
+    LVLexerShouldEqual("\"y\\\"es\"", {new Token{Token::String, "\"y\\\"es\""}});
     
-    LVLexerShouldEqual(";foobar\nhello", {new token{token::Comment, ";foobar"}, new token{token::Newline, "\n"}, new token{token::Symbol, "hello"}});
+    LVLexerShouldEqual(";foobar\nhello", {new Token{Token::Comment, ";foobar"}, new Token{Token::Newline, "\n"}, new Token{Token::Symbol, "hello"}});
     
-    LVLexerShouldEqual("foo 123 :hello", {new token{token::Symbol, "foo"}, new token{token::Spaces, " "}, new token{token::Number, "123"}, new token{token::Spaces, " "}, new token{token::Keyword, ":hello"}});
+    LVLexerShouldEqual("foo 123 :hello", {new Token{Token::Symbol, "foo"}, new Token{Token::Spaces, " "}, new Token{Token::Number, "123"}, new Token{Token::Spaces, " "}, new Token{Token::Keyword, ":hello"}});
     
     LVLexerShouldError("\"yes", ParserError::UnclosedString, NSMakeRange(0, 4));
     LVLexerShouldError("\"yes\\\"", ParserError::UnclosedString, NSMakeRange(0, 6));
@@ -101,23 +101,23 @@ static void LVLexerShouldEqual(std::string raw, std::vector<token*> expected) {
     
     LVLexerShouldError("foo #", ParserError::UnclosedDispatch, NSMakeRange(4, 1));
     
-    LVLexerShouldEqual("#'foo", {new token{token::Var, "#'foo"}});
-    LVLexerShouldEqual("#(foo)", {new token{token::AnonFnStart, "#("}, new token{token::Symbol, "foo"}, new token{token::RParen, ")"}});
-    LVLexerShouldEqual("#{foo}", {new token{token::SetStart, "#{"}, new token{token::Symbol, "foo"}, new token{token::RBrace, "}"}});
-    LVLexerShouldEqual("#_foo", {new token{token::ReaderCommentStart, "#_"}, new token{token::Symbol, "foo"}});
-    LVLexerShouldEqual("#foo bar", {new token{token::ReaderMacro, "#foo"}, new token{token::Spaces, " "}, new token{token::Symbol, "bar"}});
+    LVLexerShouldEqual("#'foo", {new Token{Token::Var, "#'foo"}});
+    LVLexerShouldEqual("#(foo)", {new Token{Token::AnonFnStart, "#("}, new Token{Token::Symbol, "foo"}, new Token{Token::RParen, ")"}});
+    LVLexerShouldEqual("#{foo}", {new Token{Token::SetStart, "#{"}, new Token{Token::Symbol, "foo"}, new Token{Token::RBrace, "}"}});
+    LVLexerShouldEqual("#_foo", {new Token{Token::ReaderCommentStart, "#_"}, new Token{Token::Symbol, "foo"}});
+    LVLexerShouldEqual("#foo bar", {new Token{Token::ReaderMacro, "#foo"}, new Token{Token::Spaces, " "}, new Token{Token::Symbol, "bar"}});
     
-    LVLexerShouldEqual("#\"yes\"", {new token{token::Regex, "#\"yes\""}});
-    LVLexerShouldEqual("#\"y\\\"es\"", {new token{token::Regex, "#\"y\\\"es\""}});
+    LVLexerShouldEqual("#\"yes\"", {new Token{Token::Regex, "#\"yes\""}});
+    LVLexerShouldEqual("#\"y\\\"es\"", {new Token{Token::Regex, "#\"y\\\"es\""}});
     
     // bad test, delete me:
 //    LVLexerShouldEqual(";fo obar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
     
     {
         // NOTE: this is how you delete a list of tokens (not that we generally want to!)
-        std::pair<std::vector<token*>, ParserError> result = lex("foobar");
+        std::pair<std::vector<Token*>, ParserError> result = lex("foobar");
         auto tokens = result.first;
-        for (std::vector<token*>::iterator i = tokens.begin(); i != tokens.end(); ++i) {
+        for (std::vector<Token*>::iterator i = tokens.begin(); i != tokens.end(); ++i) {
             delete *i;
         }
     }

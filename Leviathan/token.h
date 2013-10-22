@@ -20,7 +20,7 @@ namespace Leviathan {
 #undef X
     };
     
-    struct token {
+    struct Token {
         
         enum TokenType {
 #define X(a) a,
@@ -31,15 +31,15 @@ namespace Leviathan {
         TokenType type;
         std::string val;
         
-        bool operator==(const token &other) const { // NOTE: only used for tests!
+        bool operator==(const Token &other) const { // NOTE: only used for tests!
             return this->type == other.type && this->val == other.val;
         }
         
     };
     
-    std::ostream& operator<<(std::ostream& os, token::TokenType c);
-    std::ostream& operator<<(std::ostream& os, token& t);
-    std::ostream& operator<<(std::ostream& os, std::vector<token*> t);
+    std::ostream& operator<<(std::ostream& os, Token::TokenType c);
+    std::ostream& operator<<(std::ostream& os, Token& t);
+    std::ostream& operator<<(std::ostream& os, std::vector<Token*> t);
     
 }
 

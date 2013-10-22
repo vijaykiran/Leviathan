@@ -31,7 +31,7 @@ namespace Leviathan {
         };
         
         AtomType atomType; // TODO: this should actually be an OR'd list of types, so that it can be both Symbol and Deflike, or Symbol and Ns (or something)
-        token* token; // TODO: we should probably use reference types for *everything* in all these data types.
+        Token* token; // TODO: we should probably use reference types for *everything* in all these data types.
         
     };
     
