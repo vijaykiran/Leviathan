@@ -89,7 +89,8 @@ namespace leviathan {
                         look_from = raw.find('"', look_from + 1);
                         if (look_from == std::string::npos) {
                             error.type = ParserError::UnclosedString;
-                            error.badRange = NSMakeRange(i, raw.length() - i);
+                            error.pos = i;
+                            error.len = raw.length() - i;
                             return std::make_pair(tokens, error);
                         }
                     } while (raw[look_from - 1] == '\\');
@@ -103,7 +104,8 @@ namespace leviathan {
                 case '#': {
                     if (i + 1 == raw.length()) {
                         error.type = ParserError::UnclosedDispatch;
-                        error.badRange = NSMakeRange(i, raw.length() - i);
+                        error.pos = i;
+                        error.len = raw.length() - i;
                         return std::make_pair(tokens, error);
                     }
                     
@@ -117,7 +119,8 @@ namespace leviathan {
                                 look_from = raw.find('"', look_from + 1);
                                 if (look_from == std::string::npos) {
                                     error.type = ParserError::UnclosedRegex;
-                                    error.badRange = NSMakeRange(i, raw.length() - i);
+                                    error.pos = i;
+                                    error.len = raw.length() - i;
                                     return std::make_pair(tokens, error);
                                 }
                             } while (raw[look_from - 1] == '\\');

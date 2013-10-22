@@ -23,7 +23,8 @@ namespace leviathan {
         };
         
         ParserErrorType type;
-        NSRange badRange;
+        size_t pos;
+        size_t len;
         
     };
     

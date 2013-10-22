@@ -28,9 +28,9 @@ static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserEr
             printf("expected parser error to be %d, got %d\n", error, e.type);
             exit(1);
         }
-        if (!NSEqualRanges(badRange, e.badRange)) {
+        if (!NSEqualRanges(badRange, NSMakeRange(e.pos, e.len))) {
             std::cout << tokens << std::endl;
-            NSLog(@"thought: %@, got: %@", NSStringFromRange(badRange), NSStringFromRange(e.badRange));
+            NSLog(@"thought: %@, got: %@", NSStringFromRange(badRange), NSStringFromRange(NSMakeRange(e.pos, e.len)));
             exit(1);
         }
     }
