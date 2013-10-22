@@ -10,25 +10,21 @@
 
 namespace Leviathan {
     
-    std::ostream& operator<<(std::ostream& os, Token::Type c) {
-        static char const* const tokens_strs[] = {
-#define X(a) #a,
-#include "token_types.def"
-#undef X
-        };
-        
-        return os << tokens_strs[c];
-    }
-    
     std::ostream& operator<<(std::ostream& os, Token& t) {
-        return os << "(" << t.type << " '" << t.val << "')";
+        os << "(";
+        for (int typ = 1, i = 0; typ < Token::END_TOKEN_TYPES; typ <<= 1, i++) {
+            if (t.type & typ) {
+                os << TokenStrings[i] << " ";
+            }
+        }
+        os << "'" << t.val << "')";
+        return os;
     }
     
     std::ostream& operator<<(std::ostream& os, std::vector<Token*> tokens) {
         for (Token* tok : tokens) {
             os << *tok << ' ';
         }
-        
         return os;
     }
     

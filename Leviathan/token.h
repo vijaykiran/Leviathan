@@ -14,12 +14,19 @@
 
 namespace Leviathan {
     
-    struct Token {
-        
-        enum Type {
-#define X(a) a,
+    static char const* const TokenStrings[] = {
+#define X(a, b) #a,
 #include "token_types.def"
 #undef X
+    };
+    
+    struct Token {
+        
+        enum Type : unsigned long long {
+#define X(a, b) a = b,
+#include "token_types.def"
+#undef X
+            END_TOKEN_TYPES,
         };
         
         int type;
@@ -31,7 +38,6 @@ namespace Leviathan {
         
     };
     
-    std::ostream& operator<<(std::ostream& os, Token::Type c);
     std::ostream& operator<<(std::ostream& os, Token& t);
     std::ostream& operator<<(std::ostream& os, std::vector<Token*> t);
     
