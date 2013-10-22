@@ -17,7 +17,7 @@
 
 namespace Leviathan {
     
-    struct Coll: element {
+    struct Coll: Element {
         
         enum Type {
 #define X(a) a,
@@ -28,7 +28,7 @@ namespace Leviathan {
         Type collType;
         Token* open_token;
         Token* close_token;
-        std::list<element*> children;
+        std::list<Element*> children;
         
         ~Coll();
         

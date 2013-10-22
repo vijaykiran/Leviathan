@@ -16,7 +16,7 @@
 
 namespace Leviathan {
     
-    struct Atom: public element {
+    struct Atom: public Element {
         
         enum Type {
 #define X(a) a,

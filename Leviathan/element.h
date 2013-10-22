@@ -11,11 +11,11 @@
 
 namespace Leviathan {
     
-    struct coll;
+    struct Coll;
     
-    struct element {
+    struct Element {
         
-        coll* parent;
+        Coll* parent;
         size_t index;
         
     };

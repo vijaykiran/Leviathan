@@ -14,7 +14,7 @@ namespace Leviathan {
         delete this->open_token;
         delete this->close_token;
         
-        for (std::list<element*>::iterator i = this->children.begin(); i != this->children.end(); ++i) {
+        for (std::list<Element*>::iterator i = this->children.begin(); i != this->children.end(); ++i) {
             delete *i;
         }
     }
