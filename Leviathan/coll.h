@@ -30,7 +30,11 @@ namespace Leviathan {
         Token* close_token;
         std::list<element*> children;
         
+        ~Coll();
+        
     };
+    
+    std::ostream& operator<<(std::ostream& os, Coll::Type t);
     
 }
 

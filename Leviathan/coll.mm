@@ -8,9 +8,25 @@
 
 #include "coll.h"
 
-static char const* const coll_type_strs[] = {
+namespace Leviathan {
+    
+    Coll::~Coll() {
+        delete this->open_token;
+        delete this->close_token;
+        
+        for (std::list<element*>::iterator i = this->children.begin(); i != this->children.end(); ++i) {
+            delete *i;
+        }
+    }
+    
+    std::ostream& operator<<(std::ostream& os, Coll::Type t) {
+        static char const* const coll_type_strs[] = {
 #define X(a) #a,
 #include "coll_types.def"
 #undef X
-};
-
+        };
+        
+        return os << coll_type_strs[t];
+    }
+    
+}

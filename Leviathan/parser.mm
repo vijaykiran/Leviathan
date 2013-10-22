@@ -14,10 +14,21 @@ namespace Leviathan {
     
     std::pair<Coll*, ParserError> parseColl(std::vector<Token*>::iterator iter, Coll::Type collType, Token::Type endToken) {
         Coll* coll;
-        ParserError error;
+        ParserError error = {ParserError::NoError};
         
-//        coll = new Coll;
-//        coll->collType = Coll::TopLevel;
+        Token* firstToken = *iter;
+        iter++;
+        
+        std::cout << firstToken->type << std::endl;
+        std::cout << (*iter)->type << std::endl;
+        
+        coll = new Coll;
+        coll->collType = collType;
+        
+        coll->open_token = firstToken;
+        coll->close_token = *iter;
+        
+        std::cout << coll->collType << std::endl;
         
         return std::make_pair(coll, error);
     }
@@ -30,7 +41,7 @@ namespace Leviathan {
         
         Coll* top_level_coll;
         
-        if (error.type != ParserError::NoError) {
+        if (error.type == ParserError::NoError) {
             std::pair<Coll*, ParserError> result = parseColl(tokens.begin(), Coll::TopLevel, Token::FileEnd);
             
             top_level_coll = result.first;
