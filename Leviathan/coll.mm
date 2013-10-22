@@ -12,10 +12,12 @@ namespace Leviathan {
     
     Coll::~Coll() {
         delete this->open_token;
-        delete this->close_token;
         
-        for (std::list<Element*>::iterator i = this->children.begin(); i != this->children.end(); ++i) {
-            delete *i;
+        if (this->close_token)
+            delete this->close_token; // might not be set yet, during parsing
+        
+        for (Element* e : this->children) {
+            delete e;
         }
     }
     

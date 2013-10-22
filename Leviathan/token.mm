@@ -25,8 +25,10 @@ namespace Leviathan {
     }
     
     std::ostream& operator<<(std::ostream& os, std::vector<Token*> tokens) {
-        for (std::vector<Token*>::iterator i = tokens.begin(); i != tokens.end(); ++i)
-            os << **i << ' ';
+        for (Token* tok : tokens) {
+            os << *tok << ' ';
+        }
+        
         return os;
     }
     

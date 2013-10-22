@@ -20,6 +20,8 @@ namespace Leviathan {
             UnclosedString,
             UnclosedRegex,
             UnclosedDispatch,
+            
+            UnclosedColl,
         };
         
         Type type;

@@ -12,25 +12,48 @@
 
 namespace Leviathan {
     
-    std::pair<Coll*, ParserError> parseColl(std::vector<Token*>::iterator iter, Coll::Type collType, Token::Type endToken) {
-        Coll* coll;
-        ParserError error = {ParserError::NoError};
-        
-        Token* firstToken = *iter;
+    Coll* parseColl(bool live, std::vector<Token*>::iterator iter, Coll::Type collType, Token::Type endTokenType) {
+        Token* openToken = *iter;
+        Token* closeToken;
         iter++;
         
-        std::cout << firstToken->type << std::endl;
-        std::cout << (*iter)->type << std::endl;
+        std::list<Element*> children;
         
-        coll = new Coll;
-        coll->collType = collType;
+        for(Token* currentToken ; ; ) {
+            
+            currentToken = *iter;
+            
+            if (currentToken->type == endTokenType) {
+                closeToken = currentToken;
+                iter++;
+                break;
+            }
+            
+            if (currentToken->type == Token::FileEnd) {
+                throw ParserError{ParserError::UnclosedColl};
+            }
+            
+            // parse one, add to children
+            
+        }
         
-        coll->open_token = firstToken;
-        coll->close_token = *iter;
-        
-        std::cout << coll->collType << std::endl;
-        
-        return std::make_pair(coll, error);
+        if (live) {
+            Coll* coll = new Coll;
+            coll->collType = collType;
+            coll->open_token = openToken;
+            coll->close_token = closeToken;
+            
+            // move children to child->chilren;
+            
+            for (Element* child : coll->children) {
+                child->parent = coll;
+            }
+            
+            return coll;
+        }
+        else {
+            return NULL;
+        }
     }
     
     std::pair<Coll*, ParserError> parse(std::string const& raw) {
@@ -42,10 +65,18 @@ namespace Leviathan {
         Coll* top_level_coll;
         
         if (error.type == ParserError::NoError) {
-            std::pair<Coll*, ParserError> result = parseColl(tokens.begin(), Coll::TopLevel, Token::FileEnd);
-            
-            top_level_coll = result.first;
-            error = result.second;
+            try {
+                error.type = ParserError::NoError;
+                parseColl(false, tokens.begin(), Coll::TopLevel, Token::FileEnd); // dry-run
+                
+                top_level_coll = parseColl(true, tokens.begin(), Coll::TopLevel, Token::FileEnd);
+            } catch (ParserError& e) {
+                error = e;
+                // delete tokens
+            }
+        }
+        else {
+            // TODO: lexing had an error, so delete all token* ptrs in "tokens"
         }
         
         return std::make_pair(top_level_coll, error);
