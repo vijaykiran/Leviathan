@@ -8,12 +8,13 @@
 
 #import "LVTestBed.h"
 
+#include "token.h"
 #include "lexer.h"
 #include "atom.h"
 
 static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserErrorType error, NSRange badRange) {
-    std::pair<std::vector<leviathan::lexer::token*>, leviathan::ParserError> result = leviathan::lexer::lex(raw);
-    std::vector<leviathan::lexer::token*> tokens = result.first;
+    std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex(raw);
+    std::vector<leviathan::token*> tokens = result.first;
     leviathan::ParserError e = result.second;
     if (e.type == leviathan::ParserError::NoError) {
         std::cout << "Didn't fail: " << raw << std::endl;
@@ -35,16 +36,16 @@ static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserEr
     }
 }
 
-using namespace leviathan::lexer;
+using namespace leviathan;
 
-static bool LVTokensEqual(std::vector<leviathan::lexer::token*> expected, std::vector<leviathan::lexer::token*> got) {
+static bool LVTokensEqual(std::vector<leviathan::token*> expected, std::vector<leviathan::token*> got) {
     if (got.size() != expected.size()) {
         return false;
     }
     
     for (size_t i = 0; i < got.size(); i++) {
-        leviathan::lexer::token* t1 = got[i];
-        leviathan::lexer::token* t2 = expected[i];
+        leviathan::token* t1 = got[i];
+        leviathan::token* t2 = expected[i];
         if (!(*t1 == *t2)) {
             return false;
         }
@@ -53,12 +54,12 @@ static bool LVTokensEqual(std::vector<leviathan::lexer::token*> expected, std::v
     return true;
 }
 
-static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::token*> expected) {
+static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::token*> expected) {
     expected.insert(expected.begin(), new token{token::Begin, ""});
     expected.push_back(new token{token::End, ""});
     
-    std::pair<std::vector<leviathan::lexer::token*>, leviathan::ParserError> result = leviathan::lexer::lex(raw);
-    std::vector<leviathan::lexer::token*> tokens = result.first;
+    std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex(raw);
+    std::vector<leviathan::token*> tokens = result.first;
     leviathan::ParserError e = result.second;
     
     if (e.type == leviathan::ParserError::NoError) {
@@ -110,6 +111,16 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::lexer::to
     
     // bad test, delete me:
 //    LVLexerShouldEqual(";fo obar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
+    
+    {
+        // NOTE: this is how you delete a list of tokens (not that we generally want to!)
+        std::string str = "foobar";
+        std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex(str);
+        auto tokens = result.first;
+        for (std::vector<leviathan::token*>::iterator i = tokens.begin(); i != tokens.end(); ++i) {
+            delete *i;
+        }
+    }
     
     printf("ok\n");
     [NSApp terminate:self];

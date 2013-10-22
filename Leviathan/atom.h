@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include "element.h"
-#include "lexer.h"
+#include "token.h"
 
 namespace leviathan {
     
@@ -31,7 +31,7 @@ namespace leviathan {
         };
         
         AtomType atomType; // TODO: this should actually be an OR'd list of types, so that it can be both Symbol and Deflike, or Symbol and Ns (or something)
-        lexer::token token; // TODO: we should probably use reference types for *everything* in all these data types.
+        token* token; // TODO: we should probably use reference types for *everything* in all these data types.
         
     };
     

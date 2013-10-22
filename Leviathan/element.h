@@ -15,7 +15,7 @@ namespace leviathan {
     
     struct element {
         
-        coll& parent;
+        coll* parent;
         size_t index;
         
     };

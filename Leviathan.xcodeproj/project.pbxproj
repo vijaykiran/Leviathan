@@ -76,6 +76,7 @@
 		94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79460181125F1003307F4 /* NSString+BMOEDN.m */; };
 		94D79477181125F1003307F4 /* NSUUID+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */; };
 		94D7947A18112CC0003307F4 /* LVHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7947918112CC0003307F4 /* LVHighlighter.m */; };
+		94EB3DCA18161106002E639F /* token.mm in Sources */ = {isa = PBXBuildFile; fileRef = 94EB3DC818161106002E639F /* token.mm */; };
 		94EF5CF81811E744004836A0 /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EF5CF71811E744004836A0 /* LVTheme.m */; };
 /* End PBXBuildFile section */
 
@@ -223,6 +224,8 @@
 		94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+BMOEDN.m"; sourceTree = "<group>"; };
 		94D7947818112CC0003307F4 /* LVHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVHighlighter.h; sourceTree = "<group>"; };
 		94D7947918112CC0003307F4 /* LVHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVHighlighter.m; sourceTree = "<group>"; };
+		94EB3DC818161106002E639F /* token.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = token.mm; sourceTree = "<group>"; };
+		94EB3DC918161106002E639F /* token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token.h; sourceTree = "<group>"; };
 		94EF5CF61811E744004836A0 /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
 		94EF5CF71811E744004836A0 /* LVTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTheme.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -253,9 +256,11 @@
 			isa = PBXGroup;
 			children = (
 				949EC52C1813B2D2001C9CAB /* parse_error.h */,
+				94EB3DC918161106002E639F /* token.h */,
+				94EB3DC818161106002E639F /* token.mm */,
+				949EC5291813955B001C9CAB /* token_types.def */,
 				949EC5241813811E001C9CAB /* lexer.h */,
 				949EC5231813811E001C9CAB /* lexer.mm */,
-				949EC5291813955B001C9CAB /* token_types.def */,
 				949EC52118138102001C9CAB /* parser.h */,
 				949EC52018138102001C9CAB /* parser.mm */,
 				94ABB133181463D3003415B5 /* element.h */,
@@ -670,6 +675,7 @@
 				94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
 				9493D96F18108BC80080E3C0 /* LVParser.m in Sources */,
+				94EB3DCA18161106002E639F /* token.mm in Sources */,
 				94ABB12F181463B6003415B5 /* atom.mm in Sources */,
 				94D79472181125F1003307F4 /* NSData+BMOEDN.m in Sources */,
 				94D79475181125F1003307F4 /* NSObject+BMOEDN.m in Sources */,

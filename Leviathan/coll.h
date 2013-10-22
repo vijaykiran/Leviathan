@@ -13,7 +13,7 @@
 
 #include <list>
 #include "element.h"
-#include "lexer.h"
+#include "token.h"
 
 namespace leviathan {
     
@@ -32,9 +32,9 @@ namespace leviathan {
         };
         
         CollType listType;
-        lexer::token open_token;
-        lexer::token close_token;
-        std::list<element> children;
+        token* open_token;
+        token* close_token;
+        std::list<element*> children;
         
     };
     
