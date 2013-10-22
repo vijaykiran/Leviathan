@@ -7,3 +7,10 @@
 //
 
 #include "coll.h"
+
+static char const* const coll_type_strs[] = {
+#define X(a) #a,
+#include "coll_types.def"
+#undef X
+};
+

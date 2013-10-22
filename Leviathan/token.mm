@@ -11,6 +11,12 @@
 namespace Leviathan {
     
     std::ostream& operator<<(std::ostream& os, Token::Type c) {
+        static char const* const tokens_strs[] = {
+#define X(a) #a,
+#include "token_types.def"
+#undef X
+        };
+        
         return os << tokens_strs[c];
     }
     

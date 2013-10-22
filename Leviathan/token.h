@@ -14,12 +14,6 @@
 
 namespace Leviathan {
     
-    char const* const tokens_strs[] = {
-#define X(a) #a,
-#include "token_types.def"
-#undef X
-    };
-    
     struct Token {
         
         enum Type {

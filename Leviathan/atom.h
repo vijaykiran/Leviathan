@@ -16,12 +16,6 @@
 
 namespace Leviathan {
     
-    char const* const atom_strs[] = {
-#define X(a) #a,
-#include "atom_types.def"
-#undef X
-    };
-    
     struct Atom: public element {
         
         enum Type {
