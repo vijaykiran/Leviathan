@@ -25,8 +25,12 @@ namespace Leviathan {
             
             Spaces  = 1 << 3,
             
-            Deflike = 1 << 4, // must also be Symbol
-            Ns      = 1 << 5, // must also be Symbol
+            TrueAtom  = 1 << 4, // must also be Symbol
+            FalseAtom = 1 << 5, // must also be Symbol
+            NilAtom   = 1 << 6, // must also be Symbol
+            
+            Deflike = 1 << 7, // must also be Symbol
+            Ns      = 1 << 8, // must also be Symbol
         };
         
         int atomType; // TODO: this should actually be an OR'd list of types, so that it can be both Symbol and Deflike, or Symbol and Ns (or something)

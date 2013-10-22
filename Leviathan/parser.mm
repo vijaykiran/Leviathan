@@ -25,24 +25,15 @@ namespace Leviathan {
         }
         if (currentToken->type & Token::Symbol) {
             iter++;
-            if (live)
-                return new Atom(Atom::Symbol, currentToken);
-            else
-                return NULL;
+            return (live? new Atom(Atom::Symbol, currentToken) : NULL); // TODO: return TrueAtom etc, when token matches
         }
         if (currentToken->type & Token::Spaces) {
             iter++;
-            if (live)
-                return new Atom(Atom::Spaces, currentToken);
-            else
-                return NULL;
+            return (live? new Atom(Atom::Spaces, currentToken) : NULL);
         }
         else if (currentToken->type & Token::Number) {
             iter++;
-            if (live)
-                return new Atom(Atom::Number, currentToken);
-            else
-                return NULL;
+            return (live? new Atom(Atom::Number, currentToken) : NULL);
         }
         
         return NULL;
