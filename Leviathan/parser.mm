@@ -8,7 +8,7 @@
 
 #include "parser.h"
 
-namespace leviathan {
+namespace Leviathan {
     
     std::pair<coll*, ParserError> parse(std::string const& raw) {
         coll* top_level_coll = new coll;

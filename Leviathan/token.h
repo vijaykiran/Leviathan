@@ -12,7 +12,7 @@
 #include <iostream>
 #include <vector>
 
-namespace leviathan {
+namespace Leviathan {
     
     char const* const tokens_strs[] = {
 #define X(a) #a,

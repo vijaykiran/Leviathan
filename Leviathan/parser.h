@@ -14,7 +14,7 @@
 #include "parse_error.h"
 #include "coll.h"
 
-namespace leviathan {
+namespace Leviathan {
     
     std::pair<coll*, ParserError> parse(std::string const& raw);
     

@@ -8,7 +8,7 @@
 
 #include "atom.h"
 
-namespace leviathan {
+namespace Leviathan {
     
     std::ostream& operator<<(std::ostream& os, atom::AtomType t) {
         return os << atom_strs[t];

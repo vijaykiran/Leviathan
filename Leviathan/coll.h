@@ -15,7 +15,7 @@
 #include "element.h"
 #include "token.h"
 
-namespace leviathan {
+namespace Leviathan {
     
     char const* const coll_type_strs[] = {
 #define X(a) #a,

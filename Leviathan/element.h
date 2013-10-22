@@ -9,7 +9,7 @@
 #ifndef Leviathan_element_h
 #define Leviathan_element_h
 
-namespace leviathan {
+namespace Leviathan {
     
     struct coll;
     

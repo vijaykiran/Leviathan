@@ -10,7 +10,7 @@
 
 #include "token.h"
 
-namespace leviathan {
+namespace Leviathan {
     
     std::pair<std::vector<token*>, ParserError> lex(std::string const& raw) {
         std::vector<token*> tokens;

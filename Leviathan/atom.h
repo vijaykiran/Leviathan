@@ -14,7 +14,7 @@
 #include "element.h"
 #include "token.h"
 
-namespace leviathan {
+namespace Leviathan {
     
     char const* const atom_strs[] = {
 #define X(a) #a,

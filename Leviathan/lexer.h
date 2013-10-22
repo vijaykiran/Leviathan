@@ -15,7 +15,7 @@
 #include "parse_error.h"
 #include "token.h"
 
-namespace leviathan {
+namespace Leviathan {
     
     std::pair<std::vector<token*>, ParserError> lex(std::string const& raw);
     

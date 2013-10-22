@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-namespace leviathan {
+namespace Leviathan {
     
     struct ParserError {
         

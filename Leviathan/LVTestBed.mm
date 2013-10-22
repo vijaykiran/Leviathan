@@ -13,11 +13,13 @@
 #include "atom.h"
 #include "parser.h"
 
-static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserErrorType error, NSRange badRange) {
-    std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex(raw);
-    std::vector<leviathan::token*> tokens = result.first;
-    leviathan::ParserError e = result.second;
-    if (e.type == leviathan::ParserError::NoError) {
+using namespace Leviathan;
+
+static void LVLexerShouldError(std::string raw, ParserError::ParserErrorType error, NSRange badRange) {
+    std::pair<std::vector<token*>, ParserError> result = lex(raw);
+    std::vector<token*> tokens = result.first;
+    ParserError e = result.second;
+    if (e.type == ParserError::NoError) {
         std::cout << "Didn't fail: " << raw << std::endl;
         std::cout << tokens << std::endl;
         exit(1);
@@ -37,16 +39,14 @@ static void LVLexerShouldError(std::string raw, leviathan::ParserError::ParserEr
     }
 }
 
-using namespace leviathan;
-
-static bool LVTokensEqual(std::vector<leviathan::token*> expected, std::vector<leviathan::token*> got) {
+static bool LVTokensEqual(std::vector<token*> expected, std::vector<token*> got) {
     if (got.size() != expected.size()) {
         return false;
     }
     
     for (size_t i = 0; i < got.size(); i++) {
-        leviathan::token* t1 = got[i];
-        leviathan::token* t2 = expected[i];
+        token* t1 = got[i];
+        token* t2 = expected[i];
         if (!(*t1 == *t2)) {
             return false;
         }
@@ -55,15 +55,15 @@ static bool LVTokensEqual(std::vector<leviathan::token*> expected, std::vector<l
     return true;
 }
 
-static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::token*> expected) {
+static void LVLexerShouldEqual(std::string raw, std::vector<token*> expected) {
     expected.insert(expected.begin(), new token{token::Begin, ""});
     expected.push_back(new token{token::End, ""});
     
-    std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex(raw);
-    std::vector<leviathan::token*> tokens = result.first;
-    leviathan::ParserError e = result.second;
+    std::pair<std::vector<token*>, ParserError> result = lex(raw);
+    std::vector<token*> tokens = result.first;
+    ParserError e = result.second;
     
-    if (e.type == leviathan::ParserError::NoError) {
+    if (e.type == ParserError::NoError) {
         if (!LVTokensEqual(expected, tokens)) {
             std::cout << "Tokens not equal: " << tokens << std::endl;
         }
@@ -91,15 +91,15 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::token*> e
     
     LVLexerShouldEqual("foo 123 :hello", {new token{token::Symbol, "foo"}, new token{token::Spaces, " "}, new token{token::Number, "123"}, new token{token::Spaces, " "}, new token{token::Keyword, ":hello"}});
     
-    LVLexerShouldError("\"yes", leviathan::ParserError::UnclosedString, NSMakeRange(0, 4));
-    LVLexerShouldError("\"yes\\\"", leviathan::ParserError::UnclosedString, NSMakeRange(0, 6));
-    LVLexerShouldError("yes\"", leviathan::ParserError::UnclosedString, NSMakeRange(3, 1));
+    LVLexerShouldError("\"yes", ParserError::UnclosedString, NSMakeRange(0, 4));
+    LVLexerShouldError("\"yes\\\"", ParserError::UnclosedString, NSMakeRange(0, 6));
+    LVLexerShouldError("yes\"", ParserError::UnclosedString, NSMakeRange(3, 1));
     
-    LVLexerShouldError("#\"yes", leviathan::ParserError::UnclosedRegex, NSMakeRange(0, 5));
-    LVLexerShouldError("#\"yes\\\"", leviathan::ParserError::UnclosedRegex, NSMakeRange(0, 7));
-    LVLexerShouldError("yes #\"", leviathan::ParserError::UnclosedRegex, NSMakeRange(4, 2));
+    LVLexerShouldError("#\"yes", ParserError::UnclosedRegex, NSMakeRange(0, 5));
+    LVLexerShouldError("#\"yes\\\"", ParserError::UnclosedRegex, NSMakeRange(0, 7));
+    LVLexerShouldError("yes #\"", ParserError::UnclosedRegex, NSMakeRange(4, 2));
     
-    LVLexerShouldError("foo #", leviathan::ParserError::UnclosedDispatch, NSMakeRange(4, 1));
+    LVLexerShouldError("foo #", ParserError::UnclosedDispatch, NSMakeRange(4, 1));
     
     LVLexerShouldEqual("#'foo", {new token{token::Var, "#'foo"}});
     LVLexerShouldEqual("#(foo)", {new token{token::AnonFnStart, "#("}, new token{token::Symbol, "foo"}, new token{token::RParen, ")"}});
@@ -115,14 +115,14 @@ static void LVLexerShouldEqual(std::string raw, std::vector<leviathan::token*> e
     
     {
         // NOTE: this is how you delete a list of tokens (not that we generally want to!)
-        std::pair<std::vector<leviathan::token*>, leviathan::ParserError> result = leviathan::lex("foobar");
+        std::pair<std::vector<token*>, ParserError> result = lex("foobar");
         auto tokens = result.first;
-        for (std::vector<leviathan::token*>::iterator i = tokens.begin(); i != tokens.end(); ++i) {
+        for (std::vector<token*>::iterator i = tokens.begin(); i != tokens.end(); ++i) {
             delete *i;
         }
     }
     
-    leviathan::parse("foo");
+    parse("foo");
     
     printf("ok\n");
     [NSApp terminate:self];

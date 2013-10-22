@@ -8,7 +8,7 @@
 
 #include "token.h"
 
-namespace leviathan {
+namespace Leviathan {
     
     std::ostream& operator<<(std::ostream& os, token::TokenType c) {
         return os << tokens_strs[c];
@@ -19,7 +19,7 @@ namespace leviathan {
     }
     
     std::ostream& operator<<(std::ostream& os, std::vector<token*> tokens) {
-        for( std::vector<leviathan::token*>::iterator i = tokens.begin(); i != tokens.end(); ++i)
+        for( std::vector<token*>::iterator i = tokens.begin(); i != tokens.end(); ++i)
             os << **i << ' ';
         return os;
     }
