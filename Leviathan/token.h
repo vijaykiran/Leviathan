@@ -14,15 +14,9 @@
 
 namespace Leviathan {
     
-    static char const* const TokenStrings[] = {
-#define X(a, b) #a,
-#include "token_types.def"
-#undef X
-    };
-    
     struct Token {
         
-        enum Type : unsigned long long {
+        enum Type : uint64_t {
 #define X(a, b) a = b,
 #include "token_types.def"
 #undef X
