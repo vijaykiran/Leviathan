@@ -8,6 +8,8 @@
 
 #include "parser.h"
 
+#include <sstream>
+
 #include "lexer.h"
 #include "atom.h"
 
@@ -39,9 +41,13 @@ namespace Leviathan {
             iter++;
             return (live? new Atom(Atom::Number, currentToken) : NULL);
         }
+        else if (currentToken->type & Token::Keyword) {
+            iter++;
+            return (live? new Atom(Atom::Keyword, currentToken) : NULL);
+        }
         
-        return NULL;
-        
+        printf("Can't handle this token type: %d, %s\n", currentToken->type, currentToken->val.c_str());
+        exit(1);
     }
     
     Coll* parseColl(bool live, std::vector<Token*>::iterator& iter, Coll::Type collType, Token::Type endTokenType) {

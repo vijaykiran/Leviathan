@@ -164,6 +164,13 @@ static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
         delete result.first;
     }
     
+    {
+        std::pair<Coll*, ParserError> result = parse(":bla");
+        assert(result.second.type == ParserError::NoError);
+        assert(result.first->collType == Coll::TopLevel);
+        delete result.first;
+    }
+    
     printf("ok\n");
     [NSApp terminate:self];
 }
