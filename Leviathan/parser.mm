@@ -9,10 +9,28 @@
 #include "parser.h"
 
 #include "lexer.h"
+#include "atom.h"
 
 namespace Leviathan {
     
-    Coll* parseColl(bool live, std::vector<Token*>::iterator iter, Coll::Type collType, Token::Type endTokenType) {
+    Element* parseOne(bool live, std::vector<Token*>::iterator& iter) {
+        Token* currentToken = *iter;
+        
+        std::cout << *currentToken << std::endl;
+        
+        if (currentToken->type & Token::Symbol) {
+            iter++;
+            if (live)
+                return new Atom{};
+            else
+                return NULL;
+        }
+        
+        return NULL;
+        
+    }
+    
+    Coll* parseColl(bool live, std::vector<Token*>::iterator& iter, Coll::Type collType, Token::Type endTokenType) {
         Token* openToken = *iter;
         Token* closeToken;
         iter++;
@@ -33,7 +51,9 @@ namespace Leviathan {
                 throw ParserError{ParserError::UnclosedColl};
             }
             
-            // parse one, add to children
+            Element* child = parseOne(live, iter);
+            
+            children.push_back(child);
             
         }
         
@@ -43,10 +63,12 @@ namespace Leviathan {
             coll->open_token = openToken;
             coll->close_token = closeToken;
             
-            // move children to child->chilren;
+            std::move(children.begin(), children.end(), std::back_inserter(coll->children));
             
+            size_t i = 0;
             for (Element* child : coll->children) {
                 child->parent = coll;
+                child->index = i++;
             }
             
             return coll;
@@ -67,9 +89,14 @@ namespace Leviathan {
         if (error.type == ParserError::NoError) {
             try {
                 error.type = ParserError::NoError;
-                parseColl(false, tokens.begin(), Coll::TopLevel, Token::FileEnd); // dry-run
+                auto iter = tokens.begin();
                 
-                top_level_coll = parseColl(true, tokens.begin(), Coll::TopLevel, Token::FileEnd);
+                parseColl(false, iter, Coll::TopLevel, Token::FileEnd); // dry-run
+                
+                // if we're still here, then there's no errors
+                
+                top_level_coll = parseColl(true, iter, Coll::TopLevel, Token::FileEnd); // real thing
+                top_level_coll->parent = NULL;
             } catch (ParserError& e) {
                 error = e;
                 // delete tokens

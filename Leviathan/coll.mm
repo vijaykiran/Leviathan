@@ -11,6 +11,8 @@
 namespace Leviathan {
     
     Coll::~Coll() {
+        return;
+        
         delete this->open_token;
         
         if (this->close_token)
