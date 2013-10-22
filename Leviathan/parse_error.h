@@ -18,10 +18,12 @@ namespace Leviathan {
         enum Type {
             NoError,
             
+            // lexer errors
             UnclosedString,
             UnclosedRegex,
             UnclosedDispatch,
             
+            // parser errors
             UnclosedColl,
         };
         
