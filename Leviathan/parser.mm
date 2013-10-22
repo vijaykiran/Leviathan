@@ -16,12 +16,19 @@ namespace Leviathan {
     Element* parseOne(bool live, std::vector<Token*>::iterator& iter) {
         Token* currentToken = *iter;
         
-//        std::cout << *currentToken << std::endl;
+//        std::cout << currentToken->val << std::endl;
         
         if (currentToken->type & Token::Symbol) {
             iter++;
             if (live)
-                return new Atom{};
+                return new Atom(Atom::Symbol, currentToken);
+            else
+                return NULL;
+        }
+        else if (currentToken->type & Token::Number) {
+            iter++;
+            if (live)
+                return new Atom(Atom::Number, currentToken);
             else
                 return NULL;
         }

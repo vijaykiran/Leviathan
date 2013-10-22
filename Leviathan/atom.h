@@ -30,6 +30,8 @@ namespace Leviathan {
         int atomType; // TODO: this should actually be an OR'd list of types, so that it can be both Symbol and Deflike, or Symbol and Ns (or something)
         Token* token;
         
+        Atom(int type, Token* tok) : atomType(type), token(tok) {} ;
+        
     };
     
     std::ostream& operator<<(std::ostream& os, Atom::Type t);

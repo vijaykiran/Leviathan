@@ -20,7 +20,7 @@ static void LVLexerShouldError(std::string raw, ParserError::Type error, NSRange
     std::vector<Token*> tokens = result.first;
     ParserError e = result.second;
     if (e.type == ParserError::NoError) {
-        std::cout << "Didn't fail: " << raw << std::endl;
+        std::cout << "Didn't see expected error: " << raw << std::endl;
 //        std::cout << tokens << std::endl;
         exit(1);
     }
@@ -66,12 +66,12 @@ static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
     
     if (e.type == ParserError::NoError) {
         if (!LVTokensEqual(expected, tokens)) {
-//            std::cout << "Tokens not equal: " << tokens << std::endl;
+            std::cout << "Tokens not equal: " << tokens.size() << std::endl;
             exit(1);
         }
     }
     else {
-//        std::cout << "Got error: " << tokens << std::endl;
+        std::cout << "Got error: " << tokens.size() << std::endl;
         exit(1);
     }
 }
@@ -124,10 +124,17 @@ static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
         }
     }
     
-//    if (0)
     {
         std::pair<Coll*, ParserError> result = parse("foo");
-//        std::cout << result.first->collType << std::endl;
+        //std::cout << result.first->collType << std::endl;
+        assert(result.second.type == ParserError::NoError);
+        assert(result.first->collType == Coll::TopLevel);
+        delete result.first;
+    }
+    
+    {
+        std::pair<Coll*, ParserError> result = parse("123");
+        //std::cout << result.first->collType << std::endl;
         assert(result.second.type == ParserError::NoError);
         assert(result.first->collType == Coll::TopLevel);
         delete result.first;
