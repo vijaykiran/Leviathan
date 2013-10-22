@@ -16,7 +16,7 @@ namespace Leviathan {
         std::vector<Token*> tokens;
         ParserError error = ParserError{ParserError::NoError};
         
-        tokens.push_back(new Token{Token::Begin, ""});
+        tokens.push_back(new Token{Token::FileBegin, ""});
         
         static std::string endAtomCharSet = "()[]{}, \"\r\n\t;";
         
@@ -167,7 +167,7 @@ namespace Leviathan {
             i++;
         }
         
-        tokens.push_back(new Token{Token::End, ""});
+        tokens.push_back(new Token{Token::FileEnd, ""});
         
         return std::make_pair(tokens, error);
     }

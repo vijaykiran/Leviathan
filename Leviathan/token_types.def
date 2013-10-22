@@ -31,5 +31,5 @@ X(Newline)
 
 X(Comment)
 
-X(Begin)
-X(End)
+X(FileBegin)
+X(FileEnd)

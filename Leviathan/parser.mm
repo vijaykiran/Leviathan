@@ -12,6 +12,10 @@
 
 namespace Leviathan {
     
+//    std::pair<Coll*, ParserError> parseColl() {
+//        
+//    }
+    
     std::pair<Coll*, ParserError> parse(std::string const& raw) {
         std::pair<std::vector<Token*>, ParserError> result = lex(raw);
         
@@ -21,10 +25,11 @@ namespace Leviathan {
         Coll* top_level_coll;
         
         if (result.second.type != ParserError::NoError) {
-            // do actual parsing.. ie:
-            
-            top_level_coll = new Coll;
-            top_level_coll->collType = Coll::TopLevel;
+//            size_t ended;
+//            std::pair<std::vector<Token*>, ParserError> result = parseColl(tokens, 0, &ended, Coll::TopLevel, Token::End);
+//            
+//            top_level_coll = new Coll;
+//            top_level_coll->collType = Coll::TopLevel;
         }
         
         return std::make_pair(top_level_coll, error);

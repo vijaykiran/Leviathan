@@ -56,8 +56,8 @@ static bool LVTokensEqual(std::vector<Token*> expected, std::vector<Token*> got)
 }
 
 static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
-    expected.insert(expected.begin(), new Token{Token::Begin, ""});
-    expected.push_back(new Token{Token::End, ""});
+    expected.insert(expected.begin(), new Token{Token::FileBegin, ""});
+    expected.push_back(new Token{Token::FileEnd, ""});
     
     std::pair<std::vector<Token*>, ParserError> result = lex(raw);
     std::vector<Token*> tokens = result.first;
