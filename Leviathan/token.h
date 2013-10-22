@@ -22,7 +22,7 @@ namespace Leviathan {
 #undef X
         };
         
-        Type type;
+        int type;
         std::string val;
         
         bool operator==(const Token &other) const { // NOTE: only used for tests!

@@ -160,7 +160,9 @@ namespace Leviathan {
                     std::string substring = raw.substr(i, n - i);
                     Token* tok = new Token{Token::Symbol, substring};
                     
-//                    if (substring == "true") tok->type = tok->type & Token::TrueSymbol;
+                    if (substring == "true") tok->type |= Token::TrueSymbol;
+                    if (substring == "false") tok->type |= Token::FalseSymbol;
+                    if (substring == "nil") tok->type |= Token::NilSymbol;
                     
                     tokens.push_back(tok);
                     i = n-1;
