@@ -30,6 +30,13 @@ namespace Leviathan {
             else
                 return NULL;
         }
+        if (currentToken->type & Token::Spaces) {
+            iter++;
+            if (live)
+                return new Atom(Atom::Spaces, currentToken);
+            else
+                return NULL;
+        }
         else if (currentToken->type & Token::Number) {
             iter++;
             if (live)

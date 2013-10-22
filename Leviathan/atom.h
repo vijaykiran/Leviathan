@@ -19,12 +19,14 @@ namespace Leviathan {
     struct Atom: public Element {
         
         enum Type : uint64_t {
-            Symbol = 1 << 0,
-            String = 1 << 1,
-            Number = 1 << 2,
+            Symbol  = 1 << 0,
+            String  = 1 << 1,
+            Number  = 1 << 2,
             
-            Deflike = 1 << 3,
-            Ns      = 1 << 4,
+            Spaces  = 1 << 3,
+            
+            Deflike = 1 << 4, // must also be Symbol
+            Ns      = 1 << 5, // must also be Symbol
         };
         
         int atomType; // TODO: this should actually be an OR'd list of types, so that it can be both Symbol and Deflike, or Symbol and Ns (or something)

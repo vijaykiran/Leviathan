@@ -144,6 +144,20 @@ static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
     }
     
     {
+        std::pair<Coll*, ParserError> result = parse("((baryes)foo((no)))");
+        assert(result.second.type == ParserError::NoError);
+        assert(result.first->collType == Coll::TopLevel);
+        delete result.first;
+    }
+    
+    {
+        std::pair<Coll*, ParserError> result = parse("((bar yes) foo ((no)))");
+        assert(result.second.type == ParserError::NoError);
+        assert(result.first->collType == Coll::TopLevel);
+        delete result.first;
+    }
+    
+    {
         std::pair<Coll*, ParserError> result = parse("123");
         assert(result.second.type == ParserError::NoError);
         assert(result.first->collType == Coll::TopLevel);
