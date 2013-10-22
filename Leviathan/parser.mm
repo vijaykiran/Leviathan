@@ -8,6 +8,8 @@
 
 #include "parser.h"
 
+#include "lexer.h"
+
 namespace Leviathan {
     
     std::pair<Coll*, ParserError> parse(std::string const& raw) {

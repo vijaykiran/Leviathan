@@ -255,21 +255,11 @@
 		940977FC1814EF2800D0B9B1 /* New Parser */ = {
 			isa = PBXGroup;
 			children = (
-				949EC52C1813B2D2001C9CAB /* parse_error.h */,
-				94EB3DC918161106002E639F /* token.h */,
-				94EB3DC818161106002E639F /* token.mm */,
-				949EC5291813955B001C9CAB /* token_types.def */,
-				949EC5241813811E001C9CAB /* lexer.h */,
-				949EC5231813811E001C9CAB /* lexer.mm */,
-				949EC52118138102001C9CAB /* parser.h */,
-				949EC52018138102001C9CAB /* parser.mm */,
 				94ABB133181463D3003415B5 /* element.h */,
-				94ABB131181463C4003415B5 /* coll.h */,
-				94ABB130181463C4003415B5 /* coll.mm */,
-				940977FD1814F5AA00D0B9B1 /* coll_types.def */,
-				94ABB12E181463B5003415B5 /* atom.h */,
-				94ABB12D181463B5003415B5 /* atom.mm */,
-				94ABB13418146E65003415B5 /* atom_types.def */,
+				94EB3DCB18161DD5002E639F /* parsing */,
+				94EB3DCC18161DDD002E639F /* tokens */,
+				94EB3DCD18161DE6002E639F /* colls */,
+				94EB3DCE18161DEA002E639F /* atoms */,
 			);
 			name = "New Parser";
 			sourceTree = "<group>";
@@ -537,6 +527,48 @@
 				94D79462181125F1003307F4 /* NSUUID+BMOEDN.m */,
 			);
 			path = "edn-objc";
+			sourceTree = "<group>";
+		};
+		94EB3DCB18161DD5002E639F /* parsing */ = {
+			isa = PBXGroup;
+			children = (
+				949EC52C1813B2D2001C9CAB /* parse_error.h */,
+				949EC5241813811E001C9CAB /* lexer.h */,
+				949EC5231813811E001C9CAB /* lexer.mm */,
+				949EC52118138102001C9CAB /* parser.h */,
+				949EC52018138102001C9CAB /* parser.mm */,
+			);
+			name = parsing;
+			sourceTree = "<group>";
+		};
+		94EB3DCC18161DDD002E639F /* tokens */ = {
+			isa = PBXGroup;
+			children = (
+				94EB3DC918161106002E639F /* token.h */,
+				94EB3DC818161106002E639F /* token.mm */,
+				949EC5291813955B001C9CAB /* token_types.def */,
+			);
+			name = tokens;
+			sourceTree = "<group>";
+		};
+		94EB3DCD18161DE6002E639F /* colls */ = {
+			isa = PBXGroup;
+			children = (
+				94ABB131181463C4003415B5 /* coll.h */,
+				94ABB130181463C4003415B5 /* coll.mm */,
+				940977FD1814F5AA00D0B9B1 /* coll_types.def */,
+			);
+			name = colls;
+			sourceTree = "<group>";
+		};
+		94EB3DCE18161DEA002E639F /* atoms */ = {
+			isa = PBXGroup;
+			children = (
+				94ABB12E181463B5003415B5 /* atom.h */,
+				94ABB12D181463B5003415B5 /* atom.mm */,
+				94ABB13418146E65003415B5 /* atom_types.def */,
+			);
+			name = atoms;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
