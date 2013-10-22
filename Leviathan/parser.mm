@@ -86,29 +86,24 @@ namespace Leviathan {
         
         Coll* top_level_coll;
         
-        if (error.type == ParserError::NoError) {
-            try {
-                error.type = ParserError::NoError;
-                auto iter = tokens.begin();
-                
-                parseColl(false, iter, Coll::TopLevel, Token::FileEnd); // dry-run
-                
-                // if we're still here, then there's no errors
-                
-                iter = tokens.begin();
-                top_level_coll = parseColl(true, iter, Coll::TopLevel, Token::FileEnd); // real thing
-                top_level_coll->parent = NULL;
-            } catch (ParserError& e) {
-                error = e;
-                
-                std::cout << "uhh, error!" << std::endl;
-                
-                // delete tokens
-            }
+        if (error.type != ParserError::NoError) {
+            for (Token* token : tokens) delete token;
+            return std::make_pair(top_level_coll, error);
         }
-        else {
-            // TODO: lexing had an error, so delete all token* ptrs in "tokens"
+        
+        try {
+            // dry-run
+            auto iter = tokens.begin();
+            parseColl(false, iter, Coll::TopLevel, Token::FileEnd);
         }
+        catch (ParserError& e) {
+            for (Token* token : tokens) delete token;
+            return std::make_pair(top_level_coll, e);
+        }
+        
+        auto iter = tokens.begin();
+        top_level_coll = parseColl(true, iter, Coll::TopLevel, Token::FileEnd);
+        top_level_coll->parent = NULL;
         
         return std::make_pair(top_level_coll, error);
     }
