@@ -61,10 +61,6 @@ namespace Leviathan {
         int type;
         std::string val;
         
-        bool operator==(const Token &other) const { // NOTE: only used for tests!
-            return this->type == other.type && this->val == other.val;
-        }
-        
     };
     
 }

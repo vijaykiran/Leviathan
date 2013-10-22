@@ -47,7 +47,8 @@ static bool LVTokensEqual(std::vector<Token*> expected, std::vector<Token*> got)
     for (size_t i = 0; i < got.size(); i++) {
         Token* t1 = got[i];
         Token* t2 = expected[i];
-        if (!(*t1 == *t2)) {
+        
+        if (t1->type != t2->type || t1->val != t2->val) {
             return false;
         }
     }
