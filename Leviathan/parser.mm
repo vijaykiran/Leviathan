@@ -13,11 +13,16 @@
 
 namespace Leviathan {
     
+    Coll* parseColl(bool live, std::vector<Token*>::iterator& iter, Coll::Type collType, Token::Type endTokenType);
+    
     Element* parseOne(bool live, std::vector<Token*>::iterator& iter) {
         Token* currentToken = *iter;
         
 //        std::cout << currentToken->val << std::endl;
         
+        if (currentToken->type & Token::LParen) {
+            return parseColl(live, iter, Coll::List, Token::RParen);
+        }
         if (currentToken->type & Token::Symbol) {
             iter++;
             if (live)
