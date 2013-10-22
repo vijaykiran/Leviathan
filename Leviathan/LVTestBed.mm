@@ -113,6 +113,21 @@ static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
     // bad test, delete me:
 //    LVLexerShouldEqual(";fo obar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
     
+//    std::vector<int> ints = {1, 2, 3, 7};
+//    std::vector<int>::iterator i = ints.begin();
+//    
+//    std::cout << *i << std::endl;
+//    std::cout << *i << std::endl;
+//    
+//    i++;
+//    i++;
+//    i++;
+//    
+//    std::cout << *i << (i == ints.end()) << std::endl;
+    
+//    for (; i != ints.end(); ++i) {
+//    }
+    
     {
         // NOTE: this is how you delete a list of tokens (not that we generally want to!)
         std::pair<std::vector<Token*>, ParserError> result = lex("foobar");
