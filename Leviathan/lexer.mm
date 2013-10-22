@@ -157,7 +157,12 @@ namespace Leviathan {
                     //       so we need to do that calculation here, and somehow store it on a token. should every token have that info? maybe its just a new TokenType.
                     
                     size_t n = raw.find_first_of(endAtomCharSet, i);
-                    tokens.push_back(new Token{Token::Symbol, raw.substr(i, n - i)});
+                    std::string substring = raw.substr(i, n - i);
+                    Token* tok = new Token{Token::Symbol, substring};
+                    
+//                    if (substring == "true") tok->type = tok->type & Token::TrueSymbol;
+                    
+                    tokens.push_back(tok);
                     i = n-1;
                     
                     break;

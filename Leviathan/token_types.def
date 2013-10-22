@@ -33,3 +33,7 @@ X(Comment)
 
 X(FileBegin)
 X(FileEnd)
+
+X(TrueSymbol)  // must also be Symbol
+X(FalseSymbol) // must also be Symbol
+X(NilSymbol)   // must also be Symbol
