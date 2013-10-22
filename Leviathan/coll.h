@@ -23,15 +23,15 @@ namespace Leviathan {
 #undef X
     };
     
-    struct coll: element {
+    struct Coll: element {
         
-        enum CollType {
+        enum Type {
 #define X(a) a,
 #include "coll_types.def"
 #undef X
         };
         
-        CollType collType;
+        Type collType;
         Token* open_token;
         Token* close_token;
         std::list<element*> children;

@@ -10,9 +10,9 @@
 
 namespace Leviathan {
     
-    std::pair<coll*, ParserError> parse(std::string const& raw) {
-        coll* top_level_coll = new coll;
-        top_level_coll->collType = coll::TopLevel;
+    std::pair<Coll*, ParserError> parse(std::string const& raw) {
+        Coll* top_level_coll = new Coll;
+        top_level_coll->collType = Coll::TopLevel;
         ParserError error;
         
         return std::make_pair(top_level_coll, error);

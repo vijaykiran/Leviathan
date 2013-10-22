@@ -10,7 +10,7 @@
 
 namespace Leviathan {
     
-    std::ostream& operator<<(std::ostream& os, Token::TokenType c) {
+    std::ostream& operator<<(std::ostream& os, Token::Type c) {
         return os << tokens_strs[c];
     }
     

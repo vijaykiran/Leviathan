@@ -10,7 +10,7 @@
 
 namespace Leviathan {
     
-    std::ostream& operator<<(std::ostream& os, atom::AtomType t) {
+    std::ostream& operator<<(std::ostream& os, Atom::Type t) {
         return os << atom_strs[t];
     }
     

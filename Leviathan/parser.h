@@ -16,7 +16,7 @@
 
 namespace Leviathan {
     
-    std::pair<coll*, ParserError> parse(std::string const& raw);
+    std::pair<Coll*, ParserError> parse(std::string const& raw);
     
 }
 

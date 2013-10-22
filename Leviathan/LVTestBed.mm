@@ -15,7 +15,7 @@
 
 using namespace Leviathan;
 
-static void LVLexerShouldError(std::string raw, ParserError::ParserErrorType error, NSRange badRange) {
+static void LVLexerShouldError(std::string raw, ParserError::Type error, NSRange badRange) {
     std::pair<std::vector<Token*>, ParserError> result = lex(raw);
     std::vector<Token*> tokens = result.first;
     ParserError e = result.second;

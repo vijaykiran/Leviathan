@@ -15,14 +15,14 @@ namespace Leviathan {
     
     struct ParserError {
         
-        enum ParserErrorType {
+        enum Type {
             NoError,
             UnclosedString,
             UnclosedRegex,
             UnclosedDispatch,
         };
         
-        ParserErrorType type;
+        Type type;
         size_t pos;
         size_t len;
         
