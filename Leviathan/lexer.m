@@ -55,6 +55,26 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
             case ',': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Comma, &raw->data[i], 1); break;
             case '\n': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, &raw->data[i], 1); break;
                 
+            case '~': {
+                if (i + 1 < raw->slen && raw->data[i+1] == '@') {
+                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Splice, &raw->data[i], 2);
+                    i++;
+                }
+                else {
+                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Unquote, &raw->data[i], 1);
+                }
+                break;
+            }
+                
+            case ' ': {
+                bstring spaces = bfromcstr(" ");
+                size_t n = bninchr(raw, (int)i, spaces);
+                if (n == BSTR_ERR) n = input_string_length;
+                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Spaces, &raw->data[i], (int)(n - i));
+                i = n-1;
+                break;
+            }
+                
             default:
                 break;
         }
@@ -71,24 +91,6 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
 
 //            switch (c) {
 //
-//                case '~': {
-//                    if (i + 1 < raw.length() && raw[i+1] == '@') {
-//                        tokens.push_back(new Token{Token::Splice, raw.substr(i++, 2)});
-//                        i++;
-//                    }
-//                    else {
-//                        tokens.push_back(new Token{Token::Unquote, raw.substr(i, 1)});
-//                    }
-//                    break;
-//                }
-//                    
-//                case ' ': {
-//                    size_t n = raw.find_first_not_of(" ", i);
-//                    tokens.push_back(new Token{Token::Spaces, raw.substr(i, n - i)});
-//                    i = n-1;
-//                    break;
-//                }
-//                    
 //                case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
 //                    size_t n = raw.find_first_of(endAtomCharSet, i);
 //                    tokens.push_back(new Token{Token::Number, raw.substr(i, n - i)});
