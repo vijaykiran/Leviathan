@@ -60,13 +60,21 @@ struct LVTokenList {
 };
 
 static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
-    NSLog(@"%ld", expected.size);
-    
     size_t actual_size;
     LVToken** tokens = LVLex(raw, &actual_size);
     
     if (actual_size != expected.size) {
         printf("wrong size: %s\n", raw);
+        printf("want:\n");
+        for (size_t i = 0; i < expected.size; i++) {
+            LVToken* tok = expected.toks[i];
+            printf("[%s]\n", tok->val->data);
+        }
+        printf("got:\n");
+        for (size_t i = 0; i < actual_size; i++) {
+            LVToken* tok = tokens[i];
+            printf("[%s]\n", tok->val->data);
+        }
         exit(1);
     }
     
@@ -96,10 +104,6 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
 @implementation LVTestBed
 
 + (void) runTests {
-    
-    size_t tok_n;
-    LVToken** tokens = LVLex("([:foo :bar]   :quux)", &tok_n);
-    
     LVLexerShouldEqual("(foobar)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));
     
     LVLexerShouldEqual("foobar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_FileEnd, "")));
