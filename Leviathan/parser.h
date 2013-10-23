@@ -1,17 +1,11 @@
-////
-////  parser.h
-////  Leviathan
-////
-////  Created by Steven on 10/19/13.
-////  Copyright (c) 2013 Steven Degutis. All rights reserved.
-////
 //
-//#ifndef __Leviathan__parser__
-//#define __Leviathan__parser__
+//  parser.h
+//  Leviathan
 //
-//#include <iostream>
+//  Created by Steven on 10/19/13.
+//  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
-//#include "parse_error.h"
+
 //#include "coll.h"
 //
 //namespace Leviathan {
@@ -19,5 +13,3 @@
 //    std::pair<Coll*, ParserError> parse(std::string const& raw);
 //    
 //}
-//
-//#endif /* defined(__Leviathan__parser__) */
