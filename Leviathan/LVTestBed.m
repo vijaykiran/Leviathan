@@ -102,6 +102,18 @@
 //    free(c);
     
     
+    size_t tok_n;
+    LVToken** tokens = LVLex(":foo", &tok_n);
+    
+    printf("%ld\n", tok_n);
+    for (size_t i = 0; i < tok_n; i++) {
+        LVToken* tok = tokens[i];
+        printf("[%s]\n", tok->val->data);
+    }
+    
+    
+    
+    
 //    char* abc = "abc";
 //    printf("[%p]\n", abc);
 //    printf("[%p]\n", &abc[0]);

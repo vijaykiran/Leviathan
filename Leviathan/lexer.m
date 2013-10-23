@@ -14,7 +14,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
     size_t input_string_length = raw->slen;
     size_t num_tokens = 0;
     
-    LVToken** tokens = malloc(sizeof(LVToken*) * input_string_length);
+    LVToken** tokens = malloc(sizeof(LVToken*) * (input_string_length + 2));
     
     static bstring endAtomCharSet;
     if (!endAtomCharSet) endAtomCharSet = bfromcstr("()[]{}, \"\r\n\t;");
