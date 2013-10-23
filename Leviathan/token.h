@@ -56,6 +56,8 @@ namespace Leviathan {
             TrueSymbol  = 1 << 27, // must also be Symbol
             FalseSymbol = 1 << 28, // must also be Symbol
             NilSymbol   = 1 << 29, // must also be Symbol
+            
+            Deflike     = 1 << 30, // must also be Symbol
         };
         
         uint64_t type;

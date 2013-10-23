@@ -25,7 +25,7 @@ namespace Leviathan {
         if (currentToken->type & Token::LParen) {
             return parseColl(live, iter, Coll::List, Token::RParen);
         }
-        if (currentToken->type & Token::Symbol) {
+        else if (currentToken->type & Token::Symbol) {
             iter++;
             if (!live) return NULL;
             if (currentToken->type & Token::TrueSymbol) return new Atom(Atom::Symbol | Atom::TrueAtom, currentToken);
@@ -33,7 +33,7 @@ namespace Leviathan {
             if (currentToken->type & Token::NilSymbol) return new Atom(Atom::Symbol | Atom::NilAtom, currentToken);
             return new Atom(Atom::Symbol, currentToken);
         }
-        if (currentToken->type & Token::Spaces) {
+        else if (currentToken->type & Token::Spaces) {
             iter++;
             return (live? new Atom(Atom::Spaces, currentToken) : NULL);
         }

@@ -164,6 +164,8 @@ namespace Leviathan {
                     if (substring == "false") tok->type |= Token::FalseSymbol;
                     if (substring == "nil") tok->type |= Token::NilSymbol;
                     
+                    if (substring.substr(0, 3) == "def") tok->type |= Token::Deflike;
+                    
                     tokens.push_back(tok);
                     i = n-1;
                     

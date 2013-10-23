@@ -26,7 +26,7 @@ namespace Leviathan {
             Vector     = 1 << 2,
             Map        = 1 << 3,
             
-            Def        = 1 << 4,
+            Definition = 1 << 4,
             Ns         = 1 << 5,
         };
         
