@@ -8,18 +8,19 @@
 
 #import "element.h"
 #import "token.h"
+#import "linked_list.h"
 
 typedef enum __LVCollType : uint64_t {
-    TopLevel   = 1 << 0,
+    LVCollType_TopLevel   = 1 << 0,
     
-    List       = 1 << 1,
-    Vector     = 1 << 2,
-    Map        = 1 << 3,
+    LVCollType_List       = 1 << 1,
+    LVCollType_Vector     = 1 << 2,
+    LVCollType_Map        = 1 << 3,
     
-    AnonFn     = 1 << 4,
+    LVCollType_AnonFn     = 1 << 4,
     
-    Definition = 1 << 5,
-    Ns         = 1 << 6,
+    LVCollType_Definition = 1 << 5,
+    LVCollType_Ns         = 1 << 6,
 } LVCollType;
 
 struct __LVColl;
@@ -34,7 +35,7 @@ struct __LVColl {
     LVCollType collType;
     LVToken* open_token;
     LVToken* close_token;
-    void** children;
+    LVLinkedList* children;
     
 };
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "LVLinkedList.h"
+#import "linked_list.h"
 
 LVLinkedList* LVLinkedListCreate() {
     LVLinkedList* list = malloc(sizeof(LVLinkedList));
@@ -16,6 +16,12 @@ LVLinkedList* LVLinkedListCreate() {
 }
 
 void LVLinkedListDestroy(LVLinkedList* list) {
+    LVLinkedListNode* node = list->head;
+    while (node) {
+        LVLinkedListNode* nextNode = node->next;
+        free(node);
+        node = nextNode;
+    }
     free(list);
 }
 

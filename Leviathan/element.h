@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "coll.h"
+//#import "coll.h"
+
+struct __LVColl;
 
 typedef enum __LVElementType : uint64_t {
     LVElementType_Atom   = 1 << 0,

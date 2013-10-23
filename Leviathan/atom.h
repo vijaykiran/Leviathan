@@ -1,51 +1,38 @@
-////
-////  atom.h
-////  Leviathan
-////
-////  Created by Steven on 10/20/13.
-////  Copyright (c) 2013 Steven Degutis. All rights reserved.
-////
 //
-//#ifndef __Leviathan__atom__
-//#define __Leviathan__atom__
+//  atom.h
+//  Leviathan
 //
-//#include <iostream>
+//  Created by Steven on 10/20/13.
+//  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
-//#include "element.h"
-//#include "token.h"
-//
-//namespace Leviathan {
-//    
-//    struct Atom: public Element {
-//        
-//        enum Type : uint64_t {
-//            Symbol  = 1 << 0,
-//            String  = 1 << 1,
-//            Number  = 1 << 2,
-//            Keyword = 1 << 3,
-//            
-//            Spaces  = 1 << 4,
-//            
-//            TrueAtom  = 1 << 5, // must also be Symbol
-//            FalseAtom = 1 << 6, // must also be Symbol
-//            NilAtom   = 1 << 7, // must also be Symbol
-//            
-//            Deflike = 1 << 8, // must also be Symbol
-//            Ns      = 1 << 9, // must also be Symbol
-//        };
-//        
-//        uint64_t atomType;
-//        Token* token;
-//        
-//        Atom(int type, Token* tok) : atomType(type), token(tok) {} ;
-//        ~Atom();
-//        
-//        size_t length();
-//        
-//    };
-//    
-//    std::ostream& operator<<(std::ostream& os, Atom::Type t);
-//    
-//}
-//
-//#endif /* defined(__Leviathan__atom__) */
+
+#import "element.h"
+#import "token.h"
+#import "coll.h"
+
+typedef enum __LVAtomType : uint64_t {
+    LVAtomType_Symbol  = 1 << 0,
+    LVAtomType_String  = 1 << 1,
+    LVAtomType_Number  = 1 << 2,
+    LVAtomType_Keyword = 1 << 3,
+    
+    LVAtomType_Spaces  = 1 << 4,
+    
+    LVAtomType_TrueAtom  = 1 << 5, // must also be Symbol
+    LVAtomType_FalseAtom = 1 << 6, // must also be Symbol
+    LVAtomType_NilAtom   = 1 << 7, // must also be Symbol
+    
+    LVAtomType_Deflike = 1 << 8, // must also be Symbol
+    LVAtomType_Ns      = 1 << 9, // must also be Symbol
+} LVAtomType;
+
+typedef struct __LVAtom {
+    
+    LVElementType elementType;
+    LVColl* parent;
+    size_t index;
+    
+    LVAtomType atomType;
+    LVToken* token;
+    
+} LVAtom;

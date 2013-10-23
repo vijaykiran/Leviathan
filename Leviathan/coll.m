@@ -12,16 +12,24 @@
 LVColl* LVCollCreate() {
     LVColl* coll = malloc(sizeof(LVColl));
     coll->elementType = LVElementType_Coll;
+    coll->children = LVLinkedListCreate();
     return coll;
 }
 
 void LVCollDestroy(LVColl* coll) {
+    for (LVLinkedListNode* node = coll->children->head; node; node = node->next) {
+        LVElement* element = node->val;
+        if (element->elementType & LVElementType_Coll) {
+            LVCollDestroy((LVColl*)element);
+        }
+        else if (element->elementType & LVElementType_Atom) {
+//            LVAtomDestroy((LVAtom*)element);
+        }
+    }
+    
+    LVLinkedListDestroy(coll->children);
     LVTokenDelete(coll->open_token);
     LVTokenDelete(coll->close_token);
-    
-    // TODO: delete each child
-    // TODO: linked list
-    
     free(coll);
 }
 
