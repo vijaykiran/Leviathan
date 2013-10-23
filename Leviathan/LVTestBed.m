@@ -94,10 +94,12 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         char* foo = "foo";
         char* bar = "bar";
         
+        assert(list->len == 0);
         assert(list->head == NULL);
         
         LVLinkedListAppend(list, foo);
         
+        assert(list->len == 1);
         assert(list->head != NULL);
         assert(list->head->val == foo);
         assert(list->head->prev == NULL);
@@ -105,6 +107,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         
         LVLinkedListAppend(list, bar);
         
+        assert(list->len == 2);
         assert(list->head != NULL);
         assert(list->head->val == foo);
         assert(list->head->prev == NULL);

@@ -21,6 +21,7 @@ void LVLinkedListDestroy(LVLinkedList* list) {
 
 void LVLinkedListAppend(LVLinkedList* list, void* ptr) {
     LVLinkedListNode* node = malloc(sizeof(LVLinkedListNode));
+    node->prev = NULL;
     node->next = NULL;
     node->val = ptr;
     
