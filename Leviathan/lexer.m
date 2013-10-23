@@ -74,6 +74,26 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 break;
             }
                 
+            case '"': {
+                int look_from = (int)i;
+                
+                do {
+                    look_from = bstrchrp(raw, '"', look_from + 1);
+                    
+                    if (look_from == BSTR_ERR) {
+                        printf("error: unclosed string\n");
+                        exit(1);
+                    }
+                } while (raw->data[look_from - 1] == '\\');
+                
+                bstring substring = bmidstr(raw, (int)i, (int)(look_from - i + 1));
+                LVToken* tok = LVTokenCreate(LVTokenType_String, substring);
+                tokens[num_tokens++] = tok;
+                i = look_from;
+                
+                break;
+            }
+                
             default: {
                 size_t n = binchr(raw, (int)i, endAtomCharSet);
                 if (n == BSTR_ERR) n = input_string_length;
@@ -124,25 +144,6 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
 //                    size_t n = raw.find('\n', i);
 //                    tokens.push_back(new Token{Token::Comment, raw.substr(i, n - i)});
 //                    i = n-1;
-//                    break;
-//                }
-//                    
-//                case '"': {
-//                    size_t look_from = i;
-//                    
-//                    do {
-//                        look_from = raw.find('"', look_from + 1);
-//                        if (look_from == std::string::npos) {
-//                            error.type = ParserError::UnclosedString;
-//                            error.pos = i;
-//                            error.len = raw.length() - i;
-//                            return std::make_pair(tokens, error);
-//                        }
-//                    } while (raw[look_from - 1] == '\\');
-//                    
-//                    tokens.push_back(new Token{Token::String, raw.substr(i, look_from - i + 1)});
-//                    i = look_from;
-//                    
 //                    break;
 //                }
 //                    
