@@ -60,4 +60,4 @@ typedef struct __LVToken {
 
 
 LVToken* LVTokenCreate(LVTokenType type, bstring val);
-void LVTokenDelete(LVToken* tok); // TODO: use this later
+void LVTokenDelete(LVToken* tok);

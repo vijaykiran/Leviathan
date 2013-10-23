@@ -1,22 +1,72 @@
-////
-////  parser.mm
-////  Leviathan
-////
-////  Created by Steven on 10/19/13.
-////  Copyright (c) 2013 Steven Degutis. All rights reserved.
-////
 //
-//#include "parser.h"
+//  parser.mm
+//  Leviathan
 //
-//#include <sstream>
+//  Created by Steven on 10/19/13.
+//  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
-//#include "lexer.h"
-//#include "atom.h"
-//
-//namespace Leviathan {
-//    
+
+#import "parser.h"
+
+#import "lexer.h"
+#import "atom.h"
+
+static LVElement* parseOne(LVToken** iter) {
+    return NULL;
+}
+
+static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTokenType) {
+    LVColl* coll = LVCollCreate();
+    coll->collType = collType;
+    coll->open_token = *iter;
+    iter++;
+    
+    for (LVToken* currentToken; ; ) {
+        currentToken = *iter;
+        
+        if (currentToken->type == endTokenType) {
+            coll->close_token = currentToken;
+            iter++;
+            break;
+        }
+        
+        if (currentToken->type == LVTokenType_FileEnd) {
+            printf("unclosed coll somewhere :(\n");
+            exit(1);
+        }
+        
+        LVElement* child = parseOne(iter);
+        LVLinkedListAppend(coll->children, child);
+    }
+    
+    size_t i = 0;
+    for (LVLinkedListNode* node = coll->children->head; node; node = node->next) {
+        LVElement* child = node->val;
+        child->parent = coll;
+        child->index = i++;
+    }
+    
+    return coll;
+}
+
+LVColl* LVParse(char* raw) {
+    size_t tok_n;
+    LVToken** tokens = LVLex(raw, &tok_n);
+    
+    LVColl* topLevelColl = parseColl(tokens, LVCollType_TopLevel, LVTokenType_FileEnd);
+    topLevelColl->parent = NULL;
+    
+    free(tokens);
+    
+    return topLevelColl;
+}
+
+
+
+
+
 //    Coll* parseColl(bool live, std::vector<Token*>::iterator& iter, Coll::Type collType, Token::Type endTokenType);
-//    
+//
 //    Element* parseOne(bool live, std::vector<Token*>::iterator& iter) {
 //        Token* currentToken = *iter;
 //        
@@ -61,81 +111,3 @@
 //        printf("Can't handle this token type: %llu, %s\n", currentToken->type, currentToken->val.c_str());
 //        exit(1);
 //    }
-//    
-//    Coll* parseColl(bool live, std::vector<Token*>::iterator& iter, Coll::Type collType, Token::Type endTokenType) {
-//        Token* openToken = *iter;
-//        Token* closeToken;
-//        iter++;
-//        
-//        Coll* coll = (live ? new Coll : NULL);
-//        
-//        for(Token* currentToken ; ; ) {
-//            
-//            currentToken = *iter;
-//            
-//            if (currentToken->type == endTokenType) {
-//                closeToken = currentToken;
-//                iter++;
-//                break;
-//            }
-//            
-//            if (currentToken->type == Token::FileEnd) {
-//                throw ParserError{ParserError::UnclosedColl};
-//            }
-//            
-//            Element* child = parseOne(live, iter);
-//            
-//            if (live) {
-//                coll->children.push_back(child);
-//            }
-//        }
-//        
-//        if (live) {
-//            coll->collType = collType;
-//            coll->open_token = openToken;
-//            coll->close_token = closeToken;
-//            
-//            size_t i = 0;
-//            for (Element* child : coll->children) {
-//                child->parent = coll;
-//                child->index = i++;
-//            }
-//            
-//            return coll;
-//        }
-//        else {
-//            return NULL;
-//        }
-//    }
-//    
-//    std::pair<Coll*, ParserError> parse(std::string const& raw) {
-//        std::pair<std::vector<Token*>, ParserError> result = lex(raw);
-//        
-//        std::vector<Token*> tokens = result.first;
-//        ParserError error = result.second;
-//        
-//        Coll* top_level_coll = NULL;
-//        
-//        if (error.type != ParserError::NoError) {
-//            for (Token* token : tokens) delete token;
-//            return std::make_pair(top_level_coll, error);
-//        }
-//        
-//        try {
-//            // dry-run
-//            auto iter = tokens.begin();
-//            parseColl(false, iter, Coll::TopLevel, Token::FileEnd);
-//        }
-//        catch (ParserError& e) {
-//            for (Token* token : tokens) delete token;
-//            return std::make_pair(top_level_coll, e);
-//        }
-//        
-//        auto iter = tokens.begin();
-//        top_level_coll = parseColl(true, iter, Coll::TopLevel, Token::FileEnd);
-//        top_level_coll->parent = NULL;
-//        
-//        return std::make_pair(top_level_coll, error);
-//    }
-//    
-//}
