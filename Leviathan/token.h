@@ -59,5 +59,5 @@ typedef struct __LVToken {
 } LVToken;
 
 
-LVToken* LVTokenCreate(LVTokenType type, void* val, int len);
+LVToken* LVTokenCreate(LVTokenType type, bstring val);
 void LVTokenDelete(LVToken* tok); // TODO: use this later

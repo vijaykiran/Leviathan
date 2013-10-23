@@ -18,7 +18,7 @@ struct LVTokenList {
 #define TOKARRAY(...) ((LVToken*[]){ __VA_ARGS__ })
 #define TOKCOUNT(...) (sizeof(TOKARRAY(__VA_ARGS__)) / sizeof(LVToken*))
 #define TOKLIST(...) ((struct LVTokenList){TOKARRAY(__VA_ARGS__), TOKCOUNT(__VA_ARGS__)})
-#define TOK(typ, chr) LVTokenCreate(typ, chr, strlen(chr))
+#define TOK(typ, chr) LVTokenCreate(typ, bfromcstr(chr))
 
 static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     size_t actual_size;

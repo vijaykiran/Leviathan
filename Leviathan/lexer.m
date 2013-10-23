@@ -19,7 +19,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
     static bstring endAtomCharSet;
     if (!endAtomCharSet) endAtomCharSet = bfromcstr("()[]{}, \"\r\n\t;");
     
-    tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileBegin, "", 0);
+    tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileBegin, bfromcstr(""));
     
     size_t i = 0;
     while (i < input_string_length) {
@@ -28,31 +28,31 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
         
         switch (c) {
                 
-            case '(': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LParen, &raw->data[i], 1); break;
-            case ')': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RParen, &raw->data[i], 1); break;
+            case '(': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LParen, blk2bstr(&raw->data[i], 1)); break;
+            case ')': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RParen, blk2bstr(&raw->data[i], 1)); break;
                 
-            case '[': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBracket, &raw->data[i], 1); break;
-            case ']': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBracket, &raw->data[i], 1); break;
+            case '[': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBracket, blk2bstr(&raw->data[i], 1)); break;
+            case ']': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBracket, blk2bstr(&raw->data[i], 1)); break;
                 
-            case '{': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBrace, &raw->data[i], 1); break;
-            case '}': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBrace, &raw->data[i], 1); break;
+            case '{': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBrace, blk2bstr(&raw->data[i], 1)); break;
+            case '}': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBrace, blk2bstr(&raw->data[i], 1)); break;
                 
-            case '\'': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Quote, &raw->data[i], 1); break;
-            case '^': tokens[num_tokens++] = LVTokenCreate(LVTokenType_TypeOp, &raw->data[i], 1); break;
-            case '`': tokens[num_tokens++] = LVTokenCreate(LVTokenType_SyntaxQuote, &raw->data[i], 1); break;
+            case '\'': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Quote, blk2bstr(&raw->data[i], 1)); break;
+            case '^': tokens[num_tokens++] = LVTokenCreate(LVTokenType_TypeOp, blk2bstr(&raw->data[i], 1)); break;
+            case '`': tokens[num_tokens++] = LVTokenCreate(LVTokenType_SyntaxQuote, blk2bstr(&raw->data[i], 1)); break;
                 
-            case ',': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Comma, &raw->data[i], 1); break;
-            case '\n': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, &raw->data[i], 1); break;
+            case ',': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Comma, blk2bstr(&raw->data[i], 1)); break;
+            case '\n': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, blk2bstr(&raw->data[i], 1)); break;
                 
-            case '\t': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, "  ", 2); break;
+            case '\t': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, bfromcstr("  ")); break;
                 
             case '~': {
                 if (i + 1 < raw->slen && raw->data[i+1] == '@') {
-                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Splice, &raw->data[i], 2);
+                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Splice, blk2bstr(&raw->data[i], 2));
                     i++;
                 }
                 else {
-                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Unquote, &raw->data[i], 1);
+                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Unquote, blk2bstr(&raw->data[i], 1));
                 }
                 break;
             }
@@ -61,7 +61,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 bstring spaces = bfromcstr(" ");
                 size_t n = bninchr(raw, (int)i, spaces);
                 if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Spaces, &raw->data[i], (int)(n - i));
+                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Spaces, blk2bstr(&raw->data[i], (int)(n - i)));
                 i = n-1;
                 break;
             }
@@ -69,20 +69,42 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
             case ':': {
                 size_t n = binchr(raw, (int)i, endAtomCharSet);
                 if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Keyword, &raw->data[i], (int)(n - i));
+                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Keyword, blk2bstr(&raw->data[i], (int)(n - i)));
                 i = n-1;
                 break;
             }
                 
-            default:
+            default: {
+                size_t n = binchr(raw, (int)i, endAtomCharSet);
+                if (n == BSTR_ERR) n = input_string_length;
+                
+                bstring substring = blk2bstr(&raw->data[i], (int)(n - i));
+                LVToken* tok = LVTokenCreate(LVTokenType_Symbol, substring);
+                
+                static bstring trueConstant; if (!trueConstant) trueConstant = bfromcstr("true");
+                static bstring falseConstant; if (!falseConstant) falseConstant = bfromcstr("false");
+                static bstring nilConstant; if (!nilConstant) nilConstant = bfromcstr("nil");
+                
+                if (bstrcmp(substring, trueConstant) == 0) tok->type |= LVTokenType_TrueSymbol;
+                if (bstrcmp(substring, falseConstant) == 0) tok->type |= LVTokenType_FalseSymbol;
+                if (bstrcmp(substring, nilConstant) == 0) tok->type |= LVTokenType_NilSymbol;
+                
+                
+                
+//                if (substring.substr(0, 3) == "def") tok->type |= Token::Deflike;
+                
+                tokens[num_tokens++] = tok;
+                i = n-1;
+                
                 break;
+            }
         }
         
         i++;
         
     }
     
-    tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileEnd, "", 0);
+    tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileEnd, bfromcstr(""));
     
     *n_tok = num_tokens;
     return tokens;
@@ -170,26 +192,6 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
 //                            i = n-1;
 //                            break;
 //                    }
-//                    
-//                    break;
-//                }
-//                    
-//                default: {
-//                    // TODO: dont make the parser always have to do string-comparison! for things like (startswith "def"), we can figure that out here.
-//                    //       so we need to do that calculation here, and somehow store it on a token. should every token have that info? maybe its just a new TokenType.
-//                    
-//                    size_t n = raw.find_first_of(endAtomCharSet, i);
-//                    std::string substring = raw.substr(i, n - i);
-//                    Token* tok = new Token{Token::Symbol, substring};
-//                    
-//                    if (substring == "true") tok->type |= Token::TrueSymbol;
-//                    if (substring == "false") tok->type |= Token::FalseSymbol;
-//                    if (substring == "nil") tok->type |= Token::NilSymbol;
-//                    
-//                    if (substring.substr(0, 3) == "def") tok->type |= Token::Deflike;
-//                    
-//                    tokens.push_back(tok);
-//                    i = n-1;
 //                    
 //                    break;
 //                }

@@ -8,10 +8,10 @@
 
 #import "token.h"
 
-LVToken* LVTokenCreate(LVTokenType type, void* val, int len) {
+LVToken* LVTokenCreate(LVTokenType type, bstring val) {
     LVToken* tok = malloc(sizeof(LVToken));
     tok->type = type;
-    tok->val = blk2bstr(val, len);
+    tok->val = val;
     return tok;
 }
 
