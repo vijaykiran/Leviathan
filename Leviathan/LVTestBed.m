@@ -71,7 +71,14 @@
 //    return true;
 //}
 
-static void LVLexerShouldEqual(char* raw, LVToken** expected) {
+struct LVTokenList {
+    LVToken** toks;
+    size_t size;
+};
+
+static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
+    NSLog(@"%ld", expected.size);
+    
 //    expected.insert(expected.begin(), new Token{Token::FileBegin, ""});
 //    expected.push_back(new Token{Token::FileEnd, ""});
 //    
@@ -91,6 +98,13 @@ static void LVLexerShouldEqual(char* raw, LVToken** expected) {
 //    }
 }
 
+#define IDARRAY(...) ((LVToken*[]){ __VA_ARGS__ })
+#define IDCOUNT(...) (sizeof(IDARRAY(__VA_ARGS__)) / sizeof(LVToken*))
+
+#define TOKLIST(...) ((struct LVTokenList){IDARRAY(__VA_ARGS__), IDCOUNT(__VA_ARGS__)})
+
+#define TOK(typ, chr) LVTokenCreate(typ, chr, strlen(chr))
+
 @implementation LVTestBed
 
 + (void) runTests {
@@ -104,10 +118,7 @@ static void LVLexerShouldEqual(char* raw, LVToken** expected) {
         printf("[%s]\n", tok->val->data);
     }
     
-    LVLexerShouldEqual("(foobar)", (LVToken*[]){
-        LVTokenCreate(LVTokenType_LParen, "(", 1),
-        LVTokenCreate(LVTokenType_Symbol, "foobar", 6),
-        LVTokenCreate(LVTokenType_RParen, ")", 1)});
+    LVLexerShouldEqual("(foobar)", TOKLIST(TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_RParen, ")")));
     
 //    LVLexerShouldEqual("foobar", {new Token{Token::Symbol, "foobar"}});
 //    LVLexerShouldEqual("(    foobar", {new Token{Token::LParen, "("}, new Token{Token::Spaces, "    "}, new Token{Token::Symbol, "foobar"}});
