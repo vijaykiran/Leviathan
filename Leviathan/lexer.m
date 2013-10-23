@@ -5,11 +5,13 @@
 ////  Created by Steven on 10/19/13.
 ////  Copyright (c) 2013 Steven Degutis. All rights reserved.
 ////
-//
-//#include "lexer.h"
-//
-//#include "token.h"
-//
+
+#include "lexer.h"
+
+LVToken** LVLex(char* raw, size_t* n_tok) {
+    return NULL;
+}
+
 //namespace Leviathan {
 //    
 //    std::pair<std::vector<Token*>, ParserError> lex(std::string const& raw) {

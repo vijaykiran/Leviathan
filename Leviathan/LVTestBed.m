@@ -8,6 +8,21 @@
 
 #import "LVTestBed.h"
 
+#include "lexer.h"
+
+
+
+
+
+
+//#include "bstrlib.h"
+
+
+
+
+
+
+
 //#include "token.h"
 //#include "lexer.h"
 //#include "atom.h"
@@ -79,6 +94,14 @@
 @implementation LVTestBed
 
 + (void) runTests {
+    
+//    bstring b = bfromcstr("foo\0bar");
+//    char* c = bstr2cstr(b, 'd');
+//    printf("its [%s]\n", b->data);
+//    bdestroy(b);
+//    free(c);
+    
+    
 //    LVLexerShouldEqual("(foobar)", {new Token{Token::LParen, "("}, new Token{Token::Symbol, "foobar"}, new Token{Token::RParen, ")"}});
 //    LVLexerShouldEqual("foobar", {new Token{Token::Symbol, "foobar"}});
 //    LVLexerShouldEqual("(    foobar", {new Token{Token::LParen, "("}, new Token{Token::Spaces, "    "}, new Token{Token::Symbol, "foobar"}});
