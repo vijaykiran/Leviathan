@@ -10,8 +10,10 @@
 
 #import "lexer.h"
 #import "coll.h"
-#import "linked_list.h"
 #import "parser.h"
+#import "atom.h"
+
+#import "linked_list.h"
 
 struct LVTokenList {
     LVToken** toks;
@@ -159,23 +161,66 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     
     
     {
-        LVColl* coll = LVParse("foo");
-        assert(coll->collType == LVCollType_TopLevel);
-        LVCollDestroy(coll);
+        LVColl* top = LVParse("foo");
+        assert(top->collType == LVCollType_TopLevel);
+        assert(top->children.len == 1);
+        
+        LVAtom* atom = (void*)top->children.elements[0];
+        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->atomType == LVAtomType_Symbol);
+        assert(atom->token->type == LVTokenType_Symbol);
+        assert(biseq(atom->token->val, bfromcstr("foo")));
+        
+        LVCollDestroy(top);
     }
-//
-//    {
-//        std::pair<Coll*, ParserError> result = parse("(foo");
-//        assert(result.second.type == ParserError::UnclosedColl);
-//    }
-//    
-//    {
-//        std::pair<Coll*, ParserError> result = parse("(foo)");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
-//    
+    
+    {
+        LVColl* top = LVParse("(foo)");
+        assert(top->collType == LVCollType_TopLevel);
+        assert(top->children.len == 1);
+        
+        LVColl* list = (void*)top->children.elements[0];
+        assert(list->elementType == LVElementType_Coll);
+        assert(list->collType == LVCollType_List);
+        assert(list->children.len == 1);
+        
+        LVAtom* atom = (void*)list->children.elements[0];
+        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->atomType == LVAtomType_Symbol);
+        assert(atom->token->type == LVTokenType_Symbol);
+        assert(biseq(atom->token->val, bfromcstr("foo")));
+        
+        LVCollDestroy(top);
+    }
+    
+    {
+        LVColl* top = LVParse("123");
+        assert(top->collType == LVCollType_TopLevel);
+        assert(top->children.len == 1);
+        
+        LVAtom* atom = (void*)top->children.elements[0];
+        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->atomType == LVAtomType_Number);
+        assert(atom->token->type == LVTokenType_Number);
+        assert(biseq(atom->token->val, bfromcstr("123")));
+        
+        LVCollDestroy(top);
+    }
+    
+    {
+        LVColl* top = LVParse(":bla");
+        assert(top->collType == LVCollType_TopLevel);
+        assert(top->children.len == 1);
+        
+        LVAtom* atom = (void*)top->children.elements[0];
+        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->atomType == LVAtomType_Keyword);
+        assert(atom->token->type == LVTokenType_Keyword);
+        assert(biseq(atom->token->val, bfromcstr(":bla")));
+        
+        LVCollDestroy(top);
+    }
+    
 //    {
 //        std::pair<Coll*, ParserError> result = parse("((baryes)foo((no)))");
 //        assert(result.second.type == ParserError::NoError);
@@ -185,20 +230,6 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
 //    
 //    {
 //        std::pair<Coll*, ParserError> result = parse("((bar yes) foo ((no)))");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
-//    
-//    {
-//        std::pair<Coll*, ParserError> result = parse("123");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
-//    
-//    {
-//        std::pair<Coll*, ParserError> result = parse(":bla");
 //        assert(result.second.type == ParserError::NoError);
 //        assert(result.first->collType == Coll::TopLevel);
 //        delete result.first;
@@ -223,11 +254,6 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
 //        assert(result.second.type == ParserError::NoError);
 //        assert(result.first->collType == Coll::TopLevel);
 //        delete result.first;
-//    }
-//    
-//    {
-//        std::pair<Coll*, ParserError> result = parse(")");
-//        assert(result.second.type == ParserError::UnopenedCollClosed);
 //    }
     
     printf("ok\n");

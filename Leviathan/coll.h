@@ -48,4 +48,4 @@ struct __LVColl {
 LVColl* LVCollCreate();
 void LVCollDestroy(LVColl* coll);
 
-void LVCollChildrenAppend(LVElementList* array, LVElement* child);
+void LVElementListAppend(LVElementList* array, LVElement* child);

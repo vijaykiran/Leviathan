@@ -11,10 +11,10 @@
 #import "lexer.h"
 #import "atom.h"
 
-static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTokenType);
+static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTokenType);
 
-static LVElement* parseOne(LVToken** iter) {
-    LVToken* currentToken = *iter;
+static LVElement* parseOne(LVToken*** iter) {
+    LVToken* currentToken = **iter;
     
     if (currentToken->type & LVTokenType_LParen) {
         return (LVElement*)parseColl(iter, LVCollType_List, LVTokenType_RParen);
@@ -29,19 +29,19 @@ static LVElement* parseOne(LVToken** iter) {
         return (LVElement*)parseColl(iter, LVCollType_AnonFn, LVTokenType_RParen);
     }
     else if (currentToken->type & LVTokenType_Spaces) {
-        iter++;
+        ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_Spaces, currentToken);
     }
     else if (currentToken->type & LVTokenType_Number) {
-        iter++;
+        ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_Number, currentToken);
     }
     else if (currentToken->type & LVTokenType_Keyword) {
-        iter++;
+        ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_Keyword, currentToken);
     }
     else if (currentToken->type & LVTokenType_Symbol) {
-        iter++;
+        ++*iter;
         LVAtom* atom = LVAtomCreate(LVAtomType_Symbol, currentToken);
         
              if (currentToken->type & LVTokenType_TrueSymbol)  atom->atomType |= LVAtomType_TrueAtom;
@@ -55,18 +55,18 @@ static LVElement* parseOne(LVToken** iter) {
     exit(1);
 }
 
-static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTokenType) {
+static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTokenType) {
     LVColl* coll = LVCollCreate();
     coll->collType = collType;
-    coll->open_token = *iter;
-    iter++;
+    coll->open_token = **iter;
+    ++*iter;
     
     for (LVToken* currentToken; ; ) {
-        currentToken = *iter;
+        currentToken = **iter;
         
         if (currentToken->type == endTokenType) {
             coll->close_token = currentToken;
-            iter++;
+            ++*iter;
             break;
         }
         
@@ -76,7 +76,7 @@ static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTok
         }
         
         LVElement* child = parseOne(iter);
-        LVCollChildrenAppend((&coll->children), child);
+        LVElementListAppend(&coll->children, child);
     }
     
     for (int i = 0; i < coll->children.len; i++) {
@@ -92,7 +92,8 @@ LVColl* LVParse(char* raw) {
     size_t tok_n;
     LVToken** tokens = LVLex(raw, &tok_n);
     
-    LVColl* topLevelColl = parseColl(tokens, LVCollType_TopLevel, LVTokenType_FileEnd);
+    LVToken** iter = tokens;
+    LVColl* topLevelColl = parseColl(&iter, LVCollType_TopLevel, LVTokenType_FileEnd);
     topLevelColl->parent = NULL;
     
     free(tokens);

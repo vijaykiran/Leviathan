@@ -35,9 +35,7 @@ void LVCollDestroy(LVColl* coll) {
     free(coll);
 }
 
-void LVCollChildrenAppend(LVElementList* array, LVElement* child) {
-    printf("cap = %ld\n", array->cap);
-    printf("len = %ld\n", array->len);
+void LVElementListAppend(LVElementList* array, LVElement* child) {
     if (array->len == array->cap) {
         array->cap += LV_COLL_CHUNK_SIZE;
         array->elements = realloc(array->elements, array->cap);
