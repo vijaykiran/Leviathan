@@ -105,6 +105,67 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 break;
             }
                 
+            case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
+                size_t n = binchr(raw, (int)i, endAtomCharSet);
+                if (n == BSTR_ERR) n = input_string_length;
+                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Number, bmidstr(raw, (int)i, (int)(n - i)));
+                i = n-1;
+                break;
+            }
+                
+            case '#': {
+                if (i + 1 == raw->slen) {
+                    printf("error: unclosed dispatch\n");
+                    exit(1);
+                }
+                
+                char next = raw->data[i + 1];
+                
+                switch (next) {
+                    case '"': {
+                        int look_from = (int)i + 2;
+                        
+                        do {
+                            look_from = bstrchrp(raw, '"', look_from + 1);
+                            
+                            if (look_from == BSTR_ERR) {
+                                printf("error: unclosed string\n");
+                                exit(1);
+                            }
+                        } while (raw->data[look_from - 1] == '\\');
+                        
+                        bstring substring = bmidstr(raw, (int)i, (int)(look_from - i + 1));
+                        LVToken* tok = LVTokenCreate(LVTokenType_Regex, substring);
+                        tokens[num_tokens++] = tok;
+                        i = look_from;
+                        
+                        break;
+                    }
+                        
+                    case '\'': {
+                        size_t n = binchr(raw, (int)i, endAtomCharSet);
+                        if (n == BSTR_ERR) n = input_string_length;
+                        tokens[num_tokens++] = LVTokenCreate(LVTokenType_Var, bmidstr(raw, (int)i, (int)(n - i)));
+                        i = n-1;
+                        break;
+                    }
+                        
+                    case '(': tokens[num_tokens++] = LVTokenCreate(LVTokenType_AnonFnStart, bmidstr(raw, (int)i++, 2)); break;
+                    case '{': tokens[num_tokens++] = LVTokenCreate(LVTokenType_SetStart, bmidstr(raw, (int)i++, 2)); break;
+                    case '_': tokens[num_tokens++] = LVTokenCreate(LVTokenType_ReaderCommentStart, bmidstr(raw, (int)i++, 2)); break;
+                        
+                    default: {
+                        size_t n = binchr(raw, (int)i, endAtomCharSet);
+                        if (n == BSTR_ERR) n = input_string_length;
+                        tokens[num_tokens++] = LVTokenCreate(LVTokenType_ReaderMacro, bmidstr(raw, (int)i, (int)(n - i)));
+                        i = n-1;
+                        break;
+                    }
+                }
+                
+                break;
+            }
+                
             default: {
                 size_t n = binchr(raw, (int)i, endAtomCharSet);
                 if (n == BSTR_ERR) n = input_string_length;
@@ -141,66 +202,3 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
     *n_tok = num_tokens;
     return tokens;
 }
-
-//            switch (c) {
-//
-//                case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
-//                    size_t n = raw.find_first_of(endAtomCharSet, i);
-//                    tokens.push_back(new Token{Token::Number, raw.substr(i, n - i)});
-//                    i = n-1;
-//                    break;
-//                }
-//
-//                case '#': {
-//                    if (i + 1 == raw.length()) {
-//                        error.type = ParserError::UnclosedDispatch;
-//                        error.pos = i;
-//                        error.len = raw.length() - i;
-//                        return std::make_pair(tokens, error);
-//                    }
-//                    
-//                    char next = raw[i + 1];
-//                    
-//                    switch (next) {
-//                        case '"': {
-//                            size_t look_from = i + 2;
-//                            
-//                            do {
-//                                look_from = raw.find('"', look_from + 1);
-//                                if (look_from == std::string::npos) {
-//                                    error.type = ParserError::UnclosedRegex;
-//                                    error.pos = i;
-//                                    error.len = raw.length() - i;
-//                                    return std::make_pair(tokens, error);
-//                                }
-//                            } while (raw[look_from - 1] == '\\');
-//                            
-//                            tokens.push_back(new Token{Token::Regex, raw.substr(i, look_from - i + 1)});
-//                            i = look_from;
-//                            
-//                            break;
-//                        }
-//                            
-//                        case '\'': {
-//                            size_t n = raw.find_first_of(endAtomCharSet, i);
-//                            tokens.push_back(new Token{Token::Var, raw.substr(i, n - i)});
-//                            i = n-1;
-//                            break;
-//                        }
-//                            
-//                        case '(': tokens.push_back(new Token{Token::AnonFnStart, raw.substr(i++, 2)}); break;
-//                        case '{': tokens.push_back(new Token{Token::SetStart, raw.substr(i++, 2)}); break;
-//                        case '_': tokens.push_back(new Token{Token::ReaderCommentStart, raw.substr(i++, 2)}); break;
-//                            
-//                        default:
-//                            size_t n = raw.find_first_of(endAtomCharSet, i);
-//                            tokens.push_back(new Token{Token::ReaderMacro, raw.substr(i, n - i)});
-//                            i = n-1;
-//                            break;
-//                    }
-//                    
-//                    break;
-//                }
-//            }
-//            
-//            i++;

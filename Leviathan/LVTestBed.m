@@ -45,6 +45,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         
         if (t1->type != t2->type) {
             printf("wrong token type for: %s\n", raw);
+            printf("want val %s, got val %s\n", t2->val->data, t1->val->data);
             printf("want %llu, got %llu\n", t2->type, t1->type);
             exit(1);
         }
@@ -77,7 +78,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     
     LVLexerShouldEqual("#'foo", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Var, "#'foo"), TOK(LVTokenType_FileEnd, "")));
     LVLexerShouldEqual("#(foo)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_AnonFnStart, "#("), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("#{foo)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_SetStart, "#{"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RBrace, ")"), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("#{foo}", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_SetStart, "#{"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RBrace, "}"), TOK(LVTokenType_FileEnd, "")));
     LVLexerShouldEqual("#_foo", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_ReaderCommentStart, "#_"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_FileEnd, "")));
     LVLexerShouldEqual("#foo bar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_ReaderMacro, "#foo"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Symbol, "bar"), TOK(LVTokenType_FileEnd, "")));
     
