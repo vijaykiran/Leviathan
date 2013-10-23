@@ -11,6 +11,7 @@
 #import "lexer.h"
 #import "coll.h"
 #import "linked_list.h"
+#import "parser.h"
 
 struct LVTokenList {
     LVToken** toks;
@@ -156,17 +157,13 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     
     
     
-//    LVColl* coll = LVCollCreate();
-//    LVCollDestroy(coll);
     
-    
-//    {
-//        std::pair<Coll*, ParserError> result = parse("foo");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
-//    
+    {
+        LVColl* coll = LVParse("foo");
+        assert(coll->collType == LVCollType_TopLevel);
+        LVCollDestroy(coll);
+    }
+//
 //    {
 //        std::pair<Coll*, ParserError> result = parse("(foo");
 //        assert(result.second.type == ParserError::UnclosedColl);

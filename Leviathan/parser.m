@@ -44,9 +44,9 @@ static LVElement* parseOne(LVToken** iter) {
         iter++;
         LVAtom* atom = LVAtomCreate(LVAtomType_Symbol, currentToken);
         
-             if (currentToken->type & LVTokenType_TrueSymbol) atom->atomType |= LVAtomType_TrueAtom;
+             if (currentToken->type & LVTokenType_TrueSymbol)  atom->atomType |= LVAtomType_TrueAtom;
         else if (currentToken->type & LVTokenType_FalseSymbol) atom->atomType |= LVAtomType_FalseAtom;
-        else if (currentToken->type & LVTokenType_NilSymbol) atom->atomType |= LVAtomType_NilAtom;
+        else if (currentToken->type & LVTokenType_NilSymbol)   atom->atomType |= LVAtomType_NilAtom;
         
         return (LVElement*)atom;
     }
