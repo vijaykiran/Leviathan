@@ -94,6 +94,17 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 break;
             }
                 
+            case ';': {
+                size_t n = bstrchrp(raw, '\n', (int)i);
+                
+                bstring substring = bmidstr(raw, (int)i, (int)(n - i));
+                LVToken* tok = LVTokenCreate(LVTokenType_CommentLiteral, substring);
+                tokens[num_tokens++] = tok;
+                i = n-1;
+                
+                break;
+            }
+                
             default: {
                 size_t n = binchr(raw, (int)i, endAtomCharSet);
                 if (n == BSTR_ERR) n = input_string_length;
@@ -139,14 +150,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
 //                    i = n-1;
 //                    break;
 //                }
-//                    
-//                case ';': {
-//                    size_t n = raw.find('\n', i);
-//                    tokens.push_back(new Token{Token::Comment, raw.substr(i, n - i)});
-//                    i = n-1;
-//                    break;
-//                }
-//                    
+//
 //                case '#': {
 //                    if (i + 1 == raw.length()) {
 //                        error.type = ParserError::UnclosedDispatch;
