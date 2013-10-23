@@ -194,6 +194,44 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     }
     
     {
+        LVColl* top = LVParse("[foo]");
+        assert(top->collType == LVCollType_TopLevel);
+        assert(top->children.len == 1);
+        
+        LVColl* list = (void*)top->children.elements[0];
+        assert(list->elementType == LVElementType_Coll);
+        assert(list->collType == LVCollType_Vector);
+        assert(list->children.len == 1);
+        
+        LVAtom* atom = (void*)list->children.elements[0];
+        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->atomType == LVAtomType_Symbol);
+        assert(atom->token->type == LVTokenType_Symbol);
+        assert(biseq(atom->token->val, bfromcstr("foo")));
+        
+        LVCollDestroy(top);
+    }
+    
+    {
+        LVColl* top = LVParse("{foo bar}");
+        assert(top->collType == LVCollType_TopLevel);
+        assert(top->children.len == 1);
+        
+        LVColl* list = (void*)top->children.elements[0];
+        assert(list->elementType == LVElementType_Coll);
+        assert(list->collType == LVCollType_Map);
+        assert(list->children.len == 2);
+        
+        LVAtom* atom = (void*)list->children.elements[0];
+        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->atomType == LVAtomType_Symbol);
+        assert(atom->token->type == LVTokenType_Symbol);
+        assert(biseq(atom->token->val, bfromcstr("foo")));
+        
+        LVCollDestroy(top);
+    }
+    
+    {
         LVColl* top = LVParse("123");
         assert(top->collType == LVCollType_TopLevel);
         assert(top->children.len == 1);
@@ -234,21 +272,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
 //        assert(result.first->collType == Coll::TopLevel);
 //        delete result.first;
 //    }
-//    
-//    {
-//        std::pair<Coll*, ParserError> result = parse("[foo]");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
-//    
-//    {
-//        std::pair<Coll*, ParserError> result = parse("{foo bar}");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
-//    
+//
 //    {
 //        std::pair<Coll*, ParserError> result = parse("#(foo bar)");
 //        assert(result.second.type == ParserError::NoError);
