@@ -10,6 +10,12 @@
 #import "token.h"
 #import "linked_list.h"
 
+typedef struct __LVCollChildren {
+    LVElement** elements;
+    size_t len;
+    size_t cap;
+} LVCollChildren;
+
 typedef enum __LVCollType : uint64_t {
     LVCollType_TopLevel   = 1 << 0,
     
@@ -35,9 +41,11 @@ struct __LVColl {
     LVCollType collType;
     LVToken* open_token;
     LVToken* close_token;
-    LVLinkedList* children;
+    LVCollChildren children;
     
 };
 
 LVColl* LVCollCreate();
 void LVCollDestroy(LVColl* coll);
+
+void LVCollChildrenAppend(LVCollChildren* array, LVElement* child);

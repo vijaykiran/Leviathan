@@ -262,20 +262,20 @@
 			isa = PBXGroup;
 			children = (
 				9455AA2518179BB90077DC86 /* bstring */,
-				945544F71818688B00D69E63 /* linked list */,
+				945544F71818688B00D69E63 /* UNUSED linked list */,
 				945544FC18187B5600D69E63 /* types */,
 				94EB3DCB18161DD5002E639F /* parser */,
 			);
 			name = "New Parser";
 			sourceTree = "<group>";
 		};
-		945544F71818688B00D69E63 /* linked list */ = {
+		945544F71818688B00D69E63 /* UNUSED linked list */ = {
 			isa = PBXGroup;
 			children = (
 				945544F81818689D00D69E63 /* linked_list.h */,
 				945544F91818689D00D69E63 /* linked_list.m */,
 			);
-			name = "linked list";
+			name = "UNUSED linked list";
 			sourceTree = "<group>";
 		};
 		945544FC18187B5600D69E63 /* types */ = {

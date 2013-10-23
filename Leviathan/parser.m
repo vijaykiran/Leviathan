@@ -76,12 +76,11 @@ static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTok
         }
         
         LVElement* child = parseOne(iter);
-        LVLinkedListAppend(coll->children, child);
+        LVCollChildrenAppend((&coll->children), child);
     }
     
-    size_t i = 0;
-    for (LVLinkedListNode* node = coll->children->head; node; node = node->next) {
-        LVElement* child = node->val;
+    for (int i = 0; i < coll->children.len; i++) {
+        LVElement* child = coll->children.elements[i];
         child->parent = coll;
         child->index = i++;
     }

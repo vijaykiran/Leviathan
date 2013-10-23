@@ -15,8 +15,8 @@ size_t LVElementLength(LVElement* element) {
     if (element->elementType & LVElementType_Coll) {
         LVColl* coll = (LVColl*)element;
         size_t len = coll->open_token->val->slen + coll->close_token->val->slen;
-        for (LVLinkedListNode* node = coll->children->head; node; node = node->next) {
-            LVElement* child = node->val;
+        for (int i = 0; i < coll->children.len; i++) {
+            LVElement* child = coll->children.elements[i];
             len += LVElementLength(child);
         }
         return len;
