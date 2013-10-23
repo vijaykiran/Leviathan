@@ -36,3 +36,6 @@ typedef struct __LVAtom {
     LVToken* token;
     
 } LVAtom;
+
+LVAtom* LVAtomCreate();
+void LVAtomDestroy(LVAtom* atom);

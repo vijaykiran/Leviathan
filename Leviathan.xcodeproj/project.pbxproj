@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		945544FA1818689D00D69E63 /* linked_list.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544F91818689D00D69E63 /* linked_list.m */; };
+		945544FE18187BFF00D69E63 /* element.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544FD18187BFF00D69E63 /* element.m */; };
 		9455AA2118179B630077DC86 /* bstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 9455AA1F18179B630077DC86 /* bstrlib.c */; };
 		9455AA2418179BB60077DC86 /* bstraux.c in Sources */ = {isa = PBXBuildFile; fileRef = 9455AA2218179BB60077DC86 /* bstraux.c */; };
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
@@ -95,6 +96,7 @@
 /* Begin PBXFileReference section */
 		945544F81818689D00D69E63 /* linked_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linked_list.h; sourceTree = "<group>"; };
 		945544F91818689D00D69E63 /* linked_list.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = linked_list.m; sourceTree = "<group>"; };
+		945544FD18187BFF00D69E63 /* element.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = element.m; sourceTree = "<group>"; };
 		9455AA1F18179B630077DC86 /* bstrlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bstrlib.c; sourceTree = "<group>"; };
 		9455AA2018179B630077DC86 /* bstrlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bstrlib.h; sourceTree = "<group>"; };
 		9455AA2218179BB60077DC86 /* bstraux.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bstraux.c; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				94ABB133181463D3003415B5 /* element.h */,
+				945544FD18187BFF00D69E63 /* element.m */,
 				94ABB131181463C4003415B5 /* coll.h */,
 				94ABB130181463C4003415B5 /* coll.m */,
 				94ABB12E181463B5003415B5 /* atom.h */,
@@ -713,6 +716,7 @@
 				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
 				94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */,
 				9455AA2118179B630077DC86 /* bstrlib.c in Sources */,
+				945544FE18187BFF00D69E63 /* element.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
 				9493D96F18108BC80080E3C0 /* LVParser.m in Sources */,
 				94EB3DCA18161106002E639F /* token.m in Sources */,

@@ -8,6 +8,7 @@
 
 #import "coll.h"
 #import "token.h"
+#import "atom.h"
 
 LVColl* LVCollCreate() {
     LVColl* coll = malloc(sizeof(LVColl));
@@ -18,13 +19,7 @@ LVColl* LVCollCreate() {
 
 void LVCollDestroy(LVColl* coll) {
     for (LVLinkedListNode* node = coll->children->head; node; node = node->next) {
-        LVElement* element = node->val;
-        if (element->elementType & LVElementType_Coll) {
-            LVCollDestroy((LVColl*)element);
-        }
-        else if (element->elementType & LVElementType_Atom) {
-//            LVAtomDestroy((LVAtom*)element);
-        }
+        LVElementDestroy(node->val);
     }
     
     LVLinkedListDestroy(coll->children);
@@ -32,14 +27,3 @@ void LVCollDestroy(LVColl* coll) {
     LVTokenDelete(coll->close_token);
     free(coll);
 }
-
-
-
-
-//    size_t Coll::length() {
-//        size_t len = this->open_token->val.length() + this->close_token->val.length();
-//        for (Element* child : this->children) {
-//            len += child->length();
-//        }
-//        return len;
-//    }

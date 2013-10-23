@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-//#import "coll.h"
-
 struct __LVColl;
 
 typedef enum __LVElementType : uint64_t {
@@ -25,4 +23,5 @@ typedef struct __LVElement {
     
 } LVElement;
 
-// TODO: LVElementLength()
+size_t LVElementLength(LVElement* el);
+void LVElementDestroy(LVElement* el);
