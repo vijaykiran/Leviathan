@@ -28,7 +28,8 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
     
     LVToken** tokens = malloc(sizeof(LVToken*) * input_string_length);
     
-//    static char* endAtomCharSet = "()[]{}, \"\r\n\t;";
+    static bstring endAtomCharSet;
+    if (!endAtomCharSet) endAtomCharSet = bfromcstr("()[]{}, \"\r\n\t;");
     
     tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileBegin, "", 0);
     
@@ -75,6 +76,14 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 break;
             }
                 
+            case ':': {
+                size_t n = binchr(raw, (int)i, endAtomCharSet);
+                if (n == BSTR_ERR) n = input_string_length;
+                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Keyword, &raw->data[i], (int)(n - i));
+                i = n-1;
+                break;
+            }
+                
             default:
                 break;
         }
@@ -94,13 +103,6 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
 //                case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
 //                    size_t n = raw.find_first_of(endAtomCharSet, i);
 //                    tokens.push_back(new Token{Token::Number, raw.substr(i, n - i)});
-//                    i = n-1;
-//                    break;
-//                }
-//                    
-//                case ':': {
-//                    size_t n = raw.find_first_of(endAtomCharSet, i);
-//                    tokens.push_back(new Token{Token::Keyword, raw.substr(i, n - i)});
 //                    i = n-1;
 //                    break;
 //                }
