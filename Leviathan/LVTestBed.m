@@ -10,54 +10,15 @@
 
 #include "lexer.h"
 
-
-
-
-
-
-//#include "bstrlib.h"
-
-
-
-
-
-
-
-//#include "token.h"
-//#include "lexer.h"
-//#include "atom.h"
-//#include "parser.h"
-//
-//using namespace Leviathan;
-//
-//static void LVLexerShouldError(std::string raw, ParserError::Type error, NSRange badRange) {
-//    std::pair<std::vector<Token*>, ParserError> result = lex(raw);
-//    std::vector<Token*> tokens = result.first;
-//    ParserError e = result.second;
-//    if (e.type == ParserError::NoError) {
-//        std::cout << "Didn't see expected error: " << raw << std::endl;
-////        std::cout << tokens << std::endl;
-//        exit(1);
-//    }
-//    else {
-//        if (e.type != error) {
-//            std::cout << raw << std::endl;
-////            std::cout << tokens << std::endl;
-//            printf("expected parser error to be %d, got %d\n", error, e.type);
-//            exit(1);
-//        }
-//        if (!NSEqualRanges(badRange, NSMakeRange(e.pos, e.len))) {
-////            std::cout << tokens << std::endl;
-//            NSLog(@"thought: %@, got: %@", NSStringFromRange(badRange), NSStringFromRange(NSMakeRange(e.pos, e.len)));
-//            exit(1);
-//        }
-//    }
-//}
-
 struct LVTokenList {
     LVToken** toks;
     size_t size;
 };
+
+#define TOKARRAY(...) ((LVToken*[]){ __VA_ARGS__ })
+#define TOKCOUNT(...) (sizeof(TOKARRAY(__VA_ARGS__)) / sizeof(LVToken*))
+#define TOKLIST(...) ((struct LVTokenList){TOKARRAY(__VA_ARGS__), TOKCOUNT(__VA_ARGS__)})
+#define TOK(typ, chr) LVTokenCreate(typ, chr, strlen(chr))
 
 static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     size_t actual_size;
@@ -95,11 +56,6 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         }
     }
 }
-
-#define TOKARRAY(...) ((LVToken*[]){ __VA_ARGS__ })
-#define TOKCOUNT(...) (sizeof(TOKARRAY(__VA_ARGS__)) / sizeof(LVToken*))
-#define TOKLIST(...) ((struct LVTokenList){TOKARRAY(__VA_ARGS__), TOKCOUNT(__VA_ARGS__)})
-#define TOK(typ, chr) LVTokenCreate(typ, chr, strlen(chr))
 
 @implementation LVTestBed
 
