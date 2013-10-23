@@ -25,6 +25,18 @@ namespace Leviathan {
         if (currentToken->type & Token::LParen) {
             return parseColl(live, iter, Coll::List, Token::RParen);
         }
+        else if (currentToken->type & Token::LBracket) {
+            return parseColl(live, iter, Coll::Vector, Token::RBracket);
+        }
+        else if (currentToken->type & Token::LBrace) {
+            return parseColl(live, iter, Coll::Map, Token::RBrace);
+        }
+        else if (currentToken->type & Token::AnonFnStart) {
+            return parseColl(live, iter, Coll::AnonFn, Token::RParen);
+        }
+        else if (currentToken->type & Token::RParen) {
+            throw ParserError{ParserError::UnopenedCollClosed};
+        }
         else if (currentToken->type & Token::Symbol) {
             iter++;
             if (!live) return NULL;

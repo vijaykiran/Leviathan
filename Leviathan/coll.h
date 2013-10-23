@@ -26,8 +26,10 @@ namespace Leviathan {
             Vector     = 1 << 2,
             Map        = 1 << 3,
             
-            Definition = 1 << 4,
-            Ns         = 1 << 5,
+            AnonFn     = 1 << 4,
+            
+            Definition = 1 << 5,
+            Ns         = 1 << 6,
         };
         
         uint64_t collType;

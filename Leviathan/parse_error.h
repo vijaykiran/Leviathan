@@ -25,6 +25,7 @@ namespace Leviathan {
             
             // parser errors
             UnclosedColl,
+            UnopenedCollClosed,
         };
         
         Type type;
