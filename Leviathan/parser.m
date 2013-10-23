@@ -11,8 +11,48 @@
 #import "lexer.h"
 #import "atom.h"
 
+static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTokenType);
+
 static LVElement* parseOne(LVToken** iter) {
-    return NULL;
+    LVToken* currentToken = *iter;
+    
+    if (currentToken->type & LVTokenType_LParen) {
+        return (LVElement*)parseColl(iter, LVCollType_List, LVTokenType_RParen);
+    }
+    else if (currentToken->type & LVTokenType_LBracket) {
+        return (LVElement*)parseColl(iter, LVCollType_Vector, LVTokenType_RBracket);
+    }
+    else if (currentToken->type & LVTokenType_LBrace) {
+        return (LVElement*)parseColl(iter, LVCollType_Map, LVTokenType_RBrace);
+    }
+    else if (currentToken->type & LVTokenType_AnonFnStart) {
+        return (LVElement*)parseColl(iter, LVCollType_AnonFn, LVTokenType_RParen);
+    }
+    else if (currentToken->type & LVTokenType_Spaces) {
+        iter++;
+        return (LVElement*)LVAtomCreate(LVAtomType_Spaces, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Number) {
+        iter++;
+        return (LVElement*)LVAtomCreate(LVAtomType_Number, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Keyword) {
+        iter++;
+        return (LVElement*)LVAtomCreate(LVAtomType_Keyword, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Symbol) {
+        iter++;
+        LVAtom* atom = LVAtomCreate(LVAtomType_Symbol, currentToken);
+        
+             if (currentToken->type & LVTokenType_TrueSymbol) atom->atomType |= LVAtomType_TrueAtom;
+        else if (currentToken->type & LVTokenType_FalseSymbol) atom->atomType |= LVAtomType_FalseAtom;
+        else if (currentToken->type & LVTokenType_NilSymbol) atom->atomType |= LVAtomType_NilAtom;
+        
+        return (LVElement*)atom;
+    }
+    
+    printf("Can't handle this token type: %llu, %s\n", currentToken->type, currentToken->val->data);
+    exit(1);
 }
 
 static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTokenType) {
@@ -60,54 +100,3 @@ LVColl* LVParse(char* raw) {
     
     return topLevelColl;
 }
-
-
-
-
-
-//    Coll* parseColl(bool live, std::vector<Token*>::iterator& iter, Coll::Type collType, Token::Type endTokenType);
-//
-//    Element* parseOne(bool live, std::vector<Token*>::iterator& iter) {
-//        Token* currentToken = *iter;
-//        
-////        std::cout << currentToken->val << std::endl;
-//        
-//        if (currentToken->type & Token::LParen) {
-//            return parseColl(live, iter, Coll::List, Token::RParen);
-//        }
-//        else if (currentToken->type & Token::LBracket) {
-//            return parseColl(live, iter, Coll::Vector, Token::RBracket);
-//        }
-//        else if (currentToken->type & Token::LBrace) {
-//            return parseColl(live, iter, Coll::Map, Token::RBrace);
-//        }
-//        else if (currentToken->type & Token::AnonFnStart) {
-//            return parseColl(live, iter, Coll::AnonFn, Token::RParen);
-//        }
-//        else if (currentToken->type & Token::RParen) {
-//            throw ParserError{ParserError::UnopenedCollClosed};
-//        }
-//        else if (currentToken->type & Token::Symbol) {
-//            iter++;
-//            if (!live) return NULL;
-//            if (currentToken->type & Token::TrueSymbol) return new Atom(Atom::Symbol | Atom::TrueAtom, currentToken);
-//            if (currentToken->type & Token::FalseSymbol) return new Atom(Atom::Symbol | Atom::FalseAtom, currentToken);
-//            if (currentToken->type & Token::NilSymbol) return new Atom(Atom::Symbol | Atom::NilAtom, currentToken);
-//            return new Atom(Atom::Symbol, currentToken);
-//        }
-//        else if (currentToken->type & Token::Spaces) {
-//            iter++;
-//            return (live? new Atom(Atom::Spaces, currentToken) : NULL);
-//        }
-//        else if (currentToken->type & Token::Number) {
-//            iter++;
-//            return (live? new Atom(Atom::Number, currentToken) : NULL);
-//        }
-//        else if (currentToken->type & Token::Keyword) {
-//            iter++;
-//            return (live? new Atom(Atom::Keyword, currentToken) : NULL);
-//        }
-//        
-//        printf("Can't handle this token type: %llu, %s\n", currentToken->type, currentToken->val.c_str());
-//        exit(1);
-//    }

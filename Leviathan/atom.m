@@ -8,9 +8,11 @@
 
 #import "atom.h"
 
-LVAtom* LVAtomCreate() {
+LVAtom* LVAtomCreate(LVAtomType typ, LVToken* tok) {
     LVAtom* atom = malloc(sizeof(LVAtom));
     atom->elementType = LVElementType_Atom;
+    atom->atomType = typ;
+    atom->token = tok;
     return atom;
 }
 
