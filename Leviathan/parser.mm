@@ -46,7 +46,7 @@ namespace Leviathan {
             return (live? new Atom(Atom::Keyword, currentToken) : NULL);
         }
         
-        printf("Can't handle this token type: %d, %s\n", currentToken->type, currentToken->val.c_str());
+        printf("Can't handle this token type: %llu, %s\n", currentToken->type, currentToken->val.c_str());
         exit(1);
     }
     
@@ -102,7 +102,7 @@ namespace Leviathan {
         std::vector<Token*> tokens = result.first;
         ParserError error = result.second;
         
-        Coll* top_level_coll;
+        Coll* top_level_coll = NULL;
         
         if (error.type != ParserError::NoError) {
             for (Token* token : tokens) delete token;

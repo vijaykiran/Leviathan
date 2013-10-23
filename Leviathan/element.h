@@ -18,6 +18,9 @@ namespace Leviathan {
         Coll* parent;
         size_t index;
         
+        virtual ~Element() {};
+        virtual size_t length() = 0;
+        
     };
     
 }

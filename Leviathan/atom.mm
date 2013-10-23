@@ -10,4 +10,12 @@
 
 namespace Leviathan {
     
+    Atom::~Atom() {
+        delete this->token;
+    }
+    
+    size_t Atom::length() {
+        return this->token->val.length();
+    }
+    
 }

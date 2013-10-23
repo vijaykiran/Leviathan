@@ -58,7 +58,7 @@ namespace Leviathan {
             NilSymbol   = 1 << 29, // must also be Symbol
         };
         
-        int type;
+        uint64_t type;
         std::string val;
         
     };

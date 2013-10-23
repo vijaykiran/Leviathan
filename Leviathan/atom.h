@@ -34,10 +34,13 @@ namespace Leviathan {
             Ns      = 1 << 9, // must also be Symbol
         };
         
-        int atomType; // TODO: this should actually be an OR'd list of types, so that it can be both Symbol and Deflike, or Symbol and Ns (or something)
+        uint64_t atomType;
         Token* token;
         
         Atom(int type, Token* tok) : atomType(type), token(tok) {} ;
+        ~Atom();
+        
+        size_t length();
         
     };
     

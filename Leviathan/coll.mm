@@ -11,16 +11,27 @@
 namespace Leviathan {
     
     Coll::~Coll() {
-        return;
-        
+        printf("in here %llu\n", this->open_token->type);
         delete this->open_token;
-        
-        if (this->close_token)
-            delete this->close_token; // might not be set yet, during parsing
+        delete this->close_token;
         
         for (Element* e : this->children) {
+            Token* tok = dynamic_cast<Token*>(e);
+            Coll* coll = dynamic_cast<Coll*>(e);
+            printf("child = %p\n", e);
+            printf("child tok = %p\n", tok);
+            printf("child coll = %p\n", coll);
             delete e;
         }
+        this->children.clear();
+    }
+    
+    size_t Coll::length() {
+        size_t len = this->open_token->val.length() + this->close_token->val.length();
+        for (Element* child : this->children) {
+            len += child->length();
+        }
+        return len;
     }
     
 }

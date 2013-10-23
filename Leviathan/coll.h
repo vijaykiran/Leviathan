@@ -17,7 +17,7 @@
 
 namespace Leviathan {
     
-    struct Coll: Element {
+    struct Coll: public Element {
         
         enum Type : uint64_t {
             TopLevel   = 1 << 0,
@@ -30,12 +30,14 @@ namespace Leviathan {
             Ns         = 1 << 5,
         };
         
-        Type collType;
+        uint64_t collType;
         Token* open_token;
         Token* close_token;
         std::list<Element*> children;
         
         ~Coll();
+        
+        size_t length();
         
     };
     
