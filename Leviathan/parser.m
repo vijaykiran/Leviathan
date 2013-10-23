@@ -52,7 +52,7 @@ static LVElement* parseOne(LVToken*** iter) {
     }
     
     printf("Can't handle this token type: %llu, %s\n", currentToken->type, currentToken->val->data);
-    exit(1);
+    abort();
 }
 
 static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTokenType) {
@@ -72,7 +72,7 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
         
         if (currentToken->type == LVTokenType_FileEnd) {
             printf("unclosed coll somewhere :(\n");
-            exit(1);
+            abort();
         }
         
         LVElement* child = parseOne(iter);

@@ -26,7 +26,7 @@ size_t LVElementLength(LVElement* element) {
         return atom->token->val->slen;
     }
     printf("asking element length for bad element.\n");
-    exit(1);
+    abort();
 }
 
 void LVElementDestroy(LVElement* element) {

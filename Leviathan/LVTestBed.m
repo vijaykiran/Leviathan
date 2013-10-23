@@ -39,7 +39,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
             LVToken* tok = tokens[i];
             printf("[%s]\n", tok->val->data);
         }
-        exit(1);
+        abort();
     }
     
     for (size_t i = 0; i < actual_size; i++) {
@@ -50,13 +50,13 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
             printf("wrong token type for: %s\n", raw);
             printf("want val %s, got val %s\n", t2->val->data, t1->val->data);
             printf("want %llu, got %llu\n", t2->type, t1->type);
-            exit(1);
+            abort();
         }
         
         if (bstrcmp(t1->val, t2->val) != 0) {
             printf("wrong token string for: %s\n", raw);
             printf("want %s, got %s\n", t2->val->data, t1->val->data);
-            exit(1);
+            abort();
         }
     }
 }

@@ -82,7 +82,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                     
                     if (look_from == BSTR_ERR) {
                         printf("error: unclosed string\n");
-                        exit(1);
+                        abort();
                     }
                 } while (raw->data[look_from - 1] == '\\');
                 
@@ -116,7 +116,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
             case '#': {
                 if (i + 1 == raw->slen) {
                     printf("error: unclosed dispatch\n");
-                    exit(1);
+                    abort();
                 }
                 
                 char next = raw->data[i + 1];
@@ -130,7 +130,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                             
                             if (look_from == BSTR_ERR) {
                                 printf("error: unclosed string\n");
-                                exit(1);
+                                abort();
                             }
                         } while (raw->data[look_from - 1] == '\\');
                         
