@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		945544FA1818689D00D69E63 /* LVLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544F91818689D00D69E63 /* LVLinkedList.m */; };
 		9455AA2118179B630077DC86 /* bstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 9455AA1F18179B630077DC86 /* bstrlib.c */; };
 		9455AA2418179BB60077DC86 /* bstraux.c in Sources */ = {isa = PBXBuildFile; fileRef = 9455AA2218179BB60077DC86 /* bstraux.c */; };
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
@@ -92,6 +93,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		945544F81818689D00D69E63 /* LVLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVLinkedList.h; sourceTree = "<group>"; };
+		945544F91818689D00D69E63 /* LVLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVLinkedList.m; sourceTree = "<group>"; };
 		9455AA1F18179B630077DC86 /* bstrlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bstrlib.c; sourceTree = "<group>"; };
 		9455AA2018179B630077DC86 /* bstrlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bstrlib.h; sourceTree = "<group>"; };
 		9455AA2218179BB60077DC86 /* bstraux.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bstraux.c; sourceTree = "<group>"; };
@@ -257,6 +260,7 @@
 		940977FC1814EF2800D0B9B1 /* New Parser */ = {
 			isa = PBXGroup;
 			children = (
+				945544F71818688B00D69E63 /* linked list */,
 				9455AA2518179BB90077DC86 /* bstring */,
 				94ABB133181463D3003415B5 /* element.h */,
 				94EB3DCB18161DD5002E639F /* parsing */,
@@ -265,6 +269,15 @@
 				94EB3DCE18161DEA002E639F /* atoms */,
 			);
 			name = "New Parser";
+			sourceTree = "<group>";
+		};
+		945544F71818688B00D69E63 /* linked list */ = {
+			isa = PBXGroup;
+			children = (
+				945544F81818689D00D69E63 /* LVLinkedList.h */,
+				945544F91818689D00D69E63 /* LVLinkedList.m */,
+			);
+			name = "linked list";
 			sourceTree = "<group>";
 		};
 		9455AA2518179BB90077DC86 /* bstring */ = {
@@ -688,6 +701,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				945544FA1818689D00D69E63 /* LVLinkedList.m in Sources */,
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				9490D82D1810781D006ECA5E /* LVTextView.m in Sources */,
 				9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */,

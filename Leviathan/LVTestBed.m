@@ -10,6 +10,7 @@
 
 #import "lexer.h"
 #import "coll.h"
+#import "LVLinkedList.h"
 
 struct LVTokenList {
     LVToken** toks;
@@ -85,6 +86,39 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     
     LVLexerShouldEqual("#\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"yes\""), TOK(LVTokenType_FileEnd, "")));
     LVLexerShouldEqual("#\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
+    
+    
+    {
+        LVLinkedList* list = LVLinkedListCreate();
+        
+        char* foo = "foo";
+        char* bar = "bar";
+        
+        assert(list->head == NULL);
+        
+        LVLinkedListAppend(list, foo);
+        
+        assert(list->head != NULL);
+        assert(list->head->val == foo);
+        assert(list->head->prev == NULL);
+        assert(list->head->next == NULL);
+        
+        LVLinkedListAppend(list, bar);
+        
+        assert(list->head != NULL);
+        assert(list->head->val == foo);
+        assert(list->head->prev == NULL);
+        assert(list->head->next != NULL);
+        assert(list->head->next->val == bar);
+        assert(list->head->next->prev == list->head);
+        assert(list->head->next->next == NULL);
+        
+        LVLinkedListDestroy(list);
+    }
+    
+    
+    
+    
     
     
 //    LVColl
