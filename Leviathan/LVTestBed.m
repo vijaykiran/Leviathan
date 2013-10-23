@@ -213,6 +213,25 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     }
     
     {
+        LVColl* top = LVParse("#(foo)");
+        assert(top->collType == LVCollType_TopLevel);
+        assert(top->children.len == 1);
+        
+        LVColl* list = (void*)top->children.elements[0];
+        assert(list->elementType == LVElementType_Coll);
+        assert(list->collType == LVCollType_AnonFn);
+        assert(list->children.len == 1);
+        
+        LVAtom* atom = (void*)list->children.elements[0];
+        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->atomType == LVAtomType_Symbol);
+        assert(atom->token->type == LVTokenType_Symbol);
+        assert(biseq(atom->token->val, bfromcstr("foo")));
+        
+        LVCollDestroy(top);
+    }
+    
+    {
         LVColl* top = LVParse("{foo bar}");
         assert(top->collType == LVCollType_TopLevel);
         assert(top->children.len == 1);
@@ -277,26 +296,15 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         LVCollDestroy(top);
     }
     
-//    {
-//        std::pair<Coll*, ParserError> result = parse("((baryes)foo((no)))");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
-//    
-//    {
-//        std::pair<Coll*, ParserError> result = parse("((bar yes) foo ((no)))");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
-//
-//    {
-//        std::pair<Coll*, ParserError> result = parse("#(foo bar)");
-//        assert(result.second.type == ParserError::NoError);
-//        assert(result.first->collType == Coll::TopLevel);
-//        delete result.first;
-//    }
+    {
+        LVColl* top = LVParse("((baryes)foo((no)))");
+        LVCollDestroy(top);
+    }
+    
+    {
+        LVColl* top = LVParse("((bar yes) foo ((no)))");
+        LVCollDestroy(top);
+    }
     
     printf("ok\n");
     [NSApp terminate:self];
