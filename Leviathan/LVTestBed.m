@@ -102,6 +102,12 @@
 //    free(c);
     
     
+//    char* abc = "abc";
+//    printf("[%p]\n", abc);
+//    printf("[%p]\n", &abc[0]);
+//    printf("[%p]\n", &abc[1]);
+    
+    
 //    LVLexerShouldEqual("(foobar)", {new Token{Token::LParen, "("}, new Token{Token::Symbol, "foobar"}, new Token{Token::RParen, ")"}});
 //    LVLexerShouldEqual("foobar", {new Token{Token::Symbol, "foobar"}});
 //    LVLexerShouldEqual("(    foobar", {new Token{Token::LParen, "("}, new Token{Token::Spaces, "    "}, new Token{Token::Symbol, "foobar"}});

@@ -8,41 +8,69 @@
 
 #include "lexer.h"
 
-LVToken** LVLex(char* raw, size_t* n_tok) {
-    return NULL;
+LVToken* LVTokenCreate(LVTokenType type, void* val, int len) {
+    LVToken* tok = malloc(sizeof(LVToken));
+    tok->type = type;
+    tok->val = blk2bstr(val, len);
+    return tok;
 }
 
-//namespace Leviathan {
-//    
-//    std::pair<std::vector<Token*>, ParserError> lex(std::string const& raw) {
-//        std::vector<Token*> tokens;
-//        ParserError error = ParserError{ParserError::NoError};
-//        
-//        tokens.push_back(new Token{Token::FileBegin, ""});
-//        
-//        static std::string endAtomCharSet = "()[]{}, \"\r\n\t;";
-//        
-//        size_t i = 0;
-//        
-//        while (i < raw.length()) {
-//            
-//            char c = raw.at(i);
-//            
+void LVTokenDelete(LVToken* tok) { // TODO: use this later
+    bdestroy(tok->val);
+    free(tok);
+}
+
+LVToken** LVLex(char* input_str, size_t* n_tok) {
+    bstring raw = bfromcstr(input_str);
+    
+    size_t input_string_length = raw->slen;
+    size_t num_tokens = 0;
+    
+    LVToken** tokens = malloc(sizeof(LVToken*) * input_string_length);
+    
+//    static char* endAtomCharSet = "()[]{}, \"\r\n\t;";
+    
+    tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileBegin, "", 0);
+    
+    size_t i = 0;
+    while (i < input_string_length) {
+        
+        unsigned char c = raw->data[i];
+        
+        switch (c) {
+                
+            case '(': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LParen, &raw->data[i], 1); break;
+            case ')': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RParen, &raw->data[i], 1); break;
+                
+            case '[': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBracket, &raw->data[i], 1); break;
+            case ']': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBracket, &raw->data[i], 1); break;
+                
+            case '{': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBrace, &raw->data[i], 1); break;
+            case '}': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBrace, &raw->data[i], 1); break;
+                
+            case '\'': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Quote, &raw->data[i], 1); break;
+            case '^': tokens[num_tokens++] = LVTokenCreate(LVTokenType_TypeOp, &raw->data[i], 1); break;
+            case '`': tokens[num_tokens++] = LVTokenCreate(LVTokenType_SyntaxQuote, &raw->data[i], 1); break;
+                
+            case ',': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Comma, &raw->data[i], 1); break;
+            case '\n': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, &raw->data[i], 1); break;
+                
+            default:
+                break;
+        }
+        
+        i++;
+        
+    }
+    
+    tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileEnd, "", 0);
+    
+    *n_tok = num_tokens;
+    return tokens;
+}
+
 //            switch (c) {
-//                case '(': tokens.push_back(new Token{Token::LParen, raw.substr(i, 1)}); break;
-//                case ')': tokens.push_back(new Token{Token::RParen, raw.substr(i, 1)}); break;
-//                case '[': tokens.push_back(new Token{Token::LBracket, raw.substr(i, 1)}); break;
-//                case ']': tokens.push_back(new Token{Token::RBracket, raw.substr(i, 1)}); break;
-//                case '{': tokens.push_back(new Token{Token::LBrace, raw.substr(i, 1)}); break;
-//                case '}': tokens.push_back(new Token{Token::RBrace, raw.substr(i, 1)}); break;
-//                    
-//                case '\'': tokens.push_back(new Token{Token::Quote, raw.substr(i, 1)}); break;
-//                case '`': tokens.push_back(new Token{Token::SyntaxQuote, raw.substr(i, 1)}); break;
-//                case '^': tokens.push_back(new Token{Token::TypeOp, raw.substr(i, 1)}); break;
-//                    
-//                case ',': tokens.push_back(new Token{Token::Comma, raw.substr(i, 1)}); break;
-//                case '\n': tokens.push_back(new Token{Token::Newline, raw.substr(i, 1)}); break;
-//                    
+//
 //                case '~': {
 //                    if (i + 1 < raw.length() && raw[i+1] == '@') {
 //                        tokens.push_back(new Token{Token::Splice, raw.substr(i++, 2)});
@@ -176,11 +204,3 @@ LVToken** LVLex(char* raw, size_t* n_tok) {
 //            }
 //            
 //            i++;
-//        }
-//        
-//        tokens.push_back(new Token{Token::FileEnd, ""});
-//        
-//        return std::make_pair(tokens, error);
-//    }
-//    
-//}
