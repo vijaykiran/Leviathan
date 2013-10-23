@@ -1,28 +1,28 @@
+////
+////  element.h
+////  Leviathan
+////
+////  Created by Steven on 10/20/13.
+////  Copyright (c) 2013 Steven Degutis. All rights reserved.
+////
 //
-//  element.h
-//  Leviathan
+//#ifndef Leviathan_element_h
+//#define Leviathan_element_h
 //
-//  Created by Steven on 10/20/13.
-//  Copyright (c) 2013 Steven Degutis. All rights reserved.
+//namespace Leviathan {
+//    
+//    struct Coll;
+//    
+//    struct Element {
+//        
+//        Coll* parent;
+//        size_t index;
+//        
+//        virtual ~Element() {};
+//        virtual size_t length() = 0;
+//        
+//    };
+//    
+//}
 //
-
-#ifndef Leviathan_element_h
-#define Leviathan_element_h
-
-namespace Leviathan {
-    
-    struct Coll;
-    
-    struct Element {
-        
-        Coll* parent;
-        size_t index;
-        
-        virtual ~Element() {};
-        virtual size_t length() = 0;
-        
-    };
-    
-}
-
-#endif
+//#endif
