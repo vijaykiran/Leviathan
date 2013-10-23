@@ -28,31 +28,31 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
         
         switch (c) {
                 
-            case '(': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LParen, blk2bstr(&raw->data[i], 1)); break;
-            case ')': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RParen, blk2bstr(&raw->data[i], 1)); break;
+            case '(': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LParen, bmidstr(raw, (int)i, 1)); break;
+            case ')': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RParen, bmidstr(raw, (int)i, 1)); break;
                 
-            case '[': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBracket, blk2bstr(&raw->data[i], 1)); break;
-            case ']': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBracket, blk2bstr(&raw->data[i], 1)); break;
+            case '[': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBracket, bmidstr(raw, (int)i, 1)); break;
+            case ']': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBracket, bmidstr(raw, (int)i, 1)); break;
                 
-            case '{': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBrace, blk2bstr(&raw->data[i], 1)); break;
-            case '}': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBrace, blk2bstr(&raw->data[i], 1)); break;
+            case '{': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBrace, bmidstr(raw, (int)i, 1)); break;
+            case '}': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBrace, bmidstr(raw, (int)i, 1)); break;
                 
-            case '\'': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Quote, blk2bstr(&raw->data[i], 1)); break;
-            case '^': tokens[num_tokens++] = LVTokenCreate(LVTokenType_TypeOp, blk2bstr(&raw->data[i], 1)); break;
-            case '`': tokens[num_tokens++] = LVTokenCreate(LVTokenType_SyntaxQuote, blk2bstr(&raw->data[i], 1)); break;
+            case '\'': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Quote, bmidstr(raw, (int)i, 1)); break;
+            case '^': tokens[num_tokens++] = LVTokenCreate(LVTokenType_TypeOp, bmidstr(raw, (int)i, 1)); break;
+            case '`': tokens[num_tokens++] = LVTokenCreate(LVTokenType_SyntaxQuote, bmidstr(raw, (int)i, 1)); break;
                 
-            case ',': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Comma, blk2bstr(&raw->data[i], 1)); break;
-            case '\n': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, blk2bstr(&raw->data[i], 1)); break;
+            case ',': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Comma, bmidstr(raw, (int)i, 1)); break;
+            case '\n': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, bmidstr(raw, (int)i, 1)); break;
                 
             case '\t': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, bfromcstr("  ")); break;
                 
             case '~': {
                 if (i + 1 < raw->slen && raw->data[i+1] == '@') {
-                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Splice, blk2bstr(&raw->data[i], 2));
+                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Splice, bmidstr(raw, (int)i, 2));
                     i++;
                 }
                 else {
-                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Unquote, blk2bstr(&raw->data[i], 1));
+                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Unquote, bmidstr(raw, (int)i, 1));
                 }
                 break;
             }
@@ -61,7 +61,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 bstring spaces = bfromcstr(" ");
                 size_t n = bninchr(raw, (int)i, spaces);
                 if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Spaces, blk2bstr(&raw->data[i], (int)(n - i)));
+                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Spaces, bmidstr(raw, (int)i, (int)(n - i)));
                 i = n-1;
                 break;
             }
@@ -69,7 +69,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
             case ':': {
                 size_t n = binchr(raw, (int)i, endAtomCharSet);
                 if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Keyword, blk2bstr(&raw->data[i], (int)(n - i)));
+                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Keyword, bmidstr(raw, (int)i, (int)(n - i)));
                 i = n-1;
                 break;
             }
@@ -78,19 +78,21 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 size_t n = binchr(raw, (int)i, endAtomCharSet);
                 if (n == BSTR_ERR) n = input_string_length;
                 
-                bstring substring = blk2bstr(&raw->data[i], (int)(n - i));
+                bstring substring = bmidstr(raw, (int)i, (int)(n - i));
                 LVToken* tok = LVTokenCreate(LVTokenType_Symbol, substring);
                 
                 static bstring trueConstant; if (!trueConstant) trueConstant = bfromcstr("true");
                 static bstring falseConstant; if (!falseConstant) falseConstant = bfromcstr("false");
                 static bstring nilConstant; if (!nilConstant) nilConstant = bfromcstr("nil");
+                static bstring defConstant; if (!defConstant) defConstant = bfromcstr("def");
                 
-                if (bstrcmp(substring, trueConstant) == 0) tok->type |= LVTokenType_TrueSymbol;
-                if (bstrcmp(substring, falseConstant) == 0) tok->type |= LVTokenType_FalseSymbol;
-                if (bstrcmp(substring, nilConstant) == 0) tok->type |= LVTokenType_NilSymbol;
+                if (biseq(substring, trueConstant)) tok->type |= LVTokenType_TrueSymbol;
+                if (biseq(substring, falseConstant)) tok->type |= LVTokenType_FalseSymbol;
+                if (biseq(substring, nilConstant)) tok->type |= LVTokenType_NilSymbol;
                 
-                // blk2tbstr maybe?
-//                if (substring.substr(0, 3) == "def") tok->type |= Token::Deflike;
+                struct tagbstring def_prefix_substr;
+                bmid2tbstr(def_prefix_substr, substring, 0, 3);
+                if (biseq(&def_prefix_substr, defConstant)) tok->type |= LVTokenType_Deflike;
                 
                 tokens[num_tokens++] = tok;
                 i = n-1;
