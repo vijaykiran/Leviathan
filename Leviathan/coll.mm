@@ -8,19 +8,21 @@
 
 #include "coll.h"
 
+#include "atom.h"
+
 namespace Leviathan {
     
     Coll::~Coll() {
-        printf("in here %llu\n", this->open_token->type);
+//        printf("destructing a coll... %llu\n", this->collType);
         delete this->open_token;
         delete this->close_token;
         
         for (Element* e : this->children) {
-            Token* tok = dynamic_cast<Token*>(e);
-            Coll* coll = dynamic_cast<Coll*>(e);
-            printf("child = %p\n", e);
-            printf("child tok = %p\n", tok);
-            printf("child coll = %p\n", coll);
+//            Atom* atom = dynamic_cast<Atom*>(e);
+//            Coll* coll = dynamic_cast<Coll*>(e);
+//            printf("child = %p\n", e);
+//            printf("child atom = %p\n", atom);
+//            printf("child coll = %p\n", coll);
             delete e;
         }
         this->children.clear();

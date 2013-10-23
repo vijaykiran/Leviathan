@@ -11,6 +11,7 @@
 namespace Leviathan {
     
     Atom::~Atom() {
+//        printf("destructing an atom... %llu\n", this->atomType);
         delete this->token;
     }
     
