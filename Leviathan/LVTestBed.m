@@ -220,13 +220,31 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         LVColl* list = (void*)top->children.elements[0];
         assert(list->elementType == LVElementType_Coll);
         assert(list->collType == LVCollType_Map);
-        assert(list->children.len == 2);
+        assert(list->children.len == 3);
         
-        LVAtom* atom = (void*)list->children.elements[0];
-        assert(atom->elementType == LVElementType_Atom);
-        assert(atom->atomType == LVAtomType_Symbol);
-        assert(atom->token->type == LVTokenType_Symbol);
-        assert(biseq(atom->token->val, bfromcstr("foo")));
+        {
+            LVAtom* atom = (void*)list->children.elements[0];
+            assert(atom->elementType == LVElementType_Atom);
+            assert(atom->atomType == LVAtomType_Symbol);
+            assert(atom->token->type == LVTokenType_Symbol);
+            assert(biseq(atom->token->val, bfromcstr("foo")));
+        }
+        
+        {
+            LVAtom* atom = (void*)list->children.elements[1];
+            assert(atom->elementType == LVElementType_Atom);
+            assert(atom->atomType == LVAtomType_Spaces);
+            assert(atom->token->type == LVTokenType_Spaces);
+            assert(biseq(atom->token->val, bfromcstr(" ")));
+        }
+        
+        {
+            LVAtom* atom = (void*)list->children.elements[2];
+            assert(atom->elementType == LVElementType_Atom);
+            assert(atom->atomType == LVAtomType_Symbol);
+            assert(atom->token->type == LVTokenType_Symbol);
+            assert(biseq(atom->token->val, bfromcstr("bar")));
+        }
         
         LVCollDestroy(top);
     }
