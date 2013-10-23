@@ -8,18 +8,6 @@
 
 #include "lexer.h"
 
-LVToken* LVTokenCreate(LVTokenType type, void* val, int len) {
-    LVToken* tok = malloc(sizeof(LVToken));
-    tok->type = type;
-    tok->val = blk2bstr(val, len);
-    return tok;
-}
-
-void LVTokenDelete(LVToken* tok) { // TODO: use this later
-    bdestroy(tok->val);
-    free(tok);
-}
-
 LVToken** LVLex(char* input_str, size_t* n_tok) {
     bstring raw = bfromcstr(input_str);
     
@@ -55,6 +43,8 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 
             case ',': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Comma, &raw->data[i], 1); break;
             case '\n': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, &raw->data[i], 1); break;
+                
+            case '\t': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, "  ", 2); break;
                 
             case '~': {
                 if (i + 1 < raw->slen && raw->data[i+1] == '@') {
@@ -113,8 +103,6 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
 //                    i = n-1;
 //                    break;
 //                }
-//                    
-//                case '\t': tokens.push_back(new Token{Token::Spaces, std::string(2, ' ')}); break;
 //                    
 //                case '"': {
 //                    size_t look_from = i;
