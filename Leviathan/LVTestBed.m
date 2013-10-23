@@ -8,7 +8,8 @@
 
 #import "LVTestBed.h"
 
-#include "lexer.h"
+#import "lexer.h"
+#import "coll.h"
 
 struct LVTokenList {
     LVToken** toks;
@@ -85,9 +86,9 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     LVLexerShouldEqual("#\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"yes\""), TOK(LVTokenType_FileEnd, "")));
     LVLexerShouldEqual("#\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
     
-//    // bad test, delete me:
-////    LVLexerShouldEqual(";fo obar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
-//    
+    
+//    LVColl
+    
 //    {
 //        std::pair<Coll*, ParserError> result = parse("foo");
 //        assert(result.second.type == ParserError::NoError);

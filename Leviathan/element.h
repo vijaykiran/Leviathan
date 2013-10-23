@@ -6,8 +6,7 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-struct __LVColl;
-typedef struct __LVColl LVColl;
+#import "coll.h"
 
 typedef enum __LVElementType : uint64_t {
     LVElementType_Atom   = 1 << 0,
@@ -19,7 +18,7 @@ typedef enum __LVElementType : uint64_t {
 typedef struct __LVElement {
     
     LVElementType elementType;
-    LVColl* parent;
+    struct __LVColl* parent;
     size_t index;
     
 } LVElement;

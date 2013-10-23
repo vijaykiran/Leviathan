@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-//#include "element.h"
-#include "token.h"
+#import "element.h"
+#import "token.h"
 
 typedef enum __LVCollType : uint64_t {
     TopLevel   = 1 << 0,
@@ -22,8 +22,10 @@ typedef enum __LVCollType : uint64_t {
     Ns         = 1 << 6,
 } LVCollType;
 
+struct __LVColl;
+typedef struct __LVColl LVColl;
 
-typedef struct __LVColl {
+struct __LVColl {
     
     LVElementType elementType;
     LVColl* parent;
@@ -34,4 +36,7 @@ typedef struct __LVColl {
     LVToken* close_token;
     void** children;
     
-} LVColl;
+};
+
+LVColl* LVCollCreate();
+void LVCollDestroy(LVColl* coll);

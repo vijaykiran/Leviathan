@@ -1,33 +1,33 @@
-////
-////  coll.mm
-////  Leviathan
-////
-////  Created by Steven on 10/20/13.
-////  Copyright (c) 2013 Steven Degutis. All rights reserved.
-////
 //
-//#include "coll.h"
+//  coll.mm
+//  Leviathan
 //
-//#include "atom.h"
+//  Created by Steven on 10/20/13.
+//  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
-//namespace Leviathan {
-//    
-//    Coll::~Coll() {
-////        printf("destructing a coll... %llu\n", this->collType);
-//        delete this->open_token;
-//        delete this->close_token;
-//        
-//        for (Element* e : this->children) {
-////            Atom* atom = dynamic_cast<Atom*>(e);
-////            Coll* coll = dynamic_cast<Coll*>(e);
-////            printf("child = %p\n", e);
-////            printf("child atom = %p\n", atom);
-////            printf("child coll = %p\n", coll);
-//            delete e;
-//        }
-//        this->children.clear();
-//    }
-//    
+
+#import "coll.h"
+#import "token.h"
+
+LVColl* LVCollCreate() {
+    LVColl* coll = malloc(sizeof(LVColl));
+    coll->elementType = LVElementType_Coll;
+    return coll;
+}
+
+void LVCollDestroy(LVColl* coll) {
+    LVTokenDelete(coll->open_token);
+    LVTokenDelete(coll->close_token);
+    
+    // TODO: delete each child
+    // TODO: linked list
+    
+    free(coll);
+}
+
+
+
+
 //    size_t Coll::length() {
 //        size_t len = this->open_token->val.length() + this->close_token->val.length();
 //        for (Element* child : this->children) {
@@ -35,5 +35,3 @@
 //        }
 //        return len;
 //    }
-//    
-//}
