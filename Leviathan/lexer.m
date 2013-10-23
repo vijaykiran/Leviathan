@@ -89,8 +89,7 @@ LVToken** LVLex(char* input_str, size_t* n_tok) {
                 if (bstrcmp(substring, falseConstant) == 0) tok->type |= LVTokenType_FalseSymbol;
                 if (bstrcmp(substring, nilConstant) == 0) tok->type |= LVTokenType_NilSymbol;
                 
-                
-                
+                // blk2tbstr maybe?
 //                if (substring.substr(0, 3) == "def") tok->type |= Token::Deflike;
                 
                 tokens[num_tokens++] = tok;
