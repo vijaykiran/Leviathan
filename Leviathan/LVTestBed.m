@@ -53,23 +53,6 @@
 //        }
 //    }
 //}
-//
-//static bool LVTokensEqual(std::vector<Token*> expected, std::vector<Token*> got) {
-//    if (got.size() != expected.size()) {
-//        return false;
-//    }
-//    
-//    for (size_t i = 0; i < got.size(); i++) {
-//        Token* t1 = got[i];
-//        Token* t2 = expected[i];
-//        
-//        if (t1->type != t2->type || t1->val != t2->val) {
-//            return false;
-//        }
-//    }
-//    
-//    return true;
-//}
 
 struct LVTokenList {
     LVToken** toks;
@@ -79,30 +62,35 @@ struct LVTokenList {
 static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     NSLog(@"%ld", expected.size);
     
-//    expected.insert(expected.begin(), new Token{Token::FileBegin, ""});
-//    expected.push_back(new Token{Token::FileEnd, ""});
-//    
-//    std::pair<std::vector<Token*>, ParserError> result = lex(raw);
-//    std::vector<Token*> tokens = result.first;
-//    ParserError e = result.second;
-//    
-//    if (e.type == ParserError::NoError) {
-//        if (!LVTokensEqual(expected, tokens)) {
-//            std::cout << "Tokens not equal: " << tokens.size() << std::endl;
-//            exit(1);
-//        }
-//    }
-//    else {
-//        std::cout << "Got error: " << tokens.size() << std::endl;
-//        exit(1);
-//    }
+    size_t actual_size;
+    LVToken** tokens = LVLex(raw, &actual_size);
+    
+    if (actual_size != expected.size) {
+        printf("wrong size: %s\n", raw);
+        exit(1);
+    }
+    
+    for (size_t i = 0; i < actual_size; i++) {
+        LVToken* t1 = tokens[i];
+        LVToken* t2 = expected.toks[i];
+        
+        if (t1->type != t2->type) {
+            printf("wrong token type for: %s\n", raw);
+            printf("want %llu, got %llu\n", t2->type, t1->type);
+            exit(1);
+        }
+        
+        if (bstrcmp(t1->val, t2->val) != 0) {
+            printf("wrong token string for: %s\n", raw);
+            printf("want %s, got %s\n", t2->val->data, t1->val->data);
+            exit(1);
+        }
+    }
 }
 
-#define IDARRAY(...) ((LVToken*[]){ __VA_ARGS__ })
-#define IDCOUNT(...) (sizeof(IDARRAY(__VA_ARGS__)) / sizeof(LVToken*))
-
-#define TOKLIST(...) ((struct LVTokenList){IDARRAY(__VA_ARGS__), IDCOUNT(__VA_ARGS__)})
-
+#define TOKARRAY(...) ((LVToken*[]){ __VA_ARGS__ })
+#define TOKCOUNT(...) (sizeof(TOKARRAY(__VA_ARGS__)) / sizeof(LVToken*))
+#define TOKLIST(...) ((struct LVTokenList){TOKARRAY(__VA_ARGS__), TOKCOUNT(__VA_ARGS__)})
 #define TOK(typ, chr) LVTokenCreate(typ, chr, strlen(chr))
 
 @implementation LVTestBed
@@ -112,46 +100,30 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     size_t tok_n;
     LVToken** tokens = LVLex("([:foo :bar]   :quux)", &tok_n);
     
-    printf("%ld\n", tok_n);
-    for (size_t i = 0; i < tok_n; i++) {
-        LVToken* tok = tokens[i];
-        printf("[%s]\n", tok->val->data);
-    }
+    LVLexerShouldEqual("(foobar)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));
     
-    LVLexerShouldEqual("(foobar)", TOKLIST(TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_RParen, ")")));
+    LVLexerShouldEqual("foobar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("(    foobar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Spaces, "    "), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_FileEnd, "")));
     
-//    LVLexerShouldEqual("foobar", {new Token{Token::Symbol, "foobar"}});
-//    LVLexerShouldEqual("(    foobar", {new Token{Token::LParen, "("}, new Token{Token::Spaces, "    "}, new Token{Token::Symbol, "foobar"}});
-//    
-//    LVLexerShouldEqual("~", {new Token{Token::Unquote, "~"}});
-//    LVLexerShouldEqual("~@", {new Token{Token::Splice, "~@"}});
-//    
-//    LVLexerShouldEqual("\"yes\"", {new Token{Token::String, "\"yes\""}});
-//    LVLexerShouldEqual("\"y\\\"es\"", {new Token{Token::String, "\"y\\\"es\""}});
-//    
-//    LVLexerShouldEqual(";foobar\nhello", {new Token{Token::Comment, ";foobar"}, new Token{Token::Newline, "\n"}, new Token{Token::Symbol, "hello"}});
-//    
-//    LVLexerShouldEqual("foo 123 :hello", {new Token{Token::Symbol, "foo"}, new Token{Token::Spaces, " "}, new Token{Token::Number, "123"}, new Token{Token::Spaces, " "}, new Token{Token::Keyword, ":hello"}});
-//    
-//    LVLexerShouldError("\"yes", ParserError::UnclosedString, NSMakeRange(0, 4));
-//    LVLexerShouldError("\"yes\\\"", ParserError::UnclosedString, NSMakeRange(0, 6));
-//    LVLexerShouldError("yes\"", ParserError::UnclosedString, NSMakeRange(3, 1));
-//    
-//    LVLexerShouldError("#\"yes", ParserError::UnclosedRegex, NSMakeRange(0, 5));
-//    LVLexerShouldError("#\"yes\\\"", ParserError::UnclosedRegex, NSMakeRange(0, 7));
-//    LVLexerShouldError("yes #\"", ParserError::UnclosedRegex, NSMakeRange(4, 2));
-//    
-//    LVLexerShouldError("foo #", ParserError::UnclosedDispatch, NSMakeRange(4, 1));
-//    
-//    LVLexerShouldEqual("#'foo", {new Token{Token::Var, "#'foo"}});
-//    LVLexerShouldEqual("#(foo)", {new Token{Token::AnonFnStart, "#("}, new Token{Token::Symbol, "foo"}, new Token{Token::RParen, ")"}});
-//    LVLexerShouldEqual("#{foo}", {new Token{Token::SetStart, "#{"}, new Token{Token::Symbol, "foo"}, new Token{Token::RBrace, "}"}});
-//    LVLexerShouldEqual("#_foo", {new Token{Token::ReaderCommentStart, "#_"}, new Token{Token::Symbol, "foo"}});
-//    LVLexerShouldEqual("#foo bar", {new Token{Token::ReaderMacro, "#foo"}, new Token{Token::Spaces, " "}, new Token{Token::Symbol, "bar"}});
-//    
-//    LVLexerShouldEqual("#\"yes\"", {new Token{Token::Regex, "#\"yes\""}});
-//    LVLexerShouldEqual("#\"y\\\"es\"", {new Token{Token::Regex, "#\"y\\\"es\""}});
-//    
+    LVLexerShouldEqual("~", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Unquote, "~"), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("~@", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Splice, "~@"), TOK(LVTokenType_FileEnd, "")));
+    
+    LVLexerShouldEqual("\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_String, "\"yes\""), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_String, "\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
+    
+    LVLexerShouldEqual(";foobar\nhello", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_CommentLiteral, ";foobar"), TOK(LVTokenType_Newline, "\n"), TOK(LVTokenType_Symbol, "hello"), TOK(LVTokenType_FileEnd, "")));
+    
+    LVLexerShouldEqual("foo 123 :hello", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Number, "123"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Keyword, ":hello"), TOK(LVTokenType_FileEnd, "")));
+    
+    LVLexerShouldEqual("#'foo", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Var, "#'foo"), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("#(foo)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_AnonFnStart, "#("), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("#{foo)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_SetStart, "#{"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RBrace, ")"), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("#_foo", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_ReaderCommentStart, "#_"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("#foo bar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_ReaderMacro, "#foo"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Symbol, "bar"), TOK(LVTokenType_FileEnd, "")));
+    
+    LVLexerShouldEqual("#\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"yes\""), TOK(LVTokenType_FileEnd, "")));
+    LVLexerShouldEqual("#\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
+    
 //    // bad test, delete me:
 ////    LVLexerShouldEqual(";fo obar\nhello", {{token::Comment, ";foobar"}, {token::Newline, "\n"}, {token::Symbol, "hello"}});
 //    
