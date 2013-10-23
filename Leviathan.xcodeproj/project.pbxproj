@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		945544FA1818689D00D69E63 /* linked_list.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544F91818689D00D69E63 /* linked_list.m */; };
 		945544FE18187BFF00D69E63 /* element.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544FD18187BFF00D69E63 /* element.m */; };
 		9455AA2118179B630077DC86 /* bstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 9455AA1F18179B630077DC86 /* bstrlib.c */; };
 		9455AA2418179BB60077DC86 /* bstraux.c in Sources */ = {isa = PBXBuildFile; fileRef = 9455AA2218179BB60077DC86 /* bstraux.c */; };
@@ -94,8 +93,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		945544F81818689D00D69E63 /* linked_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linked_list.h; sourceTree = "<group>"; };
-		945544F91818689D00D69E63 /* linked_list.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = linked_list.m; sourceTree = "<group>"; };
 		945544FD18187BFF00D69E63 /* element.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = element.m; sourceTree = "<group>"; };
 		9455AA1F18179B630077DC86 /* bstrlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bstrlib.c; sourceTree = "<group>"; };
 		9455AA2018179B630077DC86 /* bstrlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bstrlib.h; sourceTree = "<group>"; };
@@ -262,20 +259,10 @@
 			isa = PBXGroup;
 			children = (
 				9455AA2518179BB90077DC86 /* bstring */,
-				945544F71818688B00D69E63 /* UNUSED linked list */,
 				945544FC18187B5600D69E63 /* types */,
 				94EB3DCB18161DD5002E639F /* parser */,
 			);
 			name = "New Parser";
-			sourceTree = "<group>";
-		};
-		945544F71818688B00D69E63 /* UNUSED linked list */ = {
-			isa = PBXGroup;
-			children = (
-				945544F81818689D00D69E63 /* linked_list.h */,
-				945544F91818689D00D69E63 /* linked_list.m */,
-			);
-			name = "UNUSED linked list";
 			sourceTree = "<group>";
 		};
 		945544FC18187B5600D69E63 /* types */ = {
@@ -686,7 +673,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				945544FA1818689D00D69E63 /* linked_list.m in Sources */,
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				9490D82D1810781D006ECA5E /* LVTextView.m in Sources */,
 				9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */,

@@ -13,8 +13,6 @@
 #import "parser.h"
 #import "atom.h"
 
-#import "linked_list.h"
-
 struct LVTokenList {
     LVToken** toks;
     size_t size;
@@ -89,73 +87,6 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     
     LVLexerShouldEqual("#\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"yes\""), TOK(LVTokenType_FileEnd, "")));
     LVLexerShouldEqual("#\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
-    
-    
-    {
-        LVLinkedList* list = LVLinkedListCreate();
-        
-        char* foo = "foo";
-        char* bar = "bar";
-        
-        assert(list->len == 0);
-        assert(list->head == NULL);
-        
-        LVLinkedListAppend(list, foo);
-        
-        assert(list->len == 1);
-        assert(list->head != NULL);
-        assert(list->head->val == foo);
-        assert(list->head->prev == NULL);
-        assert(list->head->next == NULL);
-        
-        LVLinkedListAppend(list, bar);
-        
-        assert(list->len == 2);
-        assert(list->head != NULL);
-        assert(list->head->val == foo);
-        assert(list->head->prev == NULL);
-        assert(list->head->next != NULL);
-        assert(list->head->next->val == bar);
-        assert(list->head->next->prev == list->head);
-        assert(list->head->next->next == NULL);
-        
-        LVLinkedListDestroy(list);
-    }
-    
-    {
-        LVLinkedList* list = LVLinkedListCreate();
-        
-        char* foo = "foo";
-        char* bar = "bar";
-        char* quux = "quux";
-        
-//        for (LVLinkedListNode* node = list->head; node; node = node->next) {
-//            printf("%s\n", node->val);
-//        }
-        
-        LVLinkedListAppend(list, foo);
-        LVLinkedListAppend(list, bar);
-        LVLinkedListAppend(list, quux);
-        
-//        LVLinkedListRemove(list, 1, 1);
-        
-//        for (LVLinkedListNode* node = list->head; node; node = node->next) {
-//            printf("%s\n", node->val);
-//        }
-        
-//        assert(list->len == 2);
-//        assert(list->head != NULL);
-//        assert(list->head->val == foo);
-//        assert(list->head->prev == NULL);
-//        assert(list->head->next != NULL);
-//        assert(list->head->next->val == bar);
-//        assert(list->head->next->prev == list->head);
-//        assert(list->head->next->next == NULL);
-        
-        LVLinkedListDestroy(list);
-    }
-    
-    
     
     
     
