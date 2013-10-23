@@ -70,8 +70,8 @@
 //    
 //    return true;
 //}
-//
-//static void LVLexerShouldEqual(std::string raw, std::vector<Token*> expected) {
+
+static void LVLexerShouldEqual(char* raw, LVToken** expected) {
 //    expected.insert(expected.begin(), new Token{Token::FileBegin, ""});
 //    expected.push_back(new Token{Token::FileEnd, ""});
 //    
@@ -89,21 +89,14 @@
 //        std::cout << "Got error: " << tokens.size() << std::endl;
 //        exit(1);
 //    }
-//}
+}
 
 @implementation LVTestBed
 
 + (void) runTests {
     
-//    bstring b = bfromcstr("foo\0bar");
-//    char* c = bstr2cstr(b, 'd');
-//    printf("its [%s]\n", b->data);
-//    bdestroy(b);
-//    free(c);
-    
-    
     size_t tok_n;
-    LVToken** tokens = LVLex(":foo", &tok_n);
+    LVToken** tokens = LVLex("([:foo :bar]   :quux)", &tok_n);
     
     printf("%ld\n", tok_n);
     for (size_t i = 0; i < tok_n; i++) {
@@ -111,16 +104,11 @@
         printf("[%s]\n", tok->val->data);
     }
     
+    LVLexerShouldEqual("(foobar)", (LVToken*[]){
+        LVTokenCreate(LVTokenType_LParen, "(", 1),
+        LVTokenCreate(LVTokenType_Symbol, "foobar", 6),
+        LVTokenCreate(LVTokenType_RParen, ")", 1)});
     
-    
-    
-//    char* abc = "abc";
-//    printf("[%p]\n", abc);
-//    printf("[%p]\n", &abc[0]);
-//    printf("[%p]\n", &abc[1]);
-    
-    
-//    LVLexerShouldEqual("(foobar)", {new Token{Token::LParen, "("}, new Token{Token::Symbol, "foobar"}, new Token{Token::RParen, ")"}});
 //    LVLexerShouldEqual("foobar", {new Token{Token::Symbol, "foobar"}});
 //    LVLexerShouldEqual("(    foobar", {new Token{Token::LParen, "("}, new Token{Token::Spaces, "    "}, new Token{Token::Symbol, "foobar"}});
 //    
