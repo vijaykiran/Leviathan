@@ -47,42 +47,36 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 }
 
 
-
-//- (LVColl*) deepestCollAtPos:(NSUInteger)pos childsIndex:(NSUInteger*)childsIndex {
+LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex) {
+    return NULL;
+    
+    // TODO: uhh...
+    
 //    int i = 0;
 //    
-//    if (pos <= NSMaxRange(self.openingToken.range)) {
+//    if (pos <= offset + coll->open_token->val->slen) {
 //        *childsIndex = 0;
-//        return self;
+//        return coll;
 //    }
 //    
-//    for (id<LVElement> child in self.childElements) {
+//    for (; i < coll->children.len; i++) {
+//        LVElement* child = coll->children.elements[i];
 //        
-//        if (pos < NSMaxRange([child fullyEnclosedRange])) {
-//            
-//            if ([child isAtom]) {
+//        if (pos < offset + LVElementLength(child)) {
+//            if ((child->elementType & LVElementType_Atom) || (pos <= offset)) {
 //                *childsIndex = i;
-//                return self;
+//                return coll;
 //            }
 //            else {
-//                if (pos <= [child fullyEnclosedRange].location) {
-//                    *childsIndex = i;
-//                    return self;
-//                }
-//                else {
-//                    return [[child asColl] deepestCollAtPos:pos childsIndex:childsIndex];
-//                }
+//                return LVFindDeepestColl(child, offset + , pos, childsIndex);
 //            }
-//            
 //        }
-//        
-//        i++;
 //    }
 //    
 //    *childsIndex = i;
-//    return self;
-//}
-//
+//    return coll;
+}
+
 //- (void) findDefinitions:(NSMutableArray*)defs {
 //    for (id<LVElement> child in self.childElements) {
 //        if ([child isKindOfClass:[LVDefinition self]]) {
@@ -94,15 +88,13 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 //        }
 //    }
 //}
-//
-//- (LVColl*) highestParentColl {
-//    LVColl* coll = self;
-//    
-//    while (coll.parent.parent)
-//        coll = coll.parent;
-//        
-//        if (coll.collType == LVCollTypeTopLevel)
-//            return nil;
-//        else
-//            return coll;
-//}
+
+LVColl* LVCollHighestParent(LVColl* coll) {
+    while (coll->parent->parent)
+        coll = coll->parent;
+    
+    if (coll->collType == LVCollType_TopLevel)
+        return NULL;
+    else
+        return coll;
+}
