@@ -51,3 +51,5 @@ typedef struct __LVAtom {
 
 LVAtom* LVAtomCreate(LVAtomType typ, LVToken* tok);
 void LVAtomDestroy(LVAtom* atom);
+
+BOOL LVAtomIsSemantic(LVAtom* atom);
