@@ -89,6 +89,10 @@ static LVElement* parseOne(LVToken*** iter) {
         ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_Newline, currentToken);
     }
+    else if (currentToken->type & LVTokenType_Comma) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_Comma, currentToken);
+    }
     else if (currentToken->type & LVTokenType_ReaderCommentStart) {
         // TODO: parse-next and join as one comment atom with combined tokens.
         ++*iter;

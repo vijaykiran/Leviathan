@@ -403,12 +403,12 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         "        (System/exit -1)))))\n"
         ;
         
-        LVColl* top = LVParse(it);
-        LVCollDestroy(top);
+//        LVColl* top = LVParse(it);
+//        LVCollDestroy(top);
     }
     
     printf("ok\n");
-    [NSApp terminate:self];
+//    [NSApp terminate:self];
 }
 
 @end

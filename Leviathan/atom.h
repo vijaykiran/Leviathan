@@ -19,24 +19,25 @@ typedef enum __LVAtomType : uint64_t {
     
     LVAtomType_Spaces   = 1 << 5,
     LVAtomType_Newline  = 1 << 6,
+    LVAtomType_Comma    = 1 << 7,
     
-    LVAtomType_Comment  = 1 << 7,
+    LVAtomType_Comment  = 1 << 8,
     
-    LVAtomType_Var            = 1 << 8,
-    LVAtomType_Quote          = 1 << 9,
-    LVAtomType_Unquote        = 1 << 10,
-    LVAtomType_SyntaxQuote    = 1 << 11,
-    LVAtomType_Splice         = 1 << 12,
-    LVAtomType_TypeOp         = 1 << 13,
-    LVAtomType_ReaderMacro    = 1 << 14,
-    LVAtomType_ReaderComment  = 1 << 15,
+    LVAtomType_Var            = 1 << 9,
+    LVAtomType_Quote          = 1 << 10,
+    LVAtomType_Unquote        = 1 << 11,
+    LVAtomType_SyntaxQuote    = 1 << 12,
+    LVAtomType_Splice         = 1 << 13,
+    LVAtomType_TypeOp         = 1 << 14,
+    LVAtomType_ReaderMacro    = 1 << 15,
+    LVAtomType_ReaderComment  = 1 << 16,
     
-    LVAtomType_TrueAtom  = 1 << 16, // must also be Symbol
-    LVAtomType_FalseAtom = 1 << 17, // must also be Symbol
-    LVAtomType_NilAtom   = 1 << 18, // must also be Symbol
+    LVAtomType_TrueAtom  = 1 << 17, // must also be Symbol
+    LVAtomType_FalseAtom = 1 << 18, // must also be Symbol
+    LVAtomType_NilAtom   = 1 << 19, // must also be Symbol
     
-    LVAtomType_Deflike = 1 << 19,  // must also be Symbol
-    LVAtomType_Ns      = 1 << 20, // must also be Symbol
+    LVAtomType_Deflike = 1 << 20,  // must also be Symbol
+    LVAtomType_Ns      = 1 << 21, // must also be Symbol
 } LVAtomType;
 
 typedef struct __LVAtom {
