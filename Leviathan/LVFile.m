@@ -60,30 +60,10 @@ double get_time() {
         self.textOnDisk = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
         self.textStorage = [[NSTextStorage alloc] initWithString:self.textOnDisk];
         
-//        double t1 = get_time();
+        if (self.topLevelElement)
+            LVCollDestroy(self.topLevelElement);
         
-//        LVTempParse([self.textOnDisk UTF8String]);
-        
-//        double t2 = get_time();
-        
-//        LVParseError* error;
-//        self.topLevelElement = [LVParser parse:self.textOnDisk error:&error];
-//        
-//        double t3 = get_time();
-//        
-//        static double total;
-//        static double times;
-//        
-//        total += (t3 - t2) / (t2 - t1);
-//        times++;
-//        
-//        printf("%f ", total / times);
-        
-//        if (error) {
-//            NSLog(@"error %d %@", error.errorType, self.fileURL);
-//        }
-        
-//        NSLog(@"%d, %ld - %ld, %@", error.errorType, error.badRange.location, error.badRange.length, self.fileURL);
+        self.topLevelElement = LVParse([self.textOnDisk UTF8String]);
     }
     else {
         self.textOnDisk = @"";
@@ -92,14 +72,14 @@ double get_time() {
 }
 
 - (void) textStorageDidProcessEditing:(NSNotification*)note {
-    NSString* rawString = [self.textStorage string];
-    
-//    LVParseError* error;
-//    self.topLevelElement = [LVParser parse:rawString error:&error];
-    
-    if ([self.textStorage editedMask] & NSTextStorageEditedCharacters) {
-        [self highlight];
-    }
+//    NSString* rawString = [self.textStorage string];
+//    
+////    LVParseError* error;
+////    self.topLevelElement = [LVParser parse:rawString error:&error];
+//    
+//    if ([self.textStorage editedMask] & NSTextStorageEditedCharacters) {
+//        [self highlight];
+//    }
 }
 
 - (void) highlight {
