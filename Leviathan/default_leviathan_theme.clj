@@ -1,29 +1,28 @@
-{"cursor_color" "babdb6"
- "background_color" "252A2B"
- "selection_style" {"BackgroundColor" "5c3566"}
- "unquote_style" {"Color" "edd400" "Bold" true}
- "syntaxquote_style" {"Color" "edd400" "Bold" true}
- "regex_style" {"Color" "e9b96e" "Bold" false}
- "symbol_style" {"Color" "eeeeec" "Bold" false}
- "typehint_style" {"Color" "edd400" "Bold" true}
- "keyword_style" {"Color" "73d216" "Bold" false}
- "number_style" {"Color" "99bbff" "Bold" false}
- "string_style" {"Color" "ad7fa8" "Bold" false}
- "def_name_style" {"Color" "edd400" "Bold" true}
- "splice_style" {"Color" "edd400" "Bold" true}
- "syntax_error_style" {"Color" "ef2929" "Bold" true}
- "rainbow_parens_styles" [ {"Color" "729fcf" "Bold" false}
-                           {"Color" "8ae234" "Bold" false}
-                           {"Color" "fce94f" "Bold" false}
-                           {"Color" "ad7fa8" "Bold" false}
-                           {"Color" "e9b96e" "Bold" false}
-                           {"Color" "fcaf3e" "Bold" false}
-                           {"Color" "3465a4" "Bold" false}
-                           {"Color" "73d216" "Bold" false}
-                           {"Color" "f57900" "Bold" false}
-                           {"Color" "75507b" "Bold" false}
-                           {"Color" "c17d11" "Bold" false} ]
- "def_keyord_style" {"Color" "729fcf" "Bold" true}
- "quote_style" {"Color" "edd400" "Bold" true}
- "comment_style" {"Color" "999999" "Bold" false}}
- 
+{:cursor-color "babdb6"
+ :background-color "252A2B"
+ :selection-style {"BackgroundColor" "5c3566"}
+ :unquote-style {:color "edd400" :bold true}
+ :syntaxquote-style {:color "edd400" :bold true}
+ :regex-style {:color "e9b96e" :bold false}
+ :symbol-style {:color "eeeeec" :bold false}
+ :typehint-style {:color "edd400" :bold true}
+ :keyword-style {:color "73d216" :bold false}
+ :number-style {:color "99bbff" :bold false}
+ :string-style {:color "ad7fa8" :bold false}
+ :def-name-style {:color "edd400" :bold true}
+ :splice-style {:color "edd400" :bold true}
+ :syntax-error-style {:color "ef2929" :bold true}
+ :rainbow-parens-styles [{:color "729fcf" :bold false}
+                         {:color "8ae234" :bold false}
+                         {:color "fce94f" :bold false}
+                         {:color "ad7fa8" :bold false}
+                         {:color "e9b96e" :bold false}
+                         {:color "fcaf3e" :bold false}
+                         {:color "3465a4" :bold false}
+                         {:color "73d216" :bold false}
+                         {:color "f57900" :bold false}
+                         {:color "75507b" :bold false}
+                         {:color "c17d11" :bold false}]
+ :def-keyord-style {:color "729fcf" :bold true}
+ :quote-style {:color "edd400" :bold true}
+ :comment-style {:color "999999" :bold false}}
