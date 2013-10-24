@@ -41,7 +41,7 @@
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
     
-    [self.file highlight];
+    [self.file initialHighlight];
 }
 
 - (void) makeFirstResponder {

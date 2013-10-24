@@ -23,7 +23,7 @@
 
 @property LVColl* topLevelElement;
 
-- (void) highlight;
+- (void) initialHighlight;
 
 - (void) save;
 - (BOOL) hasChanges;

@@ -45,71 +45,26 @@
                              range:fullRange];
 }
 
-#include <sys/time.h>
-#include <sys/resource.h>
-
-double get_time() {
-    struct timeval t;
-    struct timezone tzp;
-    gettimeofday(&t, &tzp);
-    return t.tv_sec + t.tv_usec*1e-6;
-}
-
 - (void) parseFromFile {
+    // this method assumes it's only called once per file!
+    
     if (self.fileURL) {
         self.textOnDisk = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
         self.textStorage = [[NSTextStorage alloc] initWithString:self.textOnDisk];
-        
-        if (self.topLevelElement)
-            LVCollDestroy(self.topLevelElement);
-        
-        self.topLevelElement = LVParse([self.textOnDisk UTF8String]);
     }
     else {
         self.textOnDisk = @"";
         self.textStorage = [[NSTextStorage alloc] initWithString:@""];
     }
+    self.topLevelElement = LVParse([self.textOnDisk UTF8String]);
 }
 
-- (void) textStorageDidProcessEditing:(NSNotification*)note {
-//    NSString* rawString = [self.textStorage string];
-//    
-////    LVParseError* error;
-////    self.topLevelElement = [LVParser parse:rawString error:&error];
-//    
-//    if ([self.textStorage editedMask] & NSTextStorageEditedCharacters) {
-//        [self highlight];
-//    }
-}
-
-- (void) highlight {
-//    NSLog(@"highlight called");
-    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(reallyHighlight) object:nil];
-    [self performSelector:@selector(reallyHighlight) withObject:nil afterDelay:0.0];
-}
-
-- (void) reallyHighlight {
-//    NSLog(@"really-highlight called");
-//    NSString* rawString = [self.textStorage string];
-    
+- (void) initialHighlight {
     [self.textStorage beginEditing];
     
-//    LVParseError* error;
-//    self.topLevelElement = [LVParser parse:rawString error:&error];
-//    
-//    if (error) {
-//        self.topLevelElement = nil;
-//        
-//        [[LVThemeManager sharedThemeManager].currentTheme.syntaxerror highlightIn:self.textStorage
-//                                                                            range:error.badRange
-//                                                                            depth:1];
-//    }
-//    else {
-    
-    if (self.topLevelElement)
-    
+    if (self.topLevelElement) {
         [LVHighlighter highlight:(void*)self.topLevelElement in:self.textStorage];
-//    }
+    }
     
     [self.textStorage endEditing];
 }
