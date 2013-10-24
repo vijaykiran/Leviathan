@@ -118,6 +118,12 @@ double get_time() {
 }
 
 - (void) save {
+//    bstring str = LVStringForColl(self.topLevelElement);
+//    printf("%s\n", str->data);
+//    bdestroy(str);
+//    
+//    return;
+    
     if (self.fileURL) {
         NSString* tempString = [self.textStorage string];
         

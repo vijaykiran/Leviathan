@@ -52,3 +52,5 @@ void LVElementListAppend(LVColl* coll, LVElement* child);
 
 LVColl* LVCollHighestParent(LVColl* coll);
 LVColl* LVFindDeepestColl(LVColl* coll, size_t start, size_t pos, size_t* childsIndex, int* inWhat);
+
+bstring LVStringForColl(LVColl* coll);

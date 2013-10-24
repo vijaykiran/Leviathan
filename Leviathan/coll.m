@@ -47,6 +47,31 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 }
 
 
+
+static void appendToString(LVColl* coll, bstring str) {
+    bconcat(str, coll->open_token->val);
+    
+    for (size_t i = 0; i < coll->children.len; i++) {
+        LVElement* child = coll->children.elements[i];
+        if (child->elementType & LVElementType_Atom) {
+            LVAtom* atom = (void*)child;
+            bconcat(str, atom->token->val);
+        }
+        else {
+            appendToString((void*)child, str);
+        }
+    }
+    
+    bconcat(str, coll->close_token->val);
+}
+
+bstring LVStringForColl(LVColl* coll) {
+    bstring str = bfromcstr("");
+    appendToString(coll, str);
+    return str;
+}
+
+
 LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex, int* inWhat) {
     
     printf("so broken :(\n");
