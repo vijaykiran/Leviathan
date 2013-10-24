@@ -30,8 +30,8 @@ static void highlight(LVElement* element, NSTextStorage* attrString, int deepnes
             *startPos += coll->open_token->string->slen;
         }
         
-        for (int i = 0; i < coll->children.len; i++) {
-            LVElement* child = coll->children.elements[i];
+        for (int i = 0; i < coll->children_len; i++) {
+            LVElement* child = coll->children[i];
             highlight(child, attrString, deepness + 1, startPos);
         }
         

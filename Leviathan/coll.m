@@ -16,34 +16,34 @@ LVColl* LVCollCreate() {
     LVColl* coll = malloc(sizeof(LVColl));
     coll->is_atom = NO;
     
-    coll->children.cap = LV_COLL_CHUNK_SIZE;
-    coll->children.len = 0;
-    coll->children.elements = malloc(sizeof(LVElement*) * coll->children.cap);
+    coll->children_cap = LV_COLL_CHUNK_SIZE;
+    coll->children_len = 0;
+    coll->children = malloc(sizeof(LVElement*) * coll->children_cap);
     
     return coll;
 }
 
 void LVCollDestroy(LVColl* coll) {
-    for (int i = 0; i < coll->children.len; i++) {
-        LVElement* child = coll->children.elements[i];
+    for (int i = 0; i < coll->children_len; i++) {
+        LVElement* child = coll->children[i];
         LVElementDestroy(child);
     }
     
-    free(coll->children.elements);
+    free(coll->children);
     LVTokenDelete(coll->open_token);
     LVTokenDelete(coll->close_token);
     free(coll);
 }
 
 void LVElementListAppend(LVColl* coll, LVElement* child) {
-    if (coll->children.len == coll->children.cap) {
-        coll->children.cap += LV_COLL_CHUNK_SIZE;
-        coll->children.elements = realloc(coll->children.elements, sizeof(LVElement*) * coll->children.cap);
+    if (coll->children_len == coll->children_cap) {
+        coll->children_cap += LV_COLL_CHUNK_SIZE;
+        coll->children = realloc(coll->children, sizeof(LVElement*) * coll->children_cap);
     }
 //    printf("adding child %p to %p at %lu\n", child, coll, coll->children.len);
-    coll->children.elements[coll->children.len] = child;
+    coll->children[coll->children_len] = child;
 //    printf("child added: child %p, should == %p which is at index %lu\n", child, coll->children.elements[coll->children.len], coll->children.len);
-    coll->children.len++;
+    coll->children_len++;
 }
 
 
@@ -51,8 +51,8 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 static void appendToString(LVColl* coll, bstring str) {
     bconcat(str, coll->open_token->string);
     
-    for (size_t i = 0; i < coll->children.len; i++) {
-        LVElement* child = coll->children.elements[i];
+    for (size_t i = 0; i < coll->children_len; i++) {
+        LVElement* child = coll->children[i];
         if (child->is_atom) {
             LVAtom* atom = (void*)child;
             bconcat(str, atom->token->string);
@@ -104,8 +104,8 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
     
     size_t cumulative_child_offset = 0;
     
-    for (size_t i = 0; i < coll->children.len; i++) {
-        LVElement* child = coll->children.elements[i];
+    for (size_t i = 0; i < coll->children_len; i++) {
+        LVElement* child = coll->children[i];
         
         size_t this_child_len = LVElementLength(child);
         
@@ -122,7 +122,7 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
         cumulative_child_offset += this_child_len;
     }
     
-    *childsIndex = coll->children.len;
+    *childsIndex = coll->children_len;
     return coll;
 }
 

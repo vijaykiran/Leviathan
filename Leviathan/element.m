@@ -15,8 +15,8 @@ size_t LVElementLength(LVElement* element) {
     if (!element->is_atom) {
         LVColl* coll = (LVColl*)element;
         size_t len = coll->open_token->string->slen + coll->close_token->string->slen;
-        for (int i = 0; i < coll->children.len; i++) {
-            LVElement* child = coll->children.elements[i];
+        for (int i = 0; i < coll->children_len; i++) {
+            LVElement* child = coll->children[i];
             len += LVElementLength(child);
         }
         return len;

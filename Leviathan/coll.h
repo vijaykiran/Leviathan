@@ -9,12 +9,6 @@
 #import "element.h"
 #import "token.h"
 
-typedef struct __LVElementList {
-    LVElement** elements;
-    size_t len;
-    size_t cap;
-} LVElementList;
-
 typedef enum __LVCollType : uint64_t {
     LVCollType_TopLevel   = 1 << 0,
     
@@ -41,7 +35,10 @@ struct __LVColl {
     LVCollType coll_type;
     LVToken* open_token;
     LVToken* close_token;
-    LVElementList children;
+    
+    LVElement** children;
+    size_t children_len;
+    size_t children_cap;
     
 };
 
