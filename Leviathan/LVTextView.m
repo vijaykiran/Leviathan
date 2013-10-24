@@ -96,10 +96,9 @@
 
 - (void) insertText:(id)insertString {
     size_t childsIndex;
-    int inWhat;
-    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex, &inWhat);
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex);
     
-    printf("coll=%p, idx=%lu, in=%d\n", coll, childsIndex, inWhat);
+    printf("coll=%p, idx=%lu\n", coll, childsIndex);
     
 //    @autoreleasepool {
 //        [super insertText:insertString];
