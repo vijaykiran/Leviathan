@@ -71,6 +71,28 @@ bstring LVStringForColl(LVColl* coll) {
     return str;
 }
 
+//static void findCollAbsolutePosition(LVColl* maybeColl, LVColl* coll, size_t* offset) {
+//    if (maybeColl == coll)
+//        return *offset;
+//    
+//    *offset += coll->open_token->string->slen;
+//    
+//    for (size_t i = 0; i < coll->children_len; i++) {
+//        LVElement* child = coll->children[i];
+//        if (!child->is_atom) {
+//        }
+//    }
+//    
+//    *offset += coll->open_token->string->slen;
+//    
+////    return offset;
+//}
+
+size_t LVCollAbsolutePosition(LVColl* topLevel, LVColl* coll) {
+    size_t pos = 0;
+    return pos;
+//    return findCollAbsolutePosition(topLevel, coll, &pos);
+}
 
 LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex, size_t* relativePos) {
     

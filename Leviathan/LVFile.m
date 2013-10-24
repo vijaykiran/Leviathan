@@ -90,7 +90,7 @@ double get_time() {
 
 - (void) reallyHighlight {
 //    NSLog(@"really-highlight called");
-    NSString* rawString = [self.textStorage string];
+//    NSString* rawString = [self.textStorage string];
     
     [self.textStorage beginEditing];
     

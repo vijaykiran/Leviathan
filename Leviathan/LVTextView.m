@@ -99,7 +99,9 @@
     size_t relativePos;
     LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex, &relativePos);
     
-    printf("coll=%p, idx=%lu, rel=%lu\n", coll, childsIndex, relativePos);
+//    printf("coll=%p, idx=%lu, rel=%lu\n", coll, childsIndex, relativePos);
+    size_t collPos = LVCollAbsolutePosition(self.file.topLevelElement, coll);
+    printf("%ld\n", collPos);
     
 //    @autoreleasepool {
 //        [super insertText:insertString];
