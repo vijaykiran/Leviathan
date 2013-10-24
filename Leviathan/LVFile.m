@@ -108,9 +108,7 @@ double get_time() {
     
     if (self.topLevelElement)
     
-        [LVHighlighter highlight:(void*)self.topLevelElement
-                              in:self.textStorage
-                         atLevel:0];
+        [LVHighlighter highlight:(void*)self.topLevelElement in:self.textStorage];
 //    }
     
     [self.textStorage endEditing];

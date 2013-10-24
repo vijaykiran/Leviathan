@@ -14,22 +14,32 @@
 
 @implementation LVHighlighter
 
-+ (void) highlight:(LVElement*)element in:(NSTextStorage*)attrString atLevel:(int)deepness {
-    
++ (void) highlight:(LVElement*)element in:(NSTextStorage*)attrString {
+    size_t startPos = 0;
+    highlight(element, attrString, 0, &startPos);
+}
+
+static void highlight(LVElement* element, NSTextStorage* attrString, int deepness, size_t* startPos) {
     if (element->elementType & LVElementType_Coll) {
         LVColl* coll = (void*)element;
         
-//        printf("in here\n");
+        BOOL notTopLevel = !(coll->collType & LVCollType_TopLevel);
         
-        if (!(coll->collType & LVCollType_TopLevel)) {
-//            [[LVThemeManager sharedThemeManager].currentTheme.rainbowparens highlightIn:attrString range:coll.openingToken.range depth:deepness];
-//            [[LVThemeManager sharedThemeManager].currentTheme.rainbowparens highlightIn:attrString range:coll.closingToken.range depth:deepness];
+        if (notTopLevel) {
+            [[LVThemeManager sharedThemeManager].currentTheme.rainbowparens highlightIn:attrString range:NSMakeRange(*startPos, coll->open_token->val->slen) depth:deepness];
+            *startPos += coll->open_token->val->slen;
         }
         
         for (int i = 0; i < coll->children.len; i++) {
             LVElement* child = coll->children.elements[i];
-            [self highlight:child in:attrString atLevel:deepness + 1];
+            highlight(child, attrString, deepness + 1, startPos);
         }
+        
+        if (notTopLevel) {
+            [[LVThemeManager sharedThemeManager].currentTheme.rainbowparens highlightIn:attrString range:NSMakeRange(*startPos, coll->close_token->val->slen) depth:deepness];
+            *startPos += coll->close_token->val->slen;
+        }
+        
         
 //        if ([element isKindOfClass:[LVDefinition self]]) {
 //            LVDefinition* def = element;
@@ -57,6 +67,8 @@
 //            case LVAtomType_SyntaxQuote: [[LVThemeManager sharedThemeManager].currentTheme.syntaxquote highlightIn: attrString range: atom.token.range depth: deepness]; break;
 //            case LVAtomType_Splice: [[LVThemeManager sharedThemeManager].currentTheme.splice highlightIn: attrString range: atom.token.range depth: deepness]; break;
 //        }
+        
+        *startPos += atom->token->val->slen;
     }
 }
 

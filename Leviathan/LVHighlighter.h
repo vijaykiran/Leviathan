@@ -15,7 +15,6 @@
 @interface LVHighlighter : NSObject
 
 + (void) highlight:(LVElement*)element
-                in:(NSTextStorage*)attrString
-           atLevel:(int)deepness;
+                in:(NSTextStorage*)attrString;
 
 @end
