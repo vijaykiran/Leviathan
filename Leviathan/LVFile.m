@@ -48,15 +48,39 @@
                              range:fullRange];
 }
 
+#include <sys/time.h>
+#include <sys/resource.h>
+
+double get_time() {
+    struct timeval t;
+    struct timezone tzp;
+    gettimeofday(&t, &tzp);
+    return t.tv_sec + t.tv_usec*1e-6;
+}
+
 - (void) parseFromFile {
     if (self.fileURL) {
         self.textOnDisk = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
         self.textStorage = [[NSTextStorage alloc] initWithString:self.textOnDisk];
         
+        double t1 = get_time();
+        
         LVTempParse([self.textOnDisk UTF8String]);
         
-//        LVParseError* error;
-//        self.topLevelElement = [LVParser parse:self.textOnDisk error:&error];
+        double t2 = get_time();
+        
+        LVParseError* error;
+        self.topLevelElement = [LVParser parse:self.textOnDisk error:&error];
+        
+        double t3 = get_time();
+        
+        static double total;
+        static double times;
+        
+        total += (t3 - t2) / (t2 - t1);
+        times++;
+        
+        printf("%f ", total / times);
         
 //        if (error) {
 //            NSLog(@"error %d %@", error.errorType, self.fileURL);
