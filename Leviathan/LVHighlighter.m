@@ -20,7 +20,7 @@
 }
 
 static void highlight(LVElement* element, NSTextStorage* attrString, int deepness, size_t* startPos) {
-    if (element->elementType & LVElementType_Coll) {
+    if (!element->isAtom) {
         LVColl* coll = (void*)element;
         
         BOOL notTopLevel = !(coll->collType & LVCollType_TopLevel);

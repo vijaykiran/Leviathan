@@ -34,7 +34,7 @@ typedef struct __LVColl LVColl;
 
 struct __LVColl {
     
-    LVElementType elementType;
+    BOOL isAtom;
     LVColl* parent;
     size_t index;
     

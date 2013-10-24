@@ -12,7 +12,7 @@
 #import "atom.h"
 
 size_t LVElementLength(LVElement* element) {
-    if (element->elementType & LVElementType_Coll) {
+    if (!element->isAtom) {
         LVColl* coll = (LVColl*)element;
         size_t len = coll->open_token->val->slen + coll->close_token->val->slen;
         for (int i = 0; i < coll->children.len; i++) {
@@ -21,7 +21,7 @@ size_t LVElementLength(LVElement* element) {
         }
         return len;
     }
-    else if (element->elementType & LVElementType_Atom) {
+    else {
         LVAtom* atom = (LVAtom*)element;
         return atom->token->val->slen;
     }
@@ -30,10 +30,10 @@ size_t LVElementLength(LVElement* element) {
 }
 
 void LVElementDestroy(LVElement* element) {
-    if (element->elementType & LVElementType_Coll) {
+    if (!element->isAtom) {
         LVCollDestroy((LVColl*)element);
     }
-    else if (element->elementType & LVElementType_Atom) {
+    else {
         LVAtomDestroy((LVAtom*)element);
     }
 }

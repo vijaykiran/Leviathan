@@ -99,7 +99,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         assert(top->children.len == 1);
         
         LVAtom* atom = (void*)top->children.elements[0];
-        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->isAtom);
         assert(atom->atomType == LVAtomType_Symbol);
         assert(atom->token->type == LVTokenType_Symbol);
         assert(biseq(atom->token->val, bfromcstr("foo")));
@@ -113,12 +113,12 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         assert(top->children.len == 1);
         
         LVColl* list = (void*)top->children.elements[0];
-        assert(list->elementType == LVElementType_Coll);
+        assert(!list->isAtom);
         assert(list->collType == LVCollType_List);
         assert(list->children.len == 1);
         
         LVAtom* atom = (void*)list->children.elements[0];
-        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->isAtom);
         assert(atom->atomType == LVAtomType_Symbol);
         assert(atom->token->type == LVTokenType_Symbol);
         assert(biseq(atom->token->val, bfromcstr("foo")));
@@ -132,12 +132,12 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         assert(top->children.len == 1);
         
         LVColl* list = (void*)top->children.elements[0];
-        assert(list->elementType == LVElementType_Coll);
+        assert(!list->isAtom);
         assert(list->collType == LVCollType_Vector);
         assert(list->children.len == 1);
         
         LVAtom* atom = (void*)list->children.elements[0];
-        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->isAtom);
         assert(atom->atomType == LVAtomType_Symbol);
         assert(atom->token->type == LVTokenType_Symbol);
         assert(biseq(atom->token->val, bfromcstr("foo")));
@@ -151,12 +151,12 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         assert(top->children.len == 1);
         
         LVColl* list = (void*)top->children.elements[0];
-        assert(list->elementType == LVElementType_Coll);
+        assert(!list->isAtom);
         assert(list->collType == LVCollType_AnonFn);
         assert(list->children.len == 1);
         
         LVAtom* atom = (void*)list->children.elements[0];
-        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->isAtom);
         assert(atom->atomType == LVAtomType_Symbol);
         assert(atom->token->type == LVTokenType_Symbol);
         assert(biseq(atom->token->val, bfromcstr("foo")));
@@ -170,13 +170,13 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         assert(top->children.len == 1);
         
         LVColl* list = (void*)top->children.elements[0];
-        assert(list->elementType == LVElementType_Coll);
+        assert(!list->isAtom);
         assert(list->collType == LVCollType_Map);
         assert(list->children.len == 3);
         
         {
             LVAtom* atom = (void*)list->children.elements[0];
-            assert(atom->elementType == LVElementType_Atom);
+            assert(atom->isAtom);
             assert(atom->atomType == LVAtomType_Symbol);
             assert(atom->token->type == LVTokenType_Symbol);
             assert(biseq(atom->token->val, bfromcstr("foo")));
@@ -184,7 +184,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         
         {
             LVAtom* atom = (void*)list->children.elements[1];
-            assert(atom->elementType == LVElementType_Atom);
+            assert(atom->isAtom);
             assert(atom->atomType == LVAtomType_Spaces);
             assert(atom->token->type == LVTokenType_Spaces);
             assert(biseq(atom->token->val, bfromcstr(" ")));
@@ -192,7 +192,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         
         {
             LVAtom* atom = (void*)list->children.elements[2];
-            assert(atom->elementType == LVElementType_Atom);
+            assert(atom->isAtom);
             assert(atom->atomType == LVAtomType_Symbol);
             assert(atom->token->type == LVTokenType_Symbol);
             assert(biseq(atom->token->val, bfromcstr("bar")));
@@ -207,7 +207,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         assert(top->children.len == 1);
         
         LVAtom* atom = (void*)top->children.elements[0];
-        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->isAtom);
         assert(atom->atomType == LVAtomType_Number);
         assert(atom->token->type == LVTokenType_Number);
         assert(biseq(atom->token->val, bfromcstr("123")));
@@ -221,7 +221,7 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         assert(top->children.len == 1);
         
         LVAtom* atom = (void*)top->children.elements[0];
-        assert(atom->elementType == LVElementType_Atom);
+        assert(atom->isAtom);
         assert(atom->atomType == LVAtomType_Keyword);
         assert(atom->token->type == LVTokenType_Keyword);
         assert(biseq(atom->token->val, bfromcstr(":bla")));

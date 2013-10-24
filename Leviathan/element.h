@@ -8,16 +8,9 @@
 
 struct __LVColl;
 
-typedef enum __LVElementType : uint64_t {
-    LVElementType_Atom   = 1 << 0,
-    LVElementType_Coll   = 1 << 1,
-    LVElementType_Def    = 1 << 2, // must also be coll
-} LVElementType;
-
-
 typedef struct __LVElement {
     
-    LVElementType elementType;
+    BOOL isAtom;
     struct __LVColl* parent;
     size_t index;
     
