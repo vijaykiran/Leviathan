@@ -74,20 +74,20 @@ bstring LVStringForColl(LVColl* coll) {
 
 LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex) {
     
-    // "|"        -->   top level, index = 0, in =  0
-    // "|foo"     -->   top level, index = 0, in =  0
-    // "|(foo)"   -->   top level, index = 0, in =  0
-    // "(|foo)"   -->   list,      index = 0, in =  0
-    // "|#(foo)"  -->   top level, index = 0, in = -1
-    // "#|(foo)"  -->   top level, index = 0, in = -1
-    // "#(|foo)"  -->   list,      index = 0, in =  0
-    // "#(foo|)"  -->   list,      index = 1, in =  0
-    // "#(foo)|"  -->   top level, index = 1, in =  0
+    // "|"        -->   top level, index = 0
+    // "|foo"     -->   top level, index = 0
+    // "|(foo)"   -->   top level, index = 0
+    // "(|foo)"   -->   list,      index = 0
+    // "|#(foo)"  -->   top level, index = 0
+    // "#|(foo)"  -->   top level, index = 0
+    // "#(|foo)"  -->   list,      index = 0
+    // "#(foo|)"  -->   list,      index = 1
+    // "#(foo)|"  -->   top level, index = 1
     
-    // "(foo| bar)"   -->   list, index = 1, in =  0
-    // "(foo |bar)"   -->   list, index = 2, in =  0
-    // "(foo b|ar)"   -->   list, index = 2, in =  0
-    // "(foo bar|)"   -->   list, index = 3, in =  0
+    // "(foo| bar)"   -->   list, index = 1
+    // "(foo |bar)"   -->   list, index = 2
+    // "(foo b|ar)"   -->   list, index = 2
+    // "(foo bar|)"   -->   list, index = 3
     
     // we know we're in this coll somewhere, but where?
     
