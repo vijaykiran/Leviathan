@@ -99,6 +99,16 @@ size_t LVCollAbsolutePosition(LVColl* topLevel, LVColl* needle) {
     return pos;
 }
 
+size_t LVGetElementIndexInSiblings(LVElement* child) {
+    size_t len = child->parent->children_len;
+    LVElement** children = child->parent->children;
+    for (int i = 0; i < len; i++) {
+        if (children[i] == child)
+            return i;
+    }
+    return -1;
+}
+
 LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex, size_t* relativePos) {
     
     // "|"        -->   top level, index = 0
@@ -126,7 +136,7 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
     
     if (pos < coll_inner_offset) {
         *relativePos = 0;
-        *childsIndex = coll->index;
+        *childsIndex = LVGetElementIndexInSiblings((void*)coll);
         return coll->parent;
     }
     
@@ -140,7 +150,7 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
         if (pos < (coll_inner_offset + cumulative_child_offset + this_child_len)) {
             if (child->is_atom) {
                 *relativePos = pos - (coll_inner_offset + cumulative_child_offset);
-                *childsIndex = child->index;
+                *childsIndex = i;
                 return child->parent;
             }
             else {

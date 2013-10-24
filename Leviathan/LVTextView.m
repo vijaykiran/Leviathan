@@ -14,6 +14,12 @@
 #import "LVHighlighter.h"
 #import "LVPreferences.h"
 
+@interface LVTextView ()
+
+@property NSUndoManager* myUndos;
+
+@end
+
 @implementation LVTextView
 
 - (BOOL) becomeFirstResponder {
@@ -94,10 +100,31 @@
     [self indentCurrentBody];
 }
 
+//- (IBAction) undo:(id)sender {
+//    
+//    [[self undoManager] undo];
+//    
+//    NSLog(@"undo");
+//}
+//
+//- (IBAction) redo:(id)sender {
+//    [[self undoManager] redo];
+//    
+//    NSLog(@"redo");
+//}
+
+- (void) sd_r:(NSRange)r str:(NSString*)str {
+    NSRange newrange = r;
+    r.length = str.length;
+    [[[self undoManager] prepareWithInvocationTarget:self] sd_r:newrange
+                                                            str:[self.textStorage.string substringWithRange:newrange]];
+    
+    self.selectedRange = r;
+    [super delete:nil];
+    [super insertText:str];
+}
+
 - (void) insertText:(id)insertString {
-    
-    
-    
     size_t childsIndex;
     size_t relativePos;
     LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex, &relativePos);
@@ -111,15 +138,21 @@
     coll->children[childsIndex] = coll->children[childsIndex+2];
     coll->children[childsIndex+2] = tmp;
     
-    coll->children[childsIndex]->index -= 2;
-    coll->children[childsIndex+2]->index += 2;
+//    coll->children[childsIndex]->index -= 2;
+//    coll->children[childsIndex+2]->index += 2;
     
     NSRange oldSelection = self.selectedRange;
     
     bstring str = LVStringForColl(coll);
     NSRange range = NSMakeRange(collPos, LVElementLength((void*)coll));
     NSString* newStr = [NSString stringWithUTF8String:(char*)str->data];
-    [self replaceRange:range withString:newStr];
+    
+//    NSTextStorage* ts = [self textStorage];
+//    [[ts mutableString] replaceCharactersInRange:range withString:newStr];
+    
+    [self sd_r:range str:newStr];
+    
+//    [self replaceRange:range withString:newStr];
     bdestroy(str);
     
     LVHighlight((void*)coll, [self textStorage], collPos);

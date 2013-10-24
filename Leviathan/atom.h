@@ -43,7 +43,6 @@ typedef struct __LVAtom {
     
     BOOL is_atom;
     LVColl* parent;
-    size_t index;
     
     LVAtomType atom_type;
     LVToken* token;

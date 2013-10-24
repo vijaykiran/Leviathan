@@ -12,7 +12,6 @@ typedef struct __LVElement {
     
     BOOL is_atom;
     struct __LVColl* parent;
-    size_t index;
     
 } LVElement;
 

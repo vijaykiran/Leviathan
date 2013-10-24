@@ -125,7 +125,6 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
     
 //    printf("open coll type = %llu, wanting %llu, %s\n", coll->open_token->type, collType, coll->open_token->val->data);
     
-    int i = 0;
     for (LVToken* currentToken; ; ) {
         currentToken = **iter;
         
@@ -142,7 +141,6 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
         
         LVElement* child = parseOne(iter);
         child->parent = coll;
-        child->index = i++;
         LVElementListAppend(coll, child);
     }
     
