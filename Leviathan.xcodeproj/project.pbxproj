@@ -55,6 +55,7 @@
 		949EC52818139226001C9CAB /* LVTestBed.m in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52718139226001C9CAB /* LVTestBed.m */; };
 		94ABB12F181463B6003415B5 /* atom.m in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB12D181463B5003415B5 /* atom.m */; };
 		94ABB132181463C4003415B5 /* coll.m in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB130181463C4003415B5 /* coll.m */; };
+		94B3B5FD1818A7A500455787 /* tempparser.m in Sources */ = {isa = PBXBuildFile; fileRef = 94B3B5FC1818A7A500455787 /* tempparser.m */; };
 		94D794341811226D003307F4 /* LVThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D794331811226D003307F4 /* LVThemeManager.m */; };
 		94D79463181125F1003307F4 /* BMOEDNCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79437181125F1003307F4 /* BMOEDNCharacter.m */; };
 		94D79464181125F1003307F4 /* BMOEDNCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D79439181125F1003307F4 /* BMOEDNCoder.m */; };
@@ -178,6 +179,8 @@
 		94ABB130181463C4003415B5 /* coll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = coll.m; sourceTree = "<group>"; };
 		94ABB131181463C4003415B5 /* coll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coll.h; sourceTree = "<group>"; };
 		94ABB133181463D3003415B5 /* element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = element.h; sourceTree = "<group>"; };
+		94B3B5FC1818A7A500455787 /* tempparser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tempparser.m; sourceTree = "<group>"; };
+		94B3B5FE1818A7AD00455787 /* tempparser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tempparser.h; sourceTree = "<group>"; };
 		94D794321811226D003307F4 /* LVThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeManager.h; sourceTree = "<group>"; };
 		94D794331811226D003307F4 /* LVThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeManager.m; sourceTree = "<group>"; };
 		94D79436181125F1003307F4 /* BMOEDNCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNCharacter.h; sourceTree = "<group>"; };
@@ -563,6 +566,8 @@
 				949EC5231813811E001C9CAB /* lexer.m */,
 				949EC52118138102001C9CAB /* parser.h */,
 				949EC52018138102001C9CAB /* parser.m */,
+				94B3B5FC1818A7A500455787 /* tempparser.m */,
+				94B3B5FE1818A7AD00455787 /* tempparser.h */,
 			);
 			name = parser;
 			sourceTree = "<group>";
@@ -699,6 +704,7 @@
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
 				94D7946E181125F1003307F4 /* BMOEDNTaggedElement.m in Sources */,
 				94D79469181125F1003307F4 /* BMOEDNReaderState.m in Sources */,
+				94B3B5FD1818A7A500455787 /* tempparser.m in Sources */,
 				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
 				94D79476181125F1003307F4 /* NSString+BMOEDN.m in Sources */,
 				9455AA2118179B630077DC86 /* bstrlib.c in Sources */,

@@ -8,4 +8,4 @@
 
 #import "coll.h"
 
-LVColl* LVParse(char* raw);
+LVColl* LVParse(const char* raw);

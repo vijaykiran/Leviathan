@@ -15,6 +15,9 @@
 
 #import "LVPreferences.h"
 
+#import "tempparser.h"
+//#import "parser.h"
+
 @interface LVFile ()
 
 @property NSString* textOnDisk;
@@ -50,8 +53,10 @@
         self.textOnDisk = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
         self.textStorage = [[NSTextStorage alloc] initWithString:self.textOnDisk];
         
-        LVParseError* error;
-        self.topLevelElement = [LVParser parse:self.textOnDisk error:&error];
+        LVTempParse([self.textOnDisk UTF8String]);
+        
+//        LVParseError* error;
+//        self.topLevelElement = [LVParser parse:self.textOnDisk error:&error];
         
 //        if (error) {
 //            NSLog(@"error %d %@", error.errorType, self.fileURL);

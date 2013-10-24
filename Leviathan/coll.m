@@ -35,11 +35,13 @@ void LVCollDestroy(LVColl* coll) {
     free(coll);
 }
 
-void LVElementListAppend(LVElementList* array, LVElement* child) {
-    if (array->len == array->cap) {
-        array->cap += LV_COLL_CHUNK_SIZE;
-        array->elements = realloc(array->elements, array->cap);
+void LVElementListAppend(LVColl* coll, LVElement* child) {
+    if (coll->children.len == coll->children.cap) {
+        coll->children.cap += LV_COLL_CHUNK_SIZE;
+        coll->children.elements = realloc(coll->children.elements, sizeof(LVElement*) * coll->children.cap);
     }
-    
-    array->elements[array->len++] = child;
+//    printf("adding child %p to %p at %lu\n", child, coll, coll->children.len);
+    coll->children.elements[coll->children.len] = child;
+//    printf("child added: child %p, should == %p which is at index %lu\n", child, coll->children.elements[coll->children.len], coll->children.len);
+    coll->children.len++;
 }

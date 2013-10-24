@@ -16,6 +16,8 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
 static LVElement* parseOne(LVToken*** iter) {
     LVToken* currentToken = **iter;
     
+//    printf("token = %llu, [%s]\n", currentToken->type, currentToken->val->data);
+    
     if (currentToken->type & LVTokenType_LParen) {
         return (LVElement*)parseColl(iter, LVCollType_List, LVTokenType_RParen);
     }
@@ -117,6 +119,8 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
     coll->open_token = **iter;
     ++*iter;
     
+//    printf("open coll type = %llu, wanting %llu, %s\n", coll->open_token->type, collType, coll->open_token->val->data);
+    
     for (LVToken* currentToken; ; ) {
         currentToken = **iter;
         
@@ -131,9 +135,13 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
             abort();
         }
         
+//        printf("getting child\n");
+        
         LVElement* child = parseOne(iter);
-        LVElementListAppend(&coll->children, child);
+        LVElementListAppend(coll, child);
     }
+    
+//    printf("done getting children for coll type = %llu\n", collType);
     
     for (int i = 0; i < coll->children.len; i++) {
         LVElement* child = coll->children.elements[i];
@@ -144,7 +152,7 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
     return coll;
 }
 
-LVColl* LVParse(char* raw) {
+LVColl* LVParse(const char* raw) {
     size_t tok_n;
     LVToken** tokens = LVLex(raw, &tok_n);
     
