@@ -47,8 +47,95 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 }
 
 
-LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex) {
-    return NULL;
+LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex, int* inWhat) {
+    
+    printf("so broken :(\n");
+    abort();
+    
+    size_t coll_inner_offset = offset + coll->open_token->val->slen;
+    
+    if (pos < coll_inner_offset) {
+        *inWhat = -1;
+        *childsIndex = coll->index;
+        return coll->parent;
+    }
+    
+    for (int i = 0; i < coll->children.len; i++) {
+        LVElement* child = coll->children.elements[i];
+        
+        size_t child_len = LVElementLength(child);
+        
+        if (pos <= offset + child_len) {
+            // in the child somewhere
+            
+            if (child->elementType & LVElementType_Atom) {
+                *inWhat = 0;
+                *childsIndex = child->index;
+                return child->parent;
+            }
+            else {
+                return LVFindDeepestColl((LVColl*)child, offset, pos, childsIndex, inWhat);
+            }
+        }
+        
+        offset += child_len;
+    }
+    
+    // it's in the current coll's close-token
+    
+    *inWhat = 1;
+    *childsIndex = coll->index;
+    return coll->parent;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     // TODO: uhh...
     

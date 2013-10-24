@@ -95,10 +95,16 @@
 }
 
 - (void) insertText:(id)insertString {
-    @autoreleasepool {
-        [super insertText:insertString];
-        [self indentCurrentBody];
-    }
+    size_t childsIndex;
+    int inWhat;
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex, &inWhat);
+    
+    printf("coll=%p, idx=%lu, in=%d\n", coll, childsIndex, inWhat);
+    
+//    @autoreleasepool {
+//        [super insertText:insertString];
+//        [self indentCurrentBody];
+//    }
 }
 
 - (void) deleteWordBackward:(id)sender {
