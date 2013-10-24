@@ -74,8 +74,23 @@ bstring LVStringForColl(LVColl* coll) {
 
 LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex, int* inWhat) {
     
-    printf("so broken :(\n");
-    abort();
+//    printf("so broken :(\n");
+//    abort();
+    
+    // "|"        -->   top level, index = 0, in =  0
+    // "|foo"     -->   top level, index = 0, in =  0
+    // "|(foo)"   -->   top level, index = 0, in =  0
+    // "(|foo)"   -->   list,      index = 0, in =  0
+    // "|#(foo)"  -->   top level, index = 0, in = -1
+    // "#|(foo)"  -->   top level, index = 0, in = -1
+    // "#(|foo)"  -->   list,      index = 0, in =  0
+    // "#(foo|)"  -->   list,      index = 1, in =  0
+    // "#(foo)|"  -->   top level, index = 1, in =  0
+    
+    // "(foo| bar)"   -->   list, index = 1, in =  0
+    // "(foo |bar)"   -->   list, index = 2, in =  0
+    // "(foo b|ar)"   -->   list, index = 2, in =  0
+    // "(foo bar|)"   -->   list, index = 3, in =  0
     
     size_t coll_inner_offset = offset + coll->open_token->val->slen;
     
