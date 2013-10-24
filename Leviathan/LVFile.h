@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "LVColl.h"
+#import "coll.h"
 
 @interface LVFile : NSObject <NSTextStorageDelegate>
 

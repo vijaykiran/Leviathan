@@ -8,7 +8,8 @@
 
 #import "LVTextView.h"
 
-#import "LVAtom.h"
+#import "atom.h"
+
 #import "LVThemeManager.h"
 #import "LVHighlighter.h"
 #import "LVPreferences.h"
@@ -129,22 +130,22 @@ NSUInteger LVFirstNewlineBefore(NSString* str, NSUInteger pos) {
     return found;
 }
 
-BOOL LVIsFunctionLike(LVColl* coll) {
-    // we already assume its a coll with 2+ childs
-    id<LVElement> firstChild = [[coll childElements] objectAtIndex:0];
-    if (![firstChild isAtom])
-        return NO;
-    
-    LVAtom* atomChild = firstChild;
-    
-    static NSArray* functionLikes;
-    if (!functionLikes)
-        functionLikes = @[@"let", @"if", @"if-let", @"cond", @"case"
-//    , @"let", @"describe"
-                          ];
-    
-    return ([functionLikes containsObject: [atomChild token].val]);
-}
+//BOOL LVIsFunctionLike(LVColl* coll) {
+//    // we already assume its a coll with 2+ childs
+//    id<LVElement> firstChild = [[coll childElements] objectAtIndex:0];
+//    if (![firstChild isAtom])
+//        return NO;
+//    
+//    LVAtom* atomChild = firstChild;
+//    
+//    static NSArray* functionLikes;
+//    if (!functionLikes)
+//        functionLikes = @[@"let", @"if", @"if-let", @"cond", @"case"
+////    , @"let", @"describe"
+//                          ];
+//    
+//    return ([functionLikes containsObject: [atomChild token].val]);
+//}
 
 NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
     return NSMakeRange(pos, r.length + (r.location - pos));
@@ -157,134 +158,134 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 
 - (void) indentCurrentBody {
 //    return;
-    NSLog(@"indenting");
-    
-    NSRange selection = self.selectedRange;
-    NSUInteger childIndex;
-    LVColl* currentColl = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-    LVColl* highestParentColl = [currentColl highestParentColl];
-    
-    NSString* wholeString = [[self textStorage] string];
-    
-    NSRange wholeBlockRange = highestParentColl.fullyEnclosedRange;
-    
-    NSUInteger firstNewlinePosition = LVFirstNewlineBefore(wholeString, wholeBlockRange.location);
-    
-    wholeBlockRange = LVExtendRangeToBeginningPos(wholeBlockRange, firstNewlinePosition);
-    
-//    NSLog(@"[%@]", [wholeString substringWithRange:wholeBlockRange]);
-    
-    NSUInteger currentPos = wholeBlockRange.location;
-    
-    while (NSLocationInRange(currentPos, wholeBlockRange)) {
-        NSRange remainingRange = LVRangeWithNewAbsoluteLocationButSameEndPoint(wholeBlockRange, currentPos);
-        
-        NSUInteger nextNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-                                                                      options:0
-                                                                        range:remainingRange].location;
-        
-        if (nextNewlinePosition == NSNotFound)
-            nextNewlinePosition = NSMaxRange(wholeBlockRange);
-        else
-            nextNewlinePosition++;
-        
-        NSRange currentLineRange = NSMakeRange(currentPos, nextNewlinePosition - currentPos);
-        
-        
-        // get first non-space char's pos (absolute)
-        
-        NSUInteger firstNonSpaceCharPos = [wholeString rangeOfCharacterFromSet:[[NSCharacterSet whitespaceCharacterSet] invertedSet]
-                                                                       options:0
-                                                                         range:currentLineRange].location;
-        
-        if (firstNonSpaceCharPos == NSNotFound) {
-            firstNonSpaceCharPos = NSMaxRange(currentLineRange);
-        }
-        
-        // get that val relative
-        
-        NSUInteger firstNonSpaceCharPosRelative = firstNonSpaceCharPos - currentPos;
-        
-        // get coll parent for beginning of line (its type info and indentation info will be helpful soon)
-        
-        NSUInteger childIndexOfFirstElementOnLine;
-        LVColl* collParentForBeginningOfLine = [self.file.topLevelElement deepestCollAtPos:currentPos childsIndex:&childIndexOfFirstElementOnLine];
-        
-        
-        
-        // figure out proper indentation level
-        
-        
-        NSUInteger expectedStartSpaces;
-        
-        if (collParentForBeginningOfLine.collType == LVCollTypeTopLevel) {
-            expectedStartSpaces = 0;
-        }
-        else {
-            NSUInteger openingTokenRecentNewline = LVFirstNewlineBefore(wholeString, collParentForBeginningOfLine.openingToken.range.location);
-            NSUInteger prefixIndentation = collParentForBeginningOfLine.openingToken.range.location - openingTokenRecentNewline;
-            
-            if (collParentForBeginningOfLine.collType == LVCollTypeList) {
-                if ([collParentForBeginningOfLine isKindOfClass:[LVDefinition self]] || LVIsFunctionLike(collParentForBeginningOfLine)) {
-                    expectedStartSpaces = prefixIndentation + 2;
-                }
-                else if ([[collParentForBeginningOfLine childElements] count] >= 2 && childIndexOfFirstElementOnLine >= 2) {
-                    id<LVElement> secondChild = [[collParentForBeginningOfLine childElements] objectAtIndex: 1];
-                    NSUInteger childBeginning = [secondChild fullyEnclosedRange].location;
-                    NSUInteger newlineBeforeSecondChild = LVFirstNewlineBefore(wholeString, childBeginning);
-                    
-                    expectedStartSpaces = childBeginning - newlineBeforeSecondChild;
-                }
-                else {
-                    expectedStartSpaces = prefixIndentation + 2;
-                }
-            }
-            else {
-                expectedStartSpaces = prefixIndentation + 1;
-            }
-            
-        }
-        
-        NSInteger spacesToAdd = expectedStartSpaces - firstNonSpaceCharPosRelative;
-        
-//        NSLog(@"%ld", spacesToAdd);
-        
-        if (spacesToAdd != 0) {
-            if (spacesToAdd > 0) {
-                NSString* spaces = [@"" stringByPaddingToLength:spacesToAdd withString:@" " startingAtIndex:0];
-                NSRange tempRange = NSMakeRange(currentPos, 0);
-                [self replaceRange:tempRange withString:spaces];
-            }
-            if (spacesToAdd < 0) {
-                // its really spaces to delete, now.
-                NSRange tempRange = NSMakeRange(currentPos, labs(spacesToAdd));
-                [self replaceRange:tempRange withString:@""];
-            }
-            
-            wholeBlockRange.length += spacesToAdd;
-            nextNewlinePosition += spacesToAdd;
-        }
-        
-        // done doing things, ready to loop again.
-        
-        currentPos = nextNewlinePosition;
-        
-    }
-    
-    
-    // TODO: thoughts on a new plan for indentation:
-    //       - edit the list of tokens itself
-    //       - after each child in a coll, search for next newline, before either next child or closing token (if you're at end of coll).
-    //       - if there is no newline, do nothing (you're on the same line!)
-    //       - but if there IS a newline:
-    //           - delete all whitespace BEFORE the newline (yay)
-    //           - calculate the proper number of whitespace after the newline and before the next non-space char
-    //               - if the next non-space char is a newline, erase all those spaces
-    //               - otherwise, add/delete whitespace to make it match
-    //           - OH WAIT: this adding/removing means rewriting the parse-tree :(
-    
-    
-//    printf("\n");
+//    NSLog(@"indenting");
+//    
+//    NSRange selection = self.selectedRange;
+//    NSUInteger childIndex;
+//    LVColl* currentColl = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+//    LVColl* highestParentColl = [currentColl highestParentColl];
+//    
+//    NSString* wholeString = [[self textStorage] string];
+//    
+//    NSRange wholeBlockRange = highestParentColl.fullyEnclosedRange;
+//    
+//    NSUInteger firstNewlinePosition = LVFirstNewlineBefore(wholeString, wholeBlockRange.location);
+//    
+//    wholeBlockRange = LVExtendRangeToBeginningPos(wholeBlockRange, firstNewlinePosition);
+//    
+////    NSLog(@"[%@]", [wholeString substringWithRange:wholeBlockRange]);
+//    
+//    NSUInteger currentPos = wholeBlockRange.location;
+//    
+//    while (NSLocationInRange(currentPos, wholeBlockRange)) {
+//        NSRange remainingRange = LVRangeWithNewAbsoluteLocationButSameEndPoint(wholeBlockRange, currentPos);
+//        
+//        NSUInteger nextNewlinePosition = [wholeString rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+//                                                                      options:0
+//                                                                        range:remainingRange].location;
+//        
+//        if (nextNewlinePosition == NSNotFound)
+//            nextNewlinePosition = NSMaxRange(wholeBlockRange);
+//        else
+//            nextNewlinePosition++;
+//        
+//        NSRange currentLineRange = NSMakeRange(currentPos, nextNewlinePosition - currentPos);
+//        
+//        
+//        // get first non-space char's pos (absolute)
+//        
+//        NSUInteger firstNonSpaceCharPos = [wholeString rangeOfCharacterFromSet:[[NSCharacterSet whitespaceCharacterSet] invertedSet]
+//                                                                       options:0
+//                                                                         range:currentLineRange].location;
+//        
+//        if (firstNonSpaceCharPos == NSNotFound) {
+//            firstNonSpaceCharPos = NSMaxRange(currentLineRange);
+//        }
+//        
+//        // get that val relative
+//        
+//        NSUInteger firstNonSpaceCharPosRelative = firstNonSpaceCharPos - currentPos;
+//        
+//        // get coll parent for beginning of line (its type info and indentation info will be helpful soon)
+//        
+//        NSUInteger childIndexOfFirstElementOnLine;
+//        LVColl* collParentForBeginningOfLine = [self.file.topLevelElement deepestCollAtPos:currentPos childsIndex:&childIndexOfFirstElementOnLine];
+//        
+//        
+//        
+//        // figure out proper indentation level
+//        
+//        
+//        NSUInteger expectedStartSpaces;
+//        
+//        if (collParentForBeginningOfLine.collType == LVCollTypeTopLevel) {
+//            expectedStartSpaces = 0;
+//        }
+//        else {
+//            NSUInteger openingTokenRecentNewline = LVFirstNewlineBefore(wholeString, collParentForBeginningOfLine.openingToken.range.location);
+//            NSUInteger prefixIndentation = collParentForBeginningOfLine.openingToken.range.location - openingTokenRecentNewline;
+//            
+//            if (collParentForBeginningOfLine.collType == LVCollTypeList) {
+//                if ([collParentForBeginningOfLine isKindOfClass:[LVDefinition self]] || LVIsFunctionLike(collParentForBeginningOfLine)) {
+//                    expectedStartSpaces = prefixIndentation + 2;
+//                }
+//                else if ([[collParentForBeginningOfLine childElements] count] >= 2 && childIndexOfFirstElementOnLine >= 2) {
+//                    id<LVElement> secondChild = [[collParentForBeginningOfLine childElements] objectAtIndex: 1];
+//                    NSUInteger childBeginning = [secondChild fullyEnclosedRange].location;
+//                    NSUInteger newlineBeforeSecondChild = LVFirstNewlineBefore(wholeString, childBeginning);
+//                    
+//                    expectedStartSpaces = childBeginning - newlineBeforeSecondChild;
+//                }
+//                else {
+//                    expectedStartSpaces = prefixIndentation + 2;
+//                }
+//            }
+//            else {
+//                expectedStartSpaces = prefixIndentation + 1;
+//            }
+//            
+//        }
+//        
+//        NSInteger spacesToAdd = expectedStartSpaces - firstNonSpaceCharPosRelative;
+//        
+////        NSLog(@"%ld", spacesToAdd);
+//        
+//        if (spacesToAdd != 0) {
+//            if (spacesToAdd > 0) {
+//                NSString* spaces = [@"" stringByPaddingToLength:spacesToAdd withString:@" " startingAtIndex:0];
+//                NSRange tempRange = NSMakeRange(currentPos, 0);
+//                [self replaceRange:tempRange withString:spaces];
+//            }
+//            if (spacesToAdd < 0) {
+//                // its really spaces to delete, now.
+//                NSRange tempRange = NSMakeRange(currentPos, labs(spacesToAdd));
+//                [self replaceRange:tempRange withString:@""];
+//            }
+//            
+//            wholeBlockRange.length += spacesToAdd;
+//            nextNewlinePosition += spacesToAdd;
+//        }
+//        
+//        // done doing things, ready to loop again.
+//        
+//        currentPos = nextNewlinePosition;
+//        
+//    }
+//    
+//    
+//    // TODO: thoughts on a new plan for indentation:
+//    //       - edit the list of tokens itself
+//    //       - after each child in a coll, search for next newline, before either next child or closing token (if you're at end of coll).
+//    //       - if there is no newline, do nothing (you're on the same line!)
+//    //       - but if there IS a newline:
+//    //           - delete all whitespace BEFORE the newline (yay)
+//    //           - calculate the proper number of whitespace after the newline and before the next non-space char
+//    //               - if the next non-space char is a newline, erase all those spaces
+//    //               - otherwise, add/delete whitespace to make it match
+//    //           - OH WAIT: this adding/removing means rewriting the parse-tree :(
+//    
+//    
+////    printf("\n");
 }
 
 - (void) replaceRange:(NSRange)r withString:(NSString*)str {

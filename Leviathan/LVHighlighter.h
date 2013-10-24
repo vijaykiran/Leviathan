@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#import "LVElement.h"
+#import "element.h"
+
 #import "LVThemeManager.h"
 
 @interface LVHighlighter : NSObject
 
-+ (void) highlight:(id<LVElement>)element
++ (void) highlight:(LVElement*)element
                 in:(NSTextStorage*)attrString
            atLevel:(int)deepness;
 

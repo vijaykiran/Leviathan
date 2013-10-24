@@ -8,15 +8,12 @@
 
 #import "LVFile.h"
 
-#import "LVParser.h"
-
 #import "LVThemeManager.h"
 #import "LVHighlighter.h"
 
 #import "LVPreferences.h"
 
-#import "tempparser.h"
-//#import "parser.h"
+#import "parser.h"
 
 @interface LVFile ()
 
@@ -63,24 +60,24 @@ double get_time() {
         self.textOnDisk = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
         self.textStorage = [[NSTextStorage alloc] initWithString:self.textOnDisk];
         
-        double t1 = get_time();
+//        double t1 = get_time();
         
-        LVTempParse([self.textOnDisk UTF8String]);
+//        LVTempParse([self.textOnDisk UTF8String]);
         
-        double t2 = get_time();
+//        double t2 = get_time();
         
-        LVParseError* error;
-        self.topLevelElement = [LVParser parse:self.textOnDisk error:&error];
-        
-        double t3 = get_time();
-        
-        static double total;
-        static double times;
-        
-        total += (t3 - t2) / (t2 - t1);
-        times++;
-        
-        printf("%f ", total / times);
+//        LVParseError* error;
+//        self.topLevelElement = [LVParser parse:self.textOnDisk error:&error];
+//        
+//        double t3 = get_time();
+//        
+//        static double total;
+//        static double times;
+//        
+//        total += (t3 - t2) / (t2 - t1);
+//        times++;
+//        
+//        printf("%f ", total / times);
         
 //        if (error) {
 //            NSLog(@"error %d %@", error.errorType, self.fileURL);
@@ -97,8 +94,8 @@ double get_time() {
 - (void) textStorageDidProcessEditing:(NSNotification*)note {
     NSString* rawString = [self.textStorage string];
     
-    LVParseError* error;
-    self.topLevelElement = [LVParser parse:rawString error:&error];
+//    LVParseError* error;
+//    self.topLevelElement = [LVParser parse:rawString error:&error];
     
     if ([self.textStorage editedMask] & NSTextStorageEditedCharacters) {
         [self highlight];
@@ -117,21 +114,21 @@ double get_time() {
     
     [self.textStorage beginEditing];
     
-    LVParseError* error;
-    self.topLevelElement = [LVParser parse:rawString error:&error];
-    
-    if (error) {
-        self.topLevelElement = nil;
-        
-        [[LVThemeManager sharedThemeManager].currentTheme.syntaxerror highlightIn:self.textStorage
-                                                                            range:error.badRange
-                                                                            depth:1];
-    }
-    else {
-        [LVHighlighter highlight:self.topLevelElement
-                              in:self.textStorage
-                         atLevel:0];
-    }
+//    LVParseError* error;
+//    self.topLevelElement = [LVParser parse:rawString error:&error];
+//    
+//    if (error) {
+//        self.topLevelElement = nil;
+//        
+//        [[LVThemeManager sharedThemeManager].currentTheme.syntaxerror highlightIn:self.textStorage
+//                                                                            range:error.badRange
+//                                                                            depth:1];
+//    }
+//    else {
+//        [LVHighlighter highlight:self.topLevelElement
+//                              in:self.textStorage
+//                         atLevel:0];
+//    }
     
     [self.textStorage endEditing];
 }

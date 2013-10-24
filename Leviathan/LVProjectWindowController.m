@@ -14,8 +14,6 @@
 
 #import "SDFuzzyMatcher.h"
 
-#import "LVAtom.h"
-
 @interface LVProjectWindowController ()
 
 @property (weak) id<LVProjectWindowController> delegate;
@@ -163,31 +161,31 @@
 }
 
 - (IBAction) jumpToDefinition:(id)sender {
-    NSMutableArray* defFiles = [NSMutableArray array];
-    NSMutableArray* defDefs = [NSMutableArray array];
-    NSMutableArray* readableNames = [NSMutableArray array];
-    
-    for (LVFile* file in self.project.files) {
-        NSMutableArray* defs = [NSMutableArray array];
-        [[file topLevelElement] findDefinitions:defs];
-        
-        for (LVDefinition* def in defs) {
-            [defFiles addObject:file];
-            [defDefs addObject:def];
-            [readableNames addObject:[NSString stringWithFormat:@"%@ %@", def.defType.token.val, def.defName.token.val]];
-        }
-    }
-    
-    CGFloat maxLen = [[readableNames valueForKeyPath:@"@max.length"] doubleValue];
-    
-    [SDFuzzyMatcher showChoices:readableNames
-                      charsWide:maxLen * 2.2 / 3.0
-                      linesTall:10
-                    windowTitle:@"Jump to File"
-                  choseCallback:^(long chosenIndex) {
-                      [self openDefinition:[defDefs objectAtIndex:chosenIndex]
-                                    inFile:[defFiles objectAtIndex:chosenIndex]];
-                  }];
+//    NSMutableArray* defFiles = [NSMutableArray array];
+//    NSMutableArray* defDefs = [NSMutableArray array];
+//    NSMutableArray* readableNames = [NSMutableArray array];
+//    
+//    for (LVFile* file in self.project.files) {
+//        NSMutableArray* defs = [NSMutableArray array];
+//        [[file topLevelElement] findDefinitions:defs];
+//        
+//        for (LVDefinition* def in defs) {
+//            [defFiles addObject:file];
+//            [defDefs addObject:def];
+//            [readableNames addObject:[NSString stringWithFormat:@"%@ %@", def.defType.token.val, def.defName.token.val]];
+//        }
+//    }
+//    
+//    CGFloat maxLen = [[readableNames valueForKeyPath:@"@max.length"] doubleValue];
+//    
+//    [SDFuzzyMatcher showChoices:readableNames
+//                      charsWide:maxLen * 2.2 / 3.0
+//                      linesTall:10
+//                    windowTitle:@"Jump to File"
+//                  choseCallback:^(long chosenIndex) {
+//                      [self openDefinition:[defDefs objectAtIndex:chosenIndex]
+//                                    inFile:[defFiles objectAtIndex:chosenIndex]];
+//                  }];
 }
 
 
@@ -243,10 +241,10 @@
     }
 }
 
-- (void) openDefinition:(LVDefinition*)def inFile:(LVFile*)file {
-    [self editFileInCurrentEditor:file];
-    [self.tabView.currentTab.currentEditor jumpToDefinition:def];
-}
+//- (void) openDefinition:(LVDefinition*)def inFile:(LVFile*)file {
+////    [self editFileInCurrentEditor:file];
+////    [self.tabView.currentTab.currentEditor jumpToDefinition:def];
+//}
 
 - (BOOL) switchToOpenFile:(LVFile*)file {
     for (LVTab* tab in self.tabView.tabs) {

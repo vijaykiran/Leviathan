@@ -29,6 +29,6 @@
 
 - (void) makeFirstResponder;
 
-- (void) jumpToDefinition:(LVDefinition*)def;
+//- (void) jumpToDefinition:(LVDefinition*)def;
 
 @end

@@ -45,3 +45,64 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 //    printf("child added: child %p, should == %p which is at index %lu\n", child, coll->children.elements[coll->children.len], coll->children.len);
     coll->children.len++;
 }
+
+
+
+//- (LVColl*) deepestCollAtPos:(NSUInteger)pos childsIndex:(NSUInteger*)childsIndex {
+//    int i = 0;
+//    
+//    if (pos <= NSMaxRange(self.openingToken.range)) {
+//        *childsIndex = 0;
+//        return self;
+//    }
+//    
+//    for (id<LVElement> child in self.childElements) {
+//        
+//        if (pos < NSMaxRange([child fullyEnclosedRange])) {
+//            
+//            if ([child isAtom]) {
+//                *childsIndex = i;
+//                return self;
+//            }
+//            else {
+//                if (pos <= [child fullyEnclosedRange].location) {
+//                    *childsIndex = i;
+//                    return self;
+//                }
+//                else {
+//                    return [[child asColl] deepestCollAtPos:pos childsIndex:childsIndex];
+//                }
+//            }
+//            
+//        }
+//        
+//        i++;
+//    }
+//    
+//    *childsIndex = i;
+//    return self;
+//}
+//
+//- (void) findDefinitions:(NSMutableArray*)defs {
+//    for (id<LVElement> child in self.childElements) {
+//        if ([child isKindOfClass:[LVDefinition self]]) {
+//            [defs addObject:child];
+//        }
+//        
+//        if ([child isColl]) {
+//            [[child asColl] findDefinitions:defs];
+//        }
+//    }
+//}
+//
+//- (LVColl*) highestParentColl {
+//    LVColl* coll = self;
+//    
+//    while (coll.parent.parent)
+//        coll = coll.parent;
+//        
+//        if (coll.collType == LVCollTypeTopLevel)
+//            return nil;
+//        else
+//            return coll;
+//}
