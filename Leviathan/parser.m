@@ -28,17 +28,69 @@ static LVElement* parseOne(LVToken*** iter) {
     else if (currentToken->type & LVTokenType_AnonFnStart) {
         return (LVElement*)parseColl(iter, LVCollType_AnonFn, LVTokenType_RParen);
     }
+    else if (currentToken->type & LVTokenType_SetStart) {
+        return (LVElement*)parseColl(iter, LVCollType_Set, LVTokenType_RBrace);
+    }
     else if (currentToken->type & LVTokenType_Spaces) {
         ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_Spaces, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Var) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_Var, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_ReaderMacro) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_ReaderMacro, currentToken);
     }
     else if (currentToken->type & LVTokenType_Number) {
         ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_Number, currentToken);
     }
+    else if (currentToken->type & LVTokenType_TypeOp) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_TypeOp, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Quote) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_Quote, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Unquote) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_Unquote, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_SyntaxQuote) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_SyntaxQuote, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Splice) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_Splice, currentToken);
+    }
     else if (currentToken->type & LVTokenType_Keyword) {
         ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_Keyword, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_String) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_String, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Regex) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_Regex, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_CommentLiteral) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_Comment, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_Newline) {
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_Newline, currentToken);
+    }
+    else if (currentToken->type & LVTokenType_ReaderCommentStart) {
+        // TODO: parse-next and join as one comment atom with combined tokens.
+        ++*iter;
+        return (LVElement*)LVAtomCreate(LVAtomType_ReaderComment, currentToken);
     }
     else if (currentToken->type & LVTokenType_Symbol) {
         ++*iter;
@@ -49,6 +101,10 @@ static LVElement* parseOne(LVToken*** iter) {
         else if (currentToken->type & LVTokenType_NilSymbol)   atom->atomType |= LVAtomType_NilAtom;
         
         return (LVElement*)atom;
+    }
+    else if (currentToken->type & LVTokenType_FileEnd) {
+        printf("reached end of tokens too early\n");
+        abort();
     }
     
     printf("Can't handle this token type: %llu, %s\n", currentToken->type, currentToken->val->data);

@@ -21,11 +21,12 @@ typedef enum __LVCollType : uint64_t {
     LVCollType_List       = 1 << 1,
     LVCollType_Vector     = 1 << 2,
     LVCollType_Map        = 1 << 3,
+    LVCollType_Set        = 1 << 4,
     
-    LVCollType_AnonFn     = 1 << 4,
+    LVCollType_AnonFn     = 1 << 5,
     
-    LVCollType_Definition = 1 << 5,
-    LVCollType_Ns         = 1 << 6,
+    LVCollType_Definition = 1 << 6,
+    LVCollType_Ns         = 1 << 7,
 } LVCollType;
 
 struct __LVColl;
