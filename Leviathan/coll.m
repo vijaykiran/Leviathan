@@ -71,27 +71,32 @@ bstring LVStringForColl(LVColl* coll) {
     return str;
 }
 
-//static void findCollAbsolutePosition(LVColl* maybeColl, LVColl* coll, size_t* offset) {
-//    if (maybeColl == coll)
-//        return *offset;
-//    
-//    *offset += coll->open_token->string->slen;
-//    
-//    for (size_t i = 0; i < coll->children_len; i++) {
-//        LVElement* child = coll->children[i];
-//        if (!child->is_atom) {
-//        }
-//    }
-//    
-//    *offset += coll->open_token->string->slen;
-//    
-////    return offset;
-//}
+static BOOL findCollAbsolutePosition(LVColl* maybeColl, LVColl* needle, size_t* offset) {
+    if (maybeColl == needle)
+        return YES;
+    
+    *offset += maybeColl->open_token->string->slen;
+    
+    for (size_t i = 0; i < maybeColl->children_len; i++) {
+        LVElement* child = maybeColl->children[i];
+        if (child->is_atom) {
+            *offset += ((LVAtom*)child)->token->string->slen;
+        }
+        else {
+            if (findCollAbsolutePosition((LVColl*)child, needle, offset))
+                return YES;
+        }
+    }
+    
+    *offset += maybeColl->close_token->string->slen;
+    
+    return NO;
+}
 
-size_t LVCollAbsolutePosition(LVColl* topLevel, LVColl* coll) {
+size_t LVCollAbsolutePosition(LVColl* topLevel, LVColl* needle) {
     size_t pos = 0;
+    findCollAbsolutePosition(topLevel, needle, &pos);
     return pos;
-//    return findCollAbsolutePosition(topLevel, coll, &pos);
 }
 
 LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex, size_t* relativePos) {
