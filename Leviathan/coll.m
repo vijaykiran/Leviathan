@@ -72,7 +72,7 @@ bstring LVStringForColl(LVColl* coll) {
 }
 
 
-LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex) {
+LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex, size_t* relativePos) {
     
     // "|"        -->   top level, index = 0
     // "|foo"     -->   top level, index = 0
@@ -98,6 +98,7 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
     size_t coll_inner_offset = offset + open_tok_len;
     
     if (pos < coll_inner_offset) {
+        *relativePos = 0;
         *childsIndex = coll->index;
         return coll->parent;
     }
@@ -109,19 +110,21 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
         
         size_t this_child_len = LVElementLength(child);
         
-        if (pos < coll_inner_offset + cumulative_child_offset + this_child_len) {
+        if (pos < (coll_inner_offset + cumulative_child_offset + this_child_len)) {
             if (child->is_atom) {
+                *relativePos = pos - (coll_inner_offset + cumulative_child_offset);
                 *childsIndex = child->index;
                 return child->parent;
             }
             else {
-                return LVFindDeepestColl((void*)child, coll_inner_offset + cumulative_child_offset, pos, childsIndex);
+                return LVFindDeepestColl((void*)child, coll_inner_offset + cumulative_child_offset, pos, childsIndex, relativePos);
             }
         }
         
         cumulative_child_offset += this_child_len;
     }
     
+    *relativePos = 0;
     *childsIndex = coll->children_len;
     return coll;
 }
