@@ -74,9 +74,6 @@ bstring LVStringForColl(LVColl* coll) {
 
 LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex) {
     
-//    printf("so broken :(\n");
-//    abort();
-    
     // "|"        -->   top level, index = 0, in =  0
     // "|foo"     -->   top level, index = 0, in =  0
     // "|(foo)"   -->   top level, index = 0, in =  0
@@ -112,14 +109,14 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
         
         size_t this_child_len = LVElementLength(child);
         
-        if (child->elementType & LVElementType_Atom) {
-            if (pos < coll_inner_offset + cumulative_child_offset + this_child_len) {
+        if (pos < coll_inner_offset + cumulative_child_offset + this_child_len) {
+            if (child->elementType & LVElementType_Atom) {
                 *childsIndex = child->index;
                 return child->parent;
             }
-        }
-        else {
-            return LVFindDeepestColl((void*)child, coll_inner_offset + cumulative_child_offset, pos, childsIndex);
+            else {
+                return LVFindDeepestColl((void*)child, coll_inner_offset + cumulative_child_offset, pos, childsIndex);
+            }
         }
         
         cumulative_child_offset += this_child_len;
@@ -127,120 +124,6 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
     
     *childsIndex = coll->children.len;
     return coll;
-    
-    
-    
-    
-    
-    
-//    if (pos < coll_inner_offset) {
-//        *inWhat = -1;
-//        *childsIndex = coll->index;
-//        return coll->parent;
-//    }
-//    
-//    for (int i = 0; i < coll->children.len; i++) {
-//        LVElement* child = coll->children.elements[i];
-//        
-//        size_t child_len = LVElementLength(child);
-//        
-//        if (pos <= offset + child_len) {
-//            // in the child somewhere
-//            
-//            if (child->elementType & LVElementType_Atom) {
-//                *inWhat = 0;
-//                *childsIndex = child->index;
-//                return child->parent;
-//            }
-//            else {
-//                return LVFindDeepestColl((LVColl*)child, offset, pos, childsIndex, inWhat);
-//            }
-//        }
-//        
-//        offset += child_len;
-//    }
-    
-    // it's in the current coll's close-token
-    
-//    *inWhat = 1;
-//    *childsIndex = coll->index;
-//    return coll->parent;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // TODO: uhh...
-    
-//    int i = 0;
-//    
-//    if (pos <= offset + coll->open_token->val->slen) {
-//        *childsIndex = 0;
-//        return coll;
-//    }
-//    
-//    for (; i < coll->children.len; i++) {
-//        LVElement* child = coll->children.elements[i];
-//        
-//        if (pos < offset + LVElementLength(child)) {
-//            if ((child->elementType & LVElementType_Atom) || (pos <= offset)) {
-//                *childsIndex = i;
-//                return coll;
-//            }
-//            else {
-//                return LVFindDeepestColl(child, offset + , pos, childsIndex);
-//            }
-//        }
-//    }
-//    
-//    *childsIndex = i;
-//    return coll;
 }
 
 //- (void) findDefinitions:(NSMutableArray*)defs {
