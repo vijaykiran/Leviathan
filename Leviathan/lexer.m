@@ -178,13 +178,13 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
                 static bstring nilConstant; if (!nilConstant) nilConstant = bfromcstr("nil");
                 static bstring defConstant; if (!defConstant) defConstant = bfromcstr("def");
                 
-                if (biseq(substring, trueConstant)) tok->type |= LVTokenType_TrueSymbol;
-                if (biseq(substring, falseConstant)) tok->type |= LVTokenType_FalseSymbol;
-                if (biseq(substring, nilConstant)) tok->type |= LVTokenType_NilSymbol;
+                if (biseq(substring, trueConstant)) tok->token_type |= LVTokenType_TrueSymbol;
+                if (biseq(substring, falseConstant)) tok->token_type |= LVTokenType_FalseSymbol;
+                if (biseq(substring, nilConstant)) tok->token_type |= LVTokenType_NilSymbol;
                 
                 struct tagbstring def_prefix_substr;
                 bmid2tbstr(def_prefix_substr, substring, 0, 3);
-                if (biseq(&def_prefix_substr, defConstant)) tok->type |= LVTokenType_Deflike;
+                if (biseq(&def_prefix_substr, defConstant)) tok->token_type |= LVTokenType_Deflike;
                 
                 tokens[num_tokens++] = tok;
                 i = n-1;

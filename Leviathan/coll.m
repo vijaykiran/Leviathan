@@ -14,7 +14,7 @@
 
 LVColl* LVCollCreate() {
     LVColl* coll = malloc(sizeof(LVColl));
-    coll->isAtom = NO;
+    coll->is_atom = NO;
     
     coll->children.cap = LV_COLL_CHUNK_SIZE;
     coll->children.len = 0;
@@ -49,20 +49,20 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 
 
 static void appendToString(LVColl* coll, bstring str) {
-    bconcat(str, coll->open_token->val);
+    bconcat(str, coll->open_token->string);
     
     for (size_t i = 0; i < coll->children.len; i++) {
         LVElement* child = coll->children.elements[i];
-        if (child->isAtom) {
+        if (child->is_atom) {
             LVAtom* atom = (void*)child;
-            bconcat(str, atom->token->val);
+            bconcat(str, atom->token->string);
         }
         else {
             appendToString((void*)child, str);
         }
     }
     
-    bconcat(str, coll->close_token->val);
+    bconcat(str, coll->close_token->string);
 }
 
 bstring LVStringForColl(LVColl* coll) {
@@ -93,7 +93,7 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
     
     
     
-    size_t open_tok_len = coll->open_token->val->slen;
+    size_t open_tok_len = coll->open_token->string->slen;
     
     size_t coll_inner_offset = offset + open_tok_len;
     
@@ -110,7 +110,7 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
         size_t this_child_len = LVElementLength(child);
         
         if (pos < coll_inner_offset + cumulative_child_offset + this_child_len) {
-            if (child->isAtom) {
+            if (child->is_atom) {
                 *childsIndex = child->index;
                 return child->parent;
             }
@@ -142,7 +142,7 @@ LVColl* LVCollHighestParent(LVColl* coll) {
     while (coll->parent->parent)
         coll = coll->parent;
     
-    if (coll->collType == LVCollType_TopLevel)
+    if (coll->coll_type == LVCollType_TopLevel)
         return NULL;
     else
         return coll;

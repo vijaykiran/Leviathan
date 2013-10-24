@@ -12,9 +12,9 @@
 #import "atom.h"
 
 size_t LVElementLength(LVElement* element) {
-    if (!element->isAtom) {
+    if (!element->is_atom) {
         LVColl* coll = (LVColl*)element;
-        size_t len = coll->open_token->val->slen + coll->close_token->val->slen;
+        size_t len = coll->open_token->string->slen + coll->close_token->string->slen;
         for (int i = 0; i < coll->children.len; i++) {
             LVElement* child = coll->children.elements[i];
             len += LVElementLength(child);
@@ -23,14 +23,14 @@ size_t LVElementLength(LVElement* element) {
     }
     else {
         LVAtom* atom = (LVAtom*)element;
-        return atom->token->val->slen;
+        return atom->token->string->slen;
     }
     printf("asking element length for bad element.\n");
     abort();
 }
 
 void LVElementDestroy(LVElement* element) {
-    if (!element->isAtom) {
+    if (!element->is_atom) {
         LVCollDestroy((LVColl*)element);
     }
     else {

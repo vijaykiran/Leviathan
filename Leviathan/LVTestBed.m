@@ -32,12 +32,12 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         printf("want:\n");
         for (size_t i = 0; i < expected.size; i++) {
             LVToken* tok = expected.toks[i];
-            printf("[%s]\n", tok->val->data);
+            printf("[%s]\n", tok->string->data);
         }
         printf("got:\n");
         for (size_t i = 0; i < actual_size; i++) {
             LVToken* tok = tokens[i];
-            printf("[%s]\n", tok->val->data);
+            printf("[%s]\n", tok->string->data);
         }
         abort();
     }
@@ -46,16 +46,16 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
         LVToken* t1 = tokens[i];
         LVToken* t2 = expected.toks[i];
         
-        if (t1->type != t2->type) {
+        if (t1->token_type != t2->token_type) {
             printf("wrong token type for: %s\n", raw);
-            printf("want val %s, got val %s\n", t2->val->data, t1->val->data);
-            printf("want %llu, got %llu\n", t2->type, t1->type);
+            printf("want val %s, got val %s\n", t2->string->data, t1->string->data);
+            printf("want %llu, got %llu\n", t2->token_type, t1->token_type);
             abort();
         }
         
-        if (bstrcmp(t1->val, t2->val) != 0) {
+        if (bstrcmp(t1->string, t2->string) != 0) {
             printf("wrong token string for: %s\n", raw);
-            printf("want %s, got %s\n", t2->val->data, t1->val->data);
+            printf("want %s, got %s\n", t2->string->data, t1->string->data);
             abort();
         }
     }
@@ -95,107 +95,107 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     
     {
         LVColl* top = LVParse("foo");
-        assert(top->collType == LVCollType_TopLevel);
+        assert(top->coll_type == LVCollType_TopLevel);
         assert(top->children.len == 1);
         
         LVAtom* atom = (void*)top->children.elements[0];
-        assert(atom->isAtom);
-        assert(atom->atomType == LVAtomType_Symbol);
-        assert(atom->token->type == LVTokenType_Symbol);
-        assert(biseq(atom->token->val, bfromcstr("foo")));
+        assert(atom->is_atom);
+        assert(atom->atom_type == LVAtomType_Symbol);
+        assert(atom->token->token_type == LVTokenType_Symbol);
+        assert(biseq(atom->token->string, bfromcstr("foo")));
         
         LVCollDestroy(top);
     }
     
     {
         LVColl* top = LVParse("(foo)");
-        assert(top->collType == LVCollType_TopLevel);
+        assert(top->coll_type == LVCollType_TopLevel);
         assert(top->children.len == 1);
         
         LVColl* list = (void*)top->children.elements[0];
-        assert(!list->isAtom);
-        assert(list->collType == LVCollType_List);
+        assert(!list->is_atom);
+        assert(list->coll_type == LVCollType_List);
         assert(list->children.len == 1);
         
         LVAtom* atom = (void*)list->children.elements[0];
-        assert(atom->isAtom);
-        assert(atom->atomType == LVAtomType_Symbol);
-        assert(atom->token->type == LVTokenType_Symbol);
-        assert(biseq(atom->token->val, bfromcstr("foo")));
+        assert(atom->is_atom);
+        assert(atom->atom_type == LVAtomType_Symbol);
+        assert(atom->token->token_type == LVTokenType_Symbol);
+        assert(biseq(atom->token->string, bfromcstr("foo")));
         
         LVCollDestroy(top);
     }
     
     {
         LVColl* top = LVParse("[foo]");
-        assert(top->collType == LVCollType_TopLevel);
+        assert(top->coll_type == LVCollType_TopLevel);
         assert(top->children.len == 1);
         
         LVColl* list = (void*)top->children.elements[0];
-        assert(!list->isAtom);
-        assert(list->collType == LVCollType_Vector);
+        assert(!list->is_atom);
+        assert(list->coll_type == LVCollType_Vector);
         assert(list->children.len == 1);
         
         LVAtom* atom = (void*)list->children.elements[0];
-        assert(atom->isAtom);
-        assert(atom->atomType == LVAtomType_Symbol);
-        assert(atom->token->type == LVTokenType_Symbol);
-        assert(biseq(atom->token->val, bfromcstr("foo")));
+        assert(atom->is_atom);
+        assert(atom->atom_type == LVAtomType_Symbol);
+        assert(atom->token->token_type == LVTokenType_Symbol);
+        assert(biseq(atom->token->string, bfromcstr("foo")));
         
         LVCollDestroy(top);
     }
     
     {
         LVColl* top = LVParse("#(foo)");
-        assert(top->collType == LVCollType_TopLevel);
+        assert(top->coll_type == LVCollType_TopLevel);
         assert(top->children.len == 1);
         
         LVColl* list = (void*)top->children.elements[0];
-        assert(!list->isAtom);
-        assert(list->collType == LVCollType_AnonFn);
+        assert(!list->is_atom);
+        assert(list->coll_type == LVCollType_AnonFn);
         assert(list->children.len == 1);
         
         LVAtom* atom = (void*)list->children.elements[0];
-        assert(atom->isAtom);
-        assert(atom->atomType == LVAtomType_Symbol);
-        assert(atom->token->type == LVTokenType_Symbol);
-        assert(biseq(atom->token->val, bfromcstr("foo")));
+        assert(atom->is_atom);
+        assert(atom->atom_type == LVAtomType_Symbol);
+        assert(atom->token->token_type == LVTokenType_Symbol);
+        assert(biseq(atom->token->string, bfromcstr("foo")));
         
         LVCollDestroy(top);
     }
     
     {
         LVColl* top = LVParse("{foo bar}");
-        assert(top->collType == LVCollType_TopLevel);
+        assert(top->coll_type == LVCollType_TopLevel);
         assert(top->children.len == 1);
         
         LVColl* list = (void*)top->children.elements[0];
-        assert(!list->isAtom);
-        assert(list->collType == LVCollType_Map);
+        assert(!list->is_atom);
+        assert(list->coll_type == LVCollType_Map);
         assert(list->children.len == 3);
         
         {
             LVAtom* atom = (void*)list->children.elements[0];
-            assert(atom->isAtom);
-            assert(atom->atomType == LVAtomType_Symbol);
-            assert(atom->token->type == LVTokenType_Symbol);
-            assert(biseq(atom->token->val, bfromcstr("foo")));
+            assert(atom->is_atom);
+            assert(atom->atom_type == LVAtomType_Symbol);
+            assert(atom->token->token_type == LVTokenType_Symbol);
+            assert(biseq(atom->token->string, bfromcstr("foo")));
         }
         
         {
             LVAtom* atom = (void*)list->children.elements[1];
-            assert(atom->isAtom);
-            assert(atom->atomType == LVAtomType_Spaces);
-            assert(atom->token->type == LVTokenType_Spaces);
-            assert(biseq(atom->token->val, bfromcstr(" ")));
+            assert(atom->is_atom);
+            assert(atom->atom_type == LVAtomType_Spaces);
+            assert(atom->token->token_type == LVTokenType_Spaces);
+            assert(biseq(atom->token->string, bfromcstr(" ")));
         }
         
         {
             LVAtom* atom = (void*)list->children.elements[2];
-            assert(atom->isAtom);
-            assert(atom->atomType == LVAtomType_Symbol);
-            assert(atom->token->type == LVTokenType_Symbol);
-            assert(biseq(atom->token->val, bfromcstr("bar")));
+            assert(atom->is_atom);
+            assert(atom->atom_type == LVAtomType_Symbol);
+            assert(atom->token->token_type == LVTokenType_Symbol);
+            assert(biseq(atom->token->string, bfromcstr("bar")));
         }
         
         LVCollDestroy(top);
@@ -203,28 +203,28 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
     
     {
         LVColl* top = LVParse("123");
-        assert(top->collType == LVCollType_TopLevel);
+        assert(top->coll_type == LVCollType_TopLevel);
         assert(top->children.len == 1);
         
         LVAtom* atom = (void*)top->children.elements[0];
-        assert(atom->isAtom);
-        assert(atom->atomType == LVAtomType_Number);
-        assert(atom->token->type == LVTokenType_Number);
-        assert(biseq(atom->token->val, bfromcstr("123")));
+        assert(atom->is_atom);
+        assert(atom->atom_type == LVAtomType_Number);
+        assert(atom->token->token_type == LVTokenType_Number);
+        assert(biseq(atom->token->string, bfromcstr("123")));
         
         LVCollDestroy(top);
     }
     
     {
         LVColl* top = LVParse(":bla");
-        assert(top->collType == LVCollType_TopLevel);
+        assert(top->coll_type == LVCollType_TopLevel);
         assert(top->children.len == 1);
         
         LVAtom* atom = (void*)top->children.elements[0];
-        assert(atom->isAtom);
-        assert(atom->atomType == LVAtomType_Keyword);
-        assert(atom->token->type == LVTokenType_Keyword);
-        assert(biseq(atom->token->val, bfromcstr(":bla")));
+        assert(atom->is_atom);
+        assert(atom->atom_type == LVAtomType_Keyword);
+        assert(atom->token->token_type == LVTokenType_Keyword);
+        assert(biseq(atom->token->string, bfromcstr(":bla")));
         
         LVCollDestroy(top);
     }

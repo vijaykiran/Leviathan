@@ -42,11 +42,11 @@ typedef enum __LVAtomType : uint64_t {
 
 typedef struct __LVAtom {
     
-    BOOL isAtom;
+    BOOL is_atom;
     LVColl* parent;
     size_t index;
     
-    LVAtomType atomType;
+    LVAtomType atom_type;
     LVToken* token;
     
 } LVAtom;

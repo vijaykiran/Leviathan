@@ -54,8 +54,8 @@ typedef enum __LVTokenType : uint64_t {
 
 
 typedef struct __LVToken {
-    LVTokenType type;
-    bstring val;
+    LVTokenType token_type;
+    bstring string;
 } LVToken;
 
 

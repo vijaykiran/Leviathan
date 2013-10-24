@@ -10,12 +10,12 @@
 
 LVToken* LVTokenCreate(LVTokenType type, bstring val) {
     LVToken* tok = malloc(sizeof(LVToken));
-    tok->type = type;
-    tok->val = val;
+    tok->token_type = type;
+    tok->string = val;
     return tok;
 }
 
 void LVTokenDelete(LVToken* tok) {
-    bdestroy(tok->val);
+    bdestroy(tok->string);
     free(tok);
 }

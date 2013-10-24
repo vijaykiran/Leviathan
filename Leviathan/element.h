@@ -10,7 +10,7 @@ struct __LVColl;
 
 typedef struct __LVElement {
     
-    BOOL isAtom;
+    BOOL is_atom;
     struct __LVColl* parent;
     size_t index;
     

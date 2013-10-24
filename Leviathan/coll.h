@@ -34,11 +34,11 @@ typedef struct __LVColl LVColl;
 
 struct __LVColl {
     
-    BOOL isAtom;
+    BOOL is_atom;
     LVColl* parent;
     size_t index;
     
-    LVCollType collType;
+    LVCollType coll_type;
     LVToken* open_token;
     LVToken* close_token;
     LVElementList children;
