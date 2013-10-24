@@ -95,9 +95,13 @@
 }
 
 - (void) insertText:(id)insertString {
+    
+    
+    
     size_t childsIndex;
     size_t relativePos;
     LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex, &relativePos);
+    
     
 //    printf("coll=%p, idx=%lu, rel=%lu\n", coll, childsIndex, relativePos);
     size_t collPos = LVCollAbsolutePosition(self.file.topLevelElement, coll);
@@ -107,8 +111,10 @@
     coll->children[childsIndex] = coll->children[childsIndex+2];
     coll->children[childsIndex+2] = tmp;
     
+    coll->children[childsIndex]->index -= 2;
+    coll->children[childsIndex+2]->index += 2;
     
-    
+    NSRange oldSelection = self.selectedRange;
     
     bstring str = LVStringForColl(coll);
     NSRange range = NSMakeRange(collPos, LVElementLength((void*)coll));
@@ -117,6 +123,8 @@
     bdestroy(str);
     
     LVHighlight((void*)coll, [self textStorage], collPos);
+    
+    self.selectedRange = oldSelection;
     
 //    @autoreleasepool {
 //        [super insertText:insertString];
