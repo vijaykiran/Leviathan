@@ -63,7 +63,7 @@
     [self.textStorage beginEditing];
     
     if (self.topLevelElement) {
-        [LVHighlighter highlight:(void*)self.topLevelElement in:self.textStorage];
+        LVHighlight((void*)self.topLevelElement, self.textStorage, 0);
     }
     
     [self.textStorage endEditing];

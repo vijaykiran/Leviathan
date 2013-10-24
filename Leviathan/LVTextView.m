@@ -103,6 +103,21 @@
     size_t collPos = LVCollAbsolutePosition(self.file.topLevelElement, coll);
     printf("%ld\n", collPos);
     
+    LVElement* tmp = coll->children[childsIndex];
+    coll->children[childsIndex] = coll->children[childsIndex+2];
+    coll->children[childsIndex+2] = tmp;
+    
+    
+    
+    
+    bstring str = LVStringForColl(coll);
+    NSRange range = NSMakeRange(collPos, LVElementLength((void*)coll));
+    NSString* newStr = [NSString stringWithUTF8String:(char*)str->data];
+    [self replaceRange:range withString:newStr];
+    bdestroy(str);
+    
+    LVHighlight((void*)coll, [self textStorage], collPos);
+    
 //    @autoreleasepool {
 //        [super insertText:insertString];
 //        [self indentCurrentBody];

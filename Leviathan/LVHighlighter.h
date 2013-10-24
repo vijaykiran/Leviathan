@@ -10,11 +10,4 @@
 
 #import "element.h"
 
-#import "LVThemeManager.h"
-
-@interface LVHighlighter : NSObject
-
-+ (void) highlight:(LVElement*)element
-                in:(NSTextStorage*)attrString;
-
-@end
+void LVHighlight(LVElement* element, NSTextStorage* attrString, NSUInteger startPos);

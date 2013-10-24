@@ -12,13 +12,6 @@
 #import "coll.h"
 #import "atom.h"
 
-@implementation LVHighlighter
-
-+ (void) highlight:(LVElement*)element in:(NSTextStorage*)attrString {
-    size_t startPos = 0;
-    highlight(element, attrString, 0, &startPos);
-}
-
 static void highlight(LVElement* element, NSTextStorage* attrString, int deepness, size_t* startPos) {
     if (!element->is_atom) {
         LVColl* coll = (void*)element;
@@ -70,4 +63,6 @@ static void highlight(LVElement* element, NSTextStorage* attrString, int deepnes
     }
 }
 
-@end
+void LVHighlight(LVElement* element, NSTextStorage* attrString, NSUInteger startPos) {
+    highlight(element, attrString, 0, &startPos);
+}
