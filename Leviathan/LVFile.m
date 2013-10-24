@@ -105,9 +105,12 @@ double get_time() {
 //                                                                            depth:1];
 //    }
 //    else {
-//        [LVHighlighter highlight:self.topLevelElement
-//                              in:self.textStorage
-//                         atLevel:0];
+    
+    if (self.topLevelElement)
+    
+        [LVHighlighter highlight:(void*)self.topLevelElement
+                              in:self.textStorage
+                         atLevel:0];
 //    }
     
     [self.textStorage endEditing];
