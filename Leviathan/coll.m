@@ -104,7 +104,7 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
     //     if the child's an atom, and pos < offset + open_tok_len + cumulative_child_offset + this_child_len, return child->parent and child->index
     //     if the child's a coll, recurse with the coll, but for offset pass offset + open_tok_len + cumulative_child_offset
     
-    // if it wasn't any of the children, it must have been in this coll but at the very end, so return coll->parent and coll->index + 1 maybe???
+    // if it wasn't any of the children, it must have been in this coll but at the very end, so return coll (NOT its parent) and coll->children.len + 1
     
     
     
