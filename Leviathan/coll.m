@@ -94,22 +94,39 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
     
     // we know we're in this coll somewhere, but where?
     
-    size_t coll_inner_offset = offset + coll->open_token->val->slen;
-    
-    // if pos < offset + open_tok_len, we're in coll->parent at coll->index
-    
-    // cumulative_child_offset = 0
-    // check all children:
-    
-    //     if the child's an atom, and pos < offset + open_tok_len + cumulative_child_offset + this_child_len, return child->parent and child->index
-    //     if the child's a coll, recurse with the coll, but for offset pass offset + open_tok_len + cumulative_child_offset
-    
-    // if it wasn't any of the children, it must have been in this coll but at the very end, so return coll (NOT its parent) and coll->children.len + 1
     
     
+    size_t open_tok_len = coll->open_token->val->slen;
     
+    size_t coll_inner_offset = offset + open_tok_len;
     
-    return NULL; // TODO: don't return NULL
+    if (pos < coll_inner_offset) {
+        *childsIndex = coll->index;
+        return coll->parent;
+    }
+    
+    size_t cumulative_child_offset = 0;
+    
+    for (size_t i = 0; i < coll->children.len; i++) {
+        LVElement* child = coll->children.elements[i];
+        
+        size_t this_child_len = LVElementLength(child);
+        
+        if (child->elementType & LVElementType_Atom) {
+            if (pos < coll_inner_offset + cumulative_child_offset + this_child_len) {
+                *childsIndex = child->index;
+                return child->parent;
+            }
+        }
+        else {
+            return LVFindDeepestColl((void*)child, coll_inner_offset + cumulative_child_offset, pos, childsIndex);
+        }
+        
+        cumulative_child_offset += this_child_len;
+    }
+    
+    *childsIndex = coll->children.len;
+    return coll;
     
     
     
