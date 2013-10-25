@@ -19,7 +19,7 @@ id LVSingleFromAtom(LVAtom* atom) {
         bmid2tbstr(kw_val, atom->token->string, 1, atom->token->string->slen - 1);
         return [NSString stringWithFormat:@"%s", kw_val.data];
     }
-    else if (atom->atom_type & LVAtomType_TrueAtom) {
+    else if (atom->atom_type & LVAtomType_TrueAtom) { 
         return @YES;
     }
     else if (atom->atom_type & LVAtomType_FalseAtom) {

@@ -11,3 +11,5 @@
 #import "element.h"
 
 void LVHighlight(LVElement* element, NSTextStorage* attrString, NSUInteger startPos);
+
+void LVHighlightSomeChild(LVElement* child, NSTextStorage* attrString, NSUInteger startPos);

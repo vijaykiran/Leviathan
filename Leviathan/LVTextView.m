@@ -113,15 +113,21 @@
 //    NSLog(@"redo");
 //}
 
-- (void) sd_r:(NSRange)r str:(NSString*)str {
+- (void) sd_r:(NSRange)r str:(NSString*)str rehighlight:(BOOL)rehighlight {
     NSRange newrange = r;
     r.length = str.length;
     [[[self undoManager] prepareWithInvocationTarget:self] sd_r:newrange
-                                                            str:[self.textStorage.string substringWithRange:newrange]];
+                                                            str:[self.textStorage.string substringWithRange:newrange]
+                                                    rehighlight:YES];
     
-    self.selectedRange = r;
-    [super delete:nil];
-    [super insertText:str];
+    [[[self textStorage] mutableString] replaceCharactersInRange:r withString:str];
+    
+    if (rehighlight)
+        LVHighlight((void*)self.file.topLevelElement, self.textStorage, 0);
+    
+//    self.selectedRange = r;
+//    [super delete:nil];
+//    [super insertText:str];
 }
 
 - (void) insertText:(id)insertString {
@@ -138,9 +144,6 @@
     coll->children[childsIndex] = coll->children[childsIndex+2];
     coll->children[childsIndex+2] = tmp;
     
-//    coll->children[childsIndex]->index -= 2;
-//    coll->children[childsIndex+2]->index += 2;
-    
     NSRange oldSelection = self.selectedRange;
     
     bstring str = LVStringForColl(coll);
@@ -150,12 +153,12 @@
 //    NSTextStorage* ts = [self textStorage];
 //    [[ts mutableString] replaceCharactersInRange:range withString:newStr];
     
-    [self sd_r:range str:newStr];
+    [self sd_r:range str:newStr rehighlight:NO];
     
 //    [self replaceRange:range withString:newStr];
     bdestroy(str);
     
-    LVHighlight((void*)coll, [self textStorage], collPos);
+    LVHighlightSomeChild((void*)coll, [self textStorage], collPos);
     
     self.selectedRange = oldSelection;
     
