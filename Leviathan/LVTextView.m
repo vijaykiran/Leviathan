@@ -16,15 +16,6 @@
 
 
 
-#define SuppressPerformSelectorLeakWarning(Stuff) \
-do { \
-_Pragma("clang diagnostic push") \
-_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
-Stuff; \
-_Pragma("clang diagnostic pop") \
-} while (0)
-
-
 
 @interface LVShortcut : NSObject
 
@@ -150,8 +141,11 @@ _Pragma("clang diagnostic pop") \
             if ([key isEqualToString: @"ALT"] && ([theEvent modifierFlags] & NSAlternateKeyMask) == 0) continue;
         }
         
-        SuppressPerformSelectorLeakWarning([shortcut.target performSelector:shortcut.action
-                                                                 withObject:theEvent];);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [shortcut.target performSelector:shortcut.action
+                              withObject:theEvent];
+#pragma clang diagnostic pop
         
         return;
     }
@@ -585,7 +579,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         }
         // we're a semantic element!
         
-        // TODO: tidy this up with LVGetSemanticDirectChildren(parent, startingPos, &array) where array is a local var (size = parent->children_len)
+        // TODO: tidy this up with LVGetSemanticDirectChildren(parent, startingPos, &array, &count) where array is a local var (size = parent->children_len)
         
         posAfterElement = LVGetAbsolutePosition(element) + LVElementLength(element);
         
