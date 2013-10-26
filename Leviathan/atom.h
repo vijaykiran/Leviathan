@@ -7,7 +7,8 @@
 //
 
 #import "token.h"
-#import "coll.h"
+
+struct __LVColl;
 
 typedef enum __LVAtomType : uint64_t {
     LVAtomType_Symbol  = 1 << 0,
@@ -43,7 +44,7 @@ typedef enum __LVAtomType : uint64_t {
 typedef struct __LVAtom {
     
     BOOL is_atom;
-    LVColl* parent;
+    struct __LVColl* parent;
     
     LVAtomType atom_type;
     LVToken* token;

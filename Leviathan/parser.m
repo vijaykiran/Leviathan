@@ -180,7 +180,7 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
                 lastWasTypeOp = NO;
                 
                 LVAtom* defName = atom;
-                
+                coll->coll_type |= LVCollType_Definition;
                 defAtom->atom_type |= LVAtomType_DefType;
                 defName->atom_type |= LVAtomType_DefName;
                 

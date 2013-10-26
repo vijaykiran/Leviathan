@@ -10,6 +10,9 @@
 #import "token.h"
 #import "atom.h"
 
+@implementation LVDefinition
+@end
+
 #define LV_COLL_CHUNK_SIZE (20)
 
 LVColl* LVCollCreate() {
@@ -90,15 +93,6 @@ static BOOL findCollAbsolutePosition(LVColl* maybeColl, LVColl* needle, size_t* 
     *offset += maybeColl->close_token->string->slen;
     
     return NO;
-}
-
-LVColl* LVGetTopLevelElement(LVElement* any) {
-    LVColl* iter = (void*)any;
-    
-    while (iter->parent)
-        iter = iter->parent;
-    
-    return iter;
 }
 
 size_t LVCollAbsolutePosition(LVColl* needle) {
@@ -195,4 +189,38 @@ LVColl* LVCollHighestParent(LVColl* coll) {
         return NULL;
     else
         return coll;
+}
+
+void LVFindDefinitions(LVColl* coll, NSMutableArray* defs) {
+    for (int i = 0; i < coll->children_len; i++) {
+        LVColl* child = (void*)coll->children[i];
+        
+        if (child->is_atom)
+            continue;
+        
+        if (child->coll_type & LVCollType_Definition) {
+            LVDefinition* def = [[LVDefinition alloc] init];
+            
+            for (int ii = 0; ii < child->children_len; ii++) {
+                LVAtom* grandchild = (void*)child->children[ii];
+                
+                if (!grandchild->is_atom)
+                    continue;
+                
+                if (grandchild->atom_type & LVAtomType_DefType) {
+                    def.defType = grandchild;
+                    continue;
+                }
+                
+                if (grandchild->atom_type & LVAtomType_DefName) {
+                    def.defName = grandchild;
+                    break;
+                }
+            }
+            
+            [defs addObject: def];
+        }
+        
+        LVFindDefinitions(child, defs);
+    }
 }

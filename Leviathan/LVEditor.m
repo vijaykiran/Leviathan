@@ -26,10 +26,11 @@
     return self.file.undoManager;
 }
 
-//- (void) jumpToDefinition:(LVDefinition*)def {
-//    self.textView.selectedRange = NSMakeRange(def.defName.token.range.location, 0);
-//    [self.textView scrollRangeToVisible:self.textView.selectedRange];
-//}
+- (void) jumpToDefinition:(LVDefinition*)def {
+    size_t absPos = LVGetAbsolutePosition((void*)def.defName);
+    self.textView.selectedRange = NSMakeRange(absPos, 0);
+    [self.textView scrollRangeToVisible:self.textView.selectedRange];
+}
 
 - (void) startEditingFile:(LVFile*)file {
     self.file = file;

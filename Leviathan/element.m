@@ -33,3 +33,18 @@ void LVElementDestroy(LVElement* element) {
     else
         LVCollDestroy((LVColl*)element);
 }
+
+size_t LVGetAbsolutePosition(LVElement* el) {
+    LVColl* topLevel = LVGetTopLevelElement(el);
+    
+    return 0;
+}
+
+LVColl* LVGetTopLevelElement(LVElement* any) {
+    LVColl* iter = (void*)any;
+    
+    while (iter->parent)
+        iter = iter->parent;
+    
+    return iter;
+}

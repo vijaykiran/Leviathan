@@ -9,6 +9,15 @@
 #import "element.h"
 #import "token.h"
 
+#import "atom.h"
+
+@interface LVDefinition : NSObject
+
+@property LVAtom* defType;
+@property LVAtom* defName;
+
+@end
+
 typedef enum __LVCollType : uint64_t {
     LVCollType_TopLevel   = 1 << 0,
     
@@ -53,3 +62,5 @@ size_t LVCollAbsolutePosition(LVColl* coll); // like, in the whole document's st
 size_t LVGetElementIndexInSiblings(LVElement* child);
 
 bstring LVStringForColl(LVColl* coll);
+
+void LVFindDefinitions(LVColl* coll, NSMutableArray* defs);
