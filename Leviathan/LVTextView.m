@@ -14,9 +14,22 @@
 #import "LVHighlighter.h"
 #import "LVPreferences.h"
 
+@interface LVShortcut : NSObject
+
+@property (copy) void(^handler)(NSEvent*);
+@property NSString* title;
+@property NSString* keyEquiv;
+@property NSUInteger mods;
+
+@end
+
+@implementation LVShortcut
+@end
+
 @interface LVTextView ()
 
-@property NSUndoManager* myUndos;
+@property NSUndoManager* myUndos; // TODO: unused?
+@property NSMutableArray* shortcuts;
 
 @end
 
@@ -73,25 +86,52 @@
     [self sd_disableLineWrapping];
     [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
     
-//    static BOOL menusSetup;
-//    if (!menusSetup) {
-//        menusSetup = YES;
-//        
-//        [self addParedit:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:NSControlKeyMask];
-//        [self addParedit:@selector(spliceSexp:) title:@"Splice" keyEquiv:@"s" mods:NSControlKeyMask];
-//        [self addParedit:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:NSControlKeyMask | NSAlternateKeyMask];
-//        [self addParedit:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:NSControlKeyMask | NSAlternateKeyMask];
-//        [self addParedit:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:NSControlKeyMask | NSAlternateKeyMask];
-//        [self addParedit:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:NSControlKeyMask | NSAlternateKeyMask];
-//        [self addParedit:@selector(inForwardSexp:) title:@"In Forward" keyEquiv:@"d" mods:NSControlKeyMask | NSAlternateKeyMask];
-//        [self addParedit:@selector(inBackwardSexp:) title:@"In Backward" keyEquiv:@"p" mods:NSControlKeyMask | NSAlternateKeyMask];
-//        [self addParedit:@selector(killNextSexp:) title:@"Kill Next" keyEquiv:@"k" mods:NSControlKeyMask | NSAlternateKeyMask];
-//        [self addParedit:@selector(wrapNextInParens:) title:@"Wrap Next in Parens" keyEquiv:@"9" mods:NSControlKeyMask];
-//        [self addParedit:@selector(wrapNextInBrackets:) title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:NSControlKeyMask];
-//        [self addParedit:@selector(wrapNextInBraces:) title:@"Wrap Next in Braces" keyEquiv:@"{" mods:NSControlKeyMask];
-//        [self addParedit:@selector(extendSelectionToNext:) title:@"Extend Seletion to Next" keyEquiv:@" " mods:NSControlKeyMask | NSAlternateKeyMask];
-//    }
+    
+    self.shortcuts = [NSMutableArray array];
+    
+    __unsafe_unretained id _self = self;
+    
+    [self addParedit:^(NSEvent* event){ [_self outBackwardSexp:event];} title:@"Out Backward" keyEquiv:@"u" mods:NSControlKeyMask | NSAlternateKeyMask];
+    [self addParedit:^(NSEvent* event){ [_self forwardSexp:event]; } title:@"Forward" keyEquiv:@"f" mods:NSControlKeyMask | NSAlternateKeyMask];
+    [self addParedit:^(NSEvent* event){ [_self backwardSexp:event]; } title:@"Backward" keyEquiv:@"b" mods:NSControlKeyMask | NSAlternateKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self outForwardSexp:event]; } title:@"Out Forward" keyEquiv:@"n" mods:NSControlKeyMask | NSAlternateKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self inForwardSexp:event]; } title:@"In Forward" keyEquiv:@"d" mods:NSControlKeyMask | NSAlternateKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self inBackwardSexp:event]; } title:@"In Backward" keyEquiv:@"p" mods:NSControlKeyMask | NSAlternateKeyMask];
+    
+//    [self addParedit:^(NSEvent* event){ [_self raiseSexp:event]; } title:@"Raise" keyEquiv:@"r" mods:NSControlKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self spliceSexp:event]; } title:@"Splice" keyEquiv:@"s" mods:NSControlKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self killNextSexp:event]; } title:@"Kill Next" keyEquiv:@"k" mods:NSControlKeyMask | NSAlternateKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self wrapNextInParens:event]; } title:@"Wrap Next in Parens" keyEquiv:@"9" mods:NSControlKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self wrapNextInBrackets:event]; } title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:NSControlKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self wrapNextInBraces:event]; } title:@"Wrap Next in Braces" keyEquiv:@"{" mods:NSControlKeyMask];
+//    [self addParedit:^(NSEvent* event){ [_self extendSelectionToNext:event]; } title:@"Extend Seletion to Next" keyEquiv:@" " mods:NSControlKeyMask | NSAlternateKeyMask];
 }
+
+
+
+- (void) addParedit:(void(^)(NSEvent*))handler title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSUInteger)mods {
+    LVShortcut* shortcut = [[LVShortcut alloc] init];
+    shortcut.title = title;
+    shortcut.keyEquiv = keyEquiv;
+    shortcut.handler = handler;
+    shortcut.mods = mods;
+    [self.shortcuts addObject:shortcut];
+}
+
+- (void) keyDown:(NSEvent *)theEvent {
+    for (LVShortcut* shortcut in self.shortcuts) {
+        if ([[theEvent charactersIgnoringModifiers] isEqualToString:shortcut.keyEquiv] && ([theEvent modifierFlags] & shortcut.mods)) {
+            shortcut.handler(theEvent);
+            return;
+        }
+    }
+    
+    [super keyDown:theEvent];
+}
+
+
+
+
 
 
 
@@ -114,6 +154,8 @@
 //}
 
 - (void) sd_r:(NSRange)r str:(NSString*)str rehighlight:(BOOL)rehighlight {
+    [[self undoManager] setActionIsDiscardable:YES];
+      
     NSRange newrange = r;
     r.length = str.length;
     [[[self undoManager] prepareWithInvocationTarget:self] sd_r:newrange
@@ -140,14 +182,19 @@
     size_t collPos = LVCollAbsolutePosition(self.file.topLevelElement, coll);
     printf("%ld\n", collPos);
     
-    LVElement* tmp = coll->children[childsIndex];
-    coll->children[childsIndex] = coll->children[childsIndex+2];
-    coll->children[childsIndex+2] = tmp;
+//    LVElement* tmp = coll->children[childsIndex];
+//    coll->children[childsIndex] = coll->children[childsIndex+2];
+//    coll->children[childsIndex+2] = tmp;
+    
+    NSRange range = NSMakeRange(collPos, LVElementLength((void*)coll));
+    
+    LVAtom* atom = (void*)coll->children[childsIndex];
+    atom->token->string->data[0]++;
+//    binsertch(atom->token->string, 0, 1, 'a');
     
     NSRange oldSelection = self.selectedRange;
     
     bstring str = LVStringForColl(coll);
-    NSRange range = NSMakeRange(collPos, LVElementLength((void*)coll));
     NSString* newStr = [NSString stringWithUTF8String:(char*)str->data];
     
 //    NSTextStorage* ts = [self textStorage];
@@ -385,17 +432,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //        [self setSelectedRange:r];
 //    }
 //}
-//
-//- (void) keyDown:(NSEvent *)theEvent {
-//    //    NSLog(@"%ld", [theEvent modifierFlags]);
-//    //    if ([[theEvent charactersIgnoringModifiers] isEqualToString:@"r"] && ([theEvent modifierFlags] & NSAlternateKeyMask)) {
-//    //        NSLog(@"ok alt-r");
-//    //    }
-//    //    else {
-//    [super keyDown:theEvent];
-//    //    }
-//}
-//
+
 //- (void) insertText:(id)insertString {
 //    NSDictionary* balancers = @{@"(": @")", @"[": @"]", @"{": @"}"};
 //    NSString* origString = insertString;
@@ -511,23 +548,25 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //- (IBAction) wrapNextInParens:(id)sender {
 //    [self wrapNextInThing:@"(%@)"];
 //}
-//
-//- (IBAction) forwardSexp:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    if (childIndex < [coll.childElements count]) {
-//        id<LVElement> element = [coll.childElements objectAtIndex:childIndex];
-//        self.selectedRange = NSMakeRange(NSMaxRange([element fullyEnclosedRange]), 0);
-//        [self scrollRangeToVisible:self.selectedRange];
-//    }
-//    else {
-//        [self outForwardSexp:sender];
-//    }
-//}
-//
-//- (IBAction) backwardSexp:(id)sender {
+
+- (void) forwardSexp:(NSEvent*)event {
+    NSRange selection = self.selectedRange;
+    size_t childIndex;
+    size_t relativePos;
+    
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+    
+    if (childIndex < coll->children_len) {
+        LVElement* element = coll->children[childIndex];
+        self.selectedRange = NSMakeRange(NSMaxRange([element fullyEnclosedRange]), 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
+    else {
+        [self outForwardSexp:sender];
+    }
+}
+
+- (void) backwardSexp:(NSEvent*)event {
 //    NSRange selection = self.selectedRange;
 //    NSUInteger childIndex;
 //    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
@@ -540,17 +579,20 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //    else {
 //        [self outBackwardSexp:sender];
 //    }
-//}
-//
-//- (IBAction) outBackwardSexp:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    self.selectedRange = NSMakeRange([coll fullyEnclosedRange].location, 0);
-//    [self scrollRangeToVisible:self.selectedRange];
-//}
-//
+}
+
+- (void) outBackwardSexp:(NSEvent*)event {
+    NSRange selection = self.selectedRange;
+    size_t childIndex;
+    size_t relativePos;
+    
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+    size_t absPos = LVCollAbsolutePosition(self.file.topLevelElement, coll);
+    
+    self.selectedRange = NSMakeRange(absPos, 0);
+    [self scrollRangeToVisible:self.selectedRange];
+}
+
 //- (IBAction) outForwardSexp:(id)sender {
 //    NSRange selection = self.selectedRange;
 //    NSUInteger childIndex;

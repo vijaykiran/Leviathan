@@ -16,8 +16,6 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
 static LVElement* parseOne(LVToken*** iter) {
     LVToken* currentToken = **iter;
     
-//    printf("token = %llu, [%s]\n", currentToken->type, currentToken->val->data);
-    
     if (currentToken->token_type & LVTokenType_LParen) {
         return (LVElement*)parseColl(iter, LVCollType_List, LVTokenType_RParen);
     }
@@ -94,7 +92,7 @@ static LVElement* parseOne(LVToken*** iter) {
         return (LVElement*)LVAtomCreate(LVAtomType_Comma, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_ReaderCommentStart) {
-        // TODO: parse-next and join as one comment atom with combined tokens.
+        // TODO: reader-comments could be considered a type of list, with "#_" as the opening token and "" as the closing
         ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_ReaderComment, currentToken);
     }
@@ -123,8 +121,6 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
     coll->open_token = **iter;
     ++*iter;
     
-//    printf("open coll type = %llu, wanting %llu, %s\n", coll->open_token->type, collType, coll->open_token->val->data);
-    
     for (LVToken* currentToken; ; ) {
         currentToken = **iter;
         
@@ -143,8 +139,6 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
         child->parent = coll;
         LVElementListAppend(coll, child);
     }
-    
-//    printf("done getting children for coll type = %llu\n", collType);
     
     return coll;
 }

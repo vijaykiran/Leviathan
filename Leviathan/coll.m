@@ -40,9 +40,8 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
         coll->children_cap += LV_COLL_CHUNK_SIZE;
         coll->children = realloc(coll->children, sizeof(LVElement*) * coll->children_cap);
     }
-//    printf("adding child %p to %p at %lu\n", child, coll, coll->children.len);
+    
     coll->children[coll->children_len] = child;
-//    printf("child added: child %p, should == %p which is at index %lu\n", child, coll->children.elements[coll->children.len], coll->children.len);
     coll->children_len++;
 }
 
