@@ -19,4 +19,4 @@ size_t LVElementLength(LVElement* el);
 void LVElementDestroy(LVElement* el);
 
 struct __LVColl* LVGetTopLevelElement(LVElement* any);
-size_t LVGetAbsolutePosition(LVElement* el);
+size_t LVGetAbsolutePosition(LVElement* needle);

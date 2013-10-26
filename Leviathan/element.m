@@ -34,10 +34,33 @@ void LVElementDestroy(LVElement* element) {
         LVCollDestroy((LVColl*)element);
 }
 
-size_t LVGetAbsolutePosition(LVElement* el) {
-    LVColl* topLevel = LVGetTopLevelElement(el);
+static BOOL findAbsolutePosition(LVColl* iter, LVElement* needle, size_t* pos) {
+    if (iter == (void*)needle)
+        return YES;
     
-    return 0;
+    *pos += iter->open_token->string->slen;
+    
+    for (size_t i = 0; i < iter->children_len; i++) {
+        LVElement* child = iter->children[i];
+        if (child->is_atom) {
+            *pos += ((LVAtom*)child)->token->string->slen;
+        }
+        else {
+            if (findAbsolutePosition((LVColl*)child, needle, pos))
+                return YES;
+        }
+    }
+    
+    *pos += iter->close_token->string->slen;
+    
+    return NO;
+}
+
+size_t LVGetAbsolutePosition(LVElement* needle) {
+    LVColl* iter = LVGetTopLevelElement(needle);
+    size_t pos = 0;
+    findAbsolutePosition(iter, needle, &pos);
+    return pos;
 }
 
 LVColl* LVGetTopLevelElement(LVElement* any) {
