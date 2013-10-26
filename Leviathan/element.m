@@ -25,8 +25,6 @@ size_t LVElementLength(LVElement* element) {
         }
         return len;
     }
-    printf("asking element length for bad element.\n");
-    abort();
 }
 
 void LVElementDestroy(LVElement* element) {
