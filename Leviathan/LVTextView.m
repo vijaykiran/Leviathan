@@ -14,9 +14,23 @@
 #import "LVHighlighter.h"
 #import "LVPreferences.h"
 
+
+
+#define SuppressPerformSelectorLeakWarning(Stuff) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff; \
+_Pragma("clang diagnostic pop") \
+} while (0)
+
+
+
 @interface LVShortcut : NSObject
 
-@property (copy) void(^handler)(NSEvent*);
+@property id target;
+@property SEL action;
+
 @property NSString* title;
 @property NSString* keyEquiv;
 @property NSArray* mods;
@@ -89,11 +103,9 @@
     
     self.shortcuts = [NSMutableArray array];
     
-    __unsafe_unretained id _self = self;
-    
-    [self addParedit:^(NSEvent* event){ [_self outBackwardSexp:event];} title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
-    [self addParedit:^(NSEvent* event){ [_self forwardSexp:event]; } title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
-    [self addParedit:^(NSEvent* event){ [_self backwardSexp:event]; } title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
+    [self addParedit:self action:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
+    [self addParedit:self action:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
+    [self addParedit:self action:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
 //    [self addParedit:^(NSEvent* event){ [_self outForwardSexp:event]; } title:@"Out Forward" keyEquiv:@"n" mods:NSControlKeyMask | NSAlternateKeyMask];
 //    [self addParedit:^(NSEvent* event){ [_self inForwardSexp:event]; } title:@"In Forward" keyEquiv:@"d" mods:NSControlKeyMask | NSAlternateKeyMask];
 //    [self addParedit:^(NSEvent* event){ [_self inBackwardSexp:event]; } title:@"In Backward" keyEquiv:@"p" mods:NSControlKeyMask | NSAlternateKeyMask];
@@ -109,13 +121,23 @@
 
 
 
-- (void) addParedit:(void(^)(NSEvent*))handler title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSArray*)mods {
+- (void) addParedit:(id)target action:(SEL)action title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSArray*)mods {
     LVShortcut* shortcut = [[LVShortcut alloc] init];
     shortcut.title = title;
     shortcut.keyEquiv = keyEquiv;
-    shortcut.handler = handler;
+    shortcut.target = target;
+    shortcut.action = action;
     shortcut.mods = mods;
     [self.shortcuts addObject:shortcut];
+    
+    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
+    NSMenuItem* item = [menu insertItemWithTitle:shortcut.title action:shortcut.action keyEquivalent:shortcut.keyEquiv atIndex:0];
+    NSUInteger realMods = 0;
+    if ([mods containsObject:@"CTRL"]) realMods |= NSControlKeyMask;
+    if ([mods containsObject:@"ALT"]) realMods |= NSAlternateKeyMask;
+    [item setKeyEquivalentModifierMask:realMods];
+    
+    // TODO: insert the target into the responder chain, between self and self.nextResponder
 }
 
 - (void) keyDown:(NSEvent *)theEvent {
@@ -128,7 +150,9 @@
             if ([key isEqualToString: @"ALT"] && ([theEvent modifierFlags] & NSAlternateKeyMask) == 0) continue;
         }
         
-        shortcut.handler(theEvent);
+        SuppressPerformSelectorLeakWarning([shortcut.target performSelector:shortcut.action
+                                                                 withObject:theEvent];);
+        
         return;
     }
     
@@ -540,8 +564,6 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //}
 
 - (void) forwardSexp:(NSEvent*)event {
-    printf("doin it\n");
-    
     NSRange selection = self.selectedRange;
     size_t childIndex;
     size_t relativePos;
