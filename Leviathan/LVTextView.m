@@ -179,7 +179,7 @@
     
     
 //    printf("coll=%p, idx=%lu, rel=%lu\n", coll, childsIndex, relativePos);
-    size_t collPos = LVCollAbsolutePosition(self.file.topLevelElement, coll);
+    size_t collPos = LVCollAbsolutePosition(coll);
     printf("%ld\n", collPos);
     
 //    LVElement* tmp = coll->children[childsIndex];
@@ -550,20 +550,20 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //}
 
 - (void) forwardSexp:(NSEvent*)event {
-    NSRange selection = self.selectedRange;
-    size_t childIndex;
-    size_t relativePos;
-    
-    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
-    
-    if (childIndex < coll->children_len) {
-        LVElement* element = coll->children[childIndex];
-        self.selectedRange = NSMakeRange(NSMaxRange([element fullyEnclosedRange]), 0);
-        [self scrollRangeToVisible:self.selectedRange];
-    }
-    else {
-        [self outForwardSexp:sender];
-    }
+//    NSRange selection = self.selectedRange;
+//    size_t childIndex;
+//    size_t relativePos;
+//    
+//    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+//    
+//    if (childIndex < coll->children_len) {
+//        LVElement* element = coll->children[childIndex];
+//        self.selectedRange = NSMakeRange(NSMaxRange([element fullyEnclosedRange]), 0);
+//        [self scrollRangeToVisible:self.selectedRange];
+//    }
+//    else {
+//        [self outForwardSexp:sender];
+//    }
 }
 
 - (void) backwardSexp:(NSEvent*)event {
@@ -587,7 +587,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
     size_t relativePos;
     
     LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
-    size_t absPos = LVCollAbsolutePosition(self.file.topLevelElement, coll);
+    size_t absPos = LVCollAbsolutePosition(coll);
     
     self.selectedRange = NSMakeRange(absPos, 0);
     [self scrollRangeToVisible:self.selectedRange];

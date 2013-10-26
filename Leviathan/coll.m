@@ -92,7 +92,17 @@ static BOOL findCollAbsolutePosition(LVColl* maybeColl, LVColl* needle, size_t* 
     return NO;
 }
 
-size_t LVCollAbsolutePosition(LVColl* topLevel, LVColl* needle) {
+LVColl* LVGetTopLevelElement(LVElement* any) {
+    LVColl* iter = (void*)any;
+    
+    while (iter->parent)
+        iter = iter->parent;
+    
+    return iter;
+}
+
+size_t LVCollAbsolutePosition(LVColl* needle) {
+    LVColl* topLevel = LVGetTopLevelElement((void*)needle);
     size_t pos = 0;
     findCollAbsolutePosition(topLevel, needle, &pos);
     return pos;

@@ -49,7 +49,7 @@ void LVElementListAppend(LVColl* coll, LVElement* child);
 LVColl* LVCollHighestParent(LVColl* coll);
 LVColl* LVFindDeepestColl(LVColl* coll, size_t start, size_t pos, size_t* childsIndex, size_t* relativePos);
 
-size_t LVCollAbsolutePosition(LVColl* topLevel, LVColl* coll); // like, in the whole document's string
+size_t LVCollAbsolutePosition(LVColl* coll); // like, in the whole document's string
 size_t LVGetElementIndexInSiblings(LVElement* child);
 
 bstring LVStringForColl(LVColl* coll);
