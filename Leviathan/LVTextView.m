@@ -585,6 +585,8 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         }
         // we're a semantic element!
         
+        // TODO: tidy this up with LVGetSemanticDirectChildren(parent, startingPos, &array) where array is a local var (size = parent->children_len)
+        
         posAfterElement = LVGetAbsolutePosition(element) + LVElementLength(element);
         
         // are we in the middle of the semantic element?
