@@ -52,9 +52,9 @@ static void highlight(LVElement* element, NSTextStorage* attrString, int deepnes
         else if (atom->atom_type & LVAtomType_String) style = theme.string;
         else if (atom->atom_type & LVAtomType_Regex) style = theme.regex;
         else if (atom->atom_type & LVAtomType_Number) style = theme.number;
-        else if (atom->atom_type & LVAtomType_TrueAtom) style = theme.number; // TODO: true, false, and nil should have their own theme keys
-        else if (atom->atom_type & LVAtomType_FalseAtom) style = theme.number;
-        else if (atom->atom_type & LVAtomType_NilAtom) style = theme.number;
+        else if (atom->atom_type & LVAtomType_TrueAtom) style = theme._true;
+        else if (atom->atom_type & LVAtomType_FalseAtom) style = theme._false;
+        else if (atom->atom_type & LVAtomType_NilAtom) style = theme._nil;
         else if (atom->atom_type & LVAtomType_Comment) style = theme.comment;
         else if (atom->atom_type & LVAtomType_TypeOp) style = theme.typeop;
         else if (atom->atom_type & LVAtomType_Quote) style = theme.quote;

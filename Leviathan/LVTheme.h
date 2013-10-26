@@ -54,5 +54,8 @@
 @property LVThemeStyle* string;
 @property LVThemeStyle* regex;
 @property LVThemeStyle* splice;
+@property LVThemeStyle* _true;
+@property LVThemeStyle* _false;
+@property LVThemeStyle* _nil;
 
 @end

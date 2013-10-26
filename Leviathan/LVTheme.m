@@ -96,6 +96,9 @@ NSColor* LVColorFromHex(NSString* hex) {
     theme.string = [LVThemeStyle styleFrom: [data objectForKey:@"string-style"]];
     theme.regex = [LVThemeStyle styleFrom: [data objectForKey:@"regex-style"]];
     theme.splice = [LVThemeStyle styleFrom: [data objectForKey:@"splice-style"]];
+    theme._true = [LVThemeStyle styleFrom: [data objectForKey:@"true-style"]];
+    theme._false = [LVThemeStyle styleFrom: [data objectForKey:@"false-style"]];
+    theme._nil = [LVThemeStyle styleFrom: [data objectForKey:@"nil-style"]];
     
     NSMutableArray* rainbowStyles = [NSMutableArray array];
     for (NSDictionary* rainbowParen in [data objectForKey:@"rainbow-parens-styles"]) {

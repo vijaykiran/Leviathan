@@ -8,6 +8,9 @@
  :typehint-style {:color "edd400" :bold true}
  :keyword-style {:color "73d216" :bold false}
  :number-style {:color "99bbff" :bold false}
+ :true-style {:color "99bbff" :bold true}
+ :false-style {:color "99bbff" :bold true}
+ :nil-style {:color "99bbff" :bold true}
  :string-style {:color "ad7fa8" :bold false}
  :def-name-style {:color "edd400" :bold true}
  :splice-style {:color "edd400" :bold true}
