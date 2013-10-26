@@ -550,20 +550,22 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //}
 
 - (void) forwardSexp:(NSEvent*)event {
-//    NSRange selection = self.selectedRange;
-//    size_t childIndex;
-//    size_t relativePos;
-//    
-//    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
-//    
-//    if (childIndex < coll->children_len) {
-//        LVElement* element = coll->children[childIndex];
-//        self.selectedRange = NSMakeRange(NSMaxRange([element fullyEnclosedRange]), 0);
-//        [self scrollRangeToVisible:self.selectedRange];
-//    }
-//    else {
+    NSRange selection = self.selectedRange;
+    size_t childIndex;
+    size_t relativePos;
+    
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+    
+    if (childIndex < coll->children_len) {
+        LVElement* element = coll->children[childIndex];
+        size_t posAfterElement = LVGetAbsolutePosition(element) + LVElementLength(element); // TODO: nope. this doesnt take into account non-semantic elements :(
+        
+        self.selectedRange = NSMakeRange(posAfterElement, 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
+    else {
 //        [self outForwardSexp:sender];
-//    }
+    }
 }
 
 - (void) backwardSexp:(NSEvent*)event {
