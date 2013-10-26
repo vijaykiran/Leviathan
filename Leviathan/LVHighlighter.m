@@ -18,8 +18,10 @@ static void highlight(LVElement* element, NSTextStorage* attrString, int deepnes
         
         BOOL notTopLevel = !(coll->coll_type & LVCollType_TopLevel);
         
+        LVThemeStyle* rainbows = [LVThemeManager sharedThemeManager].currentTheme.rainbowparens;
+        
         if (notTopLevel) {
-            [[LVThemeManager sharedThemeManager].currentTheme.rainbowparens highlightIn:attrString range:NSMakeRange(*startPos, coll->open_token->string->slen) depth:deepness];
+            [rainbows highlightIn:attrString range:NSMakeRange(*startPos, coll->open_token->string->slen) depth:deepness];
             *startPos += coll->open_token->string->slen;
         }
         
@@ -29,17 +31,9 @@ static void highlight(LVElement* element, NSTextStorage* attrString, int deepnes
         }
         
         if (notTopLevel) {
-            [[LVThemeManager sharedThemeManager].currentTheme.rainbowparens highlightIn:attrString range:NSMakeRange(*startPos, coll->close_token->string->slen) depth:deepness];
+            [rainbows highlightIn:attrString range:NSMakeRange(*startPos, coll->close_token->string->slen) depth:deepness];
             *startPos += coll->close_token->string->slen;
         }
-        
-        
-//        if ([element isKindOfClass:[LVDefinition self]]) {
-//            LVDefinition* def = element;
-//            
-//            [[LVThemeManager sharedThemeManager].currentTheme.def highlightIn:attrString range:def.defType.token.range depth:deepness];
-//            [[LVThemeManager sharedThemeManager].currentTheme.defname highlightIn:attrString range:def.defName.token.range depth:deepness];
-//        }
     }
     else {
         LVAtom* atom = (void*)element;
@@ -47,7 +41,9 @@ static void highlight(LVElement* element, NSTextStorage* attrString, int deepnes
         LVTheme* theme = [LVThemeManager sharedThemeManager].currentTheme;
         LVThemeStyle* style;
         
-        if (atom->atom_type & LVAtomType_Symbol) style = theme.symbol;
+        if (atom->atom_type & LVAtomType_DefType) style = theme.def;
+        else if (atom->atom_type & LVAtomType_DefName) style = theme.defname;
+        else if (atom->atom_type & LVAtomType_Symbol) style = theme.symbol;
         else if (atom->atom_type & LVAtomType_Keyword) style = theme.keyword;
         else if (atom->atom_type & LVAtomType_String) style = theme.string;
         else if (atom->atom_type & LVAtomType_Regex) style = theme.regex;
