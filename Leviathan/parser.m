@@ -140,6 +140,55 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
         LVElementListAppend(coll, child);
     }
     
+    if (coll->coll_type & LVCollType_List) {
+        LVAtom* defAtom = nil;
+        
+        BOOL lastWasTypeOp = NO;
+        
+        for (int i = 0; i < coll->children_len; i++) {
+            LVElement* child = coll->children[i];
+            LVAtom* atom = (void*)child;
+            
+            if (!atom->is_atom || !LVAtomIsSemantic(atom))
+                continue;
+            
+            // finally found a semantic atom!
+            
+            if (!defAtom) {
+                // it's the first one, too!
+                
+                if (atom->token->token_type & LVTokenType_Deflike) {
+                    defAtom = atom;
+                    // it's deflike!
+                }
+                else {
+                    // womp womp, it's not deflike.
+                    break;
+                }
+            }
+            else {
+                if (atom->atom_type & LVAtomType_TypeOp) {
+                    lastWasTypeOp = YES;
+                    continue;
+                }
+                
+                if (lastWasTypeOp) {
+                    lastWasTypeOp = NO;
+                    continue;
+                }
+                
+                lastWasTypeOp = NO;
+                
+                LVAtom* defName = atom;
+                
+                defAtom->atom_type |= LVAtomType_DefType;
+                defName->atom_type |= LVAtomType_DefName;
+                
+                break;
+            }
+        }
+    }
+    
     return coll;
 }
 
