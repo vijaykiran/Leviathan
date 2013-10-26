@@ -28,10 +28,8 @@ size_t LVElementLength(LVElement* element) {
 }
 
 void LVElementDestroy(LVElement* element) {
-    if (element->is_atom) {
+    if (element->is_atom)
         LVAtomDestroy((LVAtom*)element);
-    }
-    else {
+    else
         LVCollDestroy((LVColl*)element);
-    }
 }
