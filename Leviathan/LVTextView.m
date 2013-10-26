@@ -19,7 +19,7 @@
 @property (copy) void(^handler)(NSEvent*);
 @property NSString* title;
 @property NSString* keyEquiv;
-@property NSUInteger mods;
+@property NSArray* mods;
 
 @end
 
@@ -91,9 +91,9 @@
     
     __unsafe_unretained id _self = self;
     
-    [self addParedit:^(NSEvent* event){ [_self outBackwardSexp:event];} title:@"Out Backward" keyEquiv:@"u" mods:NSControlKeyMask | NSAlternateKeyMask];
-    [self addParedit:^(NSEvent* event){ [_self forwardSexp:event]; } title:@"Forward" keyEquiv:@"f" mods:NSControlKeyMask | NSAlternateKeyMask];
-    [self addParedit:^(NSEvent* event){ [_self backwardSexp:event]; } title:@"Backward" keyEquiv:@"b" mods:NSControlKeyMask | NSAlternateKeyMask];
+    [self addParedit:^(NSEvent* event){ [_self outBackwardSexp:event];} title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
+    [self addParedit:^(NSEvent* event){ [_self forwardSexp:event]; } title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
+    [self addParedit:^(NSEvent* event){ [_self backwardSexp:event]; } title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
 //    [self addParedit:^(NSEvent* event){ [_self outForwardSexp:event]; } title:@"Out Forward" keyEquiv:@"n" mods:NSControlKeyMask | NSAlternateKeyMask];
 //    [self addParedit:^(NSEvent* event){ [_self inForwardSexp:event]; } title:@"In Forward" keyEquiv:@"d" mods:NSControlKeyMask | NSAlternateKeyMask];
 //    [self addParedit:^(NSEvent* event){ [_self inBackwardSexp:event]; } title:@"In Backward" keyEquiv:@"p" mods:NSControlKeyMask | NSAlternateKeyMask];
@@ -109,7 +109,7 @@
 
 
 
-- (void) addParedit:(void(^)(NSEvent*))handler title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSUInteger)mods {
+- (void) addParedit:(void(^)(NSEvent*))handler title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSArray*)mods {
     LVShortcut* shortcut = [[LVShortcut alloc] init];
     shortcut.title = title;
     shortcut.keyEquiv = keyEquiv;
@@ -120,10 +120,16 @@
 
 - (void) keyDown:(NSEvent *)theEvent {
     for (LVShortcut* shortcut in self.shortcuts) {
-        if ([[theEvent charactersIgnoringModifiers] isEqualToString:shortcut.keyEquiv] && ([theEvent modifierFlags] & shortcut.mods)) {
-            shortcut.handler(theEvent);
-            return;
+        if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
+            continue;
+        
+        for (NSString* key in shortcut.mods) {
+            if ([key isEqualToString: @"CTRL"] && ([theEvent modifierFlags] & NSControlKeyMask) == 0) continue;
+            if ([key isEqualToString: @"ALT"] && ([theEvent modifierFlags] & NSAlternateKeyMask) == 0) continue;
         }
+        
+        shortcut.handler(theEvent);
+        return;
     }
     
     [super keyDown:theEvent];
@@ -232,17 +238,17 @@
 
 
 
-NSUInteger LVFirstNewlineBefore(NSString* str, NSUInteger pos) {
-    NSUInteger found = [str rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-                                            options:NSBackwardsSearch
-                                              range:NSMakeRange(0, pos)].location;
-    if (found == NSNotFound)
-        found = 0;
-    else
-        found++;
-    
-    return found;
-}
+//NSUInteger LVFirstNewlineBefore(NSString* str, NSUInteger pos) {
+//    NSUInteger found = [str rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
+//                                            options:NSBackwardsSearch
+//                                              range:NSMakeRange(0, pos)].location;
+//    if (found == NSNotFound)
+//        found = 0;
+//    else
+//        found++;
+//    
+//    return found;
+//}
 
 //BOOL LVIsFunctionLike(LVColl* coll) {
 //    // we already assume its a coll with 2+ childs
@@ -402,16 +408,6 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 ////    printf("\n");
 }
 
-- (void) replaceRange:(NSRange)r withString:(NSString*)str {
-    if ([self shouldChangeTextInRange:r replacementString:str]) {
-        [[self textStorage] replaceCharactersInRange:r withString:str];
-        [self didChangeText];
-    }
-}
-
-
-
-
 //- (IBAction) raiseSexp:(id)sender {
 //    NSRange selection = self.selectedRange;
 //    NSUInteger childIndex;
@@ -470,12 +466,6 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //    }
 //    
 //    [super insertText:insertString];
-//}
-//
-//- (void) addParedit:(SEL)sel title:(NSString*)title keyEquiv:(NSString*)key mods:(NSUInteger)mods {
-//    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
-//    NSMenuItem* item = [menu addItemWithTitle:title action:sel keyEquivalent:key];
-//    [item setKeyEquivalentModifierMask:mods];
 //}
 //
 //- (void) wrapNextInThing:(NSString*)thing {
@@ -550,16 +540,43 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //}
 
 - (void) forwardSexp:(NSEvent*)event {
+    printf("doin it\n");
+    
     NSRange selection = self.selectedRange;
     size_t childIndex;
     size_t relativePos;
     
     LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
     
-    if (childIndex < coll->children_len) {
-        LVElement* element = coll->children[childIndex];
-        size_t posAfterElement = LVGetAbsolutePosition(element) + LVElementLength(element); // TODO: nope. this doesnt take into account non-semantic elements :(
+    LVElement* elementToMoveToEndOf = NULL;
+    size_t posAfterElement;
+    
+    while (YES) {
+        if (childIndex == coll->children_len)
+            break;
         
+        LVElement* element = coll->children[childIndex];
+        
+        if (element->is_atom && !LVAtomIsSemantic((void*)element)) {
+            childIndex++;
+            continue;
+        }
+        // we're a semantic element!
+        
+        posAfterElement = LVGetAbsolutePosition(element) + LVElementLength(element);
+        
+        // are we in the middle of the semantic element?
+        if (selection.location < posAfterElement) {
+            // if so, great! we'll use this one
+            elementToMoveToEndOf = element;
+            break;
+        }
+        // guess we're at its end, check the next one maybe?
+        
+        childIndex++;
+    }
+    
+    if (elementToMoveToEndOf) {
         self.selectedRange = NSMakeRange(posAfterElement, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
