@@ -179,7 +179,7 @@
     
     
 //    printf("coll=%p, idx=%lu, rel=%lu\n", coll, childsIndex, relativePos);
-    size_t collPos = LVCollAbsolutePosition(coll);
+    size_t collPos = LVGetAbsolutePosition((void*)coll);
     printf("%ld\n", collPos);
     
 //    LVElement* tmp = coll->children[childsIndex];
@@ -587,7 +587,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
     size_t relativePos;
     
     LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
-    size_t absPos = LVCollAbsolutePosition(coll);
+    size_t absPos = LVGetAbsolutePosition((void*)coll);
     
     self.selectedRange = NSMakeRange(absPos, 0);
     [self scrollRangeToVisible:self.selectedRange];
