@@ -218,12 +218,8 @@
     bstring str = LVStringForColl(coll);
     NSString* newStr = [NSString stringWithUTF8String:(char*)str->data];
     
-//    NSTextStorage* ts = [self textStorage];
-//    [[ts mutableString] replaceCharactersInRange:range withString:newStr];
-    
     [self sd_r:range str:newStr];
     
-//    [self replaceRange:range withString:newStr];
     bdestroy(str);
     
     LVHighlight((void*)coll, [self textStorage], collPos);
@@ -423,23 +419,21 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 ////    printf("\n");
 }
 
-bstring LVStringForElement(LVElement* element) {
-    if (element->is_atom)
-        return bstrcpy(((LVAtom*)element)->token->string);
-    else
-        return LVStringForColl((void*)element);
-}
-
 - (void) raiseSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     size_t childIndex;
     
     LVColl* parent = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex);
     
+    if (parent->coll_type & LVCollType_TopLevel)
+        return;
+    
     if (childIndex < parent->children_len) {
         LVElement* child = parent->children[childIndex];
         
-        // TODO: when you're "here|", this fn should probably reindent either "here" or the next semantic sibling (if one). decide which, and make it happen.
+        size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
+        
+        // TODO: when you're "here|", this fn should probably reindent the next semantic sibling (if there is one)
         
         LVColl* grandparent = parent->parent;
         size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
@@ -449,7 +443,7 @@ bstring LVStringForElement(LVElement* element) {
         grandparent->children[parentIndex] = child;
         child->parent = grandparent;
         
-        // TODO: re-indent grandparent right here
+        // TODO: re-indent grandparent (or maybe just child?) right here
         
         bstring str = LVStringForElement(child);
         NSString* newstr = [NSString stringWithFormat:@"%s", str->data];
@@ -458,22 +452,9 @@ bstring LVStringForElement(LVElement* element) {
         [self.textStorage replaceCharactersInRange:oldParentRange withString:newstr];
         
         LVHighlight(child, self.textStorage, oldParentRange.location);
+        
+        self.selectedRange = NSMakeRange(oldParentRange.location + relativeOffset, 0);
     }
-    
-//    if (childIndex < [coll.childElements count]) {
-//        id<LVElement> child = [coll.childElements objectAtIndex:childIndex];
-//        
-//        NSString* newStr = [[[self textStorage] string] substringWithRange:[child fullyEnclosedRange]];
-//        
-//        NSRange range = NSUnionRange(coll.openingToken.range, coll.closingToken.range);
-//        
-//        [self setSelectedRange:range];
-//        [self delete:self];
-//        
-//        NSRange r = [self selectedRange];
-//        [self insertText:newStr];
-//        [self setSelectedRange:r];
-//    }
 }
 
 //- (void) insertText:(id)insertString {

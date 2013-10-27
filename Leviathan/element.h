@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
+#import "bstrlib.h"
+
 struct __LVColl;
 
 typedef struct __LVElement {
@@ -20,3 +22,5 @@ void LVElementDestroy(LVElement* el);
 
 struct __LVColl* LVGetTopLevelElement(LVElement* any);
 size_t LVGetAbsolutePosition(LVElement* needle);
+
+bstring LVStringForElement(LVElement* element);

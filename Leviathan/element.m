@@ -73,3 +73,10 @@ LVColl* LVGetTopLevelElement(LVElement* any) {
     
     return iter;
 }
+
+bstring LVStringForElement(LVElement* element) {
+    if (element->is_atom)
+        return bstrcpy(((LVAtom*)element)->token->string);
+    else
+        return LVStringForColl((void*)element);
+}
