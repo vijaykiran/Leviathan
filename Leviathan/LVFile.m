@@ -40,10 +40,10 @@
 }
 
 - (void) setFont {
-    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
-    [self.textStorage addAttribute:NSFontAttributeName
-                             value:[LVPreferences userFont]
-                             range:fullRange];
+//    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
+//    [self.textStorage addAttribute:NSFontAttributeName
+//                             value:[LVPreferences userFont]
+//                             range:fullRange];
 }
 
 - (void) loadFromFile {
@@ -51,11 +51,11 @@
     
     if (self.fileURL) {
         self.textOnDisk = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
-        self.textStorage = [[NSTextStorage alloc] initWithString:self.textOnDisk];
+        self.textStorage = [[LVClojureText alloc] initWithString:self.textOnDisk];
     }
     else {
         self.textOnDisk = @"";
-        self.textStorage = [[NSTextStorage alloc] initWithString:@""];
+        self.textStorage = [[LVClojureText alloc] initWithString:@""];
     }
 }
 

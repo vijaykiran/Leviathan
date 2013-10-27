@@ -10,6 +10,8 @@
 
 #import "coll.h"
 
+#import "LVClojureText.h"
+
 @interface LVFile : NSObject <NSTextStorageDelegate>
 
 + (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName;
@@ -19,7 +21,7 @@
 @property NSString* shortName;
 
 @property NSUndoManager* undoManager;
-@property NSTextStorage* textStorage;
+@property LVClojureText* textStorage;
 
 @property LVColl* topLevelElement;
 
