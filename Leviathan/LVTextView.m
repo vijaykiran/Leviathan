@@ -448,6 +448,8 @@ bstring LVStringForElement(LVElement* element) {
     if (childIndex < parent->children_len) {
         LVElement* child = parent->children[childIndex];
         
+        // TODO: when you're "here|", this fn should probably reindent either "here" or the next semantic sibling (if one). decide which, and make it happen.
+        
         LVColl* grandparent = parent->parent;
         size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
         
