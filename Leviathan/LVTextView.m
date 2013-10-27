@@ -183,11 +183,9 @@
         [self.file parseFromTextStorage];
         
         size_t childsIndex;
-        size_t relativePos;
-        LVColl* parent = LVFindDeepestColl(self.file.topLevelElement, 0, r.location, &childsIndex, &relativePos);
+        LVColl* parent = LVFindDeepestColl(self.file.topLevelElement, 0, r.location, &childsIndex);
         
         LVElement* child = parent->children[childsIndex];
-        
         LVHighlight((void*)child, self.textStorage, r.location);
     }
     
@@ -196,8 +194,7 @@
 
 - (void) insertText:(id)insertString {
     size_t childsIndex;
-    size_t relativePos;
-    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex, &relativePos);
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex);
     
     
 //    printf("coll=%p, idx=%lu, rel=%lu\n", coll, childsIndex, relativePos);
@@ -434,9 +431,8 @@ bstring LVStringForElement(LVElement* element) {
 - (void) raiseSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     size_t childIndex;
-    size_t relativePos;
     
-    LVColl* parent = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+    LVColl* parent = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex);
     
     if (childIndex < parent->children_len) {
         LVElement* child = parent->children[childIndex];
@@ -591,9 +587,8 @@ bstring LVStringForElement(LVElement* element) {
 - (void) forwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     size_t childIndex;
-    size_t relativePos;
     
-    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex);
     
     LVElement* elementToMoveToEndOf = NULL;
     size_t posAfterElement;
@@ -642,9 +637,8 @@ bstring LVStringForElement(LVElement* element) {
 - (void) outBackwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     size_t childIndex;
-    size_t relativePos;
     
-    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex);
     size_t absPos = LVGetAbsolutePosition((void*)coll);
     
     self.selectedRange = NSMakeRange(absPos, 0);
@@ -654,9 +648,8 @@ bstring LVStringForElement(LVElement* element) {
 - (void) outForwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     size_t childIndex;
-    size_t relativePos;
     
-    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex);
     size_t absPos = LVGetAbsolutePosition((void*)coll);
     size_t len = LVElementLength((void*)coll);
     
