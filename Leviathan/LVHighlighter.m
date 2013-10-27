@@ -76,7 +76,7 @@
     foundRange.length = foundToken->string->slen;
     
     if (rangePtr) {
-        rangePtr->location = foundRange.location;
+        rangePtr->location = foundPos;
         rangePtr->length = foundRange.length;
     }
     
