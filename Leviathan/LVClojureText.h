@@ -8,6 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "coll.h"
+
 @interface LVClojureText : NSTextStorage
+
+@property LVColl* topLevelElement;
 
 @end

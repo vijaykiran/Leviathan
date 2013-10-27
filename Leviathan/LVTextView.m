@@ -11,7 +11,6 @@
 #import "atom.h"
 
 #import "LVThemeManager.h"
-#import "LVHighlighter.h"
 #import "LVPreferences.h"
 
 

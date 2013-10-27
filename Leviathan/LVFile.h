@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "coll.h"
-
 #import "LVClojureText.h"
 
-@interface LVFile : NSObject <NSTextStorageDelegate>
+@interface LVFile : NSObject
 
 + (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName;
 
@@ -22,12 +20,6 @@
 
 @property NSUndoManager* undoManager;
 @property LVClojureText* textStorage;
-
-@property LVColl* topLevelElement;
-
-- (void) initialHighlight;
-
-- (void) parseFromTextStorage;
 
 - (void) save;
 - (BOOL) hasChanges;

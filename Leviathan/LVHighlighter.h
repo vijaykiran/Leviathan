@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "element.h"
+#import "coll.h"
 
-void LVHighlight(LVElement* element, NSTextStorage* attrString, NSUInteger startPos);
+@interface LVHighlighter : NSObject
+
++ (LVHighlighter*) sharedHighlighter;
+
+- (NSDictionary*) attributesForTree:(LVColl*)topLevelColl atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr;
+
+@end

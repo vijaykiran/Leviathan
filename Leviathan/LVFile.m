@@ -8,13 +8,6 @@
 
 #import "LVFile.h"
 
-#import "LVThemeManager.h"
-#import "LVHighlighter.h"
-
-#import "LVPreferences.h"
-
-#import "parser.h"
-
 @interface LVFile ()
 
 @property NSString* textOnDisk;
@@ -32,18 +25,8 @@
     file.shortName = shortName;
     
     [file loadFromFile];
-    [file parseFromTextStorage];
-    [file setFont];
-    file.textStorage.delegate = file;
     
     return file;
-}
-
-- (void) setFont {
-//    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
-//    [self.textStorage addAttribute:NSFontAttributeName
-//                             value:[LVPreferences userFont]
-//                             range:fullRange];
 }
 
 - (void) loadFromFile {
@@ -59,34 +42,11 @@
     }
 }
 
-- (void) parseFromTextStorage {
-    if (self.topLevelElement)
-        LVCollDestroy(self.topLevelElement);
-    
-    self.topLevelElement = LVParse([[self.textStorage string] UTF8String]);
-}
-
-- (void) initialHighlight {
-    [self.textStorage beginEditing];
-    
-    if (self.topLevelElement) {
-        LVHighlight((void*)self.topLevelElement, self.textStorage, 0);
-    }
-    
-    [self.textStorage endEditing];
-}
-
 - (BOOL) hasChanges {
     return ![[self.textStorage string] isEqualToString:self.textOnDisk];
 }
 
 - (void) save {
-//    bstring str = LVStringForColl(self.topLevelElement);
-//    printf("%s\n", str->data);
-//    bdestroy(str);
-//    
-//    return;
-    
     if (self.fileURL) {
         NSString* tempString = [self.textStorage string];
         
