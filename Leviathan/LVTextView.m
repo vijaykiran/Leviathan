@@ -33,7 +33,6 @@
 
 @interface LVTextView ()
 
-@property NSUndoManager* myUndos; // TODO: unused?
 @property NSMutableArray* shortcuts;
 
 @end
@@ -141,10 +140,13 @@
         if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
             continue;
         
-        for (NSString* key in shortcut.mods) {
-            if ([key isEqualToString: @"CTRL"] && ([theEvent modifierFlags] & NSControlKeyMask) == 0) continue;
-            if ([key isEqualToString: @"ALT"] && ([theEvent modifierFlags] & NSAlternateKeyMask) == 0) continue;
-        }
+        NSMutableArray* needs = [NSMutableArray array];
+        
+        if ([theEvent modifierFlags] & NSControlKeyMask) [needs addObject:@"CTRL"];
+        if ([theEvent modifierFlags] & NSAlternateKeyMask) [needs addObject:@"ALT"];
+        
+        if (![needs isEqualToArray: shortcut.mods])
+            continue;
         
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
