@@ -419,6 +419,17 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 ////    printf("\n");
 }
 
+LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
+    LVElement* semanticChildren[parent->children_len];
+    size_t semanticChildrenCount;
+    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
+    
+    if (semanticChildrenCount > 0)
+        return semanticChildren[0];
+    else
+        return NULL;
+}
+
 - (void) raiseSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     size_t childIndex;
@@ -428,12 +439,10 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
     if (parent->coll_type & LVCollType_TopLevel)
         return;
     
-    if (childIndex < parent->children_len) {
-        LVElement* child = parent->children[childIndex];
-        
+    LVElement* child = LVGetNextSemanticElement(parent, childIndex);
+    
+    if (child) {
         size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
-        
-        // TODO: when you're "here|", this fn should probably reindent the next semantic sibling (if there is one)
         
         LVColl* grandparent = parent->parent;
         size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
