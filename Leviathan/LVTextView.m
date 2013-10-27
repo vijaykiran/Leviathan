@@ -97,7 +97,9 @@
     [self addParedit:self action:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
     [self addParedit:self action:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
     [self addParedit:self action:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
-//    [self addParedit:^(NSEvent* event){ [_self outForwardSexp:event]; } title:@"Out Forward" keyEquiv:@"n" mods:NSControlKeyMask | NSAlternateKeyMask];
+    
+    [self addParedit:self action:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
+    
 //    [self addParedit:^(NSEvent* event){ [_self inForwardSexp:event]; } title:@"In Forward" keyEquiv:@"d" mods:NSControlKeyMask | NSAlternateKeyMask];
 //    [self addParedit:^(NSEvent* event){ [_self inBackwardSexp:event]; } title:@"In Backward" keyEquiv:@"p" mods:NSControlKeyMask | NSAlternateKeyMask];
     
@@ -589,7 +591,7 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
         [self scrollRangeToVisible:self.selectedRange];
     }
     else {
-//        [self outForwardSexp:sender];
+        [self outForwardSexp:event];
     }
 }
 
@@ -620,15 +622,19 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
     [self scrollRangeToVisible:self.selectedRange];
 }
 
-//- (IBAction) outForwardSexp:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    self.selectedRange = NSMakeRange(NSMaxRange([coll fullyEnclosedRange]), 0);
-//    [self scrollRangeToVisible:self.selectedRange];
-//}
-//
+- (void) outForwardSexp:(NSEvent*)event {
+    NSRange selection = self.selectedRange;
+    size_t childIndex;
+    size_t relativePos;
+    
+    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex, &relativePos);
+    size_t absPos = LVGetAbsolutePosition((void*)coll);
+    size_t len = LVElementLength((void*)coll);
+    
+    self.selectedRange = NSMakeRange(absPos + len, 0);
+    [self scrollRangeToVisible:self.selectedRange];
+}
+
 //- (IBAction) inForwardSexp:(id)sender {
 //    NSRange selection = self.selectedRange;
 //    NSUInteger childIndex;
