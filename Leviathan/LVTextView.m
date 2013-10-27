@@ -169,36 +169,29 @@
     [self indentCurrentBody];
 }
 
-//- (IBAction) undo:(id)sender {
-//    
-//    [[self undoManager] undo];
-//    
-//    NSLog(@"undo");
-//}
-//
-//- (IBAction) redo:(id)sender {
-//    [[self undoManager] redo];
-//    
-//    NSLog(@"redo");
-//}
-
-- (void) sd_r:(NSRange)r str:(NSString*)str rehighlight:(BOOL)rehighlight {
+- (void) sd_r:(NSRange)r str:(NSString*)str {
     [[self undoManager] setActionIsDiscardable:YES];
-      
+    
     NSRange newrange = r;
     r.length = str.length;
     [[[self undoManager] prepareWithInvocationTarget:self] sd_r:newrange
-                                                            str:[self.textStorage.string substringWithRange:newrange]
-                                                    rehighlight:YES];
+                                                            str:[self.textStorage.string substringWithRange:newrange]];
     
     [[[self textStorage] mutableString] replaceCharactersInRange:r withString:str];
     
-    if (rehighlight)
-        LVHighlight((void*)self.file.topLevelElement, self.textStorage, 0);
+    if ([[self undoManager] isUndoing] || [[self undoManager] isRedoing]) {
+        [self.file parseFromTextStorage];
+        
+        size_t childsIndex;
+        size_t relativePos;
+        LVColl* parent = LVFindDeepestColl(self.file.topLevelElement, 0, r.location, &childsIndex, &relativePos);
+        
+        LVElement* child = parent->children[childsIndex];
+        
+        LVHighlight((void*)child, self.textStorage, r.location);
+    }
     
 //    self.selectedRange = r;
-//    [super delete:nil];
-//    [super insertText:str];
 }
 
 - (void) insertText:(id)insertString {
@@ -209,7 +202,7 @@
     
 //    printf("coll=%p, idx=%lu, rel=%lu\n", coll, childsIndex, relativePos);
     size_t collPos = LVGetAbsolutePosition((void*)coll);
-    printf("%ld\n", collPos);
+//    printf("%ld\n", collPos);
     
 //    LVElement* tmp = coll->children[childsIndex];
 //    coll->children[childsIndex] = coll->children[childsIndex+2];
@@ -229,12 +222,12 @@
 //    NSTextStorage* ts = [self textStorage];
 //    [[ts mutableString] replaceCharactersInRange:range withString:newStr];
     
-    [self sd_r:range str:newStr rehighlight:NO];
+    [self sd_r:range str:newStr];
     
 //    [self replaceRange:range withString:newStr];
     bdestroy(str);
     
-    LVHighlightSomeChild((void*)coll, [self textStorage], collPos);
+    LVHighlight((void*)coll, [self textStorage], collPos);
     
     self.selectedRange = oldSelection;
     
@@ -466,7 +459,7 @@ bstring LVStringForElement(LVElement* element) {
         
         [self.textStorage replaceCharactersInRange:oldParentRange withString:newstr];
         
-        LVHighlightSomeChild(child, self.textStorage, oldParentRange.location);
+        LVHighlight(child, self.textStorage, oldParentRange.location);
     }
     
 //    if (childIndex < [coll.childElements count]) {

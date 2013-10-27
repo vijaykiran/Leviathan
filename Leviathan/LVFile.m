@@ -31,7 +31,8 @@
     file.longName = longName;
     file.shortName = shortName;
     
-    [file parseFromFile];
+    [file loadFromFile];
+    [file parseFromTextStorage];
     [file setFont];
     file.textStorage.delegate = file;
     
@@ -45,7 +46,7 @@
                              range:fullRange];
 }
 
-- (void) parseFromFile {
+- (void) loadFromFile {
     // this method assumes it's only called once per file!
     
     if (self.fileURL) {
@@ -56,7 +57,13 @@
         self.textOnDisk = @"";
         self.textStorage = [[NSTextStorage alloc] initWithString:@""];
     }
-    self.topLevelElement = LVParse([self.textOnDisk UTF8String]);
+}
+
+- (void) parseFromTextStorage {
+    if (self.topLevelElement)
+        LVCollDestroy(self.topLevelElement);
+    
+    self.topLevelElement = LVParse([[self.textStorage string] UTF8String]);
 }
 
 - (void) initialHighlight {

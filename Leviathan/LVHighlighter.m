@@ -65,18 +65,14 @@ static void highlight(LVElement* element, NSTextStorage* attrString, int deepnes
 }
 
 void LVHighlight(LVElement* element, NSTextStorage* attrString, NSUInteger startPos) {
-    highlight(element, attrString, 0, &startPos);
-}
-
-void LVHighlightSomeChild(LVElement* child, NSTextStorage* attrString, NSUInteger startPos) {
     int depth = 0;
     
-    LVElement* iter = child;
+    LVElement* iter = element;
     
     while (iter->parent) {
         depth++;
         iter = (void*)iter->parent;
     }
     
-    highlight(child, attrString, depth, &startPos);
+    highlight(element, attrString, depth, &startPos);
 }

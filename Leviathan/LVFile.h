@@ -25,6 +25,8 @@
 
 - (void) initialHighlight;
 
+- (void) parseFromTextStorage;
+
 - (void) save;
 - (BOOL) hasChanges;
 
