@@ -63,3 +63,5 @@ size_t LVGetElementIndexInSiblings(LVElement* child);
 bstring LVStringForColl(LVColl* coll);
 
 void LVFindDefinitions(LVColl* coll, NSMutableArray* defs);
+
+void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count);

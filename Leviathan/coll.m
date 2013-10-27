@@ -140,18 +140,6 @@ LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* child
     return coll;
 }
 
-//- (void) findDefinitions:(NSMutableArray*)defs {
-//    for (id<LVElement> child in self.childElements) {
-//        if ([child isKindOfClass:[LVDefinition self]]) {
-//            [defs addObject:child];
-//        }
-//        
-//        if ([child isColl]) {
-//            [[child asColl] findDefinitions:defs];
-//        }
-//    }
-//}
-
 LVColl* LVCollHighestParent(LVColl* coll) {
     while (coll->parent->parent)
         coll = coll->parent;
@@ -193,5 +181,15 @@ void LVFindDefinitions(LVColl* coll, NSMutableArray* defs) {
         }
         
         LVFindDefinitions(child, defs);
+    }
+}
+
+void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count) {
+    *count = 0;
+    for (size_t i = startingPos; i < parent->children_len; i++) {
+        LVElement* child = parent->children[i];
+        
+        if ((!child->is_atom) || (child->is_atom && LVAtomIsSemantic((void*)child)))
+            array[(*count)++] = child;
     }
 }

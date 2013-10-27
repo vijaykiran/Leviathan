@@ -557,18 +557,6 @@ NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absP
 //    [self wrapNextInThing:@"(%@)"];
 //}
 
-void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count) {
-    *count = 0;
-    for (size_t i = startingPos; i < parent->children_len; i++) {
-        LVElement* child = parent->children[*count];
-        
-        if (child->is_atom && !LVAtomIsSemantic((void*)child))
-            continue;
-        
-        array[++*count] = child;
-    }
-}
-
 - (void) forwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     size_t childIndex;
@@ -595,35 +583,6 @@ void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement**
             break;
         }
     }
-    
-    /*
-    while (YES) {
-        if (childIndex == coll->children_len)
-            break;
-        
-        LVElement* element = coll->children[childIndex];
-        
-        if (element->is_atom && !LVAtomIsSemantic((void*)element)) {
-            childIndex++;
-            continue;
-        }
-        // we're a semantic element!
-        
-        // TODO: tidy this up with LVGetSemanticDirectChildren(parent, startingPos, &array, &count) where array is a local var (size = parent->children_len)
-        
-        posAfterElement = LVGetAbsolutePosition(element) + LVElementLength(element);
-        
-        // are we in the middle of the semantic element?
-        if (selection.location < posAfterElement) {
-            // if so, great! we'll use this one
-            elementToMoveToEndOf = element;
-            break;
-        }
-        // guess we're at its end, check the next one maybe?
-        
-        childIndex++;
-    }
-     */
     
     if (elementToMoveToEndOf) {
         self.selectedRange = NSMakeRange(posAfterElement, 0);
