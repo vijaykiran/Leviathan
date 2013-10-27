@@ -42,18 +42,17 @@
     LVColl* foundColl = LVFindDeepestColl(topLevelColl, 0, absPos, &childsIndex);
     
     LVToken* foundToken = NULL;
-    NSUInteger foundPos;
     
     if (childsIndex == foundColl->children_len) {
         // we're at its end_token
-        foundPos = LVGetAbsolutePosition((void*)foundColl) + LVElementLength((void*)foundColl) - foundColl->close_token->string->slen;
+        if (rangePtr) rangePtr->location = LVGetAbsolutePosition((void*)foundColl) + LVElementLength((void*)foundColl) - foundColl->close_token->string->slen;
         foundToken = foundColl->close_token;
     }
     else {
         // we're at another legit element
         LVElement* child = foundColl->children[childsIndex];
         
-        foundPos = LVGetAbsolutePosition(child);
+        if (rangePtr) rangePtr->location = LVGetAbsolutePosition(child);
         
         if (child->is_atom) {
             // we're an atom!
@@ -65,20 +64,16 @@
         }
     }
     
+    if (rangePtr) rangePtr->length = foundToken->string->slen;
+    
+    
+    
     NSDictionary* attrs;
     
     if (foundToken->token_type & LVTokenType_Symbol)
         attrs = self.tempStyle1;
     else
         attrs = self.tempStyle2;
-    
-    NSRange foundRange;
-    foundRange.length = foundToken->string->slen;
-    
-    if (rangePtr) {
-        rangePtr->location = foundPos;
-        rangePtr->length = foundRange.length;
-    }
     
     return attrs;
 }
