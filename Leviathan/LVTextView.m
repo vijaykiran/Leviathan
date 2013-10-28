@@ -63,6 +63,10 @@
     self.enclosingScrollView.verticalScroller.knobStyle = NSScrollerKnobStyleLight;
     self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
+    self.automaticTextReplacementEnabled = NO;
+    self.automaticSpellingCorrectionEnabled = NO;
+    self.automaticQuoteSubstitutionEnabled = NO;
+    
     self.font = [LVPreferences userFont];
     
     self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
