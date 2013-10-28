@@ -33,8 +33,8 @@ void LVCollDestroy(LVColl* coll) {
     }
     
     free(coll->children);
-    LVTokenDelete(coll->open_token);
-    LVTokenDelete(coll->close_token);
+//    LVTokenDelete(coll->open_token);
+//    LVTokenDelete(coll->close_token);
     free(coll);
 }
 
@@ -51,8 +51,8 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 
 
 static void appendToString(LVColl* coll, bstring str) {
-    bconcat(str, coll->open_token->string);
-    
+//    bconcat(str, coll->open_token->string);
+//    
     for (size_t i = 0; i < coll->children_len; i++) {
         LVElement* child = coll->children[i];
         if (child->is_atom) {
@@ -63,8 +63,8 @@ static void appendToString(LVColl* coll, bstring str) {
             appendToString((void*)child, str);
         }
     }
-    
-    bconcat(str, coll->close_token->string);
+//    
+//    bconcat(str, coll->close_token->string);
 }
 
 bstring LVStringForColl(LVColl* coll) {

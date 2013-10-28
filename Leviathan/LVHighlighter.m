@@ -25,69 +25,69 @@
 }
 
 - (NSDictionary*) attributesForTree:(LVColl*)topLevelColl atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr {
-    size_t childsIndex;
-    LVColl* foundColl = LVFindDeepestColl(topLevelColl, 0, absPos, &childsIndex);
-    
-    LVToken* foundToken = NULL;
-    LVAtom* foundAtom = NULL;
-    
-    size_t depth = LVGetElementDepth((void*)foundColl);
-    
-    if (childsIndex == foundColl->children_len) {
-        // we're at its end_token
-        depth--;
-        if (rangePtr) rangePtr->location = LVGetAbsolutePosition((void*)foundColl) + LVElementLength((void*)foundColl) - foundColl->close_token->string->slen;
-        foundToken = foundColl->close_token;
-    }
-    else {
-        // we're at another legit element
-        LVElement* child = foundColl->children[childsIndex];
-        
-        if (rangePtr) rangePtr->location = LVGetAbsolutePosition(child);
-        
-        if (child->is_atom) {
-            // we're an atom!
-            foundAtom = (LVAtom*)child;
-            foundToken = foundAtom->token;
-        }
-        else {
-            // we're really at its open-token
-            foundToken = ((LVColl*)child)->open_token;
-        }
-    }
-    
-    if (rangePtr) rangePtr->length = foundToken->string->slen;
-    
-    LVTheme* theme = [LVThemeManager sharedThemeManager].currentTheme;
-    
-    if (foundAtom) {
-        if (foundAtom->atom_type & LVAtomType_Spaces) return theme.symbol.attrs;
-        if (foundAtom->atom_type & LVAtomType_Newline) return theme.symbol.attrs;
-        if (foundAtom->atom_type & LVAtomType_Comma) return theme.symbol.attrs;
-        
-        if (foundAtom->atom_type & LVAtomType_DefType) return theme.def.attrs;
-        if (foundAtom->atom_type & LVAtomType_DefName) return theme.defname.attrs;
-        if (foundAtom->atom_type & LVAtomType_Symbol) return theme.symbol.attrs;
-        if (foundAtom->atom_type & LVAtomType_Keyword) return theme.keyword.attrs;
-        if (foundAtom->atom_type & LVAtomType_String) return theme.string.attrs;
-        if (foundAtom->atom_type & LVAtomType_Regex) return theme.regex.attrs;
-        if (foundAtom->atom_type & LVAtomType_Number) return theme.number.attrs;
-        if (foundAtom->atom_type & LVAtomType_TrueAtom) return theme._true.attrs;
-        if (foundAtom->atom_type & LVAtomType_FalseAtom) return theme._false.attrs;
-        if (foundAtom->atom_type & LVAtomType_NilAtom) return theme._nil.attrs;
-        if (foundAtom->atom_type & LVAtomType_Comment) return theme.comment.attrs;
-        if (foundAtom->atom_type & LVAtomType_TypeOp) return theme.typeop.attrs;
-        if (foundAtom->atom_type & LVAtomType_Quote) return theme.quote.attrs;
-        if (foundAtom->atom_type & LVAtomType_Unquote) return theme.unquote.attrs;
-        if (foundAtom->atom_type & LVAtomType_SyntaxQuote) return theme.syntaxquote.attrs;
-        if (foundAtom->atom_type & LVAtomType_Splice) return theme.splice.attrs;
-    }
-    else {
-        NSArray* rainbows = [LVThemeManager sharedThemeManager].currentTheme.rainbowparens;
-        LVThemeStyle* style = [rainbows objectAtIndex: depth % [rainbows count]];
-        return style.attrs;
-    }
-    
+//    size_t childsIndex;
+//    LVColl* foundColl = LVFindDeepestColl(topLevelColl, 0, absPos, &childsIndex);
+//    
+//    LVToken* foundToken = NULL;
+//    LVAtom* foundAtom = NULL;
+//    
+//    size_t depth = LVGetElementDepth((void*)foundColl);
+//    
+//    if (childsIndex == foundColl->children_len) {
+//        // we're at its end_token
+//        depth--;
+//        if (rangePtr) rangePtr->location = LVGetAbsolutePosition((void*)foundColl) + LVElementLength((void*)foundColl) - foundColl->close_token->string->slen;
+//        foundToken = foundColl->close_token;
+//    }
+//    else {
+//        // we're at another legit element
+//        LVElement* child = foundColl->children[childsIndex];
+//        
+//        if (rangePtr) rangePtr->location = LVGetAbsolutePosition(child);
+//        
+//        if (child->is_atom) {
+//            // we're an atom!
+//            foundAtom = (LVAtom*)child;
+//            foundToken = foundAtom->token;
+//        }
+//        else {
+//            // we're really at its open-token
+//            foundToken = ((LVColl*)child)->open_token;
+//        }
+//    }
+//    
+//    if (rangePtr) rangePtr->length = foundToken->string->slen;
+//    
+//    LVTheme* theme = [LVThemeManager sharedThemeManager].currentTheme;
+//    
+//    if (foundAtom) {
+//        if (foundAtom->atom_type & LVAtomType_Spaces) return theme.symbol.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Newline) return theme.symbol.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Comma) return theme.symbol.attrs;
+//        
+//        if (foundAtom->atom_type & LVAtomType_DefType) return theme.def.attrs;
+//        if (foundAtom->atom_type & LVAtomType_DefName) return theme.defname.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Symbol) return theme.symbol.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Keyword) return theme.keyword.attrs;
+//        if (foundAtom->atom_type & LVAtomType_String) return theme.string.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Regex) return theme.regex.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Number) return theme.number.attrs;
+//        if (foundAtom->atom_type & LVAtomType_TrueAtom) return theme._true.attrs;
+//        if (foundAtom->atom_type & LVAtomType_FalseAtom) return theme._false.attrs;
+//        if (foundAtom->atom_type & LVAtomType_NilAtom) return theme._nil.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Comment) return theme.comment.attrs;
+//        if (foundAtom->atom_type & LVAtomType_TypeOp) return theme.typeop.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Quote) return theme.quote.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Unquote) return theme.unquote.attrs;
+//        if (foundAtom->atom_type & LVAtomType_SyntaxQuote) return theme.syntaxquote.attrs;
+//        if (foundAtom->atom_type & LVAtomType_Splice) return theme.splice.attrs;
+//    }
+//    else {
+//        NSArray* rainbows = [LVThemeManager sharedThemeManager].currentTheme.rainbowparens;
+//        LVThemeStyle* style = [rainbows objectAtIndex: depth % [rainbows count]];
+//        return style.attrs;
+//    }
+//    
     abort();
 }
 

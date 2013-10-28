@@ -18,7 +18,7 @@ size_t LVElementLength(LVElement* element) {
     }
     else {
         LVColl* coll = (LVColl*)element;
-        size_t len = coll->open_token->string->slen + coll->close_token->string->slen;
+//        size_t len = coll->open_token->string->slen + coll->close_token->string->slen;
         for (int i = 0; i < coll->children_len; i++) {
             LVElement* child = coll->children[i];
             len += LVElementLength(child);
