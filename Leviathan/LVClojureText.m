@@ -48,6 +48,8 @@
 }
 
 - (NSDictionary *)attributesAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
+    assert(self.highlights != NULL);
+    
     LVHighlights* h = &self.highlights[index];
     
     if (!h->attrs)
