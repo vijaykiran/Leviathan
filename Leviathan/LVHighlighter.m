@@ -13,13 +13,6 @@
 #import "atom.h"
 
 
-@interface LVHighlighter ()
-
-@property NSDictionary* tempStyle1;
-@property NSDictionary* tempStyle2;
-
-@end
-
 @implementation LVHighlighter
 
 + (LVHighlighter*) sharedHighlighter {
@@ -27,14 +20,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         highlighter = [[LVHighlighter alloc] init];
-        [highlighter setup];
     });
     return highlighter;
-}
-
-- (void) setup {
-    self.tempStyle1 = @{NSForegroundColorAttributeName: [NSColor redColor], NSFontAttributeName: [NSFont fontWithName:@"Arial" size:15]};
-    self.tempStyle2 = @{NSForegroundColorAttributeName: [NSColor blueColor], NSFontAttributeName: [NSFont fontWithName:@"Arial" size:15]};
 }
 
 - (NSDictionary*) attributesForTree:(LVColl*)topLevelColl atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr {
@@ -74,10 +61,26 @@
     LVTheme* theme = [LVThemeManager sharedThemeManager].currentTheme;
     
     if (foundAtom) {
-        if (foundAtom->atom_type & LVAtomType_Keyword) return theme.keyword.attrs;
-        if (foundAtom->atom_type & LVAtomType_Symbol) return theme.symbol.attrs;
         if (foundAtom->atom_type & LVAtomType_Spaces) return theme.symbol.attrs;
-        // TODO: moar!
+        if (foundAtom->atom_type & LVAtomType_Newline) return theme.symbol.attrs;
+        if (foundAtom->atom_type & LVAtomType_Comma) return theme.symbol.attrs;
+        
+        if (foundAtom->atom_type & LVAtomType_DefType) return theme.def.attrs;
+        if (foundAtom->atom_type & LVAtomType_DefName) return theme.defname.attrs;
+        if (foundAtom->atom_type & LVAtomType_Symbol) return theme.symbol.attrs;
+        if (foundAtom->atom_type & LVAtomType_Keyword) return theme.keyword.attrs;
+        if (foundAtom->atom_type & LVAtomType_String) return theme.string.attrs;
+        if (foundAtom->atom_type & LVAtomType_Regex) return theme.regex.attrs;
+        if (foundAtom->atom_type & LVAtomType_Number) return theme.number.attrs;
+        if (foundAtom->atom_type & LVAtomType_TrueAtom) return theme._true.attrs;
+        if (foundAtom->atom_type & LVAtomType_FalseAtom) return theme._false.attrs;
+        if (foundAtom->atom_type & LVAtomType_NilAtom) return theme._nil.attrs;
+        if (foundAtom->atom_type & LVAtomType_Comment) return theme.comment.attrs;
+        if (foundAtom->atom_type & LVAtomType_TypeOp) return theme.typeop.attrs;
+        if (foundAtom->atom_type & LVAtomType_Quote) return theme.quote.attrs;
+        if (foundAtom->atom_type & LVAtomType_Unquote) return theme.unquote.attrs;
+        if (foundAtom->atom_type & LVAtomType_SyntaxQuote) return theme.syntaxquote.attrs;
+        if (foundAtom->atom_type & LVAtomType_Splice) return theme.splice.attrs;
     }
     else {
         NSArray* rainbows = [LVThemeManager sharedThemeManager].currentTheme.rainbowparens;

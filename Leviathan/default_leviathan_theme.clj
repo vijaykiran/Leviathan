@@ -1,6 +1,6 @@
 {:cursor-color "babdb6"
  :background-color "252A2B"
- :selection-style {"BackgroundColor" "5c3566"}
+ :selection-style {"background-color" "5c3566"}
  :unquote-style {:color "edd400" :bold true}
  :syntaxquote-style {:color "edd400" :bold true}
  :regex-style {:color "e9b96e" :bold false}
