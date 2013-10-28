@@ -45,6 +45,8 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
         coll->children = realloc(coll->children, sizeof(LVElement*) * coll->children_cap);
     }
     
+    child->parent = coll;
+    
     coll->children[coll->children_len] = child;
     coll->children_len++;
 }
@@ -85,9 +87,9 @@ size_t LVGetElementIndexInSiblings(LVElement* child) {
 }
 
 LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
-    for (int i = 0; i < doc->tokens_len; i++) {
+    for (int i = 1; i < doc->tokens_len; i++) {
         LVToken* tok = doc->tokens[i];
-        if (pos >= tok->pos && pos <= tok->pos + tok->string->slen)
+        if (pos >= tok->pos && pos < tok->pos + tok->string->slen)
             return tok->atom;
     }
     abort();

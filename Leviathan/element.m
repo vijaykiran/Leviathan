@@ -53,12 +53,12 @@ bstring LVStringForElement(LVElement* element) {
 size_t LVGetElementDepth(LVElement* needle) {
     size_t i = 0;
     
-    LVColl* iter = (void*)needle;
+    LVElement* iter = needle;
     
     while (iter->parent) {
         i++;
-        iter = iter->parent;
+        iter = (LVElement*)iter->parent;
     }
     
-    return i;
+    return i - 2; // one for top-level-coll, one because delims are children of the coll
 }

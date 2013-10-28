@@ -138,7 +138,6 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
         }
         
         LVElement* child = parseOne(iter);
-        child->parent = coll;
         LVElementListAppend(coll, child);
     }
     

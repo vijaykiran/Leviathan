@@ -33,7 +33,10 @@
 
 - (void) parse {
     LVDocDestroy(self.doc);
+//    NSLog(@"parsing.");
     self.doc = LVDocCreate([[self string] UTF8String]);
+//    NSLog(@"done.");
+    
 }
 
 - (NSString*) string {
@@ -41,6 +44,7 @@
 }
 
 - (NSDictionary *)attributesAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
+//    NSLog(@"asking for attrs");
     return [[LVHighlighter sharedHighlighter] attributesForTree:self.doc
                                                      atPosition:index
                                                  effectiveRange:aRange];

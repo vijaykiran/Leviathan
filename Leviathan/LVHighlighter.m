@@ -27,6 +27,10 @@
 - (NSDictionary*) attributesForTree:(LVDoc*)doc atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr {
     LVAtom* atom = LVFindAtom(doc, absPos);
     
+    assert(atom != NULL);
+    
+//    printf("at %ld for %d\n", atom->token->pos, atom->token->string->slen);
+    
     if (rangePtr) {
         rangePtr->location = atom->token->pos;
         rangePtr->length = atom->token->string->slen;
@@ -56,12 +60,12 @@
     if (atom->atom_type & LVAtomType_Splice) return theme.splice.attrs;
     
     if (atom->atom_type & LVAtomType_CollDelim) {
-        size_t depth = LVGetElementDepth((void*)atom);
+        size_t depth = LVGetElementDepth((LVElement*)atom);
         NSArray* rainbows = [LVThemeManager sharedThemeManager].currentTheme.rainbowparens;
         LVThemeStyle* style = [rainbows objectAtIndex: depth % [rainbows count]];
         return style.attrs;
     }
-    
+    //(foo)
 //    size_t childsIndex;
 //    LVColl* foundColl = LVFindDeepestColl(topLevelColl, 0, absPos, &childsIndex);
 //    
