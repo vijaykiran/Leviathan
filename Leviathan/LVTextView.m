@@ -600,17 +600,29 @@ size_t LVGetAbsolutePosition(LVElement* el) {
     }
 }
 
+LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
+    LVAtom* atom = LVFindAtom(doc, pos);
+    
+    LVElement* el = (void*)atom;
+    if (el == atom->parent->children[0])
+        el = (void*)atom->parent;
+    
+    *childIndex = LVGetElementIndexInSiblings(el);
+    return el->parent;
+}
+
 - (void) forwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     
-    LVAtom* atom = LVFindAtom(self.file.textStorage.doc, selection.location);
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
     
     LVElement* elementToMoveToEndOf = NULL;
     size_t posAfterElement;
     
-    LVElement* semanticChildren[atom->parent->children_len];
+    LVElement* semanticChildren[parent->children_len];
     size_t semanticChildrenCount;
-    LVGetSemanticDirectChildren(atom->parent, LVGetElementIndexInSiblings((void*)atom), semanticChildren, &semanticChildrenCount);
+    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
     
     for (int i = 0; i < semanticChildrenCount; i++) {
         LVElement* semanticChild = semanticChildren[i];
@@ -652,23 +664,20 @@ size_t LVGetAbsolutePosition(LVElement* el) {
 - (void) outBackwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     
-    LVAtom* atom = LVFindAtom(self.file.textStorage.doc, selection.location);
-    LVColl* parent = atom->parent;
-    LVAtom* openAtom = (LVAtom*)parent->children[0];
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
     
-    self.selectedRange = NSMakeRange(openAtom->token->pos, 0);
+    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), 0);
     [self scrollRangeToVisible:self.selectedRange];
 }
 
 - (void) outForwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     
-    LVAtom* atom = LVFindAtom(self.file.textStorage.doc, selection.location);
-    LVColl* parent = atom->parent;
-    LVAtom* openAtom = (LVAtom*)parent->children[0];
-    size_t len = LVElementLength((void*)parent);
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
     
-    self.selectedRange = NSMakeRange(openAtom->token->pos + len, 0);
+    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((void*)parent) + LVElementLength((void*)parent), 0);
     [self scrollRangeToVisible:self.selectedRange];
     
 //    
