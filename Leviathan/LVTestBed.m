@@ -66,29 +66,29 @@ static void LVLexerShouldEqual(char* raw, struct LVTokenList expected) {
 + (void) runTests {
     return;
     
-    LVLexerShouldEqual("(foobar)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));
-    
-    LVLexerShouldEqual("foobar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("(    foobar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Spaces, "    "), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_FileEnd, "")));
-    
-    LVLexerShouldEqual("~", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Unquote, "~"), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("~@", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Splice, "~@"), TOK(LVTokenType_FileEnd, "")));
-    
-    LVLexerShouldEqual("\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_String, "\"yes\""), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_String, "\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
-    
-    LVLexerShouldEqual(";foobar\nhello", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_CommentLiteral, ";foobar"), TOK(LVTokenType_Newline, "\n"), TOK(LVTokenType_Symbol, "hello"), TOK(LVTokenType_FileEnd, "")));
-    
-    LVLexerShouldEqual("foo 123 :hello", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Number, "123"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Keyword, ":hello"), TOK(LVTokenType_FileEnd, "")));
-    
-    LVLexerShouldEqual("#'foo", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Var, "#'foo"), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("#(foo)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_AnonFnStart, "#("), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("#{foo}", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_SetStart, "#{"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RBrace, "}"), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("#_foo", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_ReaderCommentStart, "#_"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("#foo bar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_ReaderMacro, "#foo"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Symbol, "bar"), TOK(LVTokenType_FileEnd, "")));
-    
-    LVLexerShouldEqual("#\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"yes\""), TOK(LVTokenType_FileEnd, "")));
-    LVLexerShouldEqual("#\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("(foobar)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));
+//    
+//    LVLexerShouldEqual("foobar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("(    foobar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Spaces, "    "), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_FileEnd, "")));
+//    
+//    LVLexerShouldEqual("~", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Unquote, "~"), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("~@", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Splice, "~@"), TOK(LVTokenType_FileEnd, "")));
+//    
+//    LVLexerShouldEqual("\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_String, "\"yes\""), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_String, "\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
+//    
+//    LVLexerShouldEqual(";foobar\nhello", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_CommentLiteral, ";foobar"), TOK(LVTokenType_Newline, "\n"), TOK(LVTokenType_Symbol, "hello"), TOK(LVTokenType_FileEnd, "")));
+//    
+//    LVLexerShouldEqual("foo 123 :hello", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Number, "123"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Keyword, ":hello"), TOK(LVTokenType_FileEnd, "")));
+//    
+//    LVLexerShouldEqual("#'foo", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Var, "#'foo"), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("#(foo)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_AnonFnStart, "#("), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("#{foo}", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_SetStart, "#{"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_RBrace, "}"), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("#_foo", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_ReaderCommentStart, "#_"), TOK(LVTokenType_Symbol, "foo"), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("#foo bar", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_ReaderMacro, "#foo"), TOK(LVTokenType_Spaces, " "), TOK(LVTokenType_Symbol, "bar"), TOK(LVTokenType_FileEnd, "")));
+//    
+//    LVLexerShouldEqual("#\"yes\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"yes\""), TOK(LVTokenType_FileEnd, "")));
+//    LVLexerShouldEqual("#\"y\\\"es\"", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_Regex, "#\"y\\\"es\""), TOK(LVTokenType_FileEnd, "")));
     
     
     

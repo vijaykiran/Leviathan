@@ -8,6 +8,8 @@
 
 #include "bstrlib.h"
 
+struct __LVAtom;
+
 typedef enum __LVTokenType : uint64_t {
     LVTokenType_LParen = 1 << 0,
     LVTokenType_RParen = 1 << 1,
@@ -56,8 +58,10 @@ typedef enum __LVTokenType : uint64_t {
 typedef struct __LVToken {
     LVTokenType token_type;
     bstring string;
+    size_t pos;
+    struct __LVAtom* atom;
 } LVToken;
 
 
-LVToken* LVTokenCreate(LVTokenType type, bstring val);
+LVToken* LVTokenCreate(size_t pos, LVTokenType type, bstring val);
 void LVTokenDelete(LVToken* tok);

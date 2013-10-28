@@ -34,8 +34,6 @@
     self.topLevelElement = LVParse([[self string] UTF8String]);
 }
 
-// NSFontAttributeName: [LVPreferences userFont]
-
 - (NSString*) string {
     return [self.internalStorage string];
 }
@@ -44,6 +42,16 @@
     return [[LVHighlighter sharedHighlighter] attributesForTree:self.topLevelElement
                                                      atPosition:index
                                                  effectiveRange:aRange];
+    
+    /* TODO: new plan
+     *
+     * 1. Store flat list of tokens (next to the tree). We already build it, just keep it around.
+     * 2. Token points to its one-and-only Atom.
+     * 3. Coll's opening and closing token should be children of the coll!
+     * 4. Cache token's absolute position.
+     * 5. Rebuild the "Doc" at every change: they're throw-aways.
+     *
+     */
 }
 
 - (void)replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString {

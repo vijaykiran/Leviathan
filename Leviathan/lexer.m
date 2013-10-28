@@ -19,7 +19,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
     static bstring endAtomCharSet;
     if (!endAtomCharSet) endAtomCharSet = bfromcstr("()[]{}, \"\r\n\t;");
     
-    tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileBegin, bfromcstr(""));
+    tokens[num_tokens++] = LVTokenCreate(0, LVTokenType_FileBegin, bfromcstr(""));
     
     size_t i = 0;
     while (i < input_string_length) {
@@ -28,31 +28,31 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
         
         switch (c) {
                 
-            case '(': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LParen, bmidstr(raw, (int)i, 1)); break;
-            case ')': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RParen, bmidstr(raw, (int)i, 1)); break;
+            case '(': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LParen, bmidstr(raw, (int)i, 1)); break;
+            case ')': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RParen, bmidstr(raw, (int)i, 1)); break;
                 
-            case '[': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBracket, bmidstr(raw, (int)i, 1)); break;
-            case ']': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBracket, bmidstr(raw, (int)i, 1)); break;
+            case '[': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LBracket, bmidstr(raw, (int)i, 1)); break;
+            case ']': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RBracket, bmidstr(raw, (int)i, 1)); break;
                 
-            case '{': tokens[num_tokens++] = LVTokenCreate(LVTokenType_LBrace, bmidstr(raw, (int)i, 1)); break;
-            case '}': tokens[num_tokens++] = LVTokenCreate(LVTokenType_RBrace, bmidstr(raw, (int)i, 1)); break;
+            case '{': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LBrace, bmidstr(raw, (int)i, 1)); break;
+            case '}': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RBrace, bmidstr(raw, (int)i, 1)); break;
                 
-            case '\'': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Quote, bmidstr(raw, (int)i, 1)); break;
-            case '^': tokens[num_tokens++] = LVTokenCreate(LVTokenType_TypeOp, bmidstr(raw, (int)i, 1)); break;
-            case '`': tokens[num_tokens++] = LVTokenCreate(LVTokenType_SyntaxQuote, bmidstr(raw, (int)i, 1)); break;
+            case '\'': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Quote, bmidstr(raw, (int)i, 1)); break;
+            case '^': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_TypeOp, bmidstr(raw, (int)i, 1)); break;
+            case '`': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SyntaxQuote, bmidstr(raw, (int)i, 1)); break;
                 
-            case ',': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Comma, bmidstr(raw, (int)i, 1)); break;
-            case '\n': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, bmidstr(raw, (int)i, 1)); break;
+            case ',': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Comma, bmidstr(raw, (int)i, 1)); break;
+            case '\n': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Newline, bmidstr(raw, (int)i, 1)); break;
                 
-            case '\t': tokens[num_tokens++] = LVTokenCreate(LVTokenType_Newline, bfromcstr("  ")); break;
+            case '\t': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Newline, bfromcstr("  ")); break;
                 
             case '~': {
                 if (i + 1 < raw->slen && raw->data[i+1] == '@') {
-                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Splice, bmidstr(raw, (int)i, 2));
+                    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Splice, bmidstr(raw, (int)i, 2));
                     i++;
                 }
                 else {
-                    tokens[num_tokens++] = LVTokenCreate(LVTokenType_Unquote, bmidstr(raw, (int)i, 1));
+                    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Unquote, bmidstr(raw, (int)i, 1));
                 }
                 break;
             }
@@ -61,7 +61,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
                 bstring spaces = bfromcstr(" ");
                 size_t n = bninchr(raw, (int)i, spaces);
                 if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Spaces, bmidstr(raw, (int)i, (int)(n - i)));
+                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Spaces, bmidstr(raw, (int)i, (int)(n - i)));
                 i = n-1;
                 break;
             }
@@ -69,7 +69,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
             case ':': {
                 size_t n = binchr(raw, (int)i, endAtomCharSet);
                 if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Keyword, bmidstr(raw, (int)i, (int)(n - i)));
+                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Keyword, bmidstr(raw, (int)i, (int)(n - i)));
                 i = n-1;
                 break;
             }
@@ -87,7 +87,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
                 } while (raw->data[look_from - 1] == '\\');
                 
                 bstring substring = bmidstr(raw, (int)i, (int)(look_from - i + 1));
-                LVToken* tok = LVTokenCreate(LVTokenType_String, substring);
+                LVToken* tok = LVTokenCreate(i, LVTokenType_String, substring);
                 tokens[num_tokens++] = tok;
                 i = look_from;
                 
@@ -98,7 +98,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
                 size_t n = bstrchrp(raw, '\n', (int)i);
                 
                 bstring substring = bmidstr(raw, (int)i, (int)(n - i));
-                LVToken* tok = LVTokenCreate(LVTokenType_CommentLiteral, substring);
+                LVToken* tok = LVTokenCreate(i, LVTokenType_CommentLiteral, substring);
                 tokens[num_tokens++] = tok;
                 i = n-1;
                 
@@ -108,7 +108,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
             case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
                 size_t n = binchr(raw, (int)i, endAtomCharSet);
                 if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(LVTokenType_Number, bmidstr(raw, (int)i, (int)(n - i)));
+                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Number, bmidstr(raw, (int)i, (int)(n - i)));
                 i = n-1;
                 break;
             }
@@ -135,7 +135,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
                         } while (raw->data[look_from - 1] == '\\');
                         
                         bstring substring = bmidstr(raw, (int)i, (int)(look_from - i + 1));
-                        LVToken* tok = LVTokenCreate(LVTokenType_Regex, substring);
+                        LVToken* tok = LVTokenCreate(i, LVTokenType_Regex, substring);
                         tokens[num_tokens++] = tok;
                         i = look_from;
                         
@@ -145,19 +145,19 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
                     case '\'': {
                         size_t n = binchr(raw, (int)i, endAtomCharSet);
                         if (n == BSTR_ERR) n = input_string_length;
-                        tokens[num_tokens++] = LVTokenCreate(LVTokenType_Var, bmidstr(raw, (int)i, (int)(n - i)));
+                        tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Var, bmidstr(raw, (int)i, (int)(n - i)));
                         i = n-1;
                         break;
                     }
                         
-                    case '(': tokens[num_tokens++] = LVTokenCreate(LVTokenType_AnonFnStart, bmidstr(raw, (int)i++, 2)); break;
-                    case '{': tokens[num_tokens++] = LVTokenCreate(LVTokenType_SetStart, bmidstr(raw, (int)i++, 2)); break;
-                    case '_': tokens[num_tokens++] = LVTokenCreate(LVTokenType_ReaderCommentStart, bmidstr(raw, (int)i++, 2)); break;
+                    case '(': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_AnonFnStart, bmidstr(raw, (int)i, 2)); i++; break;
+                    case '{': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SetStart, bmidstr(raw, (int)i, 2)); i++; break;
+                    case '_': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_ReaderCommentStart, bmidstr(raw, (int)i, 2)); i++; break;
                         
                     default: {
                         size_t n = binchr(raw, (int)i, endAtomCharSet);
                         if (n == BSTR_ERR) n = input_string_length;
-                        tokens[num_tokens++] = LVTokenCreate(LVTokenType_ReaderMacro, bmidstr(raw, (int)i, (int)(n - i)));
+                        tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_ReaderMacro, bmidstr(raw, (int)i, (int)(n - i)));
                         i = n-1;
                         break;
                     }
@@ -171,7 +171,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
                 if (n == BSTR_ERR) n = input_string_length;
                 
                 bstring substring = bmidstr(raw, (int)i, (int)(n - i));
-                LVToken* tok = LVTokenCreate(LVTokenType_Symbol, substring);
+                LVToken* tok = LVTokenCreate(i, LVTokenType_Symbol, substring);
                 
                 static bstring trueConstant; if (!trueConstant) trueConstant = bfromcstr("true");
                 static bstring falseConstant; if (!falseConstant) falseConstant = bfromcstr("false");
@@ -197,7 +197,7 @@ LVToken** LVLex(const char* input_str, size_t* n_tok) {
         
     }
     
-    tokens[num_tokens++] = LVTokenCreate(LVTokenType_FileEnd, bfromcstr(""));
+    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_FileEnd, bfromcstr(""));
     
     *n_tok = num_tokens;
     return tokens;
