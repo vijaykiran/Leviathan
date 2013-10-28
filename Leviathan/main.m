@@ -8,8 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-//extern void _CFEnableZombies(void);
 int main(int argc, const char * argv[]) {
+    
+//    extern void _CFEnableZombies(void);
 //    _CFEnableZombies();
+    
     return NSApplicationMain(argc, argv);
 }

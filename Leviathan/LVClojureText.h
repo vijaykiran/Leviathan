@@ -14,4 +14,6 @@
 
 @property LVDoc* doc;
 
+- (void) rehighlight;
+
 @end

@@ -8,6 +8,8 @@
 
 #import "LVClojureText.h"
 
+#import "LVThemeManager.h"
+
 #import "parser.h"
 #import "highlights.h"
 
@@ -72,6 +74,16 @@
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {
     // lol, no.
+}
+
+- (void) rehighlight {
+    free(self.highlights);
+    self.highlights = NULL;
+    
+    [[LVThemeManager sharedThemeManager] loadThemes];
+    self.highlights = LVHighlightsForDoc(self.doc);
+    
+    [self edited:NSTextStorageEditedAttributes range:NSMakeRange(0, [self.internalStorage length]) changeInLength:0];
 }
 
 @end

@@ -12,6 +12,9 @@
 
 
 @interface LVThemeManager ()
+
+@property NSMutableArray* oldThemes; // total hack
+
 @end
 
 @implementation LVThemeManager
@@ -21,6 +24,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedThemeManager = [[LVThemeManager alloc] init];
+        sharedThemeManager.oldThemes = [NSMutableArray array];
     });
     return sharedThemeManager;
 }
@@ -71,7 +75,18 @@
 - (void) loadCurrentTheme {
     NSData* data = [NSData dataWithContentsOfURL:[self currentThemeFile]];
     NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSDictionary* themeData = LVParseConfigFromString(str);
+    NSDictionary* themeData = [LVParseConfigFromString(str) copy];
+    
+    if (self.currentTheme) {
+        [self.oldThemes addObject: self.currentTheme];
+        
+        double delayInSeconds = 2.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.oldThemes removeObject: self.currentTheme];
+        });
+    }
+    
     self.currentTheme = [LVTheme themeFromData:themeData];
 }
 

@@ -34,8 +34,6 @@ void LVCollDestroy(LVColl* coll) {
     }
     
     free(coll->children);
-//    LVTokenDelete(coll->open_token);
-//    LVTokenDelete(coll->close_token);
     free(coll);
 }
 

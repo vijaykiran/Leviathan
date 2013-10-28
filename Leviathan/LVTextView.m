@@ -52,10 +52,15 @@
 }
 
 - (void) defaultsFontChanged:(NSNotification*)note {
-    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
-    [self.textStorage addAttribute:NSFontAttributeName
-                             value:[LVPreferences userFont]
-                             range:fullRange];
+    [self.file.textStorage rehighlight];
+    
+    [self setNeedsDisplay:YES];
+    
+//    NSLog(@"noep");
+//    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
+//    [self.textStorage addAttribute:NSFontAttributeName
+//                             value:[LVPreferences userFont]
+//                             range:fullRange];
 }
 
 - (void) awakeFromNib {
@@ -432,7 +437,23 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
         return NULL;
 }
 
+//- (void) insertText:(id)insertString {
+//    id old = self.selectedRanges;
+//    for (NSValue* r in [self.selectedRanges reverseObjectEnumerator]) {
+//        NSRange r2 = r.rangeValue;
+//        r2.length = 0;
+//        self.selectedRange = r2;
+//        [super insertText:insertString];
+//    }
+//    self.selectedRanges = old;
+//}
+
 - (void) raiseSexp:(NSEvent*)event {
+    
+//    self.selectedRanges = @[[NSValue valueWithRange:NSMakeRange(2, 0)],
+//                            [NSValue valueWithRange:NSMakeRange(8, 0)]];
+//    
+//    return;
     
     
     
