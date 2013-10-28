@@ -41,8 +41,6 @@
     [[self.textView undoManager] removeAllActions];
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
-    
-//    [self.file initialHighlight];
 }
 
 - (void) makeFirstResponder {
