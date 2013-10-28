@@ -178,16 +178,17 @@
     [self indentCurrentBody];
 }
 
-- (void) sd_r:(NSRange)r str:(NSString*)str {
-//    [[self undoManager] setActionIsDiscardable:YES];
-    
+- (void) sd_r:(NSRange)r str:(NSString*)str newpos:(NSUInteger)newpos {
     NSString* oldString = [self.file.textStorage.string substringWithRange:r];
     NSRange newRange = NSMakeRange(r.location, [str length]);
     
     [[[self undoManager] prepareWithInvocationTarget:self] sd_r:newRange
-                                                            str:oldString];
+                                                            str:oldString
+                                                         newpos:self.selectedRange.location];
     
     [[self textStorage] replaceCharactersInRange:r withString:str];
+    
+    self.selectedRange = NSMakeRange(newpos, 0);
     
 //    self.selectedRange = r;
 }
@@ -479,11 +480,7 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
         NSString* newstr = [NSString stringWithFormat:@"%s", str->data];
         bdestroy(str);
         
-        [self sd_r:oldParentRange str:newstr];
-        
-//        [self.textStorage replaceCharactersInRange:oldParentRange withString:newstr];
-        
-        self.selectedRange = NSMakeRange(oldParentRange.location + relativeOffset, 0);
+        [self sd_r:oldParentRange str:newstr newpos:oldParentRange.location + relativeOffset];
     }
     
     
