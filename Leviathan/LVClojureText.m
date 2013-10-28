@@ -13,7 +13,7 @@
 
 @interface LVClojureText ()
 
-@property NSMutableAttributedString* internalStorage;
+@property NSMutableString* internalStorage;
 @property LVHighlights* highlights;
 
 @end
@@ -22,7 +22,7 @@
 
 - (id) initWithString:(NSString *)str {
     if (self = [super init]) {
-        self.internalStorage = [[NSMutableAttributedString alloc] initWithString: str];
+        self.internalStorage = [[NSMutableString alloc] initWithString: str];
         [self parse];
     }
     return self;
@@ -44,7 +44,7 @@
 }
 
 - (NSString*) string {
-    return [self.internalStorage string];
+    return self.internalStorage;
 }
 
 - (NSDictionary *)attributesAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
@@ -70,8 +70,7 @@
 }
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {
-    [self.internalStorage setAttributes:(NSDictionary *)attributes range:(NSRange)aRange];
-    [self edited:NSTextStorageEditedAttributes range:aRange changeInLength:0];
+    // lol, no.
 }
 
 @end

@@ -193,19 +193,6 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
     return coll;
 }
 
-//LVColl* LVParse(const char* raw) {
-//    size_t tok_n;
-//    LVToken** tokens = LVLex(raw, &tok_n);
-//    
-//    LVToken** iter = tokens;
-//    LVColl* topLevelColl = parseColl(&iter, LVCollType_TopLevel, LVTokenType_FileEnd);
-//    topLevelColl->parent = NULL;
-//    
-//    free(tokens);
-//    
-//    return topLevelColl;
-//}
-
 LVColl* LVParseTokens(LVToken** tokens) {
     LVColl* topLevelColl = parseColl(&tokens, LVCollType_TopLevel, LVTokenType_FileEnd);
     topLevelColl->parent = NULL;
