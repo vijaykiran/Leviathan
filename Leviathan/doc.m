@@ -13,10 +13,9 @@
 
 LVDoc* LVDocCreate(const char* raw) {
     LVDoc* doc = malloc(sizeof(LVDoc));
-    
-    doc->tokens = LVLex(raw, &doc->tokens_len);
+    doc->string = bfromcstr(raw);
+    doc->tokens = LVLex(doc->string, &doc->tokens_len);
     doc->topLevelColl = LVParseTokens(doc->tokens);
-    
     return doc;
 }
 
@@ -25,6 +24,7 @@ void LVDocDestroy(LVDoc* doc) {
         return;
     
     LVCollDestroy(doc->topLevelColl);
+    bdestroy(doc->string);
     free(doc->tokens);
     free(doc);
 }

@@ -12,6 +12,8 @@
 #import "token.h"
 
 typedef struct __LVDoc {
+    bstring string;
+    
     LVColl* topLevelColl;
     
     LVToken** tokens;

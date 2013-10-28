@@ -10,10 +10,12 @@
 
 #import "doc.h"
 
-@interface LVHighlighter : NSObject
+typedef struct __LVHighlights {
+    LVAtom* atom;
+    size_t pos;
+    size_t len;
+    __unsafe_unretained NSDictionary* attrs;
+} LVHighlights;
 
-+ (LVHighlighter*) sharedHighlighter;
-
-- (NSDictionary*) attributesForTree:(LVDoc*)doc atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr;
-
-@end
+LVHighlights* LVHighlightsForDoc(LVDoc* doc);
+NSDictionary* LVAttributesForAtom(LVAtom* atom);

@@ -14,6 +14,7 @@
 @interface LVClojureText ()
 
 @property NSMutableAttributedString* internalStorage;
+@property LVHighlights* highlights;
 
 @end
 
@@ -28,15 +29,18 @@
 }
 
 - (void) dealloc {
+    free(self.highlights);
     LVDocDestroy(self.doc);
 }
 
 - (void) parse {
-    LVDocDestroy(self.doc);
-//    NSLog(@"parsing.");
-    self.doc = LVDocCreate([[self string] UTF8String]);
-//    NSLog(@"done.");
+    free(self.highlights);
+    self.highlights = NULL;
     
+    LVDocDestroy(self.doc);
+    self.doc = LVDocCreate([[self string] UTF8String]);
+    
+    self.highlights = LVHighlightsForDoc(self.doc);
 }
 
 - (NSString*) string {
@@ -44,25 +48,17 @@
 }
 
 - (NSDictionary *)attributesAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
-//    NSLog(@"asking for attrs");
-    return [[LVHighlighter sharedHighlighter] attributesForTree:self.doc
-                                                     atPosition:index
-                                                 effectiveRange:aRange];
+    LVHighlights* h = &self.highlights[index];
     
-    /* DONE: new plan
-     *
-     * 1. Store flat list of tokens (next to the tree). We already build it, just keep it around.
-     * 2. Token points to its one-and-only Atom.
-     * 4. Cache token's absolute position.
-     *
-     */
+    if (!h->attrs)
+        h->attrs = LVAttributesForAtom(h->atom);
     
-    /* TODO: remaining
-     *
-     * 3. Coll's opening and closing token should be children of the coll!
-     * 5. Rebuild the "Doc" at every change: they're throw-aways.
-     *
-     */
+    if (aRange) {
+        aRange->location = h->pos;
+        aRange->length = h->len;
+    }
+    
+    return h->attrs;
 }
 
 - (void)replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString {

@@ -8,9 +8,7 @@
 
 #include "lexer.h"
 
-LVToken** LVLex(const char* input_str, size_t* n_tok) {
-    bstring raw = bfromcstr(input_str);
-    
+LVToken** LVLex(bstring raw, size_t* n_tok) {
     size_t input_string_length = raw->slen;
     size_t num_tokens = 0;
     
