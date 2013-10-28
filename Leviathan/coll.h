@@ -11,6 +11,8 @@
 
 #import "atom.h"
 
+struct __LVDoc;
+
 @interface LVDefinition : NSObject
 
 @property LVAtom* defType;
@@ -54,7 +56,7 @@ void LVCollDestroy(LVColl* coll);
 void LVElementListAppend(LVColl* coll, LVElement* child);
 
 LVColl* LVCollHighestParent(LVColl* coll);
-LVColl* LVFindDeepestColl(LVColl* coll, size_t start, size_t pos, size_t* childsIndex);
+LVAtom* LVFindAtom(struct __LVDoc* doc, size_t pos);
 
 size_t LVGetElementIndexInSiblings(LVElement* child);
 

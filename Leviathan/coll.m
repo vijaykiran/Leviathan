@@ -9,6 +9,7 @@
 #import "coll.h"
 #import "token.h"
 #import "atom.h"
+#import "doc.h"
 
 @implementation LVDefinition
 @end
@@ -83,58 +84,16 @@ size_t LVGetElementIndexInSiblings(LVElement* child) {
     return -1;
 }
 
-LVColl* LVFindDeepestColl(LVColl* coll, size_t offset, size_t pos, size_t* childsIndex) {
-    
-    // "|"        -->   top level, index = 0
-    // "|foo"     -->   top level, index = 0
-    // "|(foo)"   -->   top level, index = 0
-    // "(|foo)"   -->   list,      index = 0
-    // "|#(foo)"  -->   top level, index = 0
-    // "#|(foo)"  -->   top level, index = 0
-    // "#(|foo)"  -->   list,      index = 0
-    // "#(foo|)"  -->   list,      index = 1
-    // "#(foo)|"  -->   top level, index = 1
-    
-    // "(foo| bar)"   -->   list, index = 1
-    // "(foo |bar)"   -->   list, index = 2
-    // "(foo b|ar)"   -->   list, index = 2
-    // "(foo bar|)"   -->   list, index = 3
-    
-    // we know we're in this coll somewhere, but where?
-    
-    
-    
-    size_t open_tok_len = coll->open_token->string->slen;
-    
-    size_t coll_inner_offset = offset + open_tok_len;
-    
-    if (pos < coll_inner_offset) {
-        *childsIndex = LVGetElementIndexInSiblings((void*)coll);
-        return coll->parent;
+LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
+    LVToken** iter = doc->tokens;
+    LVToken* lastToken;
+    for (int i = 0; i < doc->tokens_len; i++) {
+        LVToken* tok = (*iter)++;
+        if (pos < tok->pos)
+            break;
+        lastToken = tok;
     }
-    
-    size_t cumulative_child_offset = 0;
-    
-    for (size_t i = 0; i < coll->children_len; i++) {
-        LVElement* child = coll->children[i];
-        
-        size_t this_child_len = LVElementLength(child);
-        
-        if (pos < (coll_inner_offset + cumulative_child_offset + this_child_len)) {
-            if (child->is_atom) {
-                *childsIndex = i;
-                return child->parent;
-            }
-            else {
-                return LVFindDeepestColl((void*)child, coll_inner_offset + cumulative_child_offset, pos, childsIndex);
-            }
-        }
-        
-        cumulative_child_offset += this_child_len;
-    }
-    
-    *childsIndex = coll->children_len;
-    return coll;
+    return lastToken->atom;
 }
 
 LVColl* LVCollHighestParent(LVColl* coll) {

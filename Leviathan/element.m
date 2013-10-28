@@ -18,7 +18,7 @@ size_t LVElementLength(LVElement* element) {
     }
     else {
         LVColl* coll = (LVColl*)element;
-//        size_t len = coll->open_token->string->slen + coll->close_token->string->slen;
+        size_t len = 0;
         for (int i = 0; i < coll->children_len; i++) {
             LVElement* child = coll->children[i];
             len += LVElementLength(child);
@@ -32,37 +32,6 @@ void LVElementDestroy(LVElement* element) {
         LVAtomDestroy((LVAtom*)element);
     else
         LVCollDestroy((LVColl*)element);
-}
-
-static BOOL findAbsolutePosition(LVElement* iter, LVElement* needle, size_t* pos) {
-    if (iter == needle)
-        return YES;
-    
-    if (iter->is_atom) {
-        *pos += ((LVAtom*)iter)->token->string->slen;
-    }
-    else {
-        LVColl* coll = (void*)iter;
-        
-        *pos += coll->open_token->string->slen;
-        
-        for (size_t i = 0; i < coll->children_len; i++) {
-            LVElement* child = coll->children[i];
-            if (findAbsolutePosition(child, needle, pos))
-                return YES;
-        }
-        
-        *pos += coll->close_token->string->slen;
-    }
-    
-    return NO;
-}
-
-size_t LVGetAbsolutePosition(LVElement* needle) {
-    LVColl* iter = LVGetTopLevelElement(needle);
-    size_t pos = 0;
-    findAbsolutePosition((void*)iter, needle, &pos);
-    return pos;
 }
 
 LVColl* LVGetTopLevelElement(LVElement* any) {
