@@ -14,7 +14,7 @@
 typedef struct __LVDoc {
     bstring string;
     
-    LVColl* topLevelColl;
+    LVColl* top_level_coll;
     
     LVToken** tokens;
     size_t tokens_len;
@@ -25,4 +25,4 @@ void LVDocDestroy(LVDoc* doc);
 
 void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs);
 
-//LVAtom* LVFindAtom(struct __LVDoc* doc, size_t pos);
+LVAtom* LVFindAtom(struct __LVDoc* doc, size_t pos);

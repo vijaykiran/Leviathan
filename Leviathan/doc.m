@@ -15,7 +15,7 @@ LVDoc* LVDocCreate(const char* raw) {
     LVDoc* doc = malloc(sizeof(LVDoc));
     doc->string = bfromcstr(raw);
     doc->tokens = LVLex(doc->string, &doc->tokens_len);
-    doc->topLevelColl = LVParseTokens(doc->tokens);
+    doc->top_level_coll = LVParseTokens(doc->tokens);
     return doc;
 }
 
@@ -23,7 +23,7 @@ void LVDocDestroy(LVDoc* doc) {
     if (!doc)
         return;
     
-    LVCollDestroy(doc->topLevelColl);
+    LVCollDestroy(doc->top_level_coll);
     bdestroy(doc->string);
     free(doc->tokens);
     free(doc);
@@ -64,15 +64,15 @@ static void LVFindDefinitionsFromColl(LVColl* coll, NSMutableArray* defs) {
 }
 
 void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs) {
-    LVFindDefinitionsFromColl(doc->topLevelColl, defs);
+    LVFindDefinitionsFromColl(doc->top_level_coll, defs);
 }
 
-//LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
-//    LVToken** iter = doc->tokens + 1;
-//    for (int i = 1; i < doc->tokens_len; i++) {
-//        LVToken* tok = *iter++;
-//        if (pos >= tok->pos && pos < tok->pos + tok->string->slen)
-//            return tok->atom;
-//    }
-//    abort();
-//}
+LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
+    LVToken** iter = doc->tokens + 1;
+    for (int i = 1; i < doc->tokens_len; i++) {
+        LVToken* tok = *iter++;
+        if (pos >= tok->pos && pos < tok->pos + tok->string->slen)
+            return tok->atom;
+    }
+    abort();
+}
