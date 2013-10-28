@@ -41,8 +41,6 @@ struct __LVColl {
     LVColl* parent;
     
     LVCollType coll_type;
-    LVToken* open_token;
-    LVToken* close_token;
     
     LVElement** children;
     size_t children_len;

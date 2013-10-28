@@ -118,14 +118,16 @@ static LVElement* parseOne(LVToken*** iter) {
 static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTokenType) {
     LVColl* coll = LVCollCreate();
     coll->coll_type = collType;
-    coll->open_token = **iter;
+    
+    LVElementListAppend(coll, (LVElement*)LVAtomCreate(LVAtomType_CollDelim | LVAtomType_CollOpener, **iter));
+    
     ++*iter;
     
     for (LVToken* currentToken; ; ) {
         currentToken = **iter;
         
         if (currentToken->token_type == endTokenType) {
-            coll->close_token = currentToken;
+            LVElementListAppend(coll, (LVElement*)LVAtomCreate(LVAtomType_CollDelim | LVAtomType_CollCloser, currentToken));
             ++*iter;
             break;
         }
