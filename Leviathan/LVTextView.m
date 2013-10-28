@@ -72,7 +72,7 @@
     self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
     self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
     
-//    self.textColor = [LVThemeManager sharedThemeManager].currentTheme.symbol.color;
+//    self.textColor = [LVThemeManager sharedThemeManager].currentTheme.symbol.color; ()
     
     {
         NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
@@ -90,7 +90,7 @@
     
     
     
-    [self sd_disableLineWrapping];
+//    [self sd_disableLineWrapping];
     [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
     
     

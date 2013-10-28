@@ -22,3 +22,7 @@ typedef struct __LVDoc {
 
 LVDoc* LVDocCreate(const char* raw);
 void LVDocDestroy(LVDoc* doc);
+
+void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs);
+
+//LVAtom* LVFindAtom(struct __LVDoc* doc, size_t pos);

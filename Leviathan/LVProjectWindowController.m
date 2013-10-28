@@ -162,32 +162,32 @@
 }
 
 - (IBAction) jumpToDefinition:(id)sender {
-//    NSMutableArray* defFiles = [NSMutableArray array];
-//    NSMutableArray* defDefs = [NSMutableArray array];
-//    NSMutableArray* readableNames = [NSMutableArray array];
-//    
-//    for (LVFile* file in self.project.files) {
-//        NSMutableArray* defs = [NSMutableArray array];
-//        
-//        LVFindDefinitions(file.topLevelElement, defs);
-//        
-//        for (LVDefinition* def in defs) {
-//            [defFiles addObject:file];
-//            [defDefs addObject:def];
-//            [readableNames addObject:[NSString stringWithFormat:@"%s %s", def.defType->token->string->data, def.defName->token->string->data]];
-//        }
-//    }
-//    
-//    CGFloat maxLen = [[readableNames valueForKeyPath:@"@max.length"] doubleValue];
-//    
-//    [SDFuzzyMatcher showChoices:readableNames
-//                      charsWide:maxLen * 2.2 / 3.0
-//                      linesTall:10
-//                    windowTitle:@"Jump to File"
-//                  choseCallback:^(long chosenIndex) {
-//                      [self openDefinition:[defDefs objectAtIndex:chosenIndex]
-//                                    inFile:[defFiles objectAtIndex:chosenIndex]];
-//                  }];
+    NSMutableArray* defFiles = [NSMutableArray array];
+    NSMutableArray* defDefs = [NSMutableArray array];
+    NSMutableArray* readableNames = [NSMutableArray array];
+    
+    for (LVFile* file in self.project.files) {
+        NSMutableArray* defs = [NSMutableArray array];
+        
+        LVFindDefinitions(file.textStorage.doc, defs);
+        
+        for (LVDefinition* def in defs) {
+            [defFiles addObject:file];
+            [defDefs addObject:def];
+            [readableNames addObject:[NSString stringWithFormat:@"%s %s", def.defType->token->string->data, def.defName->token->string->data]];
+        }
+    }
+    
+    CGFloat maxLen = [[readableNames valueForKeyPath:@"@max.length"] doubleValue];
+    
+    [SDFuzzyMatcher showChoices:readableNames
+                      charsWide:maxLen * 2.2 / 3.0
+                      linesTall:10
+                    windowTitle:@"Jump to File"
+                  choseCallback:^(long chosenIndex) {
+                      [self openDefinition:[defDefs objectAtIndex:chosenIndex]
+                                    inFile:[defFiles objectAtIndex:chosenIndex]];
+                  }];
 }
 
 

@@ -26,5 +26,6 @@ BOOL LVAtomIsSemantic(LVAtom* atom) {
     return !((atom->atom_type & LVAtomType_Comma)
              || (atom->atom_type & LVAtomType_Newline)
              || (atom->atom_type & LVAtomType_Comment)
+             || (atom->atom_type & LVAtomType_CollDelim)
              || (atom->atom_type & LVAtomType_Spaces));
 }

@@ -8,10 +8,7 @@
 
 #import "element.h"
 #import "token.h"
-
 #import "atom.h"
-
-struct __LVDoc;
 
 @interface LVDefinition : NSObject
 
@@ -56,12 +53,9 @@ void LVCollDestroy(LVColl* coll);
 void LVElementListAppend(LVColl* coll, LVElement* child);
 
 LVColl* LVCollHighestParent(LVColl* coll);
-LVAtom* LVFindAtom(struct __LVDoc* doc, size_t pos);
 
 size_t LVGetElementIndexInSiblings(LVElement* child);
 
 bstring LVStringForColl(LVColl* coll);
-
-void LVFindDefinitions(LVColl* coll, NSMutableArray* defs);
 
 void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count);

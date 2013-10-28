@@ -45,7 +45,6 @@ NSDictionary* LVAttributesForAtom(LVAtom* atom) {
     
     if (atom->atom_type & LVAtomType_DefType) return theme.def.attrs;
     if (atom->atom_type & LVAtomType_DefName) return theme.defname.attrs;
-    if (atom->atom_type & LVAtomType_Symbol) return theme.symbol.attrs;
     if (atom->atom_type & LVAtomType_Keyword) return theme.keyword.attrs;
     if (atom->atom_type & LVAtomType_String) return theme.string.attrs;
     if (atom->atom_type & LVAtomType_Regex) return theme.regex.attrs;
@@ -62,6 +61,8 @@ NSDictionary* LVAttributesForAtom(LVAtom* atom) {
     
     if (atom->atom_type & LVAtomType_Var) return theme.symbol.attrs;
     if (atom->atom_type & LVAtomType_ReaderMacro) return theme.symbol.attrs;
+    
+    if (atom->atom_type & LVAtomType_Symbol) return theme.symbol.attrs;
     
     if (atom->atom_type & LVAtomType_CollDelim) {
         size_t depth = LVGetElementDepth((LVElement*)atom);
