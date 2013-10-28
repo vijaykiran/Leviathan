@@ -80,3 +80,16 @@ bstring LVStringForElement(LVElement* element) {
     else
         return LVStringForColl((void*)element);
 }
+
+size_t LVGetElementDepth(LVElement* needle) {
+    size_t i = 0;
+    
+    LVColl* iter = (void*)needle;
+    
+    while (iter->parent) {
+        i++;
+        iter = iter->parent;
+    }
+    
+    return i;
+}

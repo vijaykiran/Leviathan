@@ -43,6 +43,8 @@
     
     LVToken* foundToken = NULL;
     
+    size_t depth = LVGetElementDepth((void*)foundColl);
+    
     if (childsIndex == foundColl->children_len) {
         // we're at its end_token
         if (rangePtr) rangePtr->location = LVGetAbsolutePosition((void*)foundColl) + LVElementLength((void*)foundColl) - foundColl->close_token->string->slen;

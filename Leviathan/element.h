@@ -23,4 +23,6 @@ void LVElementDestroy(LVElement* el);
 struct __LVColl* LVGetTopLevelElement(LVElement* any);
 size_t LVGetAbsolutePosition(LVElement* needle);
 
+size_t LVGetElementDepth(LVElement* needle);
+
 bstring LVStringForElement(LVElement* element);
