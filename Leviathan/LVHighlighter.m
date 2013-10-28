@@ -24,7 +24,44 @@
     return highlighter;
 }
 
-- (NSDictionary*) attributesForTree:(LVColl*)topLevelColl atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr {
+- (NSDictionary*) attributesForTree:(LVDoc*)doc atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr {
+    LVAtom* atom = LVFindAtom(doc, absPos);
+    
+    if (rangePtr) {
+        rangePtr->location = atom->token->pos;
+        rangePtr->length = atom->token->string->slen;
+    }
+    
+    LVTheme* theme = [LVThemeManager sharedThemeManager].currentTheme;
+    
+    if (atom->atom_type & LVAtomType_Spaces) return theme.symbol.attrs;
+    if (atom->atom_type & LVAtomType_Newline) return theme.symbol.attrs;
+    if (atom->atom_type & LVAtomType_Comma) return theme.symbol.attrs;
+    
+    if (atom->atom_type & LVAtomType_DefType) return theme.def.attrs;
+    if (atom->atom_type & LVAtomType_DefName) return theme.defname.attrs;
+    if (atom->atom_type & LVAtomType_Symbol) return theme.symbol.attrs;
+    if (atom->atom_type & LVAtomType_Keyword) return theme.keyword.attrs;
+    if (atom->atom_type & LVAtomType_String) return theme.string.attrs;
+    if (atom->atom_type & LVAtomType_Regex) return theme.regex.attrs;
+    if (atom->atom_type & LVAtomType_Number) return theme.number.attrs;
+    if (atom->atom_type & LVAtomType_TrueAtom) return theme._true.attrs;
+    if (atom->atom_type & LVAtomType_FalseAtom) return theme._false.attrs;
+    if (atom->atom_type & LVAtomType_NilAtom) return theme._nil.attrs;
+    if (atom->atom_type & LVAtomType_Comment) return theme.comment.attrs;
+    if (atom->atom_type & LVAtomType_TypeOp) return theme.typeop.attrs;
+    if (atom->atom_type & LVAtomType_Quote) return theme.quote.attrs;
+    if (atom->atom_type & LVAtomType_Unquote) return theme.unquote.attrs;
+    if (atom->atom_type & LVAtomType_SyntaxQuote) return theme.syntaxquote.attrs;
+    if (atom->atom_type & LVAtomType_Splice) return theme.splice.attrs;
+    
+    if (atom->atom_type & LVAtomType_CollDelim) {
+        size_t depth = LVGetElementDepth((void*)atom);
+        NSArray* rainbows = [LVThemeManager sharedThemeManager].currentTheme.rainbowparens;
+        LVThemeStyle* style = [rainbows objectAtIndex: depth % [rainbows count]];
+        return style.attrs;
+    }
+    
 //    size_t childsIndex;
 //    LVColl* foundColl = LVFindDeepestColl(topLevelColl, 0, absPos, &childsIndex);
 //    

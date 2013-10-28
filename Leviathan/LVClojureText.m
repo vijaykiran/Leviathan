@@ -41,7 +41,7 @@
 }
 
 - (NSDictionary *)attributesAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
-    return [[LVHighlighter sharedHighlighter] attributesForTree:self.doc->topLevelColl
+    return [[LVHighlighter sharedHighlighter] attributesForTree:self.doc
                                                      atPosition:index
                                                  effectiveRange:aRange];
     

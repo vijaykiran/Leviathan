@@ -85,15 +85,24 @@ size_t LVGetElementIndexInSiblings(LVElement* child) {
 }
 
 LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
-    LVToken** iter = doc->tokens;
-    LVToken* lastToken;
     for (int i = 0; i < doc->tokens_len; i++) {
-        LVToken* tok = (*iter)++;
-        if (pos < tok->pos)
-            break;
-        lastToken = tok;
+        LVToken* tok = doc->tokens[i];
+        if (pos >= tok->pos && pos <= tok->pos + tok->string->slen)
+            return tok->atom;
     }
-    return lastToken->atom;
+    abort();
+    
+    // more efficient probably, but breaks with FileEnd token :(
+    
+//    LVToken** iter = doc->tokens;
+//    LVToken* lastToken;
+//    for (int i = 0; i < doc->tokens_len; i++) {
+//        LVToken* tok = (*iter)++;
+//        if (pos < tok->pos)
+//            break;
+//        lastToken = tok;
+//    }
+//    return lastToken->atom;
 }
 
 LVColl* LVCollHighestParent(LVColl* coll) {

@@ -27,7 +27,7 @@
 }
 
 - (void) jumpToDefinition:(LVDefinition*)def {
-    size_t absPos = (void*)def.defName->token->pos;
+    size_t absPos = def.defName->token->pos;
     self.textView.selectedRange = NSMakeRange(absPos, 0);
     [self.textView scrollRangeToVisible:self.textView.selectedRange];
 }

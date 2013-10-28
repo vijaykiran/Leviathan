@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "coll.h"
+#import "doc.h"
 
 @interface LVHighlighter : NSObject
 
 + (LVHighlighter*) sharedHighlighter;
 
-- (NSDictionary*) attributesForTree:(LVColl*)topLevelColl atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr;
+- (NSDictionary*) attributesForTree:(LVDoc*)doc atPosition:(NSUInteger)absPos effectiveRange:(NSRange*)rangePtr;
 
 @end
