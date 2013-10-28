@@ -87,8 +87,9 @@ size_t LVGetElementIndexInSiblings(LVElement* child) {
 }
 
 LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
+    LVToken** iter = doc->tokens + 1;
     for (int i = 1; i < doc->tokens_len; i++) {
-        LVToken* tok = doc->tokens[i];
+        LVToken* tok = *iter++;
         if (pos >= tok->pos && pos < tok->pos + tok->string->slen)
             return tok->atom;
     }
