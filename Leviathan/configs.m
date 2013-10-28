@@ -37,7 +37,7 @@ id LVSingleFromAtom(LVAtom* atom) {
 NSArray* LVArrayFromColl(LVColl* list) {
     NSMutableArray* array = [NSMutableArray array];
     
-    for (int i = 0; i < list->children_len; i++) {
+    for (int i = 1; i < list->children_len; i++) {
         LVElement* child = list->children[i];
         
         id found;
@@ -65,7 +65,7 @@ NSDictionary* LVDictionaryFromColl(LVColl* map) {
     
     id key;
     
-    for (int i = 0; i < map->children_len; i++) {
+    for (int i = 1; i < map->children_len; i++) {
         LVElement* child = map->children[i];
         
         id found;
@@ -105,7 +105,7 @@ id LVContainerFromColl(LVColl* coll) {
 
 id LVParseConfigFromString(NSString* str) {
     LVColl* coll = LVParse([str UTF8String]);
-    NSDictionary* configs = LVContainerFromColl((void*)coll->children[0]);
+    NSDictionary* configs = LVContainerFromColl((void*)coll->children[1]);
     LVCollDestroy(coll);
     return configs;
 }
