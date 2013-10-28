@@ -25,5 +25,6 @@ void LVDocDestroy(LVDoc* doc) {
         return;
     
     LVCollDestroy(doc->topLevelColl);
+    free(doc->tokens);
     free(doc);
 }
