@@ -204,3 +204,9 @@ LVColl* LVParse(const char* raw) {
     
     return topLevelColl;
 }
+
+LVColl* LVParseTokens(LVToken** tokens) {
+    LVColl* topLevelColl = parseColl(&tokens, LVCollType_TopLevel, LVTokenType_FileEnd);
+    topLevelColl->parent = NULL;
+    return topLevelColl;
+}

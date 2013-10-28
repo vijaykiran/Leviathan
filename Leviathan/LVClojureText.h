@@ -8,12 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "coll.h" // TODO: ridda this!
 #import "doc.h"
 
 @interface LVClojureText : NSTextStorage
 
 @property LVDoc* doc;
-@property LVColl* topLevelElement; // TODO: get rid of this!
 
 @end

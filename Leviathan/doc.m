@@ -8,11 +8,15 @@
 
 #import "doc.h"
 
+#import "lexer.h"
 #import "parser.h"
 
 LVDoc* LVDocCreate(const char* raw) {
     LVDoc* doc = malloc(sizeof(LVDoc));
-    doc->topLevelColl = LVParse(raw);
+    
+    doc->tokens = LVLex(raw, &doc->tokens_len);
+    doc->topLevelColl = LVParseTokens(doc->tokens);
+    
     return doc;
 }
 
