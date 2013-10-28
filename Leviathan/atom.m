@@ -13,6 +13,7 @@ LVAtom* LVAtomCreate(LVAtomType typ, LVToken* tok) {
     atom->is_atom = YES;
     atom->atom_type = typ;
     atom->token = tok;
+    tok->atom = atom;
     return atom;
 }
 

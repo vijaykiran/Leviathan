@@ -27,11 +27,14 @@
     return self;
 }
 
+- (void) dealloc {
+    LVDocDestroy(self.doc);
+//    free(self.doc);
+}
+
 - (void) parse {
-    if (self.topLevelElement)
-        LVCollDestroy(self.topLevelElement);
-    
-    self.topLevelElement = LVParse([[self string] UTF8String]);
+    LVDocDestroy(self.doc);
+    self.doc = LVDocCreate([[self string] UTF8String]);
 }
 
 - (NSString*) string {
