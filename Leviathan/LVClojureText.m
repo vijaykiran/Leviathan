@@ -66,9 +66,8 @@
 - (void)replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString {
     NSUInteger origLen = [self length];
     [self.internalStorage replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString];
-    [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:[self length] - origLen];
-    
     [self parse];
+    [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:[self length] - origLen];
 }
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {

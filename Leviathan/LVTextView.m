@@ -73,8 +73,6 @@
     self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
     self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
     
-//    self.textColor = [LVThemeManager sharedThemeManager].currentTheme.symbol.color; ()
-    
     {
         NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
         
@@ -100,10 +98,10 @@
     [self addParedit:self action:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
     [self addParedit:self action:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
 //    [self addParedit:self action:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
-//
+    
     [self addParedit:self action:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
-//
-//    [self addParedit:self action:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
+    
+    [self addParedit:self action:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
     
     
     
@@ -180,28 +178,19 @@
     [self indentCurrentBody];
 }
 
-//- (void) sd_r:(NSRange)r str:(NSString*)str {
+- (void) sd_r:(NSRange)r str:(NSString*)str {
 //    [[self undoManager] setActionIsDiscardable:YES];
-//    
-//    NSRange newrange = r;
-//    r.length = str.length;
-//    [[[self undoManager] prepareWithInvocationTarget:self] sd_r:newrange
-//                                                            str:[self.textStorage.string substringWithRange:newrange]];
-//    
-//    [[[self textStorage] mutableString] replaceCharactersInRange:r withString:str];
-//    
-//    if ([[self undoManager] isUndoing] || [[self undoManager] isRedoing]) {
-//        [self.file parseFromTextStorage];
-//        
-//        size_t childsIndex;
-//        LVColl* parent = LVFindDeepestColl(self.file.topLevelElement, 0, r.location, &childsIndex);
-//        
-//        LVElement* child = parent->children[childsIndex];
-//        LVHighlight((void*)child, self.textStorage, r.location);
-//    }
-//    
-////    self.selectedRange = r;
-//}
+    
+    NSString* oldString = [self.file.textStorage.string substringWithRange:r];
+    NSRange newRange = NSMakeRange(r.location, [str length]);
+    
+    [[[self undoManager] prepareWithInvocationTarget:self] sd_r:newRange
+                                                            str:oldString];
+    
+    [[self textStorage] replaceCharactersInRange:r withString:str];
+    
+//    self.selectedRange = r;
+}
 
 //- (void) insertText:(id)insertString {
 //    [super insertText:insertString];
@@ -443,6 +432,67 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 }
 
 - (void) raiseSexp:(NSEvent*)event {
+    
+    
+    
+    NSRange selection = self.selectedRange;
+    
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
+    
+    LVElement* elementToRaise = NULL;
+    size_t posAfterElement;
+    
+    LVElement* semanticChildren[parent->children_len];
+    size_t semanticChildrenCount;
+    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
+    
+    for (int i = 0; i < semanticChildrenCount; i++) {
+        LVElement* semanticChild = semanticChildren[i];
+        
+        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
+        
+        // are we in the middle of the semantic element?
+        if (selection.location < posAfterElement) {
+            // if so, great! we'll use this one
+            elementToRaise = semanticChild;
+            break;
+        }
+    }
+    
+    if (elementToRaise) {
+        LVElement* child = elementToRaise;
+        
+        size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
+        
+        LVColl* grandparent = parent->parent;
+        size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
+        
+        NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
+        
+        grandparent->children[parentIndex] = child;
+        child->parent = grandparent;
+        
+        // TODO: re-indent grandparent (or maybe just child?) right here
+        
+        bstring str = LVStringForElement(child);
+        NSString* newstr = [NSString stringWithFormat:@"%s", str->data];
+        bdestroy(str);
+        
+        [self sd_r:oldParentRange str:newstr];
+        
+//        [self.textStorage replaceCharactersInRange:oldParentRange withString:newstr];
+        
+        self.selectedRange = NSMakeRange(oldParentRange.location + relativeOffset, 0);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 //    NSRange selection = self.selectedRange;
 //    size_t childIndex;
 //    
