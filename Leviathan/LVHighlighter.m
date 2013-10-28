@@ -24,6 +24,7 @@ LVHighlights* LVHighlightsForDoc(LVDoc* doc) {
             hs[idx].pos = tok->pos;
             hs[idx].len = tok->string->slen;
             hs[idx].atom = tok->atom;
+            hs[idx].attrs = NULL;
             idx++;
         }
     }
