@@ -10,17 +10,7 @@
 
 @interface LVThemeStyle : NSObject
 
-@property NSColor* color;
-@property BOOL bold;
-@property BOOL italic;
-
-- (void) highlightIn:(NSTextStorage*)textStorage range:(NSRange)range depth:(int)depth;
-
-@end
-
-@interface LVThemeStyleArray : LVThemeStyle
-
-@property NSArray* styles;
+@property NSDictionary* attrs;
 
 @end
 
@@ -39,7 +29,7 @@
 @property LVThemeSelectionStyle* selection;
 @property NSColor* cursorColor;
 
-@property LVThemeStyleArray* rainbowparens;
+@property NSArray* rainbowparens;
 @property LVThemeStyle* symbol;
 @property LVThemeStyle* def;
 @property LVThemeStyle* defname;

@@ -8,6 +8,8 @@
 
 #import "LVTheme.h"
 
+#import "LVPreferences.h"
+
 NSFont* LVFixFont(NSFont* font, BOOL haveIt, int trait) {
     NSFontManager* fm = [NSFontManager sharedFontManager];
     return (haveIt ? [fm convertFont:font toHaveTrait:trait] : [fm convertFont:font toNotHaveTrait:trait]);
@@ -26,33 +28,32 @@ NSColor* LVColorFromHex(NSString* hex) {
 
 + (LVThemeStyle*) styleFrom:(NSDictionary*)data {
     LVThemeStyle* style = [[LVThemeStyle alloc] init];
-    style.color = LVColorFromHex([data objectForKey:@"color"]);
-    style.bold = [[data objectForKey:@"bold"] boolValue];
-    style.italic = [[data objectForKey:@"italic"] boolValue];
+    
+    NSMutableDictionary* attrs = [NSMutableDictionary dictionary];
+    attrs[NSForegroundColorAttributeName] = LVColorFromHex([data objectForKey:@"color"]);
+    
+    NSFont* font = [LVPreferences userFont];
+    font = LVFixFont(font, [[data objectForKey:@"bold"] boolValue], NSFontBoldTrait);
+    font = LVFixFont(font, [[data objectForKey:@"italic"] boolValue], NSFontItalicTrait);
+    attrs[NSFontAttributeName] = font;
+    
+    style.attrs = attrs;
+    
     return style;
 }
 
-- (void) highlightIn:(NSTextStorage*)textStorage range:(NSRange)range depth:(int)depth {
-    NSMutableDictionary* newStyle = [NSMutableDictionary dictionary];
-    
-    NSFont* font = [textStorage attribute:NSFontAttributeName atIndex:range.location effectiveRange:NULL];
-    font = LVFixFont(font, self.bold, NSFontBoldTrait);
-    font = LVFixFont(font, self.italic, NSFontItalicTrait);
-    newStyle[NSForegroundColorAttributeName] = self.color;
-    newStyle[NSFontAttributeName] = font;
-    
-    [textStorage addAttributes:newStyle
-                         range:range];
-}
-
-@end
-
-@implementation LVThemeStyleArray
-
-- (void) highlightIn:(NSTextStorage*)textStorage range:(NSRange)range depth:(int)depth {
-    LVThemeStyle* style = [self.styles objectAtIndex: depth % [self.styles count]];
-    [style highlightIn:textStorage range:range depth:depth];
-}
+//- (void) highlightIn:(NSTextStorage*)textStorage range:(NSRange)range depth:(int)depth {
+//    NSMutableDictionary* newStyle = [NSMutableDictionary dictionary];
+//    
+//    NSFont* font = [textStorage attribute:NSFontAttributeName atIndex:range.location effectiveRange:NULL];
+//    font = LVFixFont(font, self.bold, NSFontBoldTrait);
+//    font = LVFixFont(font, self.italic, NSFontItalicTrait);
+//    newStyle[NSForegroundColorAttributeName] = self.color;
+//    newStyle[NSFontAttributeName] = font;
+//    
+//    [textStorage addAttributes:newStyle
+//                         range:range];
+//}
 
 @end
 
@@ -105,8 +106,7 @@ NSColor* LVColorFromHex(NSString* hex) {
         [rainbowStyles addObject:[LVThemeStyle styleFrom: rainbowParen]];
     }
     
-    theme.rainbowparens = [[LVThemeStyleArray alloc] init];
-    theme.rainbowparens.styles = rainbowStyles;
+    theme.rainbowparens = rainbowStyles;
     
     return theme;
 }
