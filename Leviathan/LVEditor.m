@@ -30,6 +30,7 @@
     size_t absPos = def.defName->token->pos;
     self.textView.selectedRange = NSMakeRange(absPos, 0);
     [self.textView scrollRangeToVisible:self.textView.selectedRange];
+    [self.textView showFindIndicatorForRange:NSMakeRange(def.defName->token->pos, def.defName->token->string->slen)];
 }
 
 - (void) startEditingFile:(LVFile*)file {
