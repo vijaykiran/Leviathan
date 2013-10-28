@@ -74,7 +74,7 @@
 		94ABB132181463C4003415B5 /* coll.m in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB130181463C4003415B5 /* coll.m */; };
 		94CA3656181E165900926D6B /* doc.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA3655181E165900926D6B /* doc.m */; };
 		94D794341811226D003307F4 /* LVThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D794331811226D003307F4 /* LVThemeManager.m */; };
-		94D7947A18112CC0003307F4 /* LVHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7947918112CC0003307F4 /* LVHighlighter.m */; };
+		94D7947A18112CC0003307F4 /* highlights.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7947918112CC0003307F4 /* highlights.m */; };
 		94EB3DCA18161106002E639F /* token.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EB3DC818161106002E639F /* token.m */; };
 		94EF5CF81811E744004836A0 /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EF5CF71811E744004836A0 /* LVTheme.m */; };
 		94F05D85181DAAF4008E9353 /* LVClojureText.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F05D84181DAAF4008E9353 /* LVClojureText.m */; };
@@ -216,8 +216,8 @@
 		94CA3655181E165900926D6B /* doc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = doc.m; sourceTree = "<group>"; };
 		94D794321811226D003307F4 /* LVThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeManager.h; sourceTree = "<group>"; };
 		94D794331811226D003307F4 /* LVThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeManager.m; sourceTree = "<group>"; };
-		94D7947818112CC0003307F4 /* LVHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVHighlighter.h; sourceTree = "<group>"; };
-		94D7947918112CC0003307F4 /* LVHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVHighlighter.m; sourceTree = "<group>"; };
+		94D7947818112CC0003307F4 /* highlights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = highlights.h; sourceTree = "<group>"; };
+		94D7947918112CC0003307F4 /* highlights.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = highlights.m; sourceTree = "<group>"; };
 		94EB3DC818161106002E639F /* token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = token.m; sourceTree = "<group>"; };
 		94EB3DC918161106002E639F /* token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token.h; sourceTree = "<group>"; };
 		94EF5CF61811E744004836A0 /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
@@ -511,8 +511,8 @@
 				94D794331811226D003307F4 /* LVThemeManager.m */,
 				94EF5CF61811E744004836A0 /* LVTheme.h */,
 				94EF5CF71811E744004836A0 /* LVTheme.m */,
-				94D7947818112CC0003307F4 /* LVHighlighter.h */,
-				94D7947918112CC0003307F4 /* LVHighlighter.m */,
+				94D7947818112CC0003307F4 /* highlights.h */,
+				94D7947918112CC0003307F4 /* highlights.m */,
 			);
 			name = Theme;
 			sourceTree = "<group>";
@@ -683,7 +683,7 @@
 				942BB4A1181ECC1900FFA52B /* BMOEDNKeyword.m in Sources */,
 				94F05D85181DAAF4008E9353 /* LVClojureText.m in Sources */,
 				94855A12181109A700220186 /* LVPreferencesWindowController.m in Sources */,
-				94D7947A18112CC0003307F4 /* LVHighlighter.m in Sources */,
+				94D7947A18112CC0003307F4 /* highlights.m in Sources */,
 				942BB4AC181ECC1900FFA52B /* BMOLazyEnumerator.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
 				942BB4B2181ECC1900FFA52B /* NSUUID+BMOEDN.m in Sources */,

@@ -9,7 +9,7 @@
 #import "LVClojureText.h"
 
 #import "parser.h"
-#import "LVHighlighter.h"
+#import "highlights.h"
 
 @interface LVClojureText ()
 

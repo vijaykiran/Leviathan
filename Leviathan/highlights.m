@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "LVHighlighter.h"
+#import "highlights.h"
 
 #import "LVThemeManager.h"
 #import "coll.h"
