@@ -72,10 +72,9 @@
     [self parse];
     [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:[self length] - origLen];
     
-    bstring s = bfromcstr([self.internalStorage UTF8String]);
-    
-    NSLog(@"[%@], %ld", self.internalStorage, [self.internalStorage length]);
-    NSLog(@"[%s], %d", s->data, s->slen);
+//    bstring s = bfromcstr([self.internalStorage UTF8String]);
+//    NSLog(@"[%@], %ld, %u", self.internalStorage, [self.internalStorage length], [self.internalStorage characterAtIndex:0]);
+//    NSLog(@"[%s], %d, %u, %u", s->data, s->slen, s->data[0], s->data[1]);
 }
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {
