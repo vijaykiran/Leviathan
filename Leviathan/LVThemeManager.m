@@ -13,7 +13,7 @@
 
 @interface LVThemeManager ()
 
-@property NSMutableArray* oldThemes; // total hack
+@property NSMutableArray* oldThemes; // TODO: this is a TOTAL hack
 
 @end
 

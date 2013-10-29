@@ -10,7 +10,7 @@
 
 #import "LVPreferences.h"
 
-NSFont* LVFixFont(NSFont* font, BOOL haveIt, int trait) {
+static NSFont* LVAdjustFont(NSFont* font, BOOL haveIt, int trait) {
     NSFontManager* fm = [NSFontManager sharedFontManager];
     return (haveIt ? [fm convertFont:font toHaveTrait:trait] : [fm convertFont:font toNotHaveTrait:trait]);
 }
@@ -33,27 +33,14 @@ NSColor* LVColorFromHex(NSString* hex) {
     attrs[NSForegroundColorAttributeName] = LVColorFromHex([data objectForKey:@"color"]);
     
     NSFont* font = [LVPreferences userFont];
-    font = LVFixFont(font, [[data objectForKey:@"bold"] boolValue], NSFontBoldTrait);
-    font = LVFixFont(font, [[data objectForKey:@"italic"] boolValue], NSFontItalicTrait);
+    font = LVAdjustFont(font, [[data objectForKey:@"bold"] boolValue], NSFontBoldTrait);
+    font = LVAdjustFont(font, [[data objectForKey:@"italic"] boolValue], NSFontItalicTrait);
     attrs[NSFontAttributeName] = font;
     
     style.attrs = attrs;
     
     return style;
 }
-
-//- (void) highlightIn:(NSTextStorage*)textStorage range:(NSRange)range depth:(int)depth {
-//    NSMutableDictionary* newStyle = [NSMutableDictionary dictionary];
-//    
-//    NSFont* font = [textStorage attribute:NSFontAttributeName atIndex:range.location effectiveRange:NULL];
-//    font = LVFixFont(font, self.bold, NSFontBoldTrait);
-//    font = LVFixFont(font, self.italic, NSFontItalicTrait);
-//    newStyle[NSForegroundColorAttributeName] = self.color;
-//    newStyle[NSFontAttributeName] = font;
-//    
-//    [textStorage addAttributes:newStyle
-//                         range:range];
-//}
 
 @end
 

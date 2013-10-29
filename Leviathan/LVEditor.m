@@ -18,6 +18,14 @@
 
 @implementation LVEditor
 
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void) defaultsFontChanged:(NSNotification*)note {
+    [self.file.textStorage rehighlight];
+}
+
 - (NSString*) nibName {
     return @"Editor";
 }
@@ -37,6 +45,8 @@
     self.file = file;
     self.title = file.shortName;
     self.textView.file = file;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     
     [[self.textView layoutManager] replaceTextStorage:file.textStorage];
     [[self.textView undoManager] removeAllActions];

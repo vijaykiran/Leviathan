@@ -47,25 +47,7 @@
     return did;
 }
 
-- (void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void) defaultsFontChanged:(NSNotification*)note {
-    [self.file.textStorage rehighlight];
-    
-    [self setNeedsDisplay:YES];
-    
-//    NSLog(@"noep");
-//    NSRange fullRange = NSMakeRange(0, [self.textStorage length]);
-//    [self.textStorage addAttribute:NSFontAttributeName
-//                             value:[LVPreferences userFont]
-//                             range:fullRange];
-}
-
 - (void) awakeFromNib {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
-    
     self.enclosingScrollView.verticalScroller.knobStyle = NSScrollerKnobStyleLight;
     self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
@@ -94,7 +76,7 @@
     
     
     
-//    [self sd_disableLineWrapping];
+    [self sd_disableLineWrapping];
     [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
     
     
