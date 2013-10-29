@@ -12,6 +12,8 @@
 
 @interface LVClojureText : NSTextStorage
 
+@property NSUndoManager* undoManager;
+
 @property LVDoc* doc;
 
 - (void) rehighlight;

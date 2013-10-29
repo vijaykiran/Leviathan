@@ -18,7 +18,6 @@
 @property NSString* longName;
 @property NSString* shortName;
 
-@property NSUndoManager* undoManager;
 @property LVClojureText* textStorage;
 
 - (void) save;

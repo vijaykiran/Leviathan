@@ -26,3 +26,5 @@ struct __LVColl* LVGetTopLevelElement(LVElement* any);
 size_t LVGetElementDepth(LVElement* needle);
 
 bstring LVStringForElement(LVElement* element);
+
+size_t LVGetAbsolutePosition(LVElement* el);

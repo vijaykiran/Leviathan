@@ -76,3 +76,14 @@ LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
     }
     abort();
 }
+
+LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
+    LVAtom* atom = LVFindAtom(doc, pos);
+    
+    LVElement* el = (void*)atom;
+    if (el == atom->parent->children[0])
+        el = (void*)atom->parent;
+    
+    *childIndex = LVGetElementIndexInSiblings(el);
+    return el->parent;
+}

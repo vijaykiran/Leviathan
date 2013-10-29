@@ -24,6 +24,7 @@
 
 - (id) initWithString:(NSString *)str {
     if (self = [super init]) {
+        self.undoManager = [[NSUndoManager alloc] init];
         self.internalStorage = [[NSMutableString alloc] initWithString: str];
         [self parse];
     }
@@ -70,6 +71,11 @@
     [self.internalStorage replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString];
     [self parse];
     [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:[self length] - origLen];
+    
+    bstring s = bfromcstr([self.internalStorage UTF8String]);
+    
+    NSLog(@"[%@], %ld", self.internalStorage, [self.internalStorage length]);
+    NSLog(@"[%s], %d", s->data, s->slen);
 }
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {

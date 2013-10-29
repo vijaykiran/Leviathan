@@ -62,3 +62,15 @@ size_t LVGetElementDepth(LVElement* needle) {
     
     return i - 2; // one for top-level-coll, one because delims are children of the coll
 }
+
+size_t LVGetAbsolutePosition(LVElement* el) {
+    if (el->is_atom) {
+        LVAtom* atom = (void*)el;
+        return atom->token->pos;
+    }
+    else {
+        LVColl* coll = (void*)el;
+        LVAtom* openChild = (void*)coll->children[0];
+        return openChild->token->pos;
+    }
+}

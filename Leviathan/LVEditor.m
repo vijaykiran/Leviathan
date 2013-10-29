@@ -31,7 +31,7 @@
 }
 
 - (NSUndoManager *)undoManagerForTextView:(NSTextView *)aTextView {
-    return self.file.undoManager;
+    return self.file.textStorage.undoManager;
 }
 
 - (void) jumpToDefinition:(LVDefinition*)def {

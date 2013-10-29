@@ -14,28 +14,14 @@
 #import "LVThemeManager.h"
 #import "LVPreferences.h"
 
-
-
-
-@interface LVShortcut : NSObject
-
-@property id target;
-@property SEL action;
-
-@property NSString* title;
-@property NSString* keyEquiv;
-@property NSArray* mods;
-
-@end
-
-@implementation LVShortcut
-@end
+#import "LVShortcuts.h"
 
 @interface LVTextView ()
 
-@property NSMutableArray* shortcuts;
+@property LVShortcuts* shortcuts;
 
 @end
+
 
 @implementation LVTextView
 
@@ -80,15 +66,10 @@
     [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
     
     
-    self.shortcuts = [NSMutableArray array];
+//    self.shortcuts = [NSMutableArray array];
     
-    [self addParedit:self action:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
-    [self addParedit:self action:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
 //    [self addParedit:self action:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
     
-    [self addParedit:self action:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
-    
-    [self addParedit:self action:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
     
     
     
@@ -110,49 +91,30 @@
 
 
 
-- (void) addParedit:(id)target action:(SEL)action title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSArray*)mods {
-    LVShortcut* shortcut = [[LVShortcut alloc] init];
-    shortcut.title = title;
-    shortcut.keyEquiv = keyEquiv;
-    shortcut.target = target;
-    shortcut.action = action;
-    shortcut.mods = mods;
-    [self.shortcuts addObject:shortcut];
-    
-    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
-    NSMenuItem* item = [menu insertItemWithTitle:shortcut.title action:shortcut.action keyEquivalent:shortcut.keyEquiv atIndex:0];
-    NSUInteger realMods = 0;
-    if ([mods containsObject:@"CTRL"]) realMods |= NSControlKeyMask;
-    if ([mods containsObject:@"ALT"]) realMods |= NSAlternateKeyMask;
-    [item setKeyEquivalentModifierMask:realMods];
-    
-    // TODO: insert the target into the responder chain, between self and self.nextResponder
-}
-
-- (void) keyDown:(NSEvent *)theEvent {
-    for (LVShortcut* shortcut in self.shortcuts) {
-        if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
-            continue;
-        
-        NSMutableArray* needs = [NSMutableArray array];
-        
-        if ([theEvent modifierFlags] & NSControlKeyMask) [needs addObject:@"CTRL"];
-        if ([theEvent modifierFlags] & NSAlternateKeyMask) [needs addObject:@"ALT"];
-        
-        if (![needs isEqualToArray: shortcut.mods])
-            continue;
-        
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [shortcut.target performSelector:shortcut.action
-                              withObject:theEvent];
-#pragma clang diagnostic pop
-        
-        return;
-    }
-    
-    [super keyDown:theEvent];
-}
+//- (void) keyDown:(NSEvent *)theEvent {
+//    for (LVShortcut* shortcut in self.shortcuts) {
+//        if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
+//            continue;
+//        
+//        NSMutableArray* needs = [NSMutableArray array];
+//        
+//        if ([theEvent modifierFlags] & NSControlKeyMask) [needs addObject:@"CTRL"];
+//        if ([theEvent modifierFlags] & NSAlternateKeyMask) [needs addObject:@"ALT"];
+//        
+//        if (![needs isEqualToArray: shortcut.mods])
+//            continue;
+//        
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+//        [shortcut.target performSelector:shortcut.action
+//                              withObject:theEvent];
+//#pragma clang diagnostic pop
+//        
+//        return;
+//    }
+//    
+//    [super keyDown:theEvent];
+//}
 
 
 
@@ -163,21 +125,6 @@
 - (void) insertNewline:(id)sender {
     [super insertNewline:sender];
     [self indentCurrentBody];
-}
-
-- (void) sd_r:(NSRange)r str:(NSString*)str newpos:(NSUInteger)newpos {
-    NSString* oldString = [self.file.textStorage.string substringWithRange:r];
-    NSRange newRange = NSMakeRange(r.location, [str length]);
-    
-    [[[self undoManager] prepareWithInvocationTarget:self] sd_r:newRange
-                                                            str:oldString
-                                                         newpos:self.selectedRange.location];
-    
-    [[self textStorage] replaceCharactersInRange:r withString:str];
-    
-    self.selectedRange = NSMakeRange(newpos, 0);
-    
-//    self.selectedRange = r;
 }
 
 //- (void) insertText:(id)insertString {
@@ -267,14 +214,14 @@
 //    return ([functionLikes containsObject: [atomChild token].val]);
 //}
 
-NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
-    return NSMakeRange(pos, r.length + (r.location - pos));
-}
-
-NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absPosWithin) {
-    // 1 [2 -3- 4 5]
-    return NSMakeRange(absPosWithin, NSMaxRange(r) - absPosWithin);
-}
+//NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
+//    return NSMakeRange(pos, r.length + (r.location - pos));
+//}
+//
+//NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absPosWithin) {
+//    // 1 [2 -3- 4 5]
+//    return NSMakeRange(absPosWithin, NSMaxRange(r) - absPosWithin);
+//}
 
 - (void) indentCurrentBody {
 //    return;
@@ -420,115 +367,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 }
 
 //- (void) insertText:(id)insertString {
-//    id old = self.selectedRanges;
-//    for (NSValue* r in [self.selectedRanges reverseObjectEnumerator]) {
-//        NSRange r2 = r.rangeValue;
-//        r2.length = 0;
-//        self.selectedRange = r2;
-//        [super insertText:insertString];
-//    }
-//    self.selectedRanges = old;
-//}
-
-- (void) raiseSexp:(NSEvent*)event {
-    
-//    self.selectedRanges = @[[NSValue valueWithRange:NSMakeRange(2, 0)],
-//                            [NSValue valueWithRange:NSMakeRange(8, 0)]];
-//    
-//    return;
-    
-    
-    
-    NSRange selection = self.selectedRange;
-    
-    size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
-    
-    LVElement* elementToRaise = NULL;
-    size_t posAfterElement;
-    
-    LVElement* semanticChildren[parent->children_len];
-    size_t semanticChildrenCount;
-    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
-    
-    for (int i = 0; i < semanticChildrenCount; i++) {
-        LVElement* semanticChild = semanticChildren[i];
-        
-        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
-        
-        // are we in the middle of the semantic element?
-        if (selection.location < posAfterElement) {
-            // if so, great! we'll use this one
-            elementToRaise = semanticChild;
-            break;
-        }
-    }
-    
-    if (elementToRaise) {
-        LVElement* child = elementToRaise;
-        
-        size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
-        
-        LVColl* grandparent = parent->parent;
-        size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
-        
-        NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
-        
-        grandparent->children[parentIndex] = child;
-        child->parent = grandparent;
-        
-        // TODO: re-indent grandparent (or maybe just child?) right here
-        
-        bstring str = LVStringForElement(child);
-        NSString* newstr = [NSString stringWithFormat:@"%s", str->data];
-        bdestroy(str);
-        
-        [self sd_r:oldParentRange str:newstr newpos:oldParentRange.location + relativeOffset];
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-//    NSRange selection = self.selectedRange;
-//    size_t childIndex;
-//    
-//    LVColl* parent = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex);
-//    
-//    if (parent->coll_type & LVCollType_TopLevel)
-//        return;
-//    
-//    LVElement* child = LVGetNextSemanticElement(parent, childIndex);
-//    
-//    if (child) {
-//        size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
-//        
-//        LVColl* grandparent = parent->parent;
-//        size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
-//        
-//        NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
-//        
-//        grandparent->children[parentIndex] = child;
-//        child->parent = grandparent;
-//        
-//        // TODO: re-indent grandparent (or maybe just child?) right here
-//        
-//        bstring str = LVStringForElement(child);
-//        NSString* newstr = [NSString stringWithFormat:@"%s", str->data];
-//        bdestroy(str);
-//        
-//        [self.textStorage replaceCharactersInRange:oldParentRange withString:newstr];
-//        
-//        LVHighlight(child, self.textStorage, oldParentRange.location);
-//        
-//        self.selectedRange = NSMakeRange(oldParentRange.location + relativeOffset, 0);
-//    }
-}
-
-//- (void) insertText:(id)insertString {
 //    NSDictionary* balancers = @{@"(": @")", @"[": @"]", @"{": @"}"};
 //    NSString* origString = insertString;
 //    NSString* toBalance = [balancers objectForKey:origString];
@@ -637,66 +475,8 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //- (IBAction) wrapNextInParens:(id)sender {
 //    [self wrapNextInThing:@"(%@)"];
 //}
-
-size_t LVGetAbsolutePosition(LVElement* el) {
-    if (el->is_atom) {
-        LVAtom* atom = (void*)el;
-        return atom->token->pos;
-    }
-    else {
-        LVColl* coll = (void*)el;
-        LVAtom* openChild = (void*)coll->children[0];
-        return openChild->token->pos;
-    }
-}
-
-LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
-    LVAtom* atom = LVFindAtom(doc, pos);
-    
-    LVElement* el = (void*)atom;
-    if (el == atom->parent->children[0])
-        el = (void*)atom->parent;
-    
-    *childIndex = LVGetElementIndexInSiblings(el);
-    return el->parent;
-}
-
-- (void) forwardSexp:(NSEvent*)event {
-    NSRange selection = self.selectedRange;
-    
-    size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
-    
-    LVElement* elementToMoveToEndOf = NULL;
-    size_t posAfterElement;
-    
-    LVElement* semanticChildren[parent->children_len];
-    size_t semanticChildrenCount;
-    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
-    
-    for (int i = 0; i < semanticChildrenCount; i++) {
-        LVElement* semanticChild = semanticChildren[i];
-        
-        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
-        
-        // are we in the middle of the semantic element?
-        if (selection.location < posAfterElement) {
-            // if so, great! we'll use this one
-            elementToMoveToEndOf = semanticChild;
-            break;
-        }
-    }
-    
-    if (elementToMoveToEndOf) {
-        self.selectedRange = NSMakeRange(posAfterElement, 0);
-        [self scrollRangeToVisible:self.selectedRange];
-    }
-    else {
-        [self outForwardSexp:event];
-    }
-}
-
-- (void) backwardSexp:(NSEvent*)event {
+//
+//- (void) backwardSexp:(NSEvent*)event {
 //    NSRange selection = self.selectedRange;
 //    NSUInteger childIndex;
 //    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
@@ -709,40 +489,8 @@ LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
 //    else {
 //        [self outBackwardSexp:sender];
 //    }
-}
-
-- (void) outBackwardSexp:(NSEvent*)event {
-    NSRange selection = self.selectedRange;
-    
-    size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
-    
-    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), 0);
-    [self scrollRangeToVisible:self.selectedRange];
-}
-
-- (void) outForwardSexp:(NSEvent*)event {
-    NSRange selection = self.selectedRange;
-    
-    size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
-    
-    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((void*)parent) + LVElementLength((void*)parent), 0);
-    [self scrollRangeToVisible:self.selectedRange];
-    
-//    
-//    
-//    NSRange selection = self.selectedRange;
-//    size_t childIndex;
-//    
-//    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, selection.location, &childIndex);
-//    size_t absPos = LVGetAbsolutePosition((void*)coll);
-//    size_t len = LVElementLength((void*)coll);
-//    
-//    self.selectedRange = NSMakeRange(absPos + len, 0);
-//    [self scrollRangeToVisible:self.selectedRange];
-}
-
+//}
+//
 //- (IBAction) inForwardSexp:(id)sender {
 //    NSRange selection = self.selectedRange;
 //    NSUInteger childIndex;

@@ -19,7 +19,6 @@
 + (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName {
     LVFile* file = [[LVFile alloc] init];
     
-    file.undoManager = [[NSUndoManager alloc] init];
     file.fileURL = theURL;
     file.longName = longName;
     file.shortName = shortName;
