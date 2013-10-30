@@ -187,17 +187,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		940977FC1814EF2800D0B9B1 /* Parser */ = {
-			isa = PBXGroup;
-			children = (
-				949AB0B91819D331004BBD3C /* configs.h */,
-				949AB0BA1819D331004BBD3C /* configs.m */,
-				945544FC18187B5600D69E63 /* types */,
-				94EB3DCB18161DD5002E639F /* parser */,
-			);
-			name = Parser;
-			sourceTree = "<group>";
-		};
 		94370E741820DD2700EBB871 /* beowulf */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,7 +276,10 @@
 				9490D7E518104D58006ECA5E /* LVAppDelegate.m */,
 				949EC52618139226001C9CAB /* LVTestBed.h */,
 				949EC52718139226001C9CAB /* LVTestBed.m */,
-				940977FC1814EF2800D0B9B1 /* Parser */,
+				949AB0B91819D331004BBD3C /* configs.h */,
+				949AB0BA1819D331004BBD3C /* configs.m */,
+				945544FC18187B5600D69E63 /* types */,
+				94EB3DCB18161DD5002E639F /* parser */,
 				94855A14181109AE00220186 /* Preferences */,
 				9490D83218107FCD006ECA5E /* Fuzzy Matcher */,
 				9490D82E18107DC5006ECA5E /* Theme */,
