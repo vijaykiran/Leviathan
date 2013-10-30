@@ -1,0 +1,3 @@
+(def defmacro (macro* [name params body] `(def ~name (macro* [~@params] ~body))))
+; (defmacro fn [params body] `(fn* [~@params] (do ~@body)))
+(defmacro defn [name params body] `(def ~name (fn* [~@params] ~body)))

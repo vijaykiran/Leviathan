@@ -7,27 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		942BB49E181ECC1900FFA52B /* BMOEDNCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB472181ECC1900FFA52B /* BMOEDNCharacter.m */; };
-		942BB49F181ECC1900FFA52B /* BMOEDNCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB474181ECC1900FFA52B /* BMOEDNCoder.m */; };
-		942BB4A0181ECC1900FFA52B /* BMOEDNError.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB476181ECC1900FFA52B /* BMOEDNError.m */; };
-		942BB4A1181ECC1900FFA52B /* BMOEDNKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB478181ECC1900FFA52B /* BMOEDNKeyword.m */; };
-		942BB4A2181ECC1900FFA52B /* BMOEDNList.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB47A181ECC1900FFA52B /* BMOEDNList.m */; };
-		942BB4A3181ECC1900FFA52B /* BMOEDNReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB47C181ECC1900FFA52B /* BMOEDNReader.m */; };
-		942BB4A4181ECC1900FFA52B /* BMOEDNReaderState.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB47E181ECC1900FFA52B /* BMOEDNReaderState.m */; };
-		942BB4A5181ECC1900FFA52B /* BMOEDNRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB480181ECC1900FFA52B /* BMOEDNRegistry.m */; };
-		942BB4A6181ECC1900FFA52B /* BMOEDNRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB483181ECC1900FFA52B /* BMOEDNRoot.m */; };
-		942BB4A7181ECC1900FFA52B /* BMOEDNSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB485181ECC1900FFA52B /* BMOEDNSerialization.m */; };
-		942BB4A8181ECC1900FFA52B /* BMOEDNSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB487181ECC1900FFA52B /* BMOEDNSymbol.m */; };
-		942BB4A9181ECC1900FFA52B /* BMOEDNTaggedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB489181ECC1900FFA52B /* BMOEDNTaggedElement.m */; };
-		942BB4AA181ECC1900FFA52B /* BMOEDNWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB48B181ECC1900FFA52B /* BMOEDNWriter.m */; };
-		942BB4AB181ECC1900FFA52B /* BMOEDNWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB48D181ECC1900FFA52B /* BMOEDNWriterState.m */; };
-		942BB4AC181ECC1900FFA52B /* BMOLazyEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB48F181ECC1900FFA52B /* BMOLazyEnumerator.m */; };
-		942BB4AD181ECC1900FFA52B /* NSData+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB493181ECC1900FFA52B /* NSData+BMOEDN.m */; };
-		942BB4AE181ECC1900FFA52B /* NSDate+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB495181ECC1900FFA52B /* NSDate+BMOEDN.m */; };
-		942BB4AF181ECC1900FFA52B /* NSInputStream+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB497181ECC1900FFA52B /* NSInputStream+BMOEDN.m */; };
-		942BB4B0181ECC1900FFA52B /* NSObject+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB499181ECC1900FFA52B /* NSObject+BMOEDN.m */; };
-		942BB4B1181ECC1900FFA52B /* NSString+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB49B181ECC1900FFA52B /* NSString+BMOEDN.m */; };
-		942BB4B2181ECC1900FFA52B /* NSUUID+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB49D181ECC1900FFA52B /* NSUUID+BMOEDN.m */; };
+		94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94370E721820DD2300EBB871 /* libBeowulf.a */; };
+		94370E761820DD7800EBB871 /* prelude.bwlf in Resources */ = {isa = PBXBuildFile; fileRef = 94370E751820DD7800EBB871 /* prelude.bwlf */; };
 		945544FE18187BFF00D69E63 /* element.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544FD18187BFF00D69E63 /* element.m */; };
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
 		94855A0D1811048E00220186 /* default_leviathan_theme.clj in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.clj */; };
@@ -90,51 +71,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		942BB471181ECC1900FFA52B /* BMOEDNCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNCharacter.h; sourceTree = "<group>"; };
-		942BB472181ECC1900FFA52B /* BMOEDNCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNCharacter.m; sourceTree = "<group>"; };
-		942BB473181ECC1900FFA52B /* BMOEDNCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNCoder.h; sourceTree = "<group>"; };
-		942BB474181ECC1900FFA52B /* BMOEDNCoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNCoder.m; sourceTree = "<group>"; };
-		942BB475181ECC1900FFA52B /* BMOEDNError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNError.h; sourceTree = "<group>"; };
-		942BB476181ECC1900FFA52B /* BMOEDNError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNError.m; sourceTree = "<group>"; };
-		942BB477181ECC1900FFA52B /* BMOEDNKeyword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNKeyword.h; sourceTree = "<group>"; };
-		942BB478181ECC1900FFA52B /* BMOEDNKeyword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNKeyword.m; sourceTree = "<group>"; };
-		942BB479181ECC1900FFA52B /* BMOEDNList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNList.h; sourceTree = "<group>"; };
-		942BB47A181ECC1900FFA52B /* BMOEDNList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNList.m; sourceTree = "<group>"; };
-		942BB47B181ECC1900FFA52B /* BMOEDNReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNReader.h; sourceTree = "<group>"; };
-		942BB47C181ECC1900FFA52B /* BMOEDNReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNReader.m; sourceTree = "<group>"; };
-		942BB47D181ECC1900FFA52B /* BMOEDNReaderState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNReaderState.h; sourceTree = "<group>"; };
-		942BB47E181ECC1900FFA52B /* BMOEDNReaderState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNReaderState.m; sourceTree = "<group>"; };
-		942BB47F181ECC1900FFA52B /* BMOEDNRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNRegistry.h; sourceTree = "<group>"; };
-		942BB480181ECC1900FFA52B /* BMOEDNRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNRegistry.m; sourceTree = "<group>"; };
-		942BB481181ECC1900FFA52B /* BMOEDNRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNRepresentation.h; sourceTree = "<group>"; };
-		942BB482181ECC1900FFA52B /* BMOEDNRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNRoot.h; sourceTree = "<group>"; };
-		942BB483181ECC1900FFA52B /* BMOEDNRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNRoot.m; sourceTree = "<group>"; };
-		942BB484181ECC1900FFA52B /* BMOEDNSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNSerialization.h; sourceTree = "<group>"; };
-		942BB485181ECC1900FFA52B /* BMOEDNSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNSerialization.m; sourceTree = "<group>"; };
-		942BB486181ECC1900FFA52B /* BMOEDNSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNSymbol.h; sourceTree = "<group>"; };
-		942BB487181ECC1900FFA52B /* BMOEDNSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNSymbol.m; sourceTree = "<group>"; };
-		942BB488181ECC1900FFA52B /* BMOEDNTaggedElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNTaggedElement.h; sourceTree = "<group>"; };
-		942BB489181ECC1900FFA52B /* BMOEDNTaggedElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNTaggedElement.m; sourceTree = "<group>"; };
-		942BB48A181ECC1900FFA52B /* BMOEDNWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNWriter.h; sourceTree = "<group>"; };
-		942BB48B181ECC1900FFA52B /* BMOEDNWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNWriter.m; sourceTree = "<group>"; };
-		942BB48C181ECC1900FFA52B /* BMOEDNWriterState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOEDNWriterState.h; sourceTree = "<group>"; };
-		942BB48D181ECC1900FFA52B /* BMOEDNWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOEDNWriterState.m; sourceTree = "<group>"; };
-		942BB48E181ECC1900FFA52B /* BMOLazyEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMOLazyEnumerator.h; sourceTree = "<group>"; };
-		942BB48F181ECC1900FFA52B /* BMOLazyEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMOLazyEnumerator.m; sourceTree = "<group>"; };
-		942BB490181ECC1900FFA52B /* edn-objc-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "edn-objc-Prefix.pch"; sourceTree = "<group>"; };
-		942BB491181ECC1900FFA52B /* edn-objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "edn-objc.h"; sourceTree = "<group>"; };
-		942BB492181ECC1900FFA52B /* NSData+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+BMOEDN.h"; sourceTree = "<group>"; };
-		942BB493181ECC1900FFA52B /* NSData+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+BMOEDN.m"; sourceTree = "<group>"; };
-		942BB494181ECC1900FFA52B /* NSDate+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+BMOEDN.h"; sourceTree = "<group>"; };
-		942BB495181ECC1900FFA52B /* NSDate+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+BMOEDN.m"; sourceTree = "<group>"; };
-		942BB496181ECC1900FFA52B /* NSInputStream+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInputStream+BMOEDN.h"; sourceTree = "<group>"; };
-		942BB497181ECC1900FFA52B /* NSInputStream+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInputStream+BMOEDN.m"; sourceTree = "<group>"; };
-		942BB498181ECC1900FFA52B /* NSObject+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BMOEDN.h"; sourceTree = "<group>"; };
-		942BB499181ECC1900FFA52B /* NSObject+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BMOEDN.m"; sourceTree = "<group>"; };
-		942BB49A181ECC1900FFA52B /* NSString+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BMOEDN.h"; sourceTree = "<group>"; };
-		942BB49B181ECC1900FFA52B /* NSString+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BMOEDN.m"; sourceTree = "<group>"; };
-		942BB49C181ECC1900FFA52B /* NSUUID+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+BMOEDN.h"; sourceTree = "<group>"; };
-		942BB49D181ECC1900FFA52B /* NSUUID+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+BMOEDN.m"; sourceTree = "<group>"; };
+		94370E6F1820DD2300EBB871 /* Beowulf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beowulf.h; sourceTree = "<group>"; };
+		94370E701820DD2300EBB871 /* BWCallable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWCallable.h; sourceTree = "<group>"; };
+		94370E711820DD2300EBB871 /* BWEnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWEnv.h; sourceTree = "<group>"; };
+		94370E721820DD2300EBB871 /* libBeowulf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBeowulf.a; sourceTree = "<group>"; };
+		94370E751820DD7800EBB871 /* prelude.bwlf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = prelude.bwlf; sourceTree = "<group>"; };
 		945544FD18187BFF00D69E63 /* element.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = element.m; sourceTree = "<group>"; };
 		94855A061810D92500220186 /* SDExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDExpectation.h; sourceTree = "<group>"; };
 		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
@@ -230,6 +171,7 @@
 			files = (
 				9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */,
 				9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */,
+				94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,57 +198,17 @@
 			name = Parser;
 			sourceTree = "<group>";
 		};
-		942BB470181ECC1900FFA52B /* edn-objc */ = {
+		94370E741820DD2700EBB871 /* beowulf */ = {
 			isa = PBXGroup;
 			children = (
-				942BB471181ECC1900FFA52B /* BMOEDNCharacter.h */,
-				942BB472181ECC1900FFA52B /* BMOEDNCharacter.m */,
-				942BB473181ECC1900FFA52B /* BMOEDNCoder.h */,
-				942BB474181ECC1900FFA52B /* BMOEDNCoder.m */,
-				942BB475181ECC1900FFA52B /* BMOEDNError.h */,
-				942BB476181ECC1900FFA52B /* BMOEDNError.m */,
-				942BB477181ECC1900FFA52B /* BMOEDNKeyword.h */,
-				942BB478181ECC1900FFA52B /* BMOEDNKeyword.m */,
-				942BB479181ECC1900FFA52B /* BMOEDNList.h */,
-				942BB47A181ECC1900FFA52B /* BMOEDNList.m */,
-				942BB47B181ECC1900FFA52B /* BMOEDNReader.h */,
-				942BB47C181ECC1900FFA52B /* BMOEDNReader.m */,
-				942BB47D181ECC1900FFA52B /* BMOEDNReaderState.h */,
-				942BB47E181ECC1900FFA52B /* BMOEDNReaderState.m */,
-				942BB47F181ECC1900FFA52B /* BMOEDNRegistry.h */,
-				942BB480181ECC1900FFA52B /* BMOEDNRegistry.m */,
-				942BB481181ECC1900FFA52B /* BMOEDNRepresentation.h */,
-				942BB482181ECC1900FFA52B /* BMOEDNRoot.h */,
-				942BB483181ECC1900FFA52B /* BMOEDNRoot.m */,
-				942BB484181ECC1900FFA52B /* BMOEDNSerialization.h */,
-				942BB485181ECC1900FFA52B /* BMOEDNSerialization.m */,
-				942BB486181ECC1900FFA52B /* BMOEDNSymbol.h */,
-				942BB487181ECC1900FFA52B /* BMOEDNSymbol.m */,
-				942BB488181ECC1900FFA52B /* BMOEDNTaggedElement.h */,
-				942BB489181ECC1900FFA52B /* BMOEDNTaggedElement.m */,
-				942BB48A181ECC1900FFA52B /* BMOEDNWriter.h */,
-				942BB48B181ECC1900FFA52B /* BMOEDNWriter.m */,
-				942BB48C181ECC1900FFA52B /* BMOEDNWriterState.h */,
-				942BB48D181ECC1900FFA52B /* BMOEDNWriterState.m */,
-				942BB48E181ECC1900FFA52B /* BMOLazyEnumerator.h */,
-				942BB48F181ECC1900FFA52B /* BMOLazyEnumerator.m */,
-				942BB490181ECC1900FFA52B /* edn-objc-Prefix.pch */,
-				942BB491181ECC1900FFA52B /* edn-objc.h */,
-				942BB492181ECC1900FFA52B /* NSData+BMOEDN.h */,
-				942BB493181ECC1900FFA52B /* NSData+BMOEDN.m */,
-				942BB494181ECC1900FFA52B /* NSDate+BMOEDN.h */,
-				942BB495181ECC1900FFA52B /* NSDate+BMOEDN.m */,
-				942BB496181ECC1900FFA52B /* NSInputStream+BMOEDN.h */,
-				942BB497181ECC1900FFA52B /* NSInputStream+BMOEDN.m */,
-				942BB498181ECC1900FFA52B /* NSObject+BMOEDN.h */,
-				942BB499181ECC1900FFA52B /* NSObject+BMOEDN.m */,
-				942BB49A181ECC1900FFA52B /* NSString+BMOEDN.h */,
-				942BB49B181ECC1900FFA52B /* NSString+BMOEDN.m */,
-				942BB49C181ECC1900FFA52B /* NSUUID+BMOEDN.h */,
-				942BB49D181ECC1900FFA52B /* NSUUID+BMOEDN.m */,
+				94370E6F1820DD2300EBB871 /* Beowulf.h */,
+				94370E701820DD2300EBB871 /* BWCallable.h */,
+				94370E711820DD2300EBB871 /* BWEnv.h */,
+				94370E751820DD7800EBB871 /* prelude.bwlf */,
+				94370E721820DD2300EBB871 /* libBeowulf.a */,
 			);
-			name = "edn-objc";
-			path = "Leviathan/edn-objc";
+			name = beowulf;
+			path = Leviathan;
 			sourceTree = "<group>";
 		};
 		945544FC18187B5600D69E63 /* types */ = {
@@ -339,7 +241,7 @@
 		9490D7C618104D58006ECA5E = {
 			isa = PBXGroup;
 			children = (
-				942BB470181ECC1900FFA52B /* edn-objc */,
+				94370E741820DD2700EBB871 /* beowulf */,
 				9490D7D818104D58006ECA5E /* Leviathan */,
 				9490D7F618104D59006ECA5E /* LeviathanTests */,
 				9490D7D118104D58006ECA5E /* Frameworks */,
@@ -613,6 +515,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9490D7DD18104D58006ECA5E /* InfoPlist.strings in Resources */,
+				94370E761820DD7800EBB871 /* prelude.bwlf in Resources */,
 				9490D7EB18104D58006ECA5E /* Images.xcassets in Resources */,
 				9490D7E318104D58006ECA5E /* Credits.rtf in Resources */,
 				9490D82318105B2D006ECA5E /* Editor.xib in Resources */,
@@ -643,51 +546,30 @@
 			files = (
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				94AC0A4C181F3E4F008E507B /* LVShortcuts.m in Sources */,
-				942BB4AE181ECC1900FFA52B /* NSDate+BMOEDN.m in Sources */,
-				942BB4A5181ECC1900FFA52B /* BMOEDNRegistry.m in Sources */,
 				9490D82D1810781D006ECA5E /* LVTextView.m in Sources */,
 				9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */,
 				949AB0BB1819D331004BBD3C /* configs.m in Sources */,
 				94D794341811226D003307F4 /* LVThemeManager.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
-				942BB4B1181ECC1900FFA52B /* NSString+BMOEDN.m in Sources */,
-				942BB4A0181ECC1900FFA52B /* BMOEDNError.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
 				949EC52218138102001C9CAB /* parser.m in Sources */,
 				949EC52818139226001C9CAB /* LVTestBed.m in Sources */,
 				949EC5251813811E001C9CAB /* lexer.m in Sources */,
-				942BB4A3181ECC1900FFA52B /* BMOEDNReader.m in Sources */,
-				942BB4AB181ECC1900FFA52B /* BMOEDNWriterState.m in Sources */,
-				942BB49F181ECC1900FFA52B /* BMOEDNCoder.m in Sources */,
-				942BB4AA181ECC1900FFA52B /* BMOEDNWriter.m in Sources */,
-				942BB4B0181ECC1900FFA52B /* NSObject+BMOEDN.m in Sources */,
-				942BB4A2181ECC1900FFA52B /* BMOEDNList.m in Sources */,
-				942BB4A6181ECC1900FFA52B /* BMOEDNRoot.m in Sources */,
-				942BB49E181ECC1900FFA52B /* BMOEDNCharacter.m in Sources */,
-				942BB4A7181ECC1900FFA52B /* BMOEDNSerialization.m in Sources */,
 				94ABB132181463C4003415B5 /* coll.m in Sources */,
-				942BB4A1181ECC1900FFA52B /* BMOEDNKeyword.m in Sources */,
 				94F05D85181DAAF4008E9353 /* LVClojureText.m in Sources */,
 				94855A12181109A700220186 /* LVPreferencesWindowController.m in Sources */,
 				94D7947A18112CC0003307F4 /* highlights.m in Sources */,
-				942BB4AC181ECC1900FFA52B /* BMOLazyEnumerator.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
-				942BB4B2181ECC1900FFA52B /* NSUUID+BMOEDN.m in Sources */,
 				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
-				942BB4A9181ECC1900FFA52B /* BMOEDNTaggedElement.m in Sources */,
 				945544FE18187BFF00D69E63 /* element.m in Sources */,
-				942BB4A8181ECC1900FFA52B /* BMOEDNSymbol.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
-				942BB4AF181ECC1900FFA52B /* NSInputStream+BMOEDN.m in Sources */,
 				94EB3DCA18161106002E639F /* token.m in Sources */,
 				94CA3656181E165900926D6B /* doc.m in Sources */,
-				942BB4AD181ECC1900FFA52B /* NSData+BMOEDN.m in Sources */,
 				94ABB12F181463B6003415B5 /* atom.m in Sources */,
 				9490D84018107FD6006ECA5E /* SDFuzzyMatcherWindowController.m in Sources */,
 				94855A1718110E2200220186 /* LVPreferences.m in Sources */,
 				9490D84318107FD6006ECA5E /* NSString+Score.m in Sources */,
-				942BB4A4181ECC1900FFA52B /* BMOEDNReaderState.m in Sources */,
 				9490D80D18104E81006ECA5E /* LVProject.m in Sources */,
 				9490D84118107FD6006ECA5E /* SDChoiceTableView.m in Sources */,
 				9490D82218105B2D006ECA5E /* LVEditor.m in Sources */,
@@ -827,6 +709,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Leviathan/Leviathan-Prefix.pch";
 				INFOPLIST_FILE = "Leviathan/Leviathan-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/sdegutis/Dropbox/projects/leviathan/Leviathan,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -840,6 +726,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Leviathan/Leviathan-Prefix.pch";
 				INFOPLIST_FILE = "Leviathan/Leviathan-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/sdegutis/Dropbox/projects/leviathan/Leviathan,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
