@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "bstrlib.h"
+#import <CoreFoundation/CoreFoundation.h>
 
 struct __LVColl;
 struct __LVAtom;
@@ -25,6 +25,6 @@ struct __LVColl* LVGetTopLevelElement(LVElement* any);
 
 size_t LVGetElementDepth(LVElement* needle);
 
-bstring LVStringForElement(LVElement* element);
+CFStringRef LVStringForElement(LVElement* element);
 
 size_t LVGetAbsolutePosition(LVElement* el);

@@ -51,12 +51,12 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 
 
 
-static void appendToString(LVColl* coll, bstring str) {
+static void appendToString(LVColl* coll, CFMutableStringRef str) {
     for (size_t i = 0; i < coll->children_len; i++) {
         LVElement* child = coll->children[i];
         if (child->is_atom) {
             LVAtom* atom = (void*)child;
-            bconcat(str, atom->token->string);
+            CFStringAppend(str, atom->token->string);
         }
         else {
             appendToString((void*)child, str);
@@ -64,8 +64,8 @@ static void appendToString(LVColl* coll, bstring str) {
     }
 }
 
-bstring LVStringForColl(LVColl* coll) {
-    bstring str = bfromcstr("");
+CFStringRef LVStringForColl(LVColl* coll) {
+    CFMutableStringRef str = CFStringCreateMutable(NULL, 0);
     appendToString(coll, str);
     return str;
 }

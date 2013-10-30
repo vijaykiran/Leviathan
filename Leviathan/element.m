@@ -14,7 +14,7 @@
 size_t LVElementLength(LVElement* element) {
     if (element->is_atom) {
         LVAtom* atom = (LVAtom*)element;
-        return atom->token->string->slen;
+        return CFStringGetLength(atom->token->string);
     }
     else {
         LVColl* coll = (LVColl*)element;
@@ -43,9 +43,9 @@ LVColl* LVGetTopLevelElement(LVElement* any) {
     return iter;
 }
 
-bstring LVStringForElement(LVElement* element) {
+CFStringRef LVStringForElement(LVElement* element) {
     if (element->is_atom)
-        return bstrcpy(((LVAtom*)element)->token->string);
+        return ((LVAtom*)element)->token->string;
     else
         return LVStringForColl((void*)element);
 }

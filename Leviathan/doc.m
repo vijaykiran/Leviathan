@@ -11,9 +11,9 @@
 #import "lexer.h"
 #import "parser.h"
 
-LVDoc* LVDocCreate(const char* raw) {
+LVDoc* LVDocCreate(NSString* raw) {
     LVDoc* doc = malloc(sizeof(LVDoc));
-    doc->string = bfromcstr(raw);
+    doc->string = (__bridge_retained CFStringRef)raw;
     doc->tokens = LVLex(doc->string, &doc->tokens_len);
     doc->top_level_coll = LVParseTokens(doc->tokens);
     return doc;
@@ -24,7 +24,7 @@ void LVDocDestroy(LVDoc* doc) {
         return;
     
     LVCollDestroy(doc->top_level_coll);
-    bdestroy(doc->string);
+    CFRelease(doc->string);
     free(doc->tokens);
     free(doc);
 }
@@ -71,7 +71,7 @@ LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
     LVToken** iter = doc->tokens + 1;
     for (int i = 1; i < doc->tokens_len; i++) {
         LVToken* tok = *iter++;
-        if (pos >= tok->pos && pos < tok->pos + tok->string->slen)
+        if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
             return tok->atom;
     }
     abort();

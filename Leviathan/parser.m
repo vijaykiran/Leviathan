@@ -111,7 +111,7 @@ static LVElement* parseOne(LVToken*** iter) {
         abort();
     }
     
-    printf("Can't handle this token type: %llu, %s\n", currentToken->token_type, currentToken->string->data);
+    printf("Can't handle this token type: %llu, %s\n", currentToken->token_type, CFStringGetCStringPtr(currentToken->string, kCFStringEncodingUTF8));
     abort();
 }
 

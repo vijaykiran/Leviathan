@@ -13,16 +13,18 @@
 #import "atom.h"
 
 LVHighlights* LVHighlightsForDoc(LVDoc* doc) {
-    LVHighlights* hs = malloc(sizeof(LVHighlights) * doc->string->slen);
+    LVHighlights* hs = malloc(sizeof(LVHighlights) * CFStringGetLength(doc->string));
     
     int idx = 0;
     
     for (int i = 1; i < doc->tokens_len; i++) {
         LVToken* tok = doc->tokens[i];
         
-        for (int ii = 0; ii < tok->string->slen; ii++) {
+        CFIndex len = CFStringGetLength(tok->string);
+        
+        for (int ii = 0; ii < len; ii++) {
             hs[idx].pos = tok->pos;
-            hs[idx].len = tok->string->slen;
+            hs[idx].len = len;
             hs[idx].atom = tok->atom;
             hs[idx].attrs = NULL;
             idx++;

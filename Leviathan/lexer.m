@@ -8,94 +8,107 @@
 
 #include "lexer.h"
 
-LVToken** LVLex(bstring raw, size_t* n_tok) {
-    size_t input_string_length = raw->slen;
+LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
+    size_t input_string_length = CFStringGetLength(raw);
     size_t num_tokens = 0;
+    
+    UniChar chars[input_string_length];
+    CFStringGetCharacters(raw, CFRangeMake(0, input_string_length), chars);
     
     LVToken** tokens = malloc(sizeof(LVToken*) * (input_string_length + 2));
     
-    static bstring endAtomCharSet;
-    if (!endAtomCharSet) endAtomCharSet = bfromcstr("()[]{}, \"\r\n\t;");
+    static CFCharacterSetRef endAtomCharSet;
+    if (!endAtomCharSet) endAtomCharSet = CFCharacterSetCreateWithCharactersInString(NULL, CFSTR("()[]{}, \"\r\n\t;"));
     
-    tokens[num_tokens++] = LVTokenCreate(0, LVTokenType_FileBegin, bfromcstr(""));
+    tokens[num_tokens++] = LVTokenCreate(0, LVTokenType_FileBegin, CFSTR(""));
     
     size_t i = 0;
     while (i < input_string_length) {
         
-        unsigned char c = raw->data[i];
+        UniChar c = chars[i];
         
         switch (c) {
                 
-            case '(': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LParen, bmidstr(raw, (int)i, 1)); break;
-            case ')': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RParen, bmidstr(raw, (int)i, 1)); break;
+            case '(': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LParen, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case ')': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RParen, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
                 
-            case '[': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LBracket, bmidstr(raw, (int)i, 1)); break;
-            case ']': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RBracket, bmidstr(raw, (int)i, 1)); break;
+            case '[': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LBracket, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case ']': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RBracket, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
                 
-            case '{': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LBrace, bmidstr(raw, (int)i, 1)); break;
-            case '}': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RBrace, bmidstr(raw, (int)i, 1)); break;
+            case '{': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LBrace, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '}': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RBrace, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
                 
-            case '\'': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Quote, bmidstr(raw, (int)i, 1)); break;
-            case '^': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_TypeOp, bmidstr(raw, (int)i, 1)); break;
-            case '`': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SyntaxQuote, bmidstr(raw, (int)i, 1)); break;
+            case '\'': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Quote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '^': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_TypeOp, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '`': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SyntaxQuote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
                 
-            case ',': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Comma, bmidstr(raw, (int)i, 1)); break;
-            case '\n': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Newline, bmidstr(raw, (int)i, 1)); break;
+            case ',': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Comma, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '\n': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Newline, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
                 
-            case '\t': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Newline, bfromcstr("  ")); break;
+            case '\t': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Newline, CFSTR("  ")); break;
                 
             case '~': {
-                if (i + 1 < raw->slen && raw->data[i+1] == '@') {
-                    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Splice, bmidstr(raw, (int)i, 2));
+                if (i + 1 < input_string_length && chars[i+1] == '@') {
+                    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Splice, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2)));
                     i++;
                 }
                 else {
-                    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Unquote, bmidstr(raw, (int)i, 1));
+                    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Unquote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)));
                 }
                 break;
             }
                 
             case ' ': {
-                bstring spaces = bfromcstr(" ");
-                size_t n = bninchr(raw, (int)i, spaces);
-                if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Spaces, bmidstr(raw, (int)i, (int)(n - i)));
+                static CFCharacterSetRef nonSpaceCharSet;
+                if (!nonSpaceCharSet) {
+                    CFCharacterSetRef spaceCharSet = CFCharacterSetCreateWithCharactersInString(NULL, CFSTR(" "));
+                    nonSpaceCharSet = CFCharacterSetCreateInvertedSet(NULL, spaceCharSet);
+                    CFRelease(spaceCharSet);
+                }
+                
+                CFRange range;
+                Boolean found = CFStringFindCharacterFromSet(raw, nonSpaceCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
+                CFIndex n = (found ? range.location : input_string_length);
+                
+                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Spaces, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, (n - i))));
                 i = n-1;
                 break;
             }
                 
             case ':': {
-                size_t n = binchr(raw, (int)i, endAtomCharSet);
-                if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Keyword, bmidstr(raw, (int)i, (int)(n - i)));
+                CFRange range;
+                Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
+                CFIndex n = (found ? range.location : input_string_length);
+                
+                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Keyword, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, (n - i))));
                 i = n-1;
                 break;
             }
                 
             case '"': {
-                int look_from = (int)i;
-                
+                size_t seeker = i;
                 do {
-                    look_from = bstrchrp(raw, '"', look_from + 1);
-                    
-                    if (look_from == BSTR_ERR) {
+                    do seeker++; while (seeker < input_string_length && chars[seeker] != '"');
+                    if (seeker == input_string_length) {
                         printf("error: unclosed string\n");
                         abort();
                     }
-                } while (raw->data[look_from - 1] == '\\');
+                } while (chars[seeker - 1] == '\\');
                 
-                bstring substring = bmidstr(raw, (int)i, (int)(look_from - i + 1));
+                CFStringRef substring = CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, seeker - i + 1));
                 LVToken* tok = LVTokenCreate(i, LVTokenType_String, substring);
                 tokens[num_tokens++] = tok;
-                i = look_from;
+                i = seeker;
                 
                 break;
             }
                 
             case ';': {
-                size_t n = bstrchrp(raw, '\n', (int)i);
+                CFRange range;
+                Boolean found = CFStringFindWithOptions(raw, CFSTR("\n"), CFRangeMake(i, input_string_length - i), 0, &range);
+                CFIndex n = (found ? range.location : input_string_length);
                 
-                bstring substring = bmidstr(raw, (int)i, (int)(n - i));
+                CFStringRef substring = CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i));
                 LVToken* tok = LVTokenCreate(i, LVTokenType_CommentLiteral, substring);
                 tokens[num_tokens++] = tok;
                 i = n-1;
@@ -104,58 +117,62 @@ LVToken** LVLex(bstring raw, size_t* n_tok) {
             }
                 
             case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
-                size_t n = binchr(raw, (int)i, endAtomCharSet);
-                if (n == BSTR_ERR) n = input_string_length;
-                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Number, bmidstr(raw, (int)i, (int)(n - i)));
+                CFRange range;
+                Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
+                CFIndex n = (found ? range.location : input_string_length);
+                
+                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Number, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i)));
                 i = n-1;
                 break;
             }
                 
             case '#': {
-                if (i + 1 == raw->slen) {
+                if (i + 1 == input_string_length) {
                     printf("error: unclosed dispatch\n");
                     abort();
                 }
                 
-                char next = raw->data[i + 1];
+                UniChar next = chars[i + 1];
                 
                 switch (next) {
                     case '"': {
-                        int look_from = (int)i + 2;
-                        
+                        size_t seeker = i + 1;
                         do {
-                            look_from = bstrchrp(raw, '"', look_from + 1);
-                            
-                            if (look_from == BSTR_ERR) {
-                                printf("error: unclosed string\n");
+                            do seeker++; while (seeker < input_string_length && chars[seeker] != '"');
+                            if (seeker == input_string_length) {
+                                printf("error: unclosed regex\n");
                                 abort();
                             }
-                        } while (raw->data[look_from - 1] == '\\');
+                        } while (chars[seeker - 1] == '\\');
                         
-                        bstring substring = bmidstr(raw, (int)i, (int)(look_from - i + 1));
+                        CFStringRef substring = CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, seeker - i + 1));
                         LVToken* tok = LVTokenCreate(i, LVTokenType_Regex, substring);
                         tokens[num_tokens++] = tok;
-                        i = look_from;
+                        i = seeker;
                         
                         break;
                     }
                         
                     case '\'': {
-                        size_t n = binchr(raw, (int)i, endAtomCharSet);
-                        if (n == BSTR_ERR) n = input_string_length;
-                        tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Var, bmidstr(raw, (int)i, (int)(n - i)));
+                        CFRange range;
+                        Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
+                        CFIndex n = (found ? range.location : input_string_length);
+                        
+                        tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Var, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i)));
                         i = n-1;
                         break;
                     }
                         
-                    case '(': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_AnonFnStart, bmidstr(raw, (int)i, 2)); i++; break;
-                    case '{': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SetStart, bmidstr(raw, (int)i, 2)); i++; break;
-                    case '_': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_ReaderCommentStart, bmidstr(raw, (int)i, 2)); i++; break;
+                    case '(': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_AnonFnStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2))); i++; break;
+                    case '{': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SetStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2))); i++; break;
+                    case '_': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_ReaderCommentStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2))); i++; break;
                         
                     default: {
-                        size_t n = binchr(raw, (int)i, endAtomCharSet);
-                        if (n == BSTR_ERR) n = input_string_length;
-                        tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_ReaderMacro, bmidstr(raw, (int)i, (int)(n - i)));
+                        CFRange range;
+                        Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
+                        CFIndex n = (found ? range.location : input_string_length);
+                        
+                        tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_ReaderMacro, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i)));
                         i = n-1;
                         break;
                     }
@@ -165,24 +182,22 @@ LVToken** LVLex(bstring raw, size_t* n_tok) {
             }
                 
             default: {
-                size_t n = binchr(raw, (int)i, endAtomCharSet);
-                if (n == BSTR_ERR) n = input_string_length;
+                CFRange range;
+                Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
+                CFIndex n = (found ? range.location : input_string_length);
                 
-                bstring substring = bmidstr(raw, (int)i, (int)(n - i));
+                CFStringRef substring = CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i));
                 LVToken* tok = LVTokenCreate(i, LVTokenType_Symbol, substring);
                 
-                static bstring trueConstant; if (!trueConstant) trueConstant = bfromcstr("true");
-                static bstring falseConstant; if (!falseConstant) falseConstant = bfromcstr("false");
-                static bstring nilConstant; if (!nilConstant) nilConstant = bfromcstr("nil");
-                static bstring defConstant; if (!defConstant) defConstant = bfromcstr("def");
+                static CFStringRef trueConstant = CFSTR("true");
+                static CFStringRef falseConstant = CFSTR("false");
+                static CFStringRef nilConstant = CFSTR("nil");
+                static CFStringRef defConstant = CFSTR("def");
                 
-                if (biseq(substring, trueConstant)) tok->token_type |= LVTokenType_TrueSymbol;
-                if (biseq(substring, falseConstant)) tok->token_type |= LVTokenType_FalseSymbol;
-                if (biseq(substring, nilConstant)) tok->token_type |= LVTokenType_NilSymbol;
-                
-                struct tagbstring def_prefix_substr;
-                bmid2tbstr(def_prefix_substr, substring, 0, 3);
-                if (biseq(&def_prefix_substr, defConstant)) tok->token_type |= LVTokenType_Deflike;
+                if (CFStringCompare(substring, trueConstant, 0) == kCFCompareEqualTo) tok->token_type |= LVTokenType_TrueSymbol;
+                if (CFStringCompare(substring, falseConstant, 0) == kCFCompareEqualTo) tok->token_type |= LVTokenType_FalseSymbol;
+                if (CFStringCompare(substring, nilConstant, 0) == kCFCompareEqualTo) tok->token_type |= LVTokenType_NilSymbol;
+                if (CFStringHasPrefix(substring, defConstant)) tok->token_type |= LVTokenType_Deflike;
                 
                 tokens[num_tokens++] = tok;
                 i = n-1;
@@ -195,7 +210,7 @@ LVToken** LVLex(bstring raw, size_t* n_tok) {
         
     }
     
-    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_FileEnd, bfromcstr(""));
+    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_FileEnd, CFSTR(""));
     
     *n_tok = num_tokens;
     return tokens;

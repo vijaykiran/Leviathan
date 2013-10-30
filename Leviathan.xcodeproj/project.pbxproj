@@ -29,8 +29,6 @@
 		942BB4B1181ECC1900FFA52B /* NSString+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB49B181ECC1900FFA52B /* NSString+BMOEDN.m */; };
 		942BB4B2181ECC1900FFA52B /* NSUUID+BMOEDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 942BB49D181ECC1900FFA52B /* NSUUID+BMOEDN.m */; };
 		945544FE18187BFF00D69E63 /* element.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544FD18187BFF00D69E63 /* element.m */; };
-		9455AA2118179B630077DC86 /* bstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 9455AA1F18179B630077DC86 /* bstrlib.c */; };
-		9455AA2418179BB60077DC86 /* bstraux.c in Sources */ = {isa = PBXBuildFile; fileRef = 9455AA2218179BB60077DC86 /* bstraux.c */; };
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
 		94855A0D1811048E00220186 /* default_leviathan_theme.clj in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.clj */; };
 		94855A0E1811049B00220186 /* default_leviathan_theme.clj in Resources */ = {isa = PBXBuildFile; fileRef = 94855A0C1811048E00220186 /* default_leviathan_theme.clj */; };
@@ -138,10 +136,6 @@
 		942BB49C181ECC1900FFA52B /* NSUUID+BMOEDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+BMOEDN.h"; sourceTree = "<group>"; };
 		942BB49D181ECC1900FFA52B /* NSUUID+BMOEDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+BMOEDN.m"; sourceTree = "<group>"; };
 		945544FD18187BFF00D69E63 /* element.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = element.m; sourceTree = "<group>"; };
-		9455AA1F18179B630077DC86 /* bstrlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bstrlib.c; sourceTree = "<group>"; };
-		9455AA2018179B630077DC86 /* bstrlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bstrlib.h; sourceTree = "<group>"; };
-		9455AA2218179BB60077DC86 /* bstraux.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bstraux.c; sourceTree = "<group>"; };
-		9455AA2318179BB60077DC86 /* bstraux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bstraux.h; sourceTree = "<group>"; };
 		94855A061810D92500220186 /* SDExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDExpectation.h; sourceTree = "<group>"; };
 		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
 		94855A0C1811048E00220186 /* default_leviathan_theme.clj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default_leviathan_theme.clj; sourceTree = "<group>"; };
@@ -256,7 +250,6 @@
 			children = (
 				949AB0B91819D331004BBD3C /* configs.h */,
 				949AB0BA1819D331004BBD3C /* configs.m */,
-				9455AA2518179BB90077DC86 /* bstring */,
 				945544FC18187B5600D69E63 /* types */,
 				94EB3DCB18161DD5002E639F /* parser */,
 			);
@@ -329,17 +322,6 @@
 				94ABB12D181463B5003415B5 /* atom.m */,
 			);
 			name = types;
-			sourceTree = "<group>";
-		};
-		9455AA2518179BB90077DC86 /* bstring */ = {
-			isa = PBXGroup;
-			children = (
-				9455AA1F18179B630077DC86 /* bstrlib.c */,
-				9455AA2018179B630077DC86 /* bstrlib.h */,
-				9455AA2218179BB60077DC86 /* bstraux.c */,
-				9455AA2318179BB60077DC86 /* bstraux.h */,
-			);
-			name = bstring;
 			sourceTree = "<group>";
 		};
 		94855A14181109AE00220186 /* Preferences */ = {
@@ -673,7 +655,6 @@
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
 				949EC52218138102001C9CAB /* parser.m in Sources */,
-				9455AA2418179BB60077DC86 /* bstraux.c in Sources */,
 				949EC52818139226001C9CAB /* LVTestBed.m in Sources */,
 				949EC5251813811E001C9CAB /* lexer.m in Sources */,
 				942BB4A3181ECC1900FFA52B /* BMOEDNReader.m in Sources */,
@@ -695,7 +676,6 @@
 				942BB4B2181ECC1900FFA52B /* NSUUID+BMOEDN.m in Sources */,
 				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
 				942BB4A9181ECC1900FFA52B /* BMOEDNTaggedElement.m in Sources */,
-				9455AA2118179B630077DC86 /* bstrlib.c in Sources */,
 				945544FE18187BFF00D69E63 /* element.m in Sources */,
 				942BB4A8181ECC1900FFA52B /* BMOEDNSymbol.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,

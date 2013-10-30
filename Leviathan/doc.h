@@ -12,7 +12,7 @@
 #import "token.h"
 
 typedef struct __LVDoc {
-    bstring string;
+    CFStringRef string;
     
     LVColl* top_level_coll;
     
@@ -20,7 +20,7 @@ typedef struct __LVDoc {
     size_t tokens_len;
 } LVDoc;
 
-LVDoc* LVDocCreate(const char* raw);
+LVDoc* LVDocCreate(NSString* raw);
 void LVDocDestroy(LVDoc* doc);
 
 void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs);

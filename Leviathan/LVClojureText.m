@@ -41,7 +41,7 @@
     self.highlights = NULL;
     
     LVDocDestroy(self.doc);
-    self.doc = LVDocCreate([[self string] UTF8String]);
+    self.doc = LVDocCreate([self string]);
     
     self.highlights = LVHighlightsForDoc(self.doc);
 }

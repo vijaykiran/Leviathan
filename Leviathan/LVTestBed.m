@@ -61,9 +61,106 @@ struct LVTokenList {
 //    }
 //}
 
+//#import "bstrlib.h"
+
 @implementation LVTestBed
 
 + (void) runTests {
+    return;
+    {
+        CFStringRef s = CFSTR("fกึρ");
+        
+        NSLog(@"%ld", CFStringGetLength(s));
+        NSLog(@"%C", CFStringGetCharacterAtIndex(s, 0));
+        NSLog(@"%C", CFStringGetCharacterAtIndex(s, 1));
+        NSLog(@"%C", CFStringGetCharacterAtIndex(s, 2));
+        NSLog(@"%C", CFStringGetCharacterAtIndex(s, 3));
+        
+        CFShow(s);
+        CFShowStr(s);
+    }
+    
+    return;
+    
+    NSString* foo = @"fกึρ";
+    NSLog(@"%@", [foo substringFromIndex:0]);
+    NSLog(@"%@", [foo substringFromIndex:1]);
+    NSLog(@"%@", [foo substringFromIndex:2]);
+    NSLog(@"%@", [foo substringFromIndex:3]);
+    NSLog(@"%ld", [foo length]);
+    NSLog(@"%ld", strlen([foo UTF8String]));
+//    NSLog(@"%d", bfromcstr([foo UTF8String])->slen);
+    return;
+    {
+        NSString* foo = @"fกึρ";
+        NSLog(@"%ld p%C", sizeof(unichar), (unichar)0x03C1);
+        NSLog(@"%ld", [foo length]);
+        NSLog(@"%ld", [foo lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+        NSUInteger len = [foo length];
+        unichar chars[len];
+        [foo getCharacters:chars range:NSMakeRange(0, len)];
+        for (int i = 0; i < len; i++) {
+            unichar c = chars[i];
+            NSLog(@"[%c, %d, %C] \n", c, c, c);
+            
+        }
+        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:0]));
+        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:1]));
+        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:2]));
+        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:3]));
+//        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:4]));
+//        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:5]));
+//        NSLog(@"%@", foo);
+//        NSLog(@"%ld", [foo length]);
+//        NSLog(@"%ld", [foo lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+//        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:0]));
+//        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:1]));
+//        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:2]));
+//        NSLog(@"%d", [foo characterAtIndex:0]);
+//        NSLog(@"%d", [foo characterAtIndex:1]);
+//        NSLog(@"%d", [foo characterAtIndex:2]);
+    }
+//    NSLog(@"\n===");
+    
+    return;
+    {
+        NSString* foo = @"fกึo";
+        NSUInteger len = [foo length];
+        unichar chars[len];
+        [foo getCharacters:chars range:NSMakeRange(0, len)];
+        for (int i = 0; i < len; i++) {
+            unichar c = chars[i];
+            NSLog(@"[%C] \n", c);
+            
+        }
+        //        NSLog(@"%@", foo);
+        //        NSLog(@"%ld", [foo length]);
+        //        NSLog(@"%ld", [foo lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+        //        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:0]));
+        //        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:1]));
+        //        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:2]));
+        //        NSLog(@"%d", [foo characterAtIndex:0]);
+        //        NSLog(@"%d", [foo characterAtIndex:1]);
+        //        NSLog(@"%d", [foo characterAtIndex:2]);
+    }
+//    NSLog(@"\n===");
+    fflush(stdout);
+    
+//    {
+//        NSString* foo = @"fกึo";
+//        NSLog(@"%@", foo);
+//        NSLog(@"%ld", [foo length]);
+//        NSLog(@"%ld", [foo lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+//        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:0]));
+//        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:1]));
+//        NSLog(@"%@", NSStringFromRange([foo rangeOfComposedCharacterSequenceAtIndex:3]));
+//        NSLog(@"%d", [foo characterAtIndex:0]);
+//        NSLog(@"%d", [foo characterAtIndex:1]);
+//        NSLog(@"%d", [foo characterAtIndex:3]);
+//    }
+    
+//    exit(1);
+    
     return;
     
 //    LVLexerShouldEqual("(foobar)", TOKLIST(TOK(LVTokenType_FileBegin, ""), TOK(LVTokenType_LParen, "("), TOK(LVTokenType_Symbol, "foobar"), TOK(LVTokenType_RParen, ")"), TOK(LVTokenType_FileEnd, "")));

@@ -8,4 +8,4 @@
 
 #include "token.h"
 
-LVToken** LVLex(bstring raw, size_t* n_tok);
+LVToken** LVLex(CFStringRef raw, size_t* n_tok);

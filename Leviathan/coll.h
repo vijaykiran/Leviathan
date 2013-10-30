@@ -56,6 +56,6 @@ LVColl* LVCollHighestParent(LVColl* coll);
 
 size_t LVGetElementIndexInSiblings(LVElement* child);
 
-bstring LVStringForColl(LVColl* coll);
+CFStringRef LVStringForColl(LVColl* coll);
 
 void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count);

@@ -8,7 +8,7 @@
 
 #import "token.h"
 
-LVToken* LVTokenCreate(size_t pos, LVTokenType type, bstring val) {
+LVToken* LVTokenCreate(size_t pos, LVTokenType type, CFStringRef val) {
     LVToken* tok = malloc(sizeof(LVToken));
     tok->token_type = type;
     tok->string = val;
@@ -17,6 +17,6 @@ LVToken* LVTokenCreate(size_t pos, LVTokenType type, bstring val) {
 }
 
 void LVTokenDelete(LVToken* tok) {
-    bdestroy(tok->string);
+    CFRelease(tok->string);
     free(tok);
 }

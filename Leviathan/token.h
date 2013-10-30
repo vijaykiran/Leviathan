@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#include "bstrlib.h"
+#import <CoreFoundation/CoreFoundation.h>
 
 struct __LVAtom;
 
@@ -57,11 +57,11 @@ typedef enum __LVTokenType : uint64_t {
 
 typedef struct __LVToken {
     LVTokenType token_type;
-    bstring string;
+    CFStringRef string;
     size_t pos;
     struct __LVAtom* atom;
 } LVToken;
 
 
-LVToken* LVTokenCreate(size_t pos, LVTokenType type, bstring val);
+LVToken* LVTokenCreate(size_t pos, LVTokenType type, CFStringRef val);
 void LVTokenDelete(LVToken* tok);
