@@ -110,52 +110,50 @@
 }
 
 - (void) raiseSexp:(NSEvent*)event {
-//    NSRange selection = self.textView.selectedRange;
-//    
-//    size_t childIndex;
-//    LVColl* parent = LVFindElementAtPosition(self.clojureText.doc, selection.location, &childIndex);
-//    
-//    LVElement* elementToRaise = NULL;
-//    size_t posAfterElement;
-//    
-//    LVElement* semanticChildren[parent->children_len];
-//    size_t semanticChildrenCount;
-//    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
-//    
-//    for (int i = 0; i < semanticChildrenCount; i++) {
-//        LVElement* semanticChild = semanticChildren[i];
-//        
-//        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
-//        
-//        // are we in the middle of the semantic element?
-//        if (selection.location < posAfterElement) {
-//            // if so, great! we'll use this one
-//            elementToRaise = semanticChild;
-//            break;
-//        }
-//    }
-//    
-//    if (elementToRaise) {
-//        LVElement* child = elementToRaise;
-//        
-//        size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
-//        
-//        LVColl* grandparent = parent->parent;
-//        size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
-//        
-//        NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
-//        
-//        grandparent->children[parentIndex] = child;
-//        child->parent = grandparent;
-//        
-//        // TODO: re-indent grandparent (or maybe just child?) right here
-//        
-//        bstring str = LVStringForElement(child);
-//        NSString* newstr = [NSString stringWithFormat:@"%s", str->data];
-//        bdestroy(str);
-//        
-//        [self replace:oldParentRange string:newstr cursor:oldParentRange.location + relativeOffset];
-//    }
+    NSRange selection = self.textView.selectedRange;
+    
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.clojureText.doc, selection.location, &childIndex);
+    
+    LVElement* elementToRaise = NULL;
+    size_t posAfterElement;
+    
+    LVElement* semanticChildren[parent->children_len];
+    size_t semanticChildrenCount;
+    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
+    
+    for (int i = 0; i < semanticChildrenCount; i++) {
+        LVElement* semanticChild = semanticChildren[i];
+        
+        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
+        
+        // are we in the middle of the semantic element?
+        if (selection.location < posAfterElement) {
+            // if so, great! we'll use this one
+            elementToRaise = semanticChild;
+            break;
+        }
+    }
+    
+    if (elementToRaise) {
+        LVElement* child = elementToRaise;
+        
+        size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
+        
+        LVColl* grandparent = parent->parent;
+        size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
+        
+        NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
+        
+        grandparent->children[parentIndex] = child;
+        child->parent = grandparent;
+        
+        // TODO: re-indent grandparent (or maybe just child?) right here
+        
+        NSString* newstr = (__bridge_transfer NSString*)LVStringForElement(child);
+        
+        [self replace:oldParentRange string:newstr cursor:oldParentRange.location + relativeOffset];
+    }
 }
 
 - (void) replace:(NSRange)r string:(NSString*)str cursor:(NSUInteger)newpos {
