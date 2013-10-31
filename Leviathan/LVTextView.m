@@ -122,6 +122,42 @@
 //    [item setKeyEquivalentModifierMask:realMods];
 }
 
+- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSUInteger)newpos {
+    NSString* oldString = [self.file.textStorage.string substringWithRange:r];
+    NSRange newRange = NSMakeRange(r.location, [str length]);
+    
+    [[[self.file.textStorage undoManager] prepareWithInvocationTarget:self] replace:newRange
+                                                                             string:oldString
+                                                                             cursor:self.selectedRange.location];
+    
+    [self.file.textStorage replaceCharactersInRange:r withString:str];
+    self.selectedRange = NSMakeRange(newpos, 0);
+}
+
+- (void) keyDown:(NSEvent *)theEvent {
+    for (LVShortcut* shortcut in self.shortcuts) {
+        if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
+            continue;
+        
+        NSMutableArray* needs = [NSMutableArray array];
+        
+        if ([theEvent modifierFlags] & NSControlKeyMask) [needs addObject:@"CTRL"];
+        if ([theEvent modifierFlags] & NSAlternateKeyMask) [needs addObject:@"ALT"];
+        
+        if (![needs isEqualToArray: shortcut.mods])
+            continue;
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [self performSelector:shortcut.action
+                   withObject:theEvent];
+#pragma clang diagnostic pop
+        
+        return;
+    }
+    
+    [super keyDown:theEvent];
+}
 
 
 
@@ -135,7 +171,9 @@
 
 
 
-/************************************************ PAREDIT ************************************************/
+
+
+/************************************************ PAREDIT (editing) ************************************************/
 
 
 - (void) raiseSexp:(NSEvent*)event {
@@ -186,50 +224,11 @@
         NSString* newstr = (__bridge_transfer NSString*)LVStringForElement(child);
         
         [self replace:oldParentRange string:newstr cursor:oldParentRange.location + relativeOffset];
+        [self scrollRangeToVisible:self.selectedRange];
     }
 }
 
-
-- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSUInteger)newpos {
-    NSString* oldString = [self.file.textStorage.string substringWithRange:r];
-    NSRange newRange = NSMakeRange(r.location, [str length]);
-    
-    [[[self.file.textStorage undoManager] prepareWithInvocationTarget:self] replace:newRange
-                                                                             string:oldString
-                                                                             cursor:self.selectedRange.location];
-    
-    [self.file.textStorage replaceCharactersInRange:r withString:str];
-    self.selectedRange = NSMakeRange(newpos, 0);
-}
-
-
-
-
-- (void) keyDown:(NSEvent *)theEvent {
-    for (LVShortcut* shortcut in self.shortcuts) {
-        if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
-            continue;
-        
-        NSMutableArray* needs = [NSMutableArray array];
-        
-        if ([theEvent modifierFlags] & NSControlKeyMask) [needs addObject:@"CTRL"];
-        if ([theEvent modifierFlags] & NSAlternateKeyMask) [needs addObject:@"ALT"];
-        
-        if (![needs isEqualToArray: shortcut.mods])
-            continue;
-        
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:shortcut.action
-                   withObject:theEvent];
-#pragma clang diagnostic pop
-        
-        return;
-    }
-    
-    [super keyDown:theEvent];
-}
-
+/************************************************ PAREDIT (moving) ************************************************/
 
 
 
