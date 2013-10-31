@@ -538,8 +538,7 @@ size_t LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
     for (size_t i = p; i < self.file.textStorage.doc->tokens_len; i++) {
         LVToken* token = tokens[i];
         if (token->token_type & LVTokenType_Newlines) {
-            LVToken* nextToken = tokens[i+1];
-            if (nextToken->token_type & LVTokenType_Newlines) {
+            if (CFStringGetLength(token->string) > 1) {
                 NSUInteger pos = token->pos + 1;
                 self.selectedRange = NSMakeRange(pos, 0);
                 [self scrollRangeToVisible:self.selectedRange];
@@ -550,7 +549,20 @@ size_t LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 }
 
 - (void) jumpToPreviousBlankLineGroup:(NSEvent*)event {
+    size_t p = LVGetAtomIndexFollowingPosition(self.file.textStorage.doc, self.selectedRange.location) - 1;
     
+    LVToken** tokens = self.file.textStorage.doc->tokens;
+    for (size_t i = p; i >= 1; i--) {
+        LVToken* token = tokens[i];
+        if (token->token_type & LVTokenType_Newlines) {
+            if (CFStringGetLength(token->string) > 1) {
+                NSUInteger pos = token->pos + 1;
+                self.selectedRange = NSMakeRange(pos, 0);
+                [self scrollRangeToVisible:self.selectedRange];
+                return;
+            }
+        }
+    }
 }
 
 
