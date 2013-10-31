@@ -61,18 +61,7 @@
     
     self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
     self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
-    
-    {
-        NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
-        
-        if ([LVThemeManager sharedThemeManager].currentTheme.selection.foregroundColor)
-            selectionAttrs[NSForegroundColorAttributeName] = [LVThemeManager sharedThemeManager].currentTheme.selection.foregroundColor;
-        
-        if ([LVThemeManager sharedThemeManager].currentTheme.selection.backgroundColor)
-            selectionAttrs[NSBackgroundColorAttributeName] = [LVThemeManager sharedThemeManager].currentTheme.selection.backgroundColor;
-        
-        self.selectedTextAttributes = selectionAttrs;
-    }
+    self.selectedTextAttributes = [LVThemeManager sharedThemeManager].currentTheme.selection;
     
     
     

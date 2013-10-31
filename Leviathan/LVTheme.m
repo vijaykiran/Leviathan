@@ -44,28 +44,24 @@ NSColor* LVColorFromHex(NSString* hex) {
 
 @end
 
-@implementation LVThemeSelectionStyle
-
-+ (LVThemeSelectionStyle*) selectionStyleWith:(NSDictionary*)data {
-    LVThemeSelectionStyle* sel = [[LVThemeSelectionStyle alloc] init];
+NSDictionary* LVThemeSelectionStyleFrom(NSDictionary* data) {
+    NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
     
     NSString* fg = [data objectForKey:@"foreground-color"];
-    if (fg) sel.foregroundColor = LVColorFromHex(fg);
+    if (fg) selectionAttrs[NSForegroundColorAttributeName] = LVColorFromHex(fg);
     
     NSString* bg = [data objectForKey:@"background-color"];
-    if (bg) sel.backgroundColor = LVColorFromHex(bg);
+    if (bg) selectionAttrs[NSBackgroundColorAttributeName] = LVColorFromHex(bg);
     
-    return sel;
+    return selectionAttrs;
 }
-
-@end
 
 @implementation LVTheme
 
 + (LVTheme*) themeFromData:(NSDictionary*)data {
     LVTheme* theme = [[LVTheme alloc] init];
     
-    theme.selection = [LVThemeSelectionStyle selectionStyleWith:[data objectForKey:@"selection-style"]];
+    theme.selection = LVThemeSelectionStyleFrom([data objectForKey:@"selection-style"]);
     
     theme.backgroundColor = LVColorFromHex([data objectForKey:@"background-color"]);
     theme.cursorColor = LVColorFromHex([data objectForKey:@"cursor-color"]);

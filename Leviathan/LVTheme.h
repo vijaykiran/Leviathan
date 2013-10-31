@@ -14,19 +14,12 @@
 
 @end
 
-@interface LVThemeSelectionStyle : NSObject
-
-@property NSColor* foregroundColor;
-@property NSColor* backgroundColor;
-
-@end
-
 @interface LVTheme : NSObject
 
 + (LVTheme*) themeFromData:(NSDictionary*)data;
 
 @property NSColor* backgroundColor;
-@property LVThemeSelectionStyle* selection;
+@property NSDictionary* selection;
 @property NSColor* cursorColor;
 
 @property NSArray* rainbowparens;
