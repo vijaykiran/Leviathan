@@ -57,8 +57,6 @@
     self.automaticSpellingCorrectionEnabled = NO;
     self.automaticQuoteSubstitutionEnabled = NO;
     
-    self.font = [LVPreferences userFont];
-    
     self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
     self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
     self.selectedTextAttributes = [LVThemeManager sharedThemeManager].currentTheme.selection;
