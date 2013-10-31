@@ -428,11 +428,15 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     [self wrapNextInThing:@"(" and:@")"];
 }
 
+- (void) insertText:(id)insertString {
+    
+}
 
 
 
 
-/************************************************ PAREDIT (moving) ************************************************/
+
+/************************************************ PAREDIT (navigating) ************************************************/
 
 
 
