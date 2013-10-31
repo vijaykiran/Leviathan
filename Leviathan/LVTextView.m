@@ -84,12 +84,12 @@
     [self addShortcut:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
     
+    [self addShortcut:@selector(extendSelectionToNext:) title:@"Extend Seletion to Next" keyEquiv:@" " mods:@[@"CTRL", @"ALT"]];
     
     //    [self addParedit:^(NSEvent* event){ [_self wrapNextInParens:event]; } title:@"Wrap Next in Parens" keyEquiv:@"9" mods:NSControlKeyMask];
     //    [self addParedit:^(NSEvent* event){ [_self wrapNextInBrackets:event]; } title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:NSControlKeyMask];
     //    [self addParedit:^(NSEvent* event){ [_self wrapNextInBraces:event]; } title:@"Wrap Next in Braces" keyEquiv:@"{" mods:NSControlKeyMask];
     
-    //    [self addParedit:^(NSEvent* event){ [_self extendSelectionToNext:event]; } title:@"Extend Seletion to Next" keyEquiv:@" " mods:NSControlKeyMask | NSAlternateKeyMask];
 }
 
 
@@ -243,6 +243,22 @@ LVElement* LVFindNextSemanticElementStartingAtPosition(LVDoc* doc, NSUInteger po
     return NULL;
 }
 
+LVAtom* LVCollOpenerAtom(LVColl* coll) {
+    return (LVAtom*)coll->children[0];
+}
+
+LVAtom* LVCollCloserAtom(LVColl* coll) {
+    return (LVAtom*)coll->children[coll->children_len - 1];
+}
+
+NSRange LVElementRange(LVElement* element) {
+    return NSMakeRange(LVGetAbsolutePosition(element), LVElementLength(element));
+}
+
+CFRange LVNSRangeToCFRange(NSRange r) {
+    return CFRangeMake(r.location, r.length);
+}
+
 
 
 
@@ -350,22 +366,6 @@ LVElement* LVFindNextSemanticElementStartingAtPosition(LVDoc* doc, NSUInteger po
         self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
-}
-
-LVAtom* LVCollOpenerAtom(LVColl* coll) {
-    return (LVAtom*)coll->children[0];
-}
-
-LVAtom* LVCollCloserAtom(LVColl* coll) {
-    return (LVAtom*)coll->children[coll->children_len - 1];
-}
-
-NSRange LVElementRange(LVElement* element) {
-    return NSMakeRange(LVGetAbsolutePosition(element), LVElementLength(element));
-}
-
-CFRange LVNSRangeToCFRange(NSRange r) {
-    return CFRangeMake(r.location, r.length);
 }
 
 - (IBAction) spliceSexp:(id)sender {
@@ -481,6 +481,25 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         LVAtom* firstChild = (LVAtom*)nextColl->children[nextColl->children_len - 1];
         NSUInteger pos = firstChild->token->pos;
         self.selectedRange = NSMakeRange(pos, 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
+}
+
+
+
+
+
+
+
+/************************************************ PAREDIT (selecting) ************************************************/
+
+- (void) extendSelectionToNext:(NSEvent*)event {
+    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.file.textStorage.doc, NSMaxRange(self.selectedRange));
+    if (next) {
+        NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
+        NSRange rangeToSelect = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
+        
+        self.selectedRange = rangeToSelect;
         [self scrollRangeToVisible:self.selectedRange];
     }
 }
@@ -824,20 +843,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //        NSRange rangeToSelect = NSMakeRange(rangeToTempDelete.location + 1, 0);
 //        
 //        self.selectedRange = rangeToSelect;
-//        [self scrollRangeToVisible:self.selectedRange];
-//    }
-//}
-//
-//- (IBAction) extendSelectionToNext:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:NSMaxRange(selection) childsIndex:&childIndex];
-//    
-//    if (childIndex < [coll.childElements count]) {
-//        id<LVElement> child = [coll.childElements objectAtIndex:childIndex];
-//        NSRange newRange = NSUnionRange(selection, [child fullyEnclosedRange]);
-//        
-//        self.selectedRange = newRange;
 //        [self scrollRangeToVisible:self.selectedRange];
 //    }
 //}
