@@ -79,10 +79,8 @@
     [self addShortcut:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
     
-    
-    
-//    [self addParedit:^(NSEvent* event){ [_self inForwardSexp:event]; } title:@"In Forward" keyEquiv:@"d" mods:NSControlKeyMask | NSAlternateKeyMask];
-//    [self addParedit:^(NSEvent* event){ [_self inBackwardSexp:event]; } title:@"In Backward" keyEquiv:@"p" mods:NSControlKeyMask | NSAlternateKeyMask];
+    [self addShortcut:@selector(inForwardSexp:) title:@"In Forward" keyEquiv:@"d" mods:@[@"CTRL", @"ALT"]];
+    [self addShortcut:@selector(inBackwardSexp:) title:@"In Backward" keyEquiv:@"p" mods:@[@"CTRL", @"ALT"]];
     
 //    [self addParedit:^(NSEvent* event){ [_self spliceSexp:event]; } title:@"Splice" keyEquiv:@"s" mods:NSControlKeyMask];
 //    [self addParedit:^(NSEvent* event){ [_self killNextSexp:event]; } title:@"Kill Next" keyEquiv:@"k" mods:NSControlKeyMask | NSAlternateKeyMask];
@@ -331,6 +329,55 @@
         // otherwise, move to the beginning of it. otherwise do "out backward sexp"
         [self outBackwardSexp:event];
     }
+}
+
+LVColl* LVFindNextCollOnOrAfterPosition(LVDoc* doc, NSUInteger pos) {
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
+    
+    for (size_t i = childIndex; i < parent->children_len; i++) {
+        LVColl* maybeColl = (LVColl*)parent->children[i];
+        
+        if (!maybeColl->is_atom)
+            return maybeColl;
+    }
+    
+    return NULL;
+}
+
+- (void) inForwardSexp:(NSEvent*)event {
+    // find the next coll whose pos >= cursor
+    LVColl* nextColl = LVFindNextCollOnOrAfterPosition(self.file.textStorage.doc, self.selectedRange.location);
+    
+    // if there is one, move to after its first child
+    if (nextColl) {
+        LVAtom* firstChild = (LVAtom*)nextColl->children[0];
+        NSUInteger pos = firstChild->token->pos + LVElementLength((LVElement*)firstChild);
+        self.selectedRange = NSMakeRange(pos, 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
+}
+
+- (void) inBackwardSexp:(NSEvent*)event {
+//    NSRange selection = self.selectedRange;
+//    NSUInteger childIndex;
+//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
+//    
+//    if (childIndex > 0) {
+//        LVColl* childColl;
+//        for (NSInteger i = childIndex - 1; i >= 0; i--) {
+//            id<LVElement> child = [[coll childElements] objectAtIndex:i];
+//            if ([child isColl]) {
+//                childColl = child;
+//                break;
+//            }
+//        }
+//        
+//        if (childColl) {
+//            self.selectedRange = NSMakeRange([childColl closingToken].range.location, 0);
+//            [self scrollRangeToVisible:self.selectedRange];
+//        }
+//    }
 }
 
 
@@ -723,50 +770,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //
 //- (IBAction) wrapNextInParens:(id)sender {
 //    [self wrapNextInThing:@"(%@)"];
-//}
-//
-//- (IBAction) inForwardSexp:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    if (childIndex < [coll.childElements count]) {
-//        LVColl* childColl;
-//        for (NSUInteger i = childIndex; i < [[coll childElements] count]; i++) {
-//            id<LVElement> child = [[coll childElements] objectAtIndex:i];
-//            if ([child isColl]) {
-//                childColl = child;
-//                break;
-//            }
-//        }
-//        
-//        if (childColl) {
-//            self.selectedRange = NSMakeRange(NSMaxRange([childColl openingToken].range), 0);
-//            [self scrollRangeToVisible:self.selectedRange];
-//        }
-//    }
-//}
-//
-//- (IBAction) inBackwardSexp:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    if (childIndex > 0) {
-//        LVColl* childColl;
-//        for (NSInteger i = childIndex - 1; i >= 0; i--) {
-//            id<LVElement> child = [[coll childElements] objectAtIndex:i];
-//            if ([child isColl]) {
-//                childColl = child;
-//                break;
-//            }
-//        }
-//        
-//        if (childColl) {
-//            self.selectedRange = NSMakeRange([childColl closingToken].range.location, 0);
-//            [self scrollRangeToVisible:self.selectedRange];
-//        }
-//    }
 //}
 //
 //- (IBAction) killNextSexp:(id)sender {
