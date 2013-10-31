@@ -290,32 +290,9 @@
 }
 
 - (void) forwardSexp:(NSEvent*)event {
-    NSRange selection = self.selectedRange;
-    
-    size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
-    
-    LVElement* elementToMoveToEndOf = NULL;
-    size_t posAfterElement;
-    
-    LVElement* semanticChildren[parent->children_len];
-    size_t semanticChildrenCount;
-    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
-    
-    for (int i = 0; i < semanticChildrenCount; i++) {
-        LVElement* semanticChild = semanticChildren[i];
-        
-        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
-        
-        // are we in the middle of the semantic element?
-        if (selection.location < posAfterElement) {
-            // if so, great! we'll use this one
-            elementToMoveToEndOf = semanticChild;
-            break;
-        }
-    }
-    
+    LVElement* elementToMoveToEndOf = LVFindNextSemanticChildStartingAt(self.file.textStorage.doc, self.selectedRange.location);
     if (elementToMoveToEndOf) {
+        size_t posAfterElement = LVGetAbsolutePosition(elementToMoveToEndOf) + LVElementLength(elementToMoveToEndOf);
         self.selectedRange = NSMakeRange(posAfterElement, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
