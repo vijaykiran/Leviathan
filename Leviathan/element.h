@@ -30,3 +30,10 @@ CFStringRef LVStringForElement(LVElement* element);
 size_t LVGetAbsolutePosition(LVElement* el);
 
 BOOL LVElementIsSemantic(LVElement* el);
+
+
+
+
+// new and good
+
+LVElement* LVFindPreviousSemanticElement(LVElement* needle);

@@ -304,32 +304,6 @@
     }
 }
 
-// returns the atom where (cursor >= atom.pos + 1) and (cursor <= atom.pos + atom.length), or NULL if pos = 0
-LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, NSUInteger pos) {
-    LVToken** iter = doc->tokens + 1; // skip the first one, we know it'll never be true
-    for (int i = 1; i < doc->tokens_len; i++) {
-        LVToken* tok = *iter++;
-        if (pos >= tok->pos + 1 && pos <= tok->pos + CFStringGetLength(tok->string))
-            return tok->atom;
-    }
-    return NULL;
-}
-
-LVElement* LVFindPreviousSemanticElement(LVElement* needle) {
-    // if needle is semantic, return it
-    // otherwise, find its previous sibling and loop again
-    
-    LVColl* needleParent = needle->parent;
-    
-    for (NSInteger needleIndex = LVGetElementIndexInSiblings(needle); needleIndex >= 0; needleIndex--) {
-        LVElement* needle = needleParent->children[needleIndex];
-        if (LVElementIsSemantic(needle))
-            return needle;
-    }
-    
-    return NULL;
-}
-
 - (void) backwardSexp:(NSEvent*)event {
     LVAtom* atom = LVFindAtomPrecedingIndex(self.file.textStorage.doc, self.selectedRange.location);
     

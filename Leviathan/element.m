@@ -78,3 +78,30 @@ size_t LVGetAbsolutePosition(LVElement* el) {
 BOOL LVElementIsSemantic(LVElement* el) {
     return (!el->is_atom || LVAtomIsSemantic((LVAtom*)el));
 }
+
+
+
+
+
+
+
+
+
+
+
+// new and good
+
+LVElement* LVFindPreviousSemanticElement(LVElement* needle) {
+    // if needle is semantic, return it
+    // otherwise, find its previous sibling and loop again
+    
+    LVColl* needleParent = needle->parent;
+    
+    for (NSInteger needleIndex = LVGetElementIndexInSiblings(needle); needleIndex >= 0; needleIndex--) {
+        LVElement* needle = needleParent->children[needleIndex];
+        if (LVElementIsSemantic(needle))
+            return needle;
+    }
+    
+    return NULL;
+}
