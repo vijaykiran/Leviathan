@@ -190,6 +190,10 @@
     }
 }
 
+- (IBAction) cancelOperation:(id)sender {
+    self.selectedRange = NSMakeRange(self.selectedRange.location, 0);
+}
+
 
 
 
@@ -225,11 +229,11 @@ LVColl* LVFindNextCollBeforePosition(LVDoc* doc, NSUInteger pos) {
     return NULL;
 }
 
-LVElement* LVFindNextSemanticElementAfterElementAtPosition(LVDoc* doc, NSUInteger pos) {
+LVElement* LVFindNextSemanticElementStartingAtPosition(LVDoc* doc, NSUInteger pos) {
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
     
-    for (size_t i = childIndex + 1; i < parent->children_len; i++) {
+    for (size_t i = childIndex; i < parent->children_len; i++) {
         LVElement* element = parent->children[i];
         
         if (LVElementIsSemantic(element))
@@ -313,7 +317,7 @@ LVElement* LVFindNextSemanticElementAfterElementAtPosition(LVDoc* doc, NSUIntege
 }
 
 - (void) killNextSexp:(NSEvent*)event {
-    LVElement* next = LVFindNextSemanticElementAfterElementAtPosition(self.file.textStorage.doc, self.selectedRange.location);
+    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.file.textStorage.doc, self.selectedRange.location);
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
         NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
@@ -795,10 +799,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //        self.selectedRange = newRange;
 //        [self scrollRangeToVisible:self.selectedRange];
 //    }
-//}
-//
-//- (IBAction) cancelOperation:(id)sender {
-//    self.selectedRange = NSMakeRange(self.selectedRange.location, 0);
 //}
 //
 //- (IBAction) wrapNextInBrackets:(id)sender {
