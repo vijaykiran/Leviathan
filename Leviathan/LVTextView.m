@@ -86,10 +86,9 @@
     
     [self addShortcut:@selector(extendSelectionToNext:) title:@"Extend Seletion to Next" keyEquiv:@" " mods:@[@"CTRL", @"ALT"]];
     
-    //    [self addParedit:^(NSEvent* event){ [_self wrapNextInParens:event]; } title:@"Wrap Next in Parens" keyEquiv:@"9" mods:NSControlKeyMask];
-    //    [self addParedit:^(NSEvent* event){ [_self wrapNextInBrackets:event]; } title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:NSControlKeyMask];
-    //    [self addParedit:^(NSEvent* event){ [_self wrapNextInBraces:event]; } title:@"Wrap Next in Braces" keyEquiv:@"{" mods:NSControlKeyMask];
-    
+    [self addShortcut:@selector(wrapNextInParens:) title:@"Wrap Next in Parens" keyEquiv:@"9" mods:@[@"CTRL"]];
+    [self addShortcut:@selector(wrapNextInBrackets:) title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:@[@"CTRL"]];
+    [self addShortcut:@selector(wrapNextInBraces:) title:@"Wrap Next in Braces" keyEquiv:@"{" mods:@[@"CTRL"]];
 }
 
 
@@ -387,6 +386,40 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     
     self.selectedRange = NSMakeRange(pos, 0);
     [self scrollRangeToVisible:self.selectedRange];
+}
+
+- (void) wrapNextInThing:(NSString*)open and:(NSString*)close {
+    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.file.textStorage.doc, self.selectedRange.location);
+    if (next) {
+        NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
+        NSRange rangeToSurround = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
+        
+        CFStringRef s = LVStringForColl(self.file.textStorage.doc->top_level_coll);
+        CFMutableStringRef ms = CFStringCreateMutableCopy(NULL, 0, s);
+        
+        CFStringInsert(ms, NSMaxRange(rangeToSurround), (__bridge CFStringRef)close);
+        CFStringInsert(ms, rangeToSurround.location, (__bridge CFStringRef)open);
+        
+        NSString* newstr = (__bridge_transfer NSString*)ms;
+        
+        [self replace:NSMakeRange(0, CFStringGetLength(s)) string:newstr cursor:self.selectedRange.location];
+        
+        CFRelease(s);
+        
+        self.selectedRange = NSMakeRange(rangeToSurround.location + [open length], 0);
+    }
+}
+
+- (void) wrapNextInBrackets:(NSEvent*)event {
+    [self wrapNextInThing:@"[" and:@"]"];
+}
+
+- (void) wrapNextInBraces:(NSEvent*)event {
+    [self wrapNextInThing:@"{" and:@"}"];
+}
+
+- (void) wrapNextInParens:(NSEvent*)event {
+    [self wrapNextInThing:@"(" and:@")"];
 }
 
 
@@ -775,16 +808,16 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 ////    printf("\n");
 }
 
-LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
-    LVElement* semanticChildren[parent->children_len];
-    size_t semanticChildrenCount;
-    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
-    
-    if (semanticChildrenCount > 0)
-        return semanticChildren[0];
-    else
-        return NULL;
-}
+//LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
+//    LVElement* semanticChildren[parent->children_len];
+//    size_t semanticChildrenCount;
+//    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
+//    
+//    if (semanticChildrenCount > 0)
+//        return semanticChildren[0];
+//    else
+//        return NULL;
+//}
 
 //- (void) insertText:(id)insertString {
 //    NSDictionary* balancers = @{@"(": @")", @"[": @"]", @"{": @"}"};
@@ -823,40 +856,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //    }
 //    
 //    [super insertText:insertString];
-//}
-//
-//- (void) wrapNextInThing:(NSString*)thing {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    if (childIndex < [coll.childElements count]) {
-//        id<LVElement> element = [coll.childElements objectAtIndex:childIndex];
-//        
-//        NSRange rangeToTempDelete = [element fullyEnclosedRange];
-//        NSString* theStr = [[[self textStorage] string] substringWithRange:rangeToTempDelete];
-//        
-//        self.selectedRange = rangeToTempDelete;
-//        [self delete:self];
-//        [self insertText:[NSString stringWithFormat:thing, theStr]];
-//        
-//        NSRange rangeToSelect = NSMakeRange(rangeToTempDelete.location + 1, 0);
-//        
-//        self.selectedRange = rangeToSelect;
-//        [self scrollRangeToVisible:self.selectedRange];
-//    }
-//}
-//
-//- (IBAction) wrapNextInBrackets:(id)sender {
-//    [self wrapNextInThing:@"[%@]"];
-//}
-//
-//- (IBAction) wrapNextInBraces:(id)sender {
-//    [self wrapNextInThing:@"{%@}"];
-//}
-//
-//- (IBAction) wrapNextInParens:(id)sender {
-//    [self wrapNextInThing:@"(%@)"];
 //}
 
 @end
