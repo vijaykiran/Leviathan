@@ -20,6 +20,8 @@
 
 @property LVShortcuts* shortcuts;
 
+@property CGRect myInsertionPointRect;
+
 @end
 
 
@@ -118,8 +120,38 @@
 
 
 
-
-
+- (void) mouseDown:(NSEvent *)theEvent {
+    if ([theEvent clickCount] == 2) {
+        NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+        NSUInteger i1 = [self.layoutManager glyphIndexForPoint:p inTextContainer:self.textContainer];
+        NSUInteger idx = [self.layoutManager characterIndexForGlyphAtIndex:i1];
+        
+        LVAtom* atom = LVFindAtom(self.file.textStorage.doc, idx);
+        
+        if (atom->atom_type & LVAtomType_CollDelim) {
+            NSUInteger start;
+            NSUInteger end;
+            if (atom->atom_type & LVAtomType_CollCloser) {
+                end = atom->token->pos;
+                LVAtom* startAtom = (LVAtom*)atom->parent->children[0];
+                start = startAtom->token->pos;
+            }
+            else {
+                start = atom->token->pos;
+                LVAtom* endAtom = (LVAtom*)atom->parent->children[atom->parent->children_len - 1];
+                end = endAtom->token->pos;
+            }
+            NSRange r = NSMakeRange(start, end - start + 1);
+            self.selectedRange = r;
+        }
+        else {
+            [super mouseDown: theEvent];
+        }
+    }
+    else {
+        [super mouseDown: theEvent];
+    }
+}
 
 
 - (void) insertNewline:(id)sender {
