@@ -20,13 +20,10 @@
 
 
 @interface LVShortcut : NSObject
-
 @property SEL action;
-
 @property NSString* title;
 @property NSString* keyEquiv;
 @property NSArray* mods;
-
 @end
 
 @implementation LVShortcut
@@ -38,11 +35,7 @@
 
 
 @interface LVTextView ()
-
 @property NSMutableArray* shortcuts;
-
-@property CGRect myInsertionPointRect;
-
 @end
 
 
@@ -115,6 +108,17 @@
 }
 
 
+- (void) sd_disableLineWrapping {
+    [[self enclosingScrollView] setHasHorizontalScroller:YES];
+    [self setHorizontallyResizable:YES];
+    NSSize layoutSize = [self maxSize];
+    layoutSize.width = layoutSize.height;
+    [self setMaxSize:layoutSize];
+    [[self textContainer] setWidthTracksTextView:NO];
+    [[self textContainer] setContainerSize:layoutSize];
+}
+
+
 - (void) addShortcut:(SEL)action title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSArray*)mods {
     LVShortcut* shortcut = [[LVShortcut alloc] init];
     shortcut.title = title;
@@ -130,6 +134,21 @@
 //    if ([mods containsObject:@"ALT"]) realMods |= NSAlternateKeyMask;
 //    [item setKeyEquivalentModifierMask:realMods];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/************************************************ PAREDIT ************************************************/
 
 
 - (void) raiseSexp:(NSEvent*)event {
@@ -351,6 +370,28 @@
     [super insertNewline:sender];
     [self indentCurrentBody];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //- (void) insertText:(id)insertString {
 //    [super insertText:insertString];
@@ -794,15 +835,5 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //        }
 //    }
 //}
-
-- (void) sd_disableLineWrapping {
-    [[self enclosingScrollView] setHasHorizontalScroller:YES];
-    [self setHorizontallyResizable:YES];
-    NSSize layoutSize = [self maxSize];
-    layoutSize.width = layoutSize.height;
-    [self setMaxSize:layoutSize];
-    [[self textContainer] setWidthTracksTextView:NO];
-    [[self textContainer] setContainerSize:layoutSize];
-}
 
 @end
