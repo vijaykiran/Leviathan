@@ -297,22 +297,13 @@ LVElement* LVFindNextSemanticElementStartingAtPosition(LVDoc* doc, NSUInteger po
         NSInteger relativeOffset = selection.location - _absPos;
         if (relativeOffset < 0) relativeOffset = 0;
         
-        LVColl* grandparent = parent->parent;
-        size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
-        
         NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
-        
-        // TODO: this is a memory leak! we never release parent. ALSO, we need to SAFELY remove child from parent BEFORE releasing parent, or it'll crash horribly
-        
-        grandparent->children[parentIndex] = child;
-        child->parent = grandparent;
-        
-        // TODO: re-indent grandparent (or maybe just child?) right here
-        
         NSString* newstr = (__bridge_transfer NSString*)LVStringForElement(child);
         
         [self replace:oldParentRange string:newstr cursor:oldParentRange.location + relativeOffset];
         [self scrollRangeToVisible:self.selectedRange];
+        
+        // TODO: re-indent grandparent (or maybe just child?)
     }
 }
 
