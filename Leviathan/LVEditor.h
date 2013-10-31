@@ -24,6 +24,7 @@
 
 @property LVFile* file;
 @property (weak) id<LVEditorDelegate> delegate;
+@property IBOutlet LVTextView* textView;
 
 - (void) startEditingFile:(LVFile*)file;
 

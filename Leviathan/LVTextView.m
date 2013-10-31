@@ -14,11 +14,32 @@
 #import "LVThemeManager.h"
 #import "LVPreferences.h"
 
-#import "LVShortcuts.h"
+
+
+
+
+
+@interface LVShortcut : NSObject
+
+@property SEL action;
+
+@property NSString* title;
+@property NSString* keyEquiv;
+@property NSArray* mods;
+
+@end
+
+@implementation LVShortcut
+@end
+
+
+
+
+
 
 @interface LVTextView ()
 
-@property LVShortcuts* shortcuts;
+@property NSMutableArray* shortcuts;
 
 @property CGRect myInsertionPointRect;
 
@@ -68,13 +89,15 @@
     [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
     
     
-//    self.shortcuts = [NSMutableArray array];
+    self.shortcuts = [NSMutableArray array];
     
 //    [self addParedit:self action:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
     
+    [self addShortcut:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
     
-    
-    
+    [self addShortcut:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
+    [self addShortcut:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
+    [self addShortcut:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
     
     
     
@@ -92,31 +115,201 @@
 }
 
 
+- (void) addShortcut:(SEL)action title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSArray*)mods {
+    LVShortcut* shortcut = [[LVShortcut alloc] init];
+    shortcut.title = title;
+    shortcut.keyEquiv = keyEquiv;
+    shortcut.action = action;
+    shortcut.mods = mods;
+    [self.shortcuts addObject:shortcut];
+    
+//    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
+//    NSMenuItem* item = [menu insertItemWithTitle:shortcut.title action:shortcut.action keyEquivalent:shortcut.keyEquiv atIndex:0];
+//    NSUInteger realMods = 0;
+//    if ([mods containsObject:@"CTRL"]) realMods |= NSControlKeyMask;
+//    if ([mods containsObject:@"ALT"]) realMods |= NSAlternateKeyMask;
+//    [item setKeyEquivalentModifierMask:realMods];
+}
 
-//- (void) keyDown:(NSEvent *)theEvent {
-//    for (LVShortcut* shortcut in self.shortcuts) {
-//        if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
-//            continue;
-//        
-//        NSMutableArray* needs = [NSMutableArray array];
-//        
-//        if ([theEvent modifierFlags] & NSControlKeyMask) [needs addObject:@"CTRL"];
-//        if ([theEvent modifierFlags] & NSAlternateKeyMask) [needs addObject:@"ALT"];
-//        
-//        if (![needs isEqualToArray: shortcut.mods])
-//            continue;
-//        
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-//        [shortcut.target performSelector:shortcut.action
-//                              withObject:theEvent];
-//#pragma clang diagnostic pop
-//        
-//        return;
-//    }
-//    
-//    [super keyDown:theEvent];
-//}
+
+- (void) raiseSexp:(NSEvent*)event {
+    NSRange selection = self.selectedRange;
+    
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
+    
+    LVElement* elementToRaise = NULL;
+    size_t posAfterElement;
+    
+    LVElement* semanticChildren[parent->children_len];
+    size_t semanticChildrenCount;
+    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
+    
+    for (int i = 0; i < semanticChildrenCount; i++) {
+        LVElement* semanticChild = semanticChildren[i];
+        
+        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
+        
+        // are we in the middle of the semantic element?
+        if (selection.location < posAfterElement) {
+            // if so, great! we'll use this one
+            elementToRaise = semanticChild;
+            break;
+        }
+    }
+    
+    if (elementToRaise) {
+        LVElement* child = elementToRaise;
+        
+        size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
+        
+        LVColl* grandparent = parent->parent;
+        size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
+        
+        NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
+        
+        // TODO: this is a memory leak! we never release parent. ALSO, we need to SAFELY remove child from parent BEFORE releasing parent, or it'll crash horribly
+        
+        grandparent->children[parentIndex] = child;
+        child->parent = grandparent;
+        
+        // TODO: re-indent grandparent (or maybe just child?) right here
+        
+        NSString* newstr = (__bridge_transfer NSString*)LVStringForElement(child);
+        
+        [self replace:oldParentRange string:newstr cursor:oldParentRange.location + relativeOffset];
+    }
+}
+
+
+- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSUInteger)newpos {
+    NSString* oldString = [self.file.textStorage.string substringWithRange:r];
+    NSRange newRange = NSMakeRange(r.location, [str length]);
+    
+    [[[self.file.textStorage undoManager] prepareWithInvocationTarget:self] replace:newRange
+                                                                             string:oldString
+                                                                             cursor:self.selectedRange.location];
+    
+    [self.file.textStorage replaceCharactersInRange:r withString:str];
+    self.selectedRange = NSMakeRange(newpos, 0);
+}
+
+
+
+
+- (void) keyDown:(NSEvent *)theEvent {
+    for (LVShortcut* shortcut in self.shortcuts) {
+        if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
+            continue;
+        
+        NSMutableArray* needs = [NSMutableArray array];
+        
+        if ([theEvent modifierFlags] & NSControlKeyMask) [needs addObject:@"CTRL"];
+        if ([theEvent modifierFlags] & NSAlternateKeyMask) [needs addObject:@"ALT"];
+        
+        if (![needs isEqualToArray: shortcut.mods])
+            continue;
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [self performSelector:shortcut.action
+                   withObject:theEvent];
+#pragma clang diagnostic pop
+        
+        return;
+    }
+    
+    [super keyDown:theEvent];
+}
+
+
+
+
+
+- (void) outBackwardSexp:(NSEvent*)event {
+    NSRange selection = self.selectedRange;
+    
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
+    
+    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), 0);
+    [self scrollRangeToVisible:self.selectedRange];
+}
+
+- (void) outForwardSexp:(NSEvent*)event {
+    NSRange selection = self.selectedRange;
+    
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
+    
+    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((void*)parent) + LVElementLength((void*)parent), 0);
+    [self scrollRangeToVisible:self.selectedRange];
+}
+
+- (void) forwardSexp:(NSEvent*)event {
+    NSRange selection = self.selectedRange;
+    
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
+    
+    LVElement* elementToMoveToEndOf = NULL;
+    size_t posAfterElement;
+    
+    LVElement* semanticChildren[parent->children_len];
+    size_t semanticChildrenCount;
+    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
+    
+    for (int i = 0; i < semanticChildrenCount; i++) {
+        LVElement* semanticChild = semanticChildren[i];
+        
+        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
+        
+        // are we in the middle of the semantic element?
+        if (selection.location < posAfterElement) {
+            // if so, great! we'll use this one
+            elementToMoveToEndOf = semanticChild;
+            break;
+        }
+    }
+    
+    if (elementToMoveToEndOf) {
+        self.selectedRange = NSMakeRange(posAfterElement, 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
+    else {
+        [self outForwardSexp:event];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

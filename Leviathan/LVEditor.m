@@ -10,12 +10,6 @@
 
 #import "LVPreferences.h"
 
-@interface LVEditor ()
-
-@property IBOutlet LVTextView* textView;
-
-@end
-
 @implementation LVEditor
 
 - (void) dealloc {
