@@ -43,7 +43,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
             case '`': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SyntaxQuote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
                 
             case ',': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Comma, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
-            case '\t': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Spaces, CFSTR("  ")); break;
+            case '\t': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Spaces, CFSTR("  ")); break; // TODO: the way we do this means sometimes there are multiple LVTokenType_Spaces in a row, which isnt good.
                 
             case '\n': {
                 size_t start = i;
