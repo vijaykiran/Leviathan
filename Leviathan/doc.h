@@ -25,9 +25,9 @@ void LVDocDestroy(LVDoc* doc);
 
 void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs);
 
-LVAtom* LVFindAtom(struct __LVDoc* doc, size_t pos);
+LVAtom* LVFindAtomFollowingIndex(struct __LVDoc* doc, size_t pos);
 
 LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex);
 
 LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, size_t idx);
-LVElement* LVFindPreviousSemanticChildStartingAt(LVDoc* doc, size_t idx);
+//LVElement* LVFindPreviousSemanticChildStartingAt(LVDoc* doc, size_t idx);

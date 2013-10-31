@@ -95,7 +95,7 @@ void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement**
     for (size_t i = startingPos; i < parent->children_len; i++) {
         LVElement* child = parent->children[i];
         
-        if ((!child->is_atom) || (child->is_atom && LVAtomIsSemantic((void*)child)))
+        if (LVElementIsSemantic(child))
             array[(*count)++] = child;
     }
 }

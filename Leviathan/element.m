@@ -74,3 +74,7 @@ size_t LVGetAbsolutePosition(LVElement* el) {
         return openChild->token->pos;
     }
 }
+
+BOOL LVElementIsSemantic(LVElement* el) {
+    return (!el->is_atom || LVAtomIsSemantic((LVAtom*)el));
+}

@@ -165,7 +165,7 @@
         NSUInteger i1 = [self.layoutManager glyphIndexForPoint:p inTextContainer:self.textContainer];
         NSUInteger idx = [self.layoutManager characterIndexForGlyphAtIndex:i1];
         
-        LVAtom* atom = LVFindAtom(self.file.textStorage.doc, idx);
+        LVAtom* atom = LVFindAtomFollowingIndex(self.file.textStorage.doc, idx);
         
         if (atom->atom_type & LVAtomType_CollDelim) {
             NSUInteger start;
@@ -304,14 +304,57 @@
     }
 }
 
+// returns the atom where (cursor >= atom.pos + 1) and (cursor <= atom.pos + atom.length), or NULL if pos = 0
+LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, NSUInteger pos) {
+    LVToken** iter = doc->tokens + 1; // skip the first one, we know it'll never be true
+    for (int i = 1; i < doc->tokens_len; i++) {
+        LVToken* tok = *iter++;
+        if (pos >= tok->pos + 1 && pos <= tok->pos + CFStringGetLength(tok->string))
+            return tok->atom;
+    }
+    return NULL;
+}
+
+LVElement* LVFindPreviousSemanticElement(LVElement* needle) {
+    // if needle is semantic, return it
+    // otherwise, find its previous sibling and loop again
+    
+    LVColl* needleParent = needle->parent;
+    
+    for (NSInteger needleIndex = LVGetElementIndexInSiblings(needle); needleIndex >= 0; needleIndex--) {
+        LVElement* needle = needleParent->children[needleIndex];
+        if (LVElementIsSemantic(needle))
+            return needle;
+    }
+    
+    return NULL;
+}
+
 - (void) backwardSexp:(NSEvent*)event {
-    LVElement* elementToMoveToBeginningOf = LVFindPreviousSemanticChildStartingAt(self.file.textStorage.doc, self.selectedRange.location);
-    if (elementToMoveToBeginningOf) {
-        size_t posAfterElement = LVGetAbsolutePosition(elementToMoveToBeginningOf);
-        self.selectedRange = NSMakeRange(posAfterElement, 0);
+    LVAtom* atom = LVFindAtomPrecedingIndex(self.file.textStorage.doc, self.selectedRange.location);
+    
+    // if it's a top-level-coll delim, do nothing
+    if (!atom)
+        return;
+    
+    LVElement* foundElement = NULL;
+    
+    // if it's a closing delim, move to beginning of that coll
+    if (atom->atom_type & LVAtomType_CollCloser)
+        foundElement = (LVElement*)atom->parent;
+    
+    // otherwise, find the previous semantic atom IN ITS PARENT COLL, starting with this
+    if (!foundElement)
+        foundElement = LVFindPreviousSemanticElement((LVElement*)atom);
+    
+    if (foundElement) {
+        // if you find one, move to the beginning of it
+        size_t pos = LVGetAbsolutePosition(foundElement);
+        self.selectedRange = NSMakeRange(pos, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
     else {
+        // otherwise, move to the beginning of it. otherwise do "out backward sexp"
         [self outBackwardSexp:event];
     }
 }

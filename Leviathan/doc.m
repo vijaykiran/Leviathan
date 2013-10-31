@@ -67,7 +67,7 @@ void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs) {
     LVFindDefinitionsFromColl(doc->top_level_coll, defs);
 }
 
-LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
+LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, size_t pos) {
     LVToken** iter = doc->tokens + 1;
     for (int i = 1; i < doc->tokens_len; i++) {
         LVToken* tok = *iter++;
@@ -77,8 +77,15 @@ LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
     return (*(iter - 1))->atom;
 }
 
+//LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, size_t pos) {
+//    if (pos == 0)
+//        return doc->tokens[0]->atom;
+//    else
+//        return LVFindAtomFollowingIndex(doc, pos - 1);
+//}
+
 LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
-    LVAtom* atom = LVFindAtom(doc, pos);
+    LVAtom* atom = LVFindAtomFollowingIndex(doc, pos);
     
     LVElement* el = (void*)atom;
     if (el == atom->parent->children[0])
@@ -87,6 +94,17 @@ LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
     *childIndex = LVGetElementIndexInSiblings(el);
     return el->parent;
 }
+
+//LVColl* LVFindElementPrecedingIndex(LVDoc* doc, size_t pos, size_t* childIndex) {
+//    LVAtom* atom = LVFindAtomPrecedingIndex(doc, pos);
+//    
+//    LVElement* el = (void*)atom;
+//    if (el == atom->parent->children[0])
+//        el = (void*)atom->parent;
+//    
+//    *childIndex = LVGetElementIndexInSiblings(el);
+//    return el->parent;
+//}
 
 LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, size_t idx) {
     size_t childIndex;
@@ -109,21 +127,21 @@ LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, size_t idx) {
     return NULL;
 }
 
-LVElement* LVFindPreviousSemanticChildStartingAt(LVDoc* doc, size_t idx) {
-    size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(doc, idx, &childIndex);
-    
-    LVElement* semanticChildren[parent->children_len];
-    size_t semanticChildrenCount;
-    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
-    
-    for (int i = (int)semanticChildrenCount - 1; i >= 0; i--) {
-        LVElement* semanticChild = semanticChildren[i];
-        
-        // are we in the middle of the semantic element?
-        // if so, great! we'll use this one
-        if (idx > LVGetAbsolutePosition(semanticChild))
-            return semanticChild;
-    }
-    return NULL;
-}
+//LVElement* LVFindPreviousSemanticChildStartingAt(LVDoc* doc, size_t idx) {
+//    size_t childIndex;
+//    LVColl* parent = LVFindElementPrecedingIndex(doc, idx, &childIndex);
+//    
+//    LVElement* semanticChildren[parent->children_len];
+//    size_t semanticChildrenCount;
+//    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
+//    
+//    for (int i = (int)semanticChildrenCount - 1; i >= 0; i--) {
+//        LVElement* semanticChild = semanticChildren[i];
+//        
+//        // are we in the middle of the semantic element?
+//        // if so, great! we'll use this one
+//        if (idx > LVGetAbsolutePosition(semanticChild))
+//            return semanticChild;
+//    }
+//    return NULL;
+//}
