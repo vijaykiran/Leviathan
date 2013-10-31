@@ -43,9 +43,16 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
             case '`': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SyntaxQuote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
                 
             case ',': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Comma, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
-            case '\n': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Newline, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '\t': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Spaces, CFSTR("  ")); break;
                 
-            case '\t': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Newline, CFSTR("  ")); break;
+            case '\n': {
+                size_t start = i;
+                while (chars[++i] == '\n');
+                tokens[num_tokens++] = LVTokenCreate(start, LVTokenType_Newlines, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(start, i - start)));
+                i--;
+                
+                break;
+            }
                 
             case '~': {
                 if (i + 1 < input_string_length && chars[i+1] == '@') {

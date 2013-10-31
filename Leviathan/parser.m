@@ -83,9 +83,9 @@ static LVElement* parseOne(LVToken*** iter) {
         ++*iter;
         return (LVElement*)LVAtomCreate(LVAtomType_Comment, currentToken);
     }
-    else if (currentToken->token_type & LVTokenType_Newline) {
+    else if (currentToken->token_type & LVTokenType_Newlines) {
         ++*iter;
-        return (LVElement*)LVAtomCreate(LVAtomType_Newline, currentToken);
+        return (LVElement*)LVAtomCreate(LVAtomType_Newlines, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Comma) {
         ++*iter;

@@ -42,7 +42,7 @@ NSDictionary* LVAttributesForAtom(LVAtom* atom) {
     LVTheme* theme = [LVThemeManager sharedThemeManager].currentTheme;
     
     if (atom->atom_type & LVAtomType_Spaces) return theme.symbol;
-    if (atom->atom_type & LVAtomType_Newline) return theme.symbol;
+    if (atom->atom_type & LVAtomType_Newlines) return theme.symbol;
     if (atom->atom_type & LVAtomType_Comma) return theme.symbol;
     
     if (atom->atom_type & LVAtomType_DefType) return theme.def;

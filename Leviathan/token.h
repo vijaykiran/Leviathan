@@ -40,7 +40,7 @@ typedef enum __LVTokenType : uint64_t {
     
     LVTokenType_Comma   = 1 << 21,
     LVTokenType_Spaces  = 1 << 22,
-    LVTokenType_Newline = 1 << 23,
+    LVTokenType_Newlines = 1 << 23,
     
     LVTokenType_CommentLiteral = 1 << 24,
     

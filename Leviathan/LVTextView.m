@@ -89,6 +89,9 @@
     [self addShortcut:@selector(wrapNextInParens:) title:@"Wrap Next in Parens" keyEquiv:@"9" mods:@[@"CTRL"]];
     [self addShortcut:@selector(wrapNextInBrackets:) title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:@[@"CTRL"]];
     [self addShortcut:@selector(wrapNextInBraces:) title:@"Wrap Next in Braces" keyEquiv:@"{" mods:@[@"CTRL"]];
+    
+    [self addShortcut:@selector(jumpToNextBlankLineGroup:) title:@"Jump to Next Blank Line" keyEquiv:@"}" mods:@[@"ALT"]];
+    [self addShortcut:@selector(jumpToPreviousBlankLineGroup:) title:@"Jump to Previous Blank Line" keyEquiv:@"{" mods:@[@"ALT"]];
 }
 
 
@@ -349,7 +352,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         if (element->is_atom) {
             LVAtom* atom = (LVAtom*)element;
             
-            if ((atom->atom_type & LVAtomType_CollCloser) || (atom->atom_type & LVAtomType_Newline)) {
+            if ((atom->atom_type & LVAtomType_CollCloser) || (atom->atom_type & LVAtomType_Newlines)) {
                 firstAtomToNotDelete = element;
                 break;
             }
@@ -516,6 +519,38 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         self.selectedRange = NSMakeRange(pos, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
+}
+
+size_t LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
+    LVToken** iter = doc->tokens + 1;
+    for (int i = 1; i < doc->tokens_len; i++) {
+        LVToken* tok = *iter++;
+        if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
+            return i;
+    }
+    return -1;
+}
+
+- (void) jumpToNextBlankLineGroup:(NSEvent*)event {
+    size_t p = LVGetAtomIndexFollowingPosition(self.file.textStorage.doc, self.selectedRange.location) + 1;
+    
+    LVToken** tokens = self.file.textStorage.doc->tokens;
+    for (size_t i = p; i < self.file.textStorage.doc->tokens_len; i++) {
+        LVToken* token = tokens[i];
+        if (token->token_type & LVTokenType_Newlines) {
+            LVToken* nextToken = tokens[i+1];
+            if (nextToken->token_type & LVTokenType_Newlines) {
+                NSUInteger pos = token->pos + 1;
+                self.selectedRange = NSMakeRange(pos, 0);
+                [self scrollRangeToVisible:self.selectedRange];
+                return;
+            }
+        }
+    }
+}
+
+- (void) jumpToPreviousBlankLineGroup:(NSEvent*)event {
+    
 }
 
 

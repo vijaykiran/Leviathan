@@ -17,9 +17,9 @@ typedef enum __LVAtomType : uint64_t {
     LVAtomType_Number  = 1 << 3,
     LVAtomType_Keyword = 1 << 4,
     
-    LVAtomType_Spaces   = 1 << 5,
-    LVAtomType_Newline  = 1 << 6,
-    LVAtomType_Comma    = 1 << 7,
+    LVAtomType_Spaces    = 1 << 5,
+    LVAtomType_Newlines  = 1 << 6,
+    LVAtomType_Comma     = 1 << 7,
     
     LVAtomType_Comment  = 1 << 8,
     
