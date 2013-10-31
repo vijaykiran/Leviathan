@@ -43,11 +43,35 @@ LVColl* LVGetTopLevelElement(LVElement* any) {
     return iter;
 }
 
-CFStringRef LVStringForElement(LVElement* element) {
-    if (element->is_atom)
-        return CFStringCreateCopy(NULL, ((LVAtom*)element)->token->string);
-    else
-        return LVStringForColl((void*)element);
+LVElement* LVFindPreviousSemanticElement(LVElement* needle) {
+    // if needle is semantic, return it
+    // otherwise, find its previous sibling and loop again
+    
+    LVColl* needleParent = needle->parent;
+    
+    for (NSInteger needleIndex = LVGetElementIndexInSiblings(needle); needleIndex >= 0; needleIndex--) {
+        LVElement* needle = needleParent->children[needleIndex];
+        if (LVElementIsSemantic(needle))
+            return needle;
+    }
+    
+    return NULL;
+}
+
+BOOL LVElementIsSemantic(LVElement* el) {
+    return (!el->is_atom || LVAtomIsSemantic((LVAtom*)el));
+}
+
+size_t LVGetAbsolutePosition(LVElement* el) {
+    if (el->is_atom) {
+        LVAtom* atom = (void*)el;
+        return atom->token->pos;
+    }
+    else {
+        LVColl* coll = (void*)el;
+        LVAtom* openChild = (void*)coll->children[0];
+        return openChild->token->pos;
+    }
 }
 
 size_t LVGetElementDepth(LVElement* needle) {
@@ -63,45 +87,9 @@ size_t LVGetElementDepth(LVElement* needle) {
     return i - 2; // one for top-level-coll, one because delims are children of the coll
 }
 
-size_t LVGetAbsolutePosition(LVElement* el) {
-    if (el->is_atom) {
-        LVAtom* atom = (void*)el;
-        return atom->token->pos;
-    }
-    else {
-        LVColl* coll = (void*)el;
-        LVAtom* openChild = (void*)coll->children[0];
-        return openChild->token->pos;
-    }
-}
-
-BOOL LVElementIsSemantic(LVElement* el) {
-    return (!el->is_atom || LVAtomIsSemantic((LVAtom*)el));
-}
-
-
-
-
-
-
-
-
-
-
-
-// new and good
-
-LVElement* LVFindPreviousSemanticElement(LVElement* needle) {
-    // if needle is semantic, return it
-    // otherwise, find its previous sibling and loop again
-    
-    LVColl* needleParent = needle->parent;
-    
-    for (NSInteger needleIndex = LVGetElementIndexInSiblings(needle); needleIndex >= 0; needleIndex--) {
-        LVElement* needle = needleParent->children[needleIndex];
-        if (LVElementIsSemantic(needle))
-            return needle;
-    }
-    
-    return NULL;
+CFStringRef LVStringForElement(LVElement* element) {
+    if (element->is_atom)
+        return CFStringCreateCopy(NULL, ((LVAtom*)element)->token->string);
+    else
+        return LVStringForColl((void*)element);
 }

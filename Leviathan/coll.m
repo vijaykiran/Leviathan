@@ -80,15 +80,15 @@ size_t LVGetElementIndexInSiblings(LVElement* child) {
     return -1;
 }
 
-LVColl* LVCollHighestParent(LVColl* coll) {
-    while (coll->parent->parent)
-        coll = coll->parent;
-    
-    if (coll->coll_type == LVCollType_TopLevel)
-        return NULL;
-    else
-        return coll;
-}
+//LVColl* LVCollHighestParent(LVColl* coll) {
+//    while (coll->parent->parent)
+//        coll = coll->parent;
+//    
+//    if (coll->coll_type == LVCollType_TopLevel)
+//        return NULL;
+//    else
+//        return coll;
+//}
 
 void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count) {
     *count = 0;

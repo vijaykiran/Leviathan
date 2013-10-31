@@ -9,7 +9,6 @@
 #import <CoreFoundation/CoreFoundation.h>
 
 struct __LVColl;
-struct __LVAtom;
 
 typedef struct __LVElement {
     
@@ -23,17 +22,12 @@ void LVElementDestroy(LVElement* el);
 
 struct __LVColl* LVGetTopLevelElement(LVElement* any);
 
-size_t LVGetElementDepth(LVElement* needle);
-
-CFStringRef LVStringForElement(LVElement* element);
-
-size_t LVGetAbsolutePosition(LVElement* el);
+LVElement* LVFindPreviousSemanticElement(LVElement* needle);
 
 BOOL LVElementIsSemantic(LVElement* el);
 
+size_t LVGetAbsolutePosition(LVElement* el);
 
+size_t LVGetElementDepth(LVElement* needle);
 
-
-// new and good
-
-LVElement* LVFindPreviousSemanticElement(LVElement* needle);
+CFStringRef LVStringForElement(LVElement* element);

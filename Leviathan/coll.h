@@ -52,7 +52,7 @@ void LVCollDestroy(LVColl* coll);
 
 void LVElementListAppend(LVColl* coll, LVElement* child);
 
-LVColl* LVCollHighestParent(LVColl* coll);
+//LVColl* LVCollHighestParent(LVColl* coll);
 
 size_t LVGetElementIndexInSiblings(LVElement* child);
 

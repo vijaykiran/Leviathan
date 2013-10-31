@@ -67,6 +67,18 @@ void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs) {
     LVFindDefinitionsFromColl(doc->top_level_coll, defs);
 }
 
+
+
+
+
+
+
+
+
+
+
+// questionable but in-use
+
 LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, size_t pos) {
     LVToken** iter = doc->tokens + 1;
     for (int i = 1; i < doc->tokens_len; i++) {
