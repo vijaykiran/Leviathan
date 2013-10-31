@@ -429,19 +429,26 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 }
 
 - (void) insertText:(id)insertString {
-//    size_t childIndex;
-//    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
-    
-    if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"])
-        return;
+    LVAtom* atom = LVFindAtomPrecedingIndex(self.file.textStorage.doc, self.selectedRange.location);
     
     BOOL adjusted = NO;
-    if ([insertString isEqualToString: @"("])
-        insertString = @"()", adjusted = YES;
-    else if ([insertString isEqualToString: @"["])
-        insertString = @"[]", adjusted = YES;
-    else if ([insertString isEqualToString: @"{"])
-        insertString = @"{}", adjusted = YES;
+    
+    if (!(atom->atom_type & LVAtomType_Comment)
+        && !(atom->atom_type & LVAtomType_String)
+        && !(atom->atom_type & LVAtomType_Regex))
+    {
+        if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"]) {
+            // TODO: move to the next coll-closer, and if there's only Spaces and Newlines and Commas between it and cursor, delete them all.
+            return;
+        }
+        
+        if ([insertString isEqualToString: @"("])
+            insertString = @"()", adjusted = YES;
+        else if ([insertString isEqualToString: @"["])
+            insertString = @"[]", adjusted = YES;
+        else if ([insertString isEqualToString: @"{"])
+            insertString = @"{}", adjusted = YES;
+    }
     
     [super insertText:insertString];
     
