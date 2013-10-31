@@ -305,19 +305,15 @@
 }
 
 - (void) backwardSexp:(NSEvent*)event {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    
-//    LVColl* coll = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
-//    
-////    if (childIndex > 0) {
-////        id<LVElement> element = [coll.childElements objectAtIndex:childIndex - 1];
-////        self.selectedRange = NSMakeRange([element fullyEnclosedRange].location, 0);
-////        [self scrollRangeToVisible:self.selectedRange];
-////    }
-////    else {
-//        [self outBackwardSexp:event];
-////    }
+    LVElement* elementToMoveToBeginningOf = LVFindPreviousSemanticChildStartingAt(self.file.textStorage.doc, self.selectedRange.location);
+    if (elementToMoveToBeginningOf) {
+        size_t posAfterElement = LVGetAbsolutePosition(elementToMoveToBeginningOf);
+        self.selectedRange = NSMakeRange(posAfterElement, 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
+    else {
+        [self outBackwardSexp:event];
+    }
 }
 
 

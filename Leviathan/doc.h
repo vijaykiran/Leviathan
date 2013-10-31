@@ -30,3 +30,4 @@ LVAtom* LVFindAtom(struct __LVDoc* doc, size_t pos);
 LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex);
 
 LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, size_t idx);
+LVElement* LVFindPreviousSemanticChildStartingAt(LVDoc* doc, size_t idx);

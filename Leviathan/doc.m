@@ -108,3 +108,22 @@ LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, size_t idx) {
     }
     return NULL;
 }
+
+LVElement* LVFindPreviousSemanticChildStartingAt(LVDoc* doc, size_t idx) {
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(doc, idx, &childIndex);
+    
+    LVElement* semanticChildren[parent->children_len];
+    size_t semanticChildrenCount;
+    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
+    
+    for (int i = (int)semanticChildrenCount - 1; i >= 0; i--) {
+        LVElement* semanticChild = semanticChildren[i];
+        
+        // are we in the middle of the semantic element?
+        // if so, great! we'll use this one
+        if (idx > LVGetAbsolutePosition(semanticChild))
+            return semanticChild;
+    }
+    return NULL;
+}
