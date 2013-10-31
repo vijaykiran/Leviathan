@@ -193,6 +193,41 @@
 
 
 
+/************************************************ Helper Functions ************************************************/
+
+// not sure how generally useful these are yet
+
+LVColl* LVFindNextCollOnOrAfterPosition(LVDoc* doc, NSUInteger pos) {
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
+    
+    for (size_t i = childIndex; i < parent->children_len; i++) {
+        LVColl* maybeColl = (LVColl*)parent->children[i];
+        
+        if (!maybeColl->is_atom)
+            return maybeColl;
+    }
+    
+    return NULL;
+}
+
+LVColl* LVFindNextCollBeforePosition(LVDoc* doc, NSUInteger pos) {
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
+    
+    for (size_t i = childIndex - 1; i >= 1; i--) {
+        LVColl* maybeColl = (LVColl*)parent->children[i];
+        
+        if (!maybeColl->is_atom)
+            return maybeColl;
+    }
+    
+    return NULL;
+}
+
+
+
+
 
 /************************************************ Indentation ************************************************/
 
@@ -331,20 +366,6 @@
     }
 }
 
-LVColl* LVFindNextCollOnOrAfterPosition(LVDoc* doc, NSUInteger pos) {
-    size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
-    
-    for (size_t i = childIndex; i < parent->children_len; i++) {
-        LVColl* maybeColl = (LVColl*)parent->children[i];
-        
-        if (!maybeColl->is_atom)
-            return maybeColl;
-    }
-    
-    return NULL;
-}
-
 - (void) inForwardSexp:(NSEvent*)event {
     // find the next coll whose pos >= cursor
     LVColl* nextColl = LVFindNextCollOnOrAfterPosition(self.file.textStorage.doc, self.selectedRange.location);
@@ -359,25 +380,16 @@ LVColl* LVFindNextCollOnOrAfterPosition(LVDoc* doc, NSUInteger pos) {
 }
 
 - (void) inBackwardSexp:(NSEvent*)event {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    if (childIndex > 0) {
-//        LVColl* childColl;
-//        for (NSInteger i = childIndex - 1; i >= 0; i--) {
-//            id<LVElement> child = [[coll childElements] objectAtIndex:i];
-//            if ([child isColl]) {
-//                childColl = child;
-//                break;
-//            }
-//        }
-//        
-//        if (childColl) {
-//            self.selectedRange = NSMakeRange([childColl closingToken].range.location, 0);
-//            [self scrollRangeToVisible:self.selectedRange];
-//        }
-//    }
+    // find the next coll whose pos >= cursor
+    LVColl* nextColl = LVFindNextCollBeforePosition(self.file.textStorage.doc, self.selectedRange.location);
+    
+    // if there is one, move to after its first child
+    if (nextColl) {
+        LVAtom* firstChild = (LVAtom*)nextColl->children[nextColl->children_len - 1];
+        NSUInteger pos = firstChild->token->pos;
+        self.selectedRange = NSMakeRange(pos, 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
 }
 
 
