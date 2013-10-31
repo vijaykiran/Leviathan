@@ -8,12 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LVThemeStyle : NSObject
-
-@property NSDictionary* attrs;
-
-@end
-
 @interface LVTheme : NSObject
 
 + (LVTheme*) themeFromData:(NSDictionary*)data;
@@ -23,22 +17,22 @@
 @property NSColor* cursorColor;
 
 @property NSArray* rainbowparens;
-@property LVThemeStyle* symbol;
-@property LVThemeStyle* def;
-@property LVThemeStyle* defname;
-@property LVThemeStyle* keyword;
-@property LVThemeStyle* comment;
-@property LVThemeStyle* typeop;
-@property LVThemeStyle* quote;
-@property LVThemeStyle* unquote;
-@property LVThemeStyle* syntaxquote;
-@property LVThemeStyle* number;
-@property LVThemeStyle* syntaxerror;
-@property LVThemeStyle* string;
-@property LVThemeStyle* regex;
-@property LVThemeStyle* splice;
-@property LVThemeStyle* _true;
-@property LVThemeStyle* _false;
-@property LVThemeStyle* _nil;
+@property NSDictionary* symbol;
+@property NSDictionary* def;
+@property NSDictionary* defname;
+@property NSDictionary* keyword;
+@property NSDictionary* comment;
+@property NSDictionary* typeop;
+@property NSDictionary* quote;
+@property NSDictionary* unquote;
+@property NSDictionary* syntaxquote;
+@property NSDictionary* number;
+@property NSDictionary* syntaxerror;
+@property NSDictionary* string;
+@property NSDictionary* regex;
+@property NSDictionary* splice;
+@property NSDictionary* _true;
+@property NSDictionary* _false;
+@property NSDictionary* _nil;
 
 @end

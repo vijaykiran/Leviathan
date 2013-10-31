@@ -15,7 +15,7 @@ static NSFont* LVAdjustFont(NSFont* font, BOOL haveIt, int trait) {
     return (haveIt ? [fm convertFont:font toHaveTrait:trait] : [fm convertFont:font toNotHaveTrait:trait]);
 }
 
-NSColor* LVColorFromHex(NSString* hex) {
+static NSColor* LVColorFromHex(NSString* hex) {
     unsigned container = 0;
     [[NSScanner scannerWithString:hex] scanHexInt:&container];
     return [NSColor colorWithCalibratedRed:(CGFloat)(unsigned char)(container >> 16) / 0xff
@@ -24,11 +24,7 @@ NSColor* LVColorFromHex(NSString* hex) {
                                      alpha:1.0];
 }
 
-@implementation LVThemeStyle
-
-+ (LVThemeStyle*) styleFrom:(NSDictionary*)data {
-    LVThemeStyle* style = [[LVThemeStyle alloc] init];
-    
+static NSDictionary* LVThemeStyleFrom(NSDictionary* data) {
     NSMutableDictionary* attrs = [NSMutableDictionary dictionary];
     attrs[NSForegroundColorAttributeName] = LVColorFromHex([data objectForKey:@"color"]);
     
@@ -37,14 +33,10 @@ NSColor* LVColorFromHex(NSString* hex) {
     font = LVAdjustFont(font, [[data objectForKey:@"italic"] boolValue], NSFontItalicTrait);
     attrs[NSFontAttributeName] = font;
     
-    style.attrs = attrs;
-    
-    return style;
+    return attrs;
 }
 
-@end
-
-NSDictionary* LVThemeSelectionStyleFrom(NSDictionary* data) {
+static NSDictionary* LVThemeSelectionStyleFrom(NSDictionary* data) {
     NSMutableDictionary* selectionAttrs = [NSMutableDictionary dictionary];
     
     NSString* fg = [data objectForKey:@"foreground-color"];
@@ -66,27 +58,27 @@ NSDictionary* LVThemeSelectionStyleFrom(NSDictionary* data) {
     theme.backgroundColor = LVColorFromHex([data objectForKey:@"background-color"]);
     theme.cursorColor = LVColorFromHex([data objectForKey:@"cursor-color"]);
     
-    theme.symbol = [LVThemeStyle styleFrom: [data objectForKey:@"symbol-style"]];
-    theme.def = [LVThemeStyle styleFrom: [data objectForKey:@"def-keyord-style"]];
-    theme.defname = [LVThemeStyle styleFrom: [data objectForKey:@"def-name-style"]];
-    theme.keyword = [LVThemeStyle styleFrom: [data objectForKey:@"keyword-style"]];
-    theme.comment = [LVThemeStyle styleFrom: [data objectForKey:@"comment-style"]];
-    theme.typeop = [LVThemeStyle styleFrom: [data objectForKey:@"typehint-style"]];
-    theme.quote = [LVThemeStyle styleFrom: [data objectForKey:@"quote-style"]];
-    theme.unquote = [LVThemeStyle styleFrom: [data objectForKey:@"unquote-style"]];
-    theme.syntaxquote = [LVThemeStyle styleFrom: [data objectForKey:@"syntaxquote-style"]];
-    theme.number = [LVThemeStyle styleFrom: [data objectForKey:@"number-style"]];
-    theme.syntaxerror = [LVThemeStyle styleFrom: [data objectForKey:@"syntax-error-style"]];
-    theme.string = [LVThemeStyle styleFrom: [data objectForKey:@"string-style"]];
-    theme.regex = [LVThemeStyle styleFrom: [data objectForKey:@"regex-style"]];
-    theme.splice = [LVThemeStyle styleFrom: [data objectForKey:@"splice-style"]];
-    theme._true = [LVThemeStyle styleFrom: [data objectForKey:@"true-style"]];
-    theme._false = [LVThemeStyle styleFrom: [data objectForKey:@"false-style"]];
-    theme._nil = [LVThemeStyle styleFrom: [data objectForKey:@"nil-style"]];
+    theme.symbol = LVThemeStyleFrom([data objectForKey:@"symbol-style"]);
+    theme.def = LVThemeStyleFrom([data objectForKey:@"def-keyord-style"]);
+    theme.defname = LVThemeStyleFrom([data objectForKey:@"def-name-style"]);
+    theme.keyword = LVThemeStyleFrom([data objectForKey:@"keyword-style"]);
+    theme.comment = LVThemeStyleFrom([data objectForKey:@"comment-style"]);
+    theme.typeop = LVThemeStyleFrom([data objectForKey:@"typehint-style"]);
+    theme.quote = LVThemeStyleFrom([data objectForKey:@"quote-style"]);
+    theme.unquote = LVThemeStyleFrom([data objectForKey:@"unquote-style"]);
+    theme.syntaxquote = LVThemeStyleFrom([data objectForKey:@"syntaxquote-style"]);
+    theme.number = LVThemeStyleFrom([data objectForKey:@"number-style"]);
+    theme.syntaxerror = LVThemeStyleFrom([data objectForKey:@"syntax-error-style"]);
+    theme.string = LVThemeStyleFrom([data objectForKey:@"string-style"]);
+    theme.regex = LVThemeStyleFrom([data objectForKey:@"regex-style"]);
+    theme.splice = LVThemeStyleFrom([data objectForKey:@"splice-style"]);
+    theme._true = LVThemeStyleFrom([data objectForKey:@"true-style"]);
+    theme._false = LVThemeStyleFrom([data objectForKey:@"false-style"]);
+    theme._nil = LVThemeStyleFrom([data objectForKey:@"nil-style"]);
     
     NSMutableArray* rainbowStyles = [NSMutableArray array];
     for (NSDictionary* rainbowParen in [data objectForKey:@"rainbow-parens-styles"]) {
-        [rainbowStyles addObject:[LVThemeStyle styleFrom: rainbowParen]];
+        [rainbowStyles addObject:LVThemeStyleFrom(rainbowParen)];
     }
     
     theme.rainbowparens = rainbowStyles;
