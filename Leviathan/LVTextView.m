@@ -387,7 +387,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     
     NSString* newstr = (__bridge_transfer NSString*)ms;
     
-    [self replace:NSMakeRange(0, CFStringGetLength(s)) string:newstr cursor:self.selectedRange.location];
+    [self replace:NSMakeRange(0, CFStringGetLength(s)) string:newstr cursor:self.selectedRange.location]; // TODO: dang.
     
     CFRelease(s);
     
