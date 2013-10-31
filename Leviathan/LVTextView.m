@@ -320,6 +320,38 @@ LVElement* LVFindNextSemanticElementStartingAtPosition(LVDoc* doc, NSUInteger po
     }
 }
 
+- (void) deleteToEndOfParagraph:(id)sender {
+    LVElement* firstAtomToNotDelete = NULL;
+    
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
+    
+    for (size_t i = childIndex; i < parent->children_len; i++) {
+        LVElement* element = parent->children[i];
+        
+        // find either a coll-closer (and return it) or a newline (and return the next element)
+        
+        if (element->is_atom) {
+            LVAtom* atom = (LVAtom*)element;
+            
+            if ((atom->atom_type & LVAtomType_CollCloser) || (atom->atom_type & LVAtomType_Newline)) {
+                firstAtomToNotDelete = element;
+                break;
+            }
+        }
+    }
+    
+    if (firstAtomToNotDelete) {
+        NSUInteger lastPos = LVGetAbsolutePosition(firstAtomToNotDelete);
+        NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, lastPos - self.selectedRange.location);
+        
+        [self replace:rangeToDelete string:@"" cursor:self.selectedRange.location];
+        
+        self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
+}
+
 
 
 
@@ -802,25 +834,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //
 //- (IBAction) wrapNextInParens:(id)sender {
 //    [self wrapNextInThing:@"(%@)"];
-//}
-//
-//- (void) deleteToEndOfParagraph:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    if (childIndex < [coll.childElements count]) {
-//        //        NSArray* deleteChildren = [coll.childElements subarrayWithRange:NSMakeRange(childIndex, [coll.childElements count] - childIndex)];
-//        //        id<SDElement> firstDeletableChild = [deleteChildren objectAtIndex:0];
-//        //        NSRange range = NSUnionRange([firstDeletableChild fullyEnclosedRange], NSMakeRange([coll closingToken].range.location, 0));
-//        
-//        NSRange range = NSUnionRange(selection, NSMakeRange([coll closingToken].range.location, 0));
-//        
-//        if ([self shouldChangeTextInRange:range replacementString:@""]) {
-//            [[self textStorage] replaceCharactersInRange:range withString:@""];
-//            [self didChangeText];
-//        }
-//    }
 //}
 
 @end
