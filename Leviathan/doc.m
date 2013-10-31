@@ -74,7 +74,7 @@ LVAtom* LVFindAtom(LVDoc* doc, size_t pos) {
         if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
             return tok->atom;
     }
-    abort();
+    return (*(iter - 1))->atom;
 }
 
 LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {

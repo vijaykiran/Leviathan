@@ -71,13 +71,13 @@
     
     self.shortcuts = [NSMutableArray array];
     
-//    [self addParedit:self action:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
     
     [self addShortcut:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
     
     [self addShortcut:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
-    [self addShortcut:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
+    [self addShortcut:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
+    [self addShortcut:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
     
     
     
@@ -171,8 +171,6 @@
         NSInteger relativeOffset = selection.location - _absPos;
         if (relativeOffset < 0) relativeOffset = 0;
         
-//        assert(_absPos == 1);
-        
         LVColl* grandparent = parent->parent;
         size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);
         
@@ -242,7 +240,7 @@
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
     
-    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), 0);
+    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((LVElement*)parent), 0);
     [self scrollRangeToVisible:self.selectedRange];
 }
 
@@ -252,7 +250,7 @@
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
     
-    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((void*)parent) + LVElementLength((void*)parent), 0);
+    self.selectedRange = NSMakeRange(LVGetAbsolutePosition((LVElement*)parent) + LVElementLength((LVElement*)parent), 0);
     [self scrollRangeToVisible:self.selectedRange];
 }
 
@@ -289,6 +287,22 @@
     else {
         [self outForwardSexp:event];
     }
+}
+
+- (void) backwardSexp:(NSEvent*)event {
+//    NSRange selection = self.selectedRange;
+//    NSUInteger childIndex;
+//    
+//    LVColl* coll = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
+//    
+////    if (childIndex > 0) {
+////        id<LVElement> element = [coll.childElements objectAtIndex:childIndex - 1];
+////        self.selectedRange = NSMakeRange([element fullyEnclosedRange].location, 0);
+////        [self scrollRangeToVisible:self.selectedRange];
+////    }
+////    else {
+//        [self outBackwardSexp:event];
+////    }
 }
 
 
@@ -731,21 +745,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //
 //- (IBAction) wrapNextInParens:(id)sender {
 //    [self wrapNextInThing:@"(%@)"];
-//}
-//
-//- (void) backwardSexp:(NSEvent*)event {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    if (childIndex > 0) {
-//        id<LVElement> element = [coll.childElements objectAtIndex:childIndex - 1];
-//        self.selectedRange = NSMakeRange([element fullyEnclosedRange].location, 0);
-//        [self scrollRangeToVisible:self.selectedRange];
-//    }
-//    else {
-//        [self outBackwardSexp:sender];
-//    }
 //}
 //
 //- (IBAction) inForwardSexp:(id)sender {
