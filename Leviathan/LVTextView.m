@@ -238,6 +238,9 @@
         LVElement* child = elementToRaise;
         LVColl* parent = child->parent;
         
+        if (parent->coll_type & LVCollType_TopLevel)
+            return;
+        
         size_t _absPos = LVGetAbsolutePosition(child);
         NSInteger relativeOffset = selection.location - _absPos;
         if (relativeOffset < 0) relativeOffset = 0;
