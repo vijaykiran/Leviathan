@@ -376,12 +376,13 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 - (IBAction) spliceSexp:(id)sender {
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
-    NSUInteger pos = LVGetAbsolutePosition((LVElement*)parent);
     
     CFStringRef s = LVStringForColl(self.file.textStorage.doc->top_level_coll);
     CFMutableStringRef ms = CFStringCreateMutableCopy(NULL, 0, s);
     
-    CFStringDelete(ms, LVNSRangeToCFRange(LVElementRange((LVElement*)LVCollCloserAtom(parent))));
+    NSRange openerRange = LVElementRange((LVElement*)LVCollCloserAtom(parent));
+    
+    CFStringDelete(ms, LVNSRangeToCFRange(openerRange));
     CFStringDelete(ms, LVNSRangeToCFRange(LVElementRange((LVElement*)LVCollOpenerAtom(parent))));
     
     NSString* newstr = (__bridge_transfer NSString*)ms;
@@ -390,7 +391,10 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     
     CFRelease(s);
     
-    self.selectedRange = NSMakeRange(pos, 0);
+    NSRange r = self.selectedRange;
+    r.location -= openerRange.length;
+    
+    self.selectedRange = r;
     [self scrollRangeToVisible:self.selectedRange];
 }
 
