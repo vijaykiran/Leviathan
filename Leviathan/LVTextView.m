@@ -429,7 +429,24 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 }
 
 - (void) insertText:(id)insertString {
+//    size_t childIndex;
+//    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
     
+    if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"])
+        return;
+    
+    BOOL adjusted = NO;
+    if ([insertString isEqualToString: @"("])
+        insertString = @"()", adjusted = YES;
+    else if ([insertString isEqualToString: @"["])
+        insertString = @"[]", adjusted = YES;
+    else if ([insertString isEqualToString: @"{"])
+        insertString = @"{}", adjusted = YES;
+    
+    [super insertText:insertString];
+    
+    if (adjusted)
+        [self moveBackward:nil];
 }
 
 
