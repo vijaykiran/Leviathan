@@ -361,6 +361,9 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     
     if (firstAtomToNotDelete) {
         NSUInteger lastPos = LVGetAbsolutePosition(firstAtomToNotDelete);
+        if (lastPos <= self.selectedRange.location)
+            lastPos = self.selectedRange.location + 1;
+        
         NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, lastPos - self.selectedRange.location);
         
         [self replace:rangeToDelete string:@"" cursor:self.selectedRange.location];
