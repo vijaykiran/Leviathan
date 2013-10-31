@@ -74,16 +74,15 @@
     
     [self addShortcut:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
     [self addShortcut:@selector(killNextSexp:) title:@"Kill Next" keyEquiv:@"k" mods:@[@"CTRL", @"ALT"]];
+    [self addShortcut:@selector(spliceSexp:) title:@"Splice" keyEquiv:@"s" mods:@[@"ALT"]];
     
-    [self addShortcut:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
-    [self addShortcut:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
-    
     [self addShortcut:@selector(inForwardSexp:) title:@"In Forward" keyEquiv:@"d" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(inBackwardSexp:) title:@"In Backward" keyEquiv:@"p" mods:@[@"CTRL", @"ALT"]];
+    [self addShortcut:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
+    [self addShortcut:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
     
-//    [self addParedit:^(NSEvent* event){ [_self spliceSexp:event]; } title:@"Splice" keyEquiv:@"s" mods:NSControlKeyMask];
     
 //    [self addParedit:^(NSEvent* event){ [_self wrapNextInParens:event]; } title:@"Wrap Next in Parens" keyEquiv:@"9" mods:NSControlKeyMask];
 //    [self addParedit:^(NSEvent* event){ [_self wrapNextInBrackets:event]; } title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:NSControlKeyMask];
@@ -350,6 +349,43 @@ LVElement* LVFindNextSemanticElementStartingAtPosition(LVDoc* doc, NSUInteger po
         self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
+}
+
+LVAtom* LVCollOpenerAtom(LVColl* coll) {
+    return (LVAtom*)coll->children[0];
+}
+
+LVAtom* LVCollCloserAtom(LVColl* coll) {
+    return (LVAtom*)coll->children[coll->children_len - 1];
+}
+
+NSRange LVElementRange(LVElement* element) {
+    return NSMakeRange(LVGetAbsolutePosition(element), LVElementLength(element));
+}
+
+CFRange LVNSRangeToCFRange(NSRange r) {
+    return CFRangeMake(r.location, r.length);
+}
+
+- (IBAction) spliceSexp:(id)sender {
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
+    NSUInteger pos = LVGetAbsolutePosition((LVElement*)parent);
+    
+    CFStringRef s = LVStringForColl(self.file.textStorage.doc->top_level_coll);
+    CFMutableStringRef ms = CFStringCreateMutableCopy(NULL, 0, s);
+    
+    CFStringDelete(ms, LVNSRangeToCFRange(LVElementRange((LVElement*)LVCollCloserAtom(parent))));
+    CFStringDelete(ms, LVNSRangeToCFRange(LVElementRange((LVElement*)LVCollOpenerAtom(parent))));
+    
+    NSString* newstr = (__bridge_transfer NSString*)ms;
+    
+    [self replace:NSMakeRange(0, CFStringGetLength(s)) string:newstr cursor:self.selectedRange.location];
+    
+    CFRelease(s);
+    
+    self.selectedRange = NSMakeRange(pos, 0);
+    [self scrollRangeToVisible:self.selectedRange];
 }
 
 
@@ -789,25 +825,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //        self.selectedRange = rangeToSelect;
 //        [self scrollRangeToVisible:self.selectedRange];
 //    }
-//}
-//
-//- (IBAction) spliceSexp:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    NSRange outerRange = coll.fullyEnclosedRange;
-//    NSUInteger start = NSMaxRange(coll.openingToken.range);
-//    NSRange innerRange = NSMakeRange(start, coll.closingToken.range.location - start);
-//    
-//    NSString* newStr = [[[self textStorage] string] substringWithRange:innerRange];
-//    
-//    self.selectedRange = outerRange;
-//    [self delete:sender];
-//    [self insertText:newStr];
-//    
-//    self.selectedRange = NSMakeRange(outerRange.location, 0);
-//    [self scrollRangeToVisible:self.selectedRange];
 //}
 //
 //- (IBAction) extendSelectionToNext:(id)sender {
