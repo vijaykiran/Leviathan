@@ -159,8 +159,62 @@
     [super keyDown:theEvent];
 }
 
+- (void) mouseDown:(NSEvent *)theEvent {
+    if ([theEvent clickCount] == 2) {
+        NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+        NSUInteger i1 = [self.layoutManager glyphIndexForPoint:p inTextContainer:self.textContainer];
+        NSUInteger idx = [self.layoutManager characterIndexForGlyphAtIndex:i1];
+        
+        LVAtom* atom = LVFindAtom(self.file.textStorage.doc, idx);
+        
+        if (atom->atom_type & LVAtomType_CollDelim) {
+            NSUInteger start;
+            NSUInteger end;
+            if (atom->atom_type & LVAtomType_CollCloser) {
+                end = atom->token->pos;
+                LVAtom* startAtom = (LVAtom*)atom->parent->children[0];
+                start = startAtom->token->pos;
+            }
+            else {
+                start = atom->token->pos;
+                LVAtom* endAtom = (LVAtom*)atom->parent->children[atom->parent->children_len - 1];
+                end = endAtom->token->pos;
+            }
+            NSRange r = NSMakeRange(start, end - start + 1);
+            self.selectedRange = r;
+        }
+        else {
+            [super mouseDown: theEvent];
+        }
+    }
+    else {
+        [super mouseDown: theEvent];
+    }
+}
 
 
+
+
+
+/************************************************ Indentation ************************************************/
+
+// TODO: instead of overriding every method ever, maybe we can indent inside -[LVClojureText replaceCharactersInRange:withString:]?
+//       but that would enter an infinite loop. hmm, i dunno.
+
+- (void) insertNewline:(id)sender {
+    [super insertNewline:sender];
+    [self indentCurrentBody];
+}
+
+- (void) deleteWordBackward:(id)sender {
+    [super deleteWordBackward:sender];
+    [self indentCurrentBody];
+}
+
+- (void) deleteBackward:(id)sender {
+    [super deleteBackward:sender];
+    [self indentCurrentBody];
+}
 
 
 
@@ -179,31 +233,10 @@
 - (void) raiseSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     
-    size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
-    
-    LVElement* elementToRaise = NULL;
-    size_t posAfterElement;
-    
-    LVElement* semanticChildren[parent->children_len];
-    size_t semanticChildrenCount;
-    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
-    
-    for (int i = 0; i < semanticChildrenCount; i++) {
-        LVElement* semanticChild = semanticChildren[i];
-        
-        posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
-        
-        // are we in the middle of the semantic element?
-        if (selection.location < posAfterElement) {
-            // if so, great! we'll use this one
-            elementToRaise = semanticChild;
-            break;
-        }
-    }
-    
+    LVElement* elementToRaise = LVFindNextSemanticChildStartingAt(self.file.textStorage.doc, selection.location);
     if (elementToRaise) {
         LVElement* child = elementToRaise;
+        LVColl* parent = child->parent;
         
         size_t _absPos = LVGetAbsolutePosition(child);
         NSInteger relativeOffset = selection.location - _absPos;
@@ -227,6 +260,9 @@
         [self scrollRangeToVisible:self.selectedRange];
     }
 }
+
+
+
 
 /************************************************ PAREDIT (moving) ************************************************/
 
@@ -336,46 +372,6 @@
 
 
 
-- (void) mouseDown:(NSEvent *)theEvent {
-    if ([theEvent clickCount] == 2) {
-        NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-        NSUInteger i1 = [self.layoutManager glyphIndexForPoint:p inTextContainer:self.textContainer];
-        NSUInteger idx = [self.layoutManager characterIndexForGlyphAtIndex:i1];
-        
-        LVAtom* atom = LVFindAtom(self.file.textStorage.doc, idx);
-        
-        if (atom->atom_type & LVAtomType_CollDelim) {
-            NSUInteger start;
-            NSUInteger end;
-            if (atom->atom_type & LVAtomType_CollCloser) {
-                end = atom->token->pos;
-                LVAtom* startAtom = (LVAtom*)atom->parent->children[0];
-                start = startAtom->token->pos;
-            }
-            else {
-                start = atom->token->pos;
-                LVAtom* endAtom = (LVAtom*)atom->parent->children[atom->parent->children_len - 1];
-                end = endAtom->token->pos;
-            }
-            NSRange r = NSMakeRange(start, end - start + 1);
-            self.selectedRange = r;
-        }
-        else {
-            [super mouseDown: theEvent];
-        }
-    }
-    else {
-        [super mouseDown: theEvent];
-    }
-}
-
-
-- (void) insertNewline:(id)sender {
-    [super insertNewline:sender];
-    [self indentCurrentBody];
-}
-
-
 
 
 
@@ -437,16 +433,6 @@
 ////        [self indentCurrentBody];
 ////    }
 //}
-
-- (void) deleteWordBackward:(id)sender {
-    [super deleteWordBackward:sender];
-    [self indentCurrentBody];
-}
-
-- (void) deleteBackward:(id)sender {
-    [super deleteBackward:sender];
-    [self indentCurrentBody];
-}
 
 
 
