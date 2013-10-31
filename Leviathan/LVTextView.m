@@ -73,6 +73,7 @@
     
     
     [self addShortcut:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
+    [self addShortcut:@selector(killNextSexp:) title:@"Kill Next" keyEquiv:@"k" mods:@[@"CTRL", @"ALT"]];
     
     [self addShortcut:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
@@ -83,7 +84,6 @@
     [self addShortcut:@selector(inBackwardSexp:) title:@"In Backward" keyEquiv:@"p" mods:@[@"CTRL", @"ALT"]];
     
 //    [self addParedit:^(NSEvent* event){ [_self spliceSexp:event]; } title:@"Splice" keyEquiv:@"s" mods:NSControlKeyMask];
-//    [self addParedit:^(NSEvent* event){ [_self killNextSexp:event]; } title:@"Kill Next" keyEquiv:@"k" mods:NSControlKeyMask | NSAlternateKeyMask];
     
 //    [self addParedit:^(NSEvent* event){ [_self wrapNextInParens:event]; } title:@"Wrap Next in Parens" keyEquiv:@"9" mods:NSControlKeyMask];
 //    [self addParedit:^(NSEvent* event){ [_self wrapNextInBrackets:event]; } title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:NSControlKeyMask];
@@ -225,6 +225,21 @@ LVColl* LVFindNextCollBeforePosition(LVDoc* doc, NSUInteger pos) {
     return NULL;
 }
 
+LVElement* LVFindNextSemanticElementAfterElementAtPosition(LVDoc* doc, NSUInteger pos) {
+    size_t childIndex;
+    LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
+    
+    for (size_t i = childIndex + 1; i < parent->children_len; i++) {
+        LVElement* element = parent->children[i];
+        
+        if (LVElementIsSemantic(element))
+            return element;
+    }
+    
+    return NULL;
+}
+
+
 
 
 
@@ -296,6 +311,20 @@ LVColl* LVFindNextCollBeforePosition(LVDoc* doc, NSUInteger pos) {
         [self scrollRangeToVisible:self.selectedRange];
     }
 }
+
+- (void) killNextSexp:(NSEvent*)event {
+    LVElement* next = LVFindNextSemanticElementAfterElementAtPosition(self.file.textStorage.doc, self.selectedRange.location);
+    if (next) {
+        NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
+        NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
+        
+        [self replace:rangeToDelete string:@"" cursor:self.selectedRange.location];
+        
+        self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
+        [self scrollRangeToVisible:self.selectedRange];
+    }
+}
+
 
 
 
@@ -782,22 +811,6 @@ LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //
 //- (IBAction) wrapNextInParens:(id)sender {
 //    [self wrapNextInThing:@"(%@)"];
-//}
-//
-//- (IBAction) killNextSexp:(id)sender {
-//    NSRange selection = self.selectedRange;
-//    NSUInteger childIndex;
-//    LVColl* coll = [self.file.topLevelElement deepestCollAtPos:selection.location childsIndex:&childIndex];
-//    
-//    if (childIndex < [coll.childElements count]) {
-//        id<LVElement> element = [coll.childElements objectAtIndex:childIndex];
-//        
-//        NSRange rangeToDelete = [element fullyEnclosedRange];
-//        self.selectedRange = rangeToDelete;
-//        [self delete:sender];
-//        self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
-//        [self scrollRangeToVisible:self.selectedRange];
-//    }
 //}
 //
 //- (void) deleteToEndOfParagraph:(id)sender {
