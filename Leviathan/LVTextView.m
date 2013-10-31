@@ -50,8 +50,7 @@
 }
 
 - (void) awakeFromNib {
-    self.enclosingScrollView.verticalScroller.knobStyle = NSScrollerKnobStyleLight;
-    self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
+    self.enclosingScrollView.verticalScroller.knobStyle = self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
     self.automaticTextReplacementEnabled = NO;
     self.automaticSpellingCorrectionEnabled = NO;
@@ -66,7 +65,8 @@
     
     
     [self sd_disableLineWrapping];
-    [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
+    
+//    [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
     
     
     self.shortcuts = [NSMutableArray array];
@@ -167,7 +167,11 @@
     if (elementToRaise) {
         LVElement* child = elementToRaise;
         
-        size_t relativeOffset = selection.location - LVGetAbsolutePosition(child);
+        size_t _absPos = LVGetAbsolutePosition(child);
+        NSInteger relativeOffset = selection.location - _absPos;
+        if (relativeOffset < 0) relativeOffset = 0;
+        
+//        assert(_absPos == 1);
         
         LVColl* grandparent = parent->parent;
         size_t parentIndex = LVGetElementIndexInSiblings((void*)parent);

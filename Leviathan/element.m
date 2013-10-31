@@ -45,7 +45,7 @@ LVColl* LVGetTopLevelElement(LVElement* any) {
 
 CFStringRef LVStringForElement(LVElement* element) {
     if (element->is_atom)
-        return ((LVAtom*)element)->token->string;
+        return CFStringCreateCopy(NULL, ((LVAtom*)element)->token->string);
     else
         return LVStringForColl((void*)element);
 }
