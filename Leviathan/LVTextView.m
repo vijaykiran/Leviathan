@@ -399,6 +399,9 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 }
 
 - (void) wrapNextInThing:(NSString*)open and:(NSString*)close {
+    if (!self.file.textStorage.doc)
+        return;
+    
     LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.file.textStorage.doc, self.selectedRange.location);
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
@@ -433,6 +436,11 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 }
 
 - (void) insertText:(id)insertString {
+    if (!self.file.textStorage.doc) {
+        [super insertText:insertString];
+        return;
+    }
+    
     LVAtom* atom = LVFindAtomPrecedingIndex(self.file.textStorage.doc, self.selectedRange.location);
     
     BOOL adjusted = NO;

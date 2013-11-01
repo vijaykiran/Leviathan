@@ -8,6 +8,8 @@
 
 #include "lexer.h"
 
+#import "LVParseError.h"
+
 LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
     size_t input_string_length = CFStringGetLength(raw);
     size_t num_tokens = 0;
@@ -98,7 +100,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                     do seeker++; while (seeker < input_string_length && chars[seeker] != '"');
                     if (seeker == input_string_length) {
                         printf("error: unclosed string\n");
-                        abort();
+                        @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
                     }
                 } while (chars[seeker - 1] == '\\');
                 
@@ -136,7 +138,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
             case '#': {
                 if (i + 1 == input_string_length) {
                     printf("error: unclosed dispatch\n");
-                    abort();
+                    @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
                 }
                 
                 UniChar next = chars[i + 1];
@@ -148,7 +150,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                             do seeker++; while (seeker < input_string_length && chars[seeker] != '"');
                             if (seeker == input_string_length) {
                                 printf("error: unclosed regex\n");
-                                abort();
+                                @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
                             }
                         } while (chars[seeker - 1] == '\\');
                         

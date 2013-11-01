@@ -72,10 +72,17 @@
 }
 
 - (NSDictionary *)attributesAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
-    assert(self.highlights != NULL);
+    if (self.highlights == NULL) {
+        if (aRange) {
+            aRange->location = 0;
+            aRange->length = [self length];
+        }
+        return [LVThemeManager sharedThemeManager].currentTheme.symbol;
+    }
     
     LVHighlights* h = &self.highlights[index];
     
+    assert(h->atom != NULL);
     if (!h->attrs)
         h->attrs = LVAttributesForAtom(h->atom);
     
@@ -88,15 +95,24 @@
 }
 
 - (void)replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString {
-    NSMutableString* tryString = [self.internalStorage mutableCopy];
-    [tryString replaceCharactersInRange:aRange withString:aString];
-    if ([self validateStringCanParse:tryString]) {
-        NSUInteger origLen = [self length];
-        [self.internalStorage replaceCharactersInRange:aRange withString:aString];
-        NSUInteger newLen = [self length];
+    NSUInteger origLen = [self length];
+    [self.internalStorage replaceCharactersInRange:aRange withString:aString];
+    NSUInteger newLen = [self length];
+    
+    if ([self validateStringCanParse:self.internalStorage]) {
         [self parse];
-        [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:(newLen - origLen)];
     }
+    else {
+        printf("dang: can't parse.\n");
+        
+        free(self.highlights);
+        LVDocDestroy(self.doc);
+        
+        self.doc = NULL;
+        if (self.highlights) self.highlights = NULL;
+    }
+    
+    [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:(newLen - origLen)];
 }
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {

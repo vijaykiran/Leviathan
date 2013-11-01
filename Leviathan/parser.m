@@ -11,6 +11,8 @@
 #import "lexer.h"
 #import "atom.h"
 
+#import "LVParseError.h"
+
 static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTokenType);
 
 static LVElement* parseOne(LVToken*** iter) {
@@ -108,11 +110,11 @@ static LVElement* parseOne(LVToken*** iter) {
     }
     else if (currentToken->token_type & LVTokenType_FileEnd) {
         printf("reached end of tokens too early\n");
-        abort();
+        @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
     }
     
     printf("Can't handle this token type: %llu, %s\n", currentToken->token_type, CFStringGetCStringPtr(currentToken->string, kCFStringEncodingUTF8));
-    abort();
+    @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
 }
 
 static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTokenType) {
@@ -134,7 +136,7 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
         
         if (currentToken->token_type == LVTokenType_FileEnd) {
             printf("unclosed coll somewhere :(\n");
-            abort();
+            @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
         }
         
         LVElement* child = parseOne(iter);
