@@ -667,43 +667,41 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
 - (void) indentText {
     return;
     
-//    // find each newline TOKEN
-//    // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
-//    // something else
-//    
-//    LVDoc* doc = self.file.textStorage.doc;
-//    
-//    for (int i = 1; i < doc->tokens_len - 1; i++) {
-//        LVToken* tok = doc->tokens[i];
-//        
-//        if (tok->tokenType & LVTokenType_Newlines) {
-//            LVToken* nextTok = doc->tokens[i + 1];
-//            if (nextTok->tokenType & LVTokenType_Spaces) {
-//                
-//                LVAtom* newlineAtom = tok->atom;
-//                LVColl* newlineParent = newlineAtom->parent;
-//                
-//                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
-//                
-////                if (newlineParent->collType & lvcolltype_)
-//                
-////                CFStringPad(<#CFMutableStringRef theString#>, <#CFStringRef padString#>, <#CFIndex length#>, <#CFIndex indexIntoPad#>)
-//                
-//                LVMakeTokenMutable(nextTok);
-//                CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
-//                CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
-//            }
-//        }
-//    }
-//    
-//    // rebuild string
-//    CFStringRef s = LVStringForColl(doc->topLevelColl);
-//    NSString* newstr = (__bridge_transfer NSString*)s;
-////    NSLog(@"%@", newstr);
-////    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
-//    NSRange r = self.selectedRange;
-//    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
-//    self.selectedRange = r;
+    // find each newline TOKEN
+    // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
+    // something else
+    
+    LVDoc* doc = self.file.textStorage.doc;
+    
+    for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
+        if (tok->tokenType & LVTokenType_Newlines) {
+            LVToken* nextTok = tok->nextToken;
+            if (nextTok->tokenType & LVTokenType_Spaces) {
+                
+                LVAtom* newlineAtom = tok->atom;
+                LVColl* newlineParent = newlineAtom->parent;
+                
+                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
+                
+//                if (newlineParent->collType & lvcolltype_)
+                
+//                CFStringPad(<#CFMutableStringRef theString#>, <#CFStringRef padString#>, <#CFIndex length#>, <#CFIndex indexIntoPad#>)
+                
+                LVMakeTokenMutable(nextTok);
+                CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
+                CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
+            }
+        }
+    }
+    
+    // rebuild string
+    CFStringRef s = LVStringForColl(doc->topLevelColl);
+    NSString* newstr = (__bridge_transfer NSString*)s;
+//    NSLog(@"%@", newstr);
+//    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
+    NSRange r = self.selectedRange;
+    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
+    self.selectedRange = r;
 }
 
 
