@@ -46,6 +46,12 @@
     LVDocDestroy(self.doc);
 }
 
+- (BOOL) validateStringCanParse:(NSString*)string {
+    LVDoc* tempDoc = LVDocCreate(string);
+    LVDocDestroy(tempDoc);
+    return tempDoc != nil;
+}
+
 - (void) parse {
     free(self.highlights);
     self.highlights = NULL;
@@ -82,10 +88,15 @@
 }
 
 - (void)replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString {
-    NSUInteger origLen = [self length];
-    [self.internalStorage replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString];
-    [self parse];
-    [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:[self length] - origLen];
+    NSMutableString* tryString = [self.internalStorage mutableCopy];
+    [tryString replaceCharactersInRange:aRange withString:aString];
+    if ([self validateStringCanParse:tryString]) {
+        NSUInteger origLen = [self length];
+        [self.internalStorage replaceCharactersInRange:aRange withString:aString];
+        NSUInteger newLen = [self length];
+        [self parse];
+        [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:(newLen - origLen)];
+    }
 }
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {

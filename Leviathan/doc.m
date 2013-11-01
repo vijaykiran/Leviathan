@@ -11,12 +11,19 @@
 #import "lexer.h"
 #import "parser.h"
 
+#import "LVParseError.h"
+
 LVDoc* LVDocCreate(NSString* raw) {
-    LVDoc* doc = malloc(sizeof(LVDoc));
-    doc->string = (__bridge_retained CFStringRef)raw;
-    doc->tokens = LVLex(doc->string, &doc->tokens_len);
-    doc->top_level_coll = LVParseTokens(doc->tokens);
-    return doc;
+    @try {
+        LVDoc* doc = malloc(sizeof(LVDoc));
+        doc->string = (__bridge_retained CFStringRef)raw;
+        doc->tokens = LVLex(doc->string, &doc->tokens_len);
+        doc->top_level_coll = LVParseTokens(doc->tokens);
+        return doc;
+    }
+    @catch (LVParseError *exception) {
+        return nil;
+    }
 }
 
 void LVDocDestroy(LVDoc* doc) {
