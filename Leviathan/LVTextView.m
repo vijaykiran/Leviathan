@@ -437,9 +437,10 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     
     BOOL adjusted = NO;
     
-    if (!(atom->atom_type & LVAtomType_Comment)
-        && !(atom->atom_type & LVAtomType_String)
-        && !(atom->atom_type & LVAtomType_Regex))
+    if (!atom ||
+        (!(atom->atom_type & LVAtomType_Comment) &&
+        !(atom->atom_type & LVAtomType_String) &&
+        !(atom->atom_type & LVAtomType_Regex)))
     {
         if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"]) {
             // TODO: move to the next coll-closer, and if there's only Spaces and Newlines and Commas between it and cursor, delete them all.
