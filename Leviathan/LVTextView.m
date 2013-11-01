@@ -473,6 +473,8 @@ CFRange LVNSRangeToCFRange(NSRange r) {
             insertString = @"[]", adjusted = YES;
         else if ([insertString isEqualToString: @"{"])
             insertString = @"{}", adjusted = YES;
+        else if ([insertString isEqualToString: @"\""])
+            insertString = @"\"\"", adjusted = YES;
     }
     
     [super insertText:insertString];
@@ -779,7 +781,7 @@ size_t LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 //    return NSMakeRange(absPosWithin, NSMaxRange(r) - absPosWithin);
 //}
 
-- (void) indentCurrentBody {
+//- (void) indentCurrentBody {
 //    return;
 //    NSLog(@"indenting");
 //    
@@ -909,7 +911,7 @@ size_t LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 //    
 //    
 ////    printf("\n");
-}
+//}
 
 //LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
 //    LVElement* semanticChildren[parent->children_len];
