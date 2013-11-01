@@ -135,6 +135,11 @@
 }
 
 - (void) keyDown:(NSEvent *)theEvent {
+    if (!self.file.textStorage.doc) {
+        [super keyDown:theEvent];
+        return;
+    }
+    
     for (LVShortcut* shortcut in self.shortcuts) {
         if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
             continue;
@@ -160,6 +165,11 @@
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
+    if (!self.file.textStorage.doc) {
+        [super mouseDown:theEvent];
+        return;
+    }
+    
     if ([theEvent clickCount] == 2) {
         NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
         NSUInteger i1 = [self.layoutManager glyphIndexForPoint:p inTextContainer:self.textContainer];
@@ -271,20 +281,20 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 // TODO: instead of overriding every method ever, maybe we can indent inside -[LVClojureText replaceCharactersInRange:withString:]?
 //       but that would enter an infinite loop. hmm, i dunno.
 
-- (void) insertNewline:(id)sender {
-    [super insertNewline:sender];
-    [self indentCurrentBody];
-}
-
-- (void) deleteWordBackward:(id)sender {
-    [super deleteWordBackward:sender];
-    [self indentCurrentBody];
-}
-
-- (void) deleteBackward:(id)sender {
-    [super deleteBackward:sender];
-    [self indentCurrentBody];
-}
+//- (void) insertNewline:(id)sender {
+//    [super insertNewline:sender];
+//    [self indentCurrentBody];
+//}
+//
+//- (void) deleteWordBackward:(id)sender {
+//    [super deleteWordBackward:sender];
+//    [self indentCurrentBody];
+//}
+//
+//- (void) deleteBackward:(id)sender {
+//    [super deleteBackward:sender];
+//    [self indentCurrentBody];
+//}
 
 
 
@@ -339,6 +349,11 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 }
 
 - (void) deleteToEndOfParagraph:(id)sender {
+    if (!self.file.textStorage.doc) {
+        [super deleteToEndOfParagraph:sender];
+        return;
+    }
+    
     LVElement* firstAtomToNotDelete = NULL;
     
     size_t childIndex;
@@ -399,9 +414,6 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 }
 
 - (void) wrapNextInThing:(NSString*)open and:(NSString*)close {
-    if (!self.file.textStorage.doc)
-        return;
-    
     LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.file.textStorage.doc, self.selectedRange.location);
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
