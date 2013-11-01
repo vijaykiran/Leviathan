@@ -9,4 +9,4 @@
 #import "coll.h"
 #import "token.h"
 
-LVColl* LVParseTokens(LVToken** tokens);
+LVColl* LVParseTokens(LVToken* firstToken);

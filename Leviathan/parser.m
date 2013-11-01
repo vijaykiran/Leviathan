@@ -13,10 +13,10 @@
 
 #import "LVParseError.h"
 
-static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTokenType);
+static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTokenType);
 
-static LVElement* parseOne(LVToken*** iter) {
-    LVToken* currentToken = **iter;
+static LVElement* parseOne(LVToken** iter) {
+    LVToken* currentToken = *iter;
     
     if (currentToken->token_type & LVTokenType_LParen) {
         return (LVElement*)parseColl(iter, LVCollType_List, LVTokenType_RParen);
@@ -34,72 +34,72 @@ static LVElement* parseOne(LVToken*** iter) {
         return (LVElement*)parseColl(iter, LVCollType_Set, LVTokenType_RBrace);
     }
     else if (currentToken->token_type & LVTokenType_Spaces) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Spaces, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Var) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Var, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_ReaderMacro) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_ReaderMacro, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Number) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Number, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_TypeOp) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_TypeOp, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Quote) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Quote, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Unquote) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Unquote, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_SyntaxQuote) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_SyntaxQuote, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Splice) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Splice, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Keyword) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Keyword, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_String) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_String, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Regex) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Regex, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_CommentLiteral) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Comment, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Newlines) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Newlines, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Comma) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_Comma, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_ReaderCommentStart) {
         // TODO: reader-comments could be considered a type of list, with "#_" as the opening token and "" as the closing
-        ++*iter;
+        *iter = (*iter)->nextToken;
         return (LVElement*)LVAtomCreate(LVAtomType_ReaderComment, currentToken);
     }
     else if (currentToken->token_type & LVTokenType_Symbol) {
-        ++*iter;
+        *iter = (*iter)->nextToken;
         LVAtom* atom = LVAtomCreate(LVAtomType_Symbol, currentToken);
         
              if (currentToken->token_type & LVTokenType_TrueSymbol)  atom->atom_type |= LVAtomType_TrueAtom;
@@ -117,20 +117,20 @@ static LVElement* parseOne(LVToken*** iter) {
     @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
 }
 
-static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTokenType) {
+static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTokenType) {
     LVColl* coll = LVCollCreate();
     coll->coll_type = collType;
     
-    LVElementListAppend(coll, (LVElement*)LVAtomCreate(LVAtomType_CollDelim | LVAtomType_CollOpener, **iter));
+    LVElementListAppend(coll, (LVElement*)LVAtomCreate(LVAtomType_CollDelim | LVAtomType_CollOpener, *iter));
     
-    ++*iter;
+    *iter = (*iter)->nextToken;
     
     for (LVToken* currentToken; ; ) {
-        currentToken = **iter;
+        currentToken = *iter;
         
         if (currentToken->token_type == endTokenType) {
             LVElementListAppend(coll, (LVElement*)LVAtomCreate(LVAtomType_CollDelim | LVAtomType_CollCloser, currentToken));
-            ++*iter;
+            *iter = (*iter)->nextToken;
             break;
         }
         
@@ -195,8 +195,8 @@ static LVColl* parseColl(LVToken*** iter, LVCollType collType, LVTokenType endTo
     return coll;
 }
 
-LVColl* LVParseTokens(LVToken** tokens) {
-    LVColl* topLevelColl = parseColl(&tokens, LVCollType_TopLevel, LVTokenType_FileEnd);
+LVColl* LVParseTokens(LVToken* firstToken) {
+    LVColl* topLevelColl = parseColl(&firstToken, LVCollType_TopLevel, LVTokenType_FileEnd);
     topLevelColl->parent = NULL;
     return topLevelColl;
 }

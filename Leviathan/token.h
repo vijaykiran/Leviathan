@@ -54,13 +54,16 @@ typedef enum __LVTokenType : uint64_t {
     LVTokenType_Deflike     = 1 << 30, // must also be Symbol
 } LVTokenType;
 
-
-typedef struct __LVToken {
+typedef struct __LVToken LVToken;
+struct __LVToken {
+    LVToken* prevToken;
+    LVToken* nextToken;
+    
     LVTokenType token_type;
     CFStringRef string;
     size_t pos;
     struct __LVAtom* atom;
-} LVToken;
+};
 
 
 LVToken* LVTokenCreate(size_t pos, LVTokenType type, CFStringRef val);

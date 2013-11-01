@@ -13,11 +13,8 @@
 
 typedef struct __LVDoc {
     CFStringRef string;
-    
     LVColl* top_level_coll;
-    
-    LVToken** tokens;
-    size_t tokens_len;
+    LVToken* first_token;
 } LVDoc;
 
 LVDoc* LVDocCreate(NSString* raw);

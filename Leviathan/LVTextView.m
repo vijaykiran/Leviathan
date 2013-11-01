@@ -581,22 +581,20 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     }
 }
 
-size_t LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
-    LVToken** iter = doc->tokens + 1;
-    for (int i = 1; i < doc->tokens_len; i++) {
-        LVToken* tok = *iter++;
+LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
+    for (LVToken* tok = doc->first_token->nextToken; tok; tok = tok->nextToken) {
         if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
-            return i;
+            return tok;
     }
-    return -1;
+    return NULL; // TODO: uhh, what does this mean again?
 }
 
 - (void) jumpToNextBlankLineGroup:(NSEvent*)event {
-    size_t p = LVGetAtomIndexFollowingPosition(self.file.textStorage.doc, self.selectedRange.location) + 1;
+    LVToken* foundToken = LVGetAtomIndexFollowingPosition(self.file.textStorage.doc, self.selectedRange.location);
+    if (!foundToken)
+        return;
     
-    LVToken** tokens = self.file.textStorage.doc->tokens;
-    for (size_t i = p; i < self.file.textStorage.doc->tokens_len; i++) {
-        LVToken* token = tokens[i];
+    for (LVToken* token = foundToken->nextToken; token; token = token->nextToken) {
         if (token->token_type & LVTokenType_Newlines) {
             if (CFStringGetLength(token->string) > 1) {
                 NSUInteger pos = token->pos + 1;
@@ -609,11 +607,11 @@ size_t LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 }
 
 - (void) jumpToPreviousBlankLineGroup:(NSEvent*)event {
-    size_t p = LVGetAtomIndexFollowingPosition(self.file.textStorage.doc, self.selectedRange.location) - 1;
+    LVToken* foundToken = LVGetAtomIndexFollowingPosition(self.file.textStorage.doc, self.selectedRange.location);
+    if (!foundToken)
+        return;
     
-    LVToken** tokens = self.file.textStorage.doc->tokens;
-    for (size_t i = p; i >= 1; i--) {
-        LVToken* token = tokens[i];
+    for (LVToken* token = foundToken->prevToken; token; token = token->prevToken) {
         if (token->token_type & LVTokenType_Newlines) {
             if (CFStringGetLength(token->string) > 1) {
                 NSUInteger pos = token->pos + 1;
@@ -669,43 +667,43 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
 - (void) indentText {
     return;
     
-    // find each newline TOKEN
-    // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
-    // something else
-    
-    LVDoc* doc = self.file.textStorage.doc;
-    
-    for (int i = 1; i < doc->tokens_len - 1; i++) {
-        LVToken* tok = doc->tokens[i];
-        
-        if (tok->token_type & LVTokenType_Newlines) {
-            LVToken* nextTok = doc->tokens[i + 1];
-            if (nextTok->token_type & LVTokenType_Spaces) {
-                
-                LVAtom* newlineAtom = tok->atom;
-                LVColl* newlineParent = newlineAtom->parent;
-                
-                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
-                
-//                if (newlineParent->coll_type & lvcolltype_)
-                
-//                CFStringPad(<#CFMutableStringRef theString#>, <#CFStringRef padString#>, <#CFIndex length#>, <#CFIndex indexIntoPad#>)
-                
-                LVMakeTokenMutable(nextTok);
-                CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
-                CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
-            }
-        }
-    }
-    
-    // rebuild string
-    CFStringRef s = LVStringForColl(doc->top_level_coll);
-    NSString* newstr = (__bridge_transfer NSString*)s;
-//    NSLog(@"%@", newstr);
-//    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
-    NSRange r = self.selectedRange;
-    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
-    self.selectedRange = r;
+//    // find each newline TOKEN
+//    // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
+//    // something else
+//    
+//    LVDoc* doc = self.file.textStorage.doc;
+//    
+//    for (int i = 1; i < doc->tokens_len - 1; i++) {
+//        LVToken* tok = doc->tokens[i];
+//        
+//        if (tok->token_type & LVTokenType_Newlines) {
+//            LVToken* nextTok = doc->tokens[i + 1];
+//            if (nextTok->token_type & LVTokenType_Spaces) {
+//                
+//                LVAtom* newlineAtom = tok->atom;
+//                LVColl* newlineParent = newlineAtom->parent;
+//                
+//                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
+//                
+////                if (newlineParent->coll_type & lvcolltype_)
+//                
+////                CFStringPad(<#CFMutableStringRef theString#>, <#CFStringRef padString#>, <#CFIndex length#>, <#CFIndex indexIntoPad#>)
+//                
+//                LVMakeTokenMutable(nextTok);
+//                CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
+//                CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
+//            }
+//        }
+//    }
+//    
+//    // rebuild string
+//    CFStringRef s = LVStringForColl(doc->top_level_coll);
+//    NSString* newstr = (__bridge_transfer NSString*)s;
+////    NSLog(@"%@", newstr);
+////    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
+//    NSRange r = self.selectedRange;
+//    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
+//    self.selectedRange = r;
 }
 
 

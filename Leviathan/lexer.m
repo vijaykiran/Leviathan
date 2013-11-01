@@ -10,19 +10,29 @@
 
 #import "LVParseError.h"
 
-LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
+void LVAppendToken(LVToken** lastPtr, LVToken* newToken) {
+    (*lastPtr)->nextToken = newToken;
+    newToken->prevToken = *lastPtr;
+    *lastPtr = newToken;
+}
+
+LVToken* LVLex(CFStringRef raw) {
     size_t input_string_length = CFStringGetLength(raw);
-    size_t num_tokens = 0;
     
     UniChar chars[input_string_length];
     CFStringGetCharacters(raw, CFRangeMake(0, input_string_length), chars);
     
-    LVToken** tokens = malloc(sizeof(LVToken*) * (input_string_length + 2));
+    LVToken* head = NULL;
+    LVToken* last = NULL;
     
     static CFCharacterSetRef endAtomCharSet;
     if (!endAtomCharSet) endAtomCharSet = CFCharacterSetCreateWithCharactersInString(NULL, CFSTR("()[]{}, \"\r\n\t;"));
     
-    tokens[num_tokens++] = LVTokenCreate(0, LVTokenType_FileBegin, CFSTR(""));
+    head = LVTokenCreate(0, LVTokenType_FileBegin, CFSTR(""));
+    head->prevToken = NULL;
+    head->nextToken = NULL;
+    
+    last = head;
     
     size_t i = 0;
     while (i < input_string_length) {
@@ -31,26 +41,26 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
         
         switch (c) {
                 
-            case '(': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LParen, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
-            case ')': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RParen, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '(': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_LParen, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
+            case ')': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_RParen, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
                 
-            case '[': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LBracket, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
-            case ']': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RBracket, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '[': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_LBracket, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
+            case ']': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_RBracket, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
                 
-            case '{': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_LBrace, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
-            case '}': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_RBrace, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '{': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_LBrace, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
+            case '}': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_RBrace, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
                 
-            case '\'': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Quote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
-            case '^': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_TypeOp, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
-            case '`': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SyntaxQuote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
+            case '\'': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Quote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
+            case '^': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_TypeOp, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
+            case '`': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_SyntaxQuote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
                 
-            case ',': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Comma, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))); break;
-            case '\t': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Spaces, CFSTR("  ")); break; // TODO: the way we do this means sometimes there are multiple LVTokenType_Spaces in a row, which isnt good.
+            case ',': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Comma, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
+            case '\t': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Spaces, CFSTR("  "))); break; // TODO: the way we do this means sometimes there are multiple LVTokenType_Spaces in a row, which isnt good.
                 
             case '\n': {
                 size_t start = i;
                 while (chars[++i] == '\n');
-                tokens[num_tokens++] = LVTokenCreate(start, LVTokenType_Newlines, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(start, i - start)));
+                LVAppendToken(&last, LVTokenCreate(start, LVTokenType_Newlines, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(start, i - start))));
                 i--;
                 
                 break;
@@ -58,11 +68,11 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                 
             case '~': {
                 if (i + 1 < input_string_length && chars[i+1] == '@') {
-                    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Splice, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2)));
+                    LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Splice, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2))));
                     i++;
                 }
                 else {
-                    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Unquote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)));
+                    LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Unquote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1))));
                 }
                 break;
             }
@@ -79,7 +89,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                 Boolean found = CFStringFindCharacterFromSet(raw, nonSpaceCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
                 CFIndex n = (found ? range.location : input_string_length);
                 
-                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Spaces, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, (n - i))));
+                LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Spaces, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, (n - i)))));
                 i = n-1;
                 break;
             }
@@ -89,7 +99,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                 Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
                 CFIndex n = (found ? range.location : input_string_length);
                 
-                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Keyword, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, (n - i))));
+                LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Keyword, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, (n - i)))));
                 i = n-1;
                 break;
             }
@@ -106,7 +116,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                 
                 CFStringRef substring = CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, seeker - i + 1));
                 LVToken* tok = LVTokenCreate(i, LVTokenType_String, substring);
-                tokens[num_tokens++] = tok;
+                LVAppendToken(&last, tok);
                 i = seeker;
                 
                 break;
@@ -119,7 +129,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                 
                 CFStringRef substring = CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i));
                 LVToken* tok = LVTokenCreate(i, LVTokenType_CommentLiteral, substring);
-                tokens[num_tokens++] = tok;
+                LVAppendToken(&last, tok);
                 i = n-1;
                 
                 break;
@@ -130,7 +140,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                 Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
                 CFIndex n = (found ? range.location : input_string_length);
                 
-                tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Number, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i)));
+                LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Number, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i))));
                 i = n-1;
                 break;
             }
@@ -156,7 +166,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                         
                         CFStringRef substring = CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, seeker - i + 1));
                         LVToken* tok = LVTokenCreate(i, LVTokenType_Regex, substring);
-                        tokens[num_tokens++] = tok;
+                        LVAppendToken(&last, tok);
                         i = seeker;
                         
                         break;
@@ -167,21 +177,21 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                         Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
                         CFIndex n = (found ? range.location : input_string_length);
                         
-                        tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_Var, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i)));
+                        LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Var, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i))));
                         i = n-1;
                         break;
                     }
                         
-                    case '(': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_AnonFnStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2))); i++; break;
-                    case '{': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_SetStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2))); i++; break;
-                    case '_': tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_ReaderCommentStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2))); i++; break;
+                    case '(': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_AnonFnStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2)))); i++; break;
+                    case '{': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_SetStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2)))); i++; break;
+                    case '_': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_ReaderCommentStart, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 2)))); i++; break;
                         
                     default: {
                         CFRange range;
                         Boolean found = CFStringFindCharacterFromSet(raw, endAtomCharSet, CFRangeMake(i, input_string_length - i), 0, &range);
                         CFIndex n = (found ? range.location : input_string_length);
                         
-                        tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_ReaderMacro, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i)));
+                        LVAppendToken(&last, LVTokenCreate(i, LVTokenType_ReaderMacro, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, n - i))));
                         i = n-1;
                         break;
                     }
@@ -208,7 +218,7 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
                 if (CFStringCompare(substring, nilConstant, 0) == kCFCompareEqualTo) tok->token_type |= LVTokenType_NilSymbol;
                 if (CFStringHasPrefix(substring, defConstant)) tok->token_type |= LVTokenType_Deflike;
                 
-                tokens[num_tokens++] = tok;
+                LVAppendToken(&last, tok);
                 i = n-1;
                 
                 break;
@@ -219,8 +229,8 @@ LVToken** LVLex(CFStringRef raw, size_t* n_tok) {
         
     }
     
-    tokens[num_tokens++] = LVTokenCreate(i, LVTokenType_FileEnd, CFSTR(""));
+    LVAppendToken(&last, LVTokenCreate(i, LVTokenType_FileEnd, CFSTR("")));
+    last->nextToken = NULL;
     
-    *n_tok = num_tokens;
-    return tokens;
+    return head;
 }

@@ -17,8 +17,8 @@ LVDoc* LVDocCreate(NSString* raw) {
     @try {
         LVDoc* doc = malloc(sizeof(LVDoc));
         doc->string = (__bridge_retained CFStringRef)raw;
-        doc->tokens = LVLex(doc->string, &doc->tokens_len);
-        doc->top_level_coll = LVParseTokens(doc->tokens);
+        doc->first_token = LVLex(doc->string);
+        doc->top_level_coll = LVParseTokens(doc->first_token);
         return doc;
     }
     @catch (LVParseError *exception) {
@@ -32,7 +32,6 @@ void LVDocDestroy(LVDoc* doc) {
     
     LVCollDestroy(doc->top_level_coll);
     CFRelease(doc->string);
-    free(doc->tokens);
     free(doc);
 }
 
@@ -87,13 +86,12 @@ void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs) {
 // questionable but in-use
 
 LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, size_t pos) {
-    LVToken** iter = doc->tokens + 1;
-    for (int i = 1; i < doc->tokens_len; i++) {
-        LVToken* tok = *iter++;
+    LVToken* tok = doc->first_token->nextToken;
+    for (; tok->nextToken; tok = tok->nextToken) {
         if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
             return tok->atom;
     }
-    return (*(iter - 1))->atom;
+    return tok->atom;
 }
 
 LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
@@ -152,9 +150,7 @@ LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, size_t idx) {
 
 // returns the atom where (cursor >= atom.pos + 1) and (cursor <= atom.pos + atom.length), or NULL if pos = 0
 LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, NSUInteger pos) {
-    LVToken** iter = doc->tokens + 1; // skip the first one, we know it'll never be true
-    for (int i = 1; i < doc->tokens_len; i++) {
-        LVToken* tok = *iter++;
+    for (LVToken* tok = doc->first_token->nextToken; tok; tok = tok->nextToken) {
         if (pos >= tok->pos + 1 && pos <= tok->pos + CFStringGetLength(tok->string))
             return tok->atom;
     }
