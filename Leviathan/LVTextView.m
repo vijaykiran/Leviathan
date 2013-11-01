@@ -162,6 +162,8 @@
     }
     
     [super keyDown:theEvent];
+    
+    [self indentText]; // right place?
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
@@ -651,8 +653,60 @@ size_t LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 
 
 
+/************************************************ PAREDIT (indentation) ************************************************/
 
+void LVMakeTokenMutable(LVToken* token) {
+    CFMutableStringRef tmpStr = CFStringCreateMutableCopy(NULL, 0, token->string);
+    CFRelease(token->string);
+    token->string = tmpStr;
+}
 
+size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
+    
+    return 0;
+}
+
+- (void) indentText {
+    return;
+    
+    // find each newline TOKEN
+    // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
+    // something else
+    
+    LVDoc* doc = self.file.textStorage.doc;
+    
+    for (int i = 1; i < doc->tokens_len - 1; i++) {
+        LVToken* tok = doc->tokens[i];
+        
+        if (tok->token_type & LVTokenType_Newlines) {
+            LVToken* nextTok = doc->tokens[i + 1];
+            if (nextTok->token_type & LVTokenType_Spaces) {
+                
+                LVAtom* newlineAtom = tok->atom;
+                LVColl* newlineParent = newlineAtom->parent;
+                
+                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
+                
+//                if (newlineParent->coll_type & lvcolltype_)
+                
+//                CFStringPad(<#CFMutableStringRef theString#>, <#CFStringRef padString#>, <#CFIndex length#>, <#CFIndex indexIntoPad#>)
+                
+                LVMakeTokenMutable(nextTok);
+                CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
+                CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
+            }
+        }
+    }
+    
+    // rebuild string
+    CFStringRef s = LVStringForColl(doc->top_level_coll);
+    NSString* newstr = (__bridge_transfer NSString*)s;
+//    NSLog(@"%@", newstr);
+//    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
+    NSRange r = self.selectedRange;
+    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
+    self.selectedRange = r;
+}
 
 
 
