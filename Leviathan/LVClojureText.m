@@ -99,10 +99,18 @@
     [self.internalStorage replaceCharactersInRange:aRange withString:aString];
     NSUInteger newLen = [self length];
     
+    BOOL wholeThingNeedsRehighlight = NO;
+    
     if ([self validateStringCanParse:self.internalStorage]) {
+        if (!self.doc)
+            wholeThingNeedsRehighlight = YES;
+        
         [self parse];
     }
     else {
+        if (self.doc)
+            wholeThingNeedsRehighlight = YES;
+        
         printf("dang: can't parse.\n");
         
         free(self.highlights);
@@ -113,6 +121,11 @@
     }
     
     [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:(newLen - origLen)];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (wholeThingNeedsRehighlight)
+            [self edited:NSTextStorageEditedAttributes range:NSMakeRange(0, [self.internalStorage length]) changeInLength:0];
+    });
 }
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {
