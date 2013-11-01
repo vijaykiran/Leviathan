@@ -17,7 +17,7 @@ LVHighlights* LVHighlightsForDoc(LVDoc* doc) {
     
     int idx = 0;
     
-    for (LVToken* tok = doc->first_token->nextToken; tok; tok = tok->nextToken) {
+    for (LVToken* tok = doc->firstToken->nextToken; tok; tok = tok->nextToken) {
         CFIndex len = CFStringGetLength(tok->string);
         
         for (int ii = 0; ii < len; ii++) {
@@ -39,32 +39,32 @@ NSDictionary* LVAttributesForAtom(LVAtom* atom) {
     
     LVTheme* theme = [LVThemeManager sharedThemeManager].currentTheme;
     
-    if (atom->atom_type & LVAtomType_Spaces) return theme.symbol;
-    if (atom->atom_type & LVAtomType_Newlines) return theme.symbol;
-    if (atom->atom_type & LVAtomType_Comma) return theme.symbol;
+    if (atom->atomType & LVAtomType_Spaces) return theme.symbol;
+    if (atom->atomType & LVAtomType_Newlines) return theme.symbol;
+    if (atom->atomType & LVAtomType_Comma) return theme.symbol;
     
-    if (atom->atom_type & LVAtomType_DefType) return theme.def;
-    if (atom->atom_type & LVAtomType_DefName) return theme.defname;
-    if (atom->atom_type & LVAtomType_Keyword) return theme.keyword;
-    if (atom->atom_type & LVAtomType_String) return theme.string;
-    if (atom->atom_type & LVAtomType_Regex) return theme.regex;
-    if (atom->atom_type & LVAtomType_Number) return theme.number;
-    if (atom->atom_type & LVAtomType_TrueAtom) return theme._true;
-    if (atom->atom_type & LVAtomType_FalseAtom) return theme._false;
-    if (atom->atom_type & LVAtomType_NilAtom) return theme._nil;
-    if (atom->atom_type & LVAtomType_Comment) return theme.comment;
-    if (atom->atom_type & LVAtomType_TypeOp) return theme.typeop;
-    if (atom->atom_type & LVAtomType_Quote) return theme.quote;
-    if (atom->atom_type & LVAtomType_Unquote) return theme.unquote;
-    if (atom->atom_type & LVAtomType_SyntaxQuote) return theme.syntaxquote;
-    if (atom->atom_type & LVAtomType_Splice) return theme.splice;
+    if (atom->atomType & LVAtomType_DefType) return theme.def;
+    if (atom->atomType & LVAtomType_DefName) return theme.defname;
+    if (atom->atomType & LVAtomType_Keyword) return theme.keyword;
+    if (atom->atomType & LVAtomType_String) return theme.string;
+    if (atom->atomType & LVAtomType_Regex) return theme.regex;
+    if (atom->atomType & LVAtomType_Number) return theme.number;
+    if (atom->atomType & LVAtomType_TrueAtom) return theme._true;
+    if (atom->atomType & LVAtomType_FalseAtom) return theme._false;
+    if (atom->atomType & LVAtomType_NilAtom) return theme._nil;
+    if (atom->atomType & LVAtomType_Comment) return theme.comment;
+    if (atom->atomType & LVAtomType_TypeOp) return theme.typeop;
+    if (atom->atomType & LVAtomType_Quote) return theme.quote;
+    if (atom->atomType & LVAtomType_Unquote) return theme.unquote;
+    if (atom->atomType & LVAtomType_SyntaxQuote) return theme.syntaxquote;
+    if (atom->atomType & LVAtomType_Splice) return theme.splice;
     
-    if (atom->atom_type & LVAtomType_Var) return theme.symbol;
-    if (atom->atom_type & LVAtomType_ReaderMacro) return theme.symbol;
+    if (atom->atomType & LVAtomType_Var) return theme.symbol;
+    if (atom->atomType & LVAtomType_ReaderMacro) return theme.symbol;
     
-    if (atom->atom_type & LVAtomType_Symbol) return theme.symbol;
+    if (atom->atomType & LVAtomType_Symbol) return theme.symbol;
     
-    if (atom->atom_type & LVAtomType_CollDelim) {
+    if (atom->atomType & LVAtomType_CollDelim) {
         size_t depth = LVGetElementDepth((LVElement*)atom);
         NSArray* rainbows = [LVThemeManager sharedThemeManager].currentTheme.rainbowparens;
         return [rainbows objectAtIndex: depth % [rainbows count]];

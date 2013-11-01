@@ -213,10 +213,10 @@ LVToken* LVLex(CFStringRef raw) {
                 static CFStringRef nilConstant = CFSTR("nil");
                 static CFStringRef defConstant = CFSTR("def");
                 
-                if (CFStringCompare(substring, trueConstant, 0) == kCFCompareEqualTo) tok->token_type |= LVTokenType_TrueSymbol;
-                if (CFStringCompare(substring, falseConstant, 0) == kCFCompareEqualTo) tok->token_type |= LVTokenType_FalseSymbol;
-                if (CFStringCompare(substring, nilConstant, 0) == kCFCompareEqualTo) tok->token_type |= LVTokenType_NilSymbol;
-                if (CFStringHasPrefix(substring, defConstant)) tok->token_type |= LVTokenType_Deflike;
+                if (CFStringCompare(substring, trueConstant, 0) == kCFCompareEqualTo) tok->tokenType |= LVTokenType_TrueSymbol;
+                if (CFStringCompare(substring, falseConstant, 0) == kCFCompareEqualTo) tok->tokenType |= LVTokenType_FalseSymbol;
+                if (CFStringCompare(substring, nilConstant, 0) == kCFCompareEqualTo) tok->tokenType |= LVTokenType_NilSymbol;
+                if (CFStringHasPrefix(substring, defConstant)) tok->tokenType |= LVTokenType_Deflike;
                 
                 LVAppendToken(&last, tok);
                 i = n-1;

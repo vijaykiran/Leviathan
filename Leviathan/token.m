@@ -10,7 +10,7 @@
 
 LVToken* LVTokenCreate(size_t pos, LVTokenType type, CFStringRef val) {
     LVToken* tok = malloc(sizeof(LVToken));
-    tok->token_type = type;
+    tok->tokenType = type;
     tok->string = val;
     tok->pos = pos;
     return tok;

@@ -179,17 +179,17 @@
         
         LVAtom* atom = LVFindAtomFollowingIndex(self.file.textStorage.doc, idx);
         
-        if (atom->atom_type & LVAtomType_CollDelim) {
+        if (atom->atomType & LVAtomType_CollDelim) {
             NSUInteger start;
             NSUInteger end;
-            if (atom->atom_type & LVAtomType_CollCloser) {
+            if (atom->atomType & LVAtomType_CollCloser) {
                 end = atom->token->pos;
                 LVAtom* startAtom = (LVAtom*)atom->parent->children[0];
                 start = startAtom->token->pos;
             }
             else {
                 start = atom->token->pos;
-                LVAtom* endAtom = (LVAtom*)atom->parent->children[atom->parent->children_len - 1];
+                LVAtom* endAtom = (LVAtom*)atom->parent->children[atom->parent->childrenLen - 1];
                 end = endAtom->token->pos;
             }
             NSRange r = NSMakeRange(start, end - start + 1);
@@ -219,10 +219,10 @@ LVColl* LVFindNextCollOnOrAfterPosition(LVDoc* doc, NSUInteger pos) {
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
     
-    for (size_t i = childIndex; i < parent->children_len; i++) {
+    for (size_t i = childIndex; i < parent->childrenLen; i++) {
         LVColl* maybeColl = (LVColl*)parent->children[i];
         
-        if (!maybeColl->is_atom)
+        if (!maybeColl->isAtom)
             return maybeColl;
     }
     
@@ -236,7 +236,7 @@ LVColl* LVFindNextCollBeforePosition(LVDoc* doc, NSUInteger pos) {
     for (size_t i = childIndex - 1; i >= 1; i--) {
         LVColl* maybeColl = (LVColl*)parent->children[i];
         
-        if (!maybeColl->is_atom)
+        if (!maybeColl->isAtom)
             return maybeColl;
     }
     
@@ -247,7 +247,7 @@ LVElement* LVFindNextSemanticElementStartingAtPosition(LVDoc* doc, NSUInteger po
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
     
-    for (size_t i = childIndex; i < parent->children_len; i++) {
+    for (size_t i = childIndex; i < parent->childrenLen; i++) {
         LVElement* element = parent->children[i];
         
         if (LVElementIsSemantic(element))
@@ -262,7 +262,7 @@ LVAtom* LVCollOpenerAtom(LVColl* coll) {
 }
 
 LVAtom* LVCollCloserAtom(LVColl* coll) {
-    return (LVAtom*)coll->children[coll->children_len - 1];
+    return (LVAtom*)coll->children[coll->childrenLen - 1];
 }
 
 NSRange LVElementRange(LVElement* element) {
@@ -320,7 +320,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         LVElement* child = elementToRaise;
         LVColl* parent = child->parent;
         
-        if (parent->coll_type & LVCollType_TopLevel)
+        if (parent->collType & LVCollType_TopLevel)
             return;
         
         size_t _absPos = LVGetAbsolutePosition(child);
@@ -361,15 +361,15 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
     
-    for (size_t i = childIndex; i < parent->children_len; i++) {
+    for (size_t i = childIndex; i < parent->childrenLen; i++) {
         LVElement* element = parent->children[i];
         
         // find either a coll-closer (and return it) or a newline (and return the next element)
         
-        if (element->is_atom) {
+        if (element->isAtom) {
             LVAtom* atom = (LVAtom*)element;
             
-            if ((atom->atom_type & LVAtomType_CollCloser) || (atom->atom_type & LVAtomType_Newlines)) {
+            if ((atom->atomType & LVAtomType_CollCloser) || (atom->atomType & LVAtomType_Newlines)) {
                 firstAtomToNotDelete = element;
                 break;
             }
@@ -394,7 +394,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
     
-    CFStringRef s = LVStringForColl(self.file.textStorage.doc->top_level_coll);
+    CFStringRef s = LVStringForColl(self.file.textStorage.doc->topLevelColl);
     CFMutableStringRef ms = CFStringCreateMutableCopy(NULL, 0, s);
     
     NSRange openerRange = LVElementRange((LVElement*)LVCollCloserAtom(parent));
@@ -421,7 +421,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
         NSRange rangeToSurround = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
         
-        CFStringRef s = LVStringForColl(self.file.textStorage.doc->top_level_coll);
+        CFStringRef s = LVStringForColl(self.file.textStorage.doc->topLevelColl);
         CFMutableStringRef ms = CFStringCreateMutableCopy(NULL, 0, s);
         
         CFStringInsert(ms, NSMaxRange(rangeToSurround), (__bridge CFStringRef)close);
@@ -460,9 +460,9 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     BOOL adjusted = NO;
     
     if (!atom ||
-        (!(atom->atom_type & LVAtomType_Comment) &&
-        !(atom->atom_type & LVAtomType_String) &&
-        !(atom->atom_type & LVAtomType_Regex)))
+        (!(atom->atomType & LVAtomType_Comment) &&
+        !(atom->atomType & LVAtomType_String) &&
+        !(atom->atomType & LVAtomType_Regex)))
     {
         if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"]) {
             // TODO: move to the next coll-closer, and if there's only Spaces and Newlines and Commas between it and cursor, delete them all.
@@ -536,7 +536,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     LVElement* foundElement = NULL;
     
     // if it's a closing delim, move to beginning of that coll
-    if (atom->atom_type & LVAtomType_CollCloser)
+    if (atom->atomType & LVAtomType_CollCloser)
         foundElement = (LVElement*)atom->parent;
     
     // otherwise, find the previous semantic atom IN ITS PARENT COLL, starting with this
@@ -574,7 +574,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     
     // if there is one, move to after its first child
     if (nextColl) {
-        LVAtom* firstChild = (LVAtom*)nextColl->children[nextColl->children_len - 1];
+        LVAtom* firstChild = (LVAtom*)nextColl->children[nextColl->childrenLen - 1];
         NSUInteger pos = firstChild->token->pos;
         self.selectedRange = NSMakeRange(pos, 0);
         [self scrollRangeToVisible:self.selectedRange];
@@ -582,7 +582,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
 }
 
 LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
-    for (LVToken* tok = doc->first_token->nextToken; tok; tok = tok->nextToken) {
+    for (LVToken* tok = doc->firstToken->nextToken; tok; tok = tok->nextToken) {
         if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
             return tok;
     }
@@ -595,7 +595,7 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
         return;
     
     for (LVToken* token = foundToken->nextToken; token; token = token->nextToken) {
-        if (token->token_type & LVTokenType_Newlines) {
+        if (token->tokenType & LVTokenType_Newlines) {
             if (CFStringGetLength(token->string) > 1) {
                 NSUInteger pos = token->pos + 1;
                 self.selectedRange = NSMakeRange(pos, 0);
@@ -612,7 +612,7 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
         return;
     
     for (LVToken* token = foundToken->prevToken; token; token = token->prevToken) {
-        if (token->token_type & LVTokenType_Newlines) {
+        if (token->tokenType & LVTokenType_Newlines) {
             if (CFStringGetLength(token->string) > 1) {
                 NSUInteger pos = token->pos + 1;
                 self.selectedRange = NSMakeRange(pos, 0);
@@ -676,16 +676,16 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
 //    for (int i = 1; i < doc->tokens_len - 1; i++) {
 //        LVToken* tok = doc->tokens[i];
 //        
-//        if (tok->token_type & LVTokenType_Newlines) {
+//        if (tok->tokenType & LVTokenType_Newlines) {
 //            LVToken* nextTok = doc->tokens[i + 1];
-//            if (nextTok->token_type & LVTokenType_Spaces) {
+//            if (nextTok->tokenType & LVTokenType_Spaces) {
 //                
 //                LVAtom* newlineAtom = tok->atom;
 //                LVColl* newlineParent = newlineAtom->parent;
 //                
 //                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
 //                
-////                if (newlineParent->coll_type & lvcolltype_)
+////                if (newlineParent->collType & lvcolltype_)
 //                
 ////                CFStringPad(<#CFMutableStringRef theString#>, <#CFStringRef padString#>, <#CFIndex length#>, <#CFIndex indexIntoPad#>)
 //                
@@ -697,7 +697,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
 //    }
 //    
 //    // rebuild string
-//    CFStringRef s = LVStringForColl(doc->top_level_coll);
+//    CFStringRef s = LVStringForColl(doc->topLevelColl);
 //    NSString* newstr = (__bridge_transfer NSString*)s;
 ////    NSLog(@"%@", newstr);
 ////    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
@@ -966,7 +966,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
 //}
 
 //LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
-//    LVElement* semanticChildren[parent->children_len];
+//    LVElement* semanticChildren[parent->childrenLen];
 //    size_t semanticChildrenCount;
 //    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
 //    

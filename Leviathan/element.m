@@ -12,14 +12,14 @@
 #import "atom.h"
 
 size_t LVElementLength(LVElement* element) {
-    if (element->is_atom) {
+    if (element->isAtom) {
         LVAtom* atom = (LVAtom*)element;
         return CFStringGetLength(atom->token->string);
     }
     else {
         LVColl* coll = (LVColl*)element;
         size_t len = 0;
-        for (int i = 0; i < coll->children_len; i++) {
+        for (int i = 0; i < coll->childrenLen; i++) {
             LVElement* child = coll->children[i];
             len += LVElementLength(child);
         }
@@ -28,7 +28,7 @@ size_t LVElementLength(LVElement* element) {
 }
 
 void LVElementDestroy(LVElement* element) {
-    if (element->is_atom)
+    if (element->isAtom)
         LVAtomDestroy((LVAtom*)element);
     else
         LVCollDestroy((LVColl*)element);
@@ -59,11 +59,11 @@ LVElement* LVFindPreviousSemanticElement(LVElement* needle) {
 }
 
 BOOL LVElementIsSemantic(LVElement* el) {
-    return (!el->is_atom || LVAtomIsSemantic((LVAtom*)el));
+    return (!el->isAtom || LVAtomIsSemantic((LVAtom*)el));
 }
 
 size_t LVGetAbsolutePosition(LVElement* el) {
-    if (el->is_atom) {
+    if (el->isAtom) {
         LVAtom* atom = (void*)el;
         return atom->token->pos;
     }
@@ -88,7 +88,7 @@ size_t LVGetElementDepth(LVElement* needle) {
 }
 
 CFStringRef LVStringForElement(LVElement* element) {
-    if (element->is_atom)
+    if (element->isAtom)
         return CFStringCreateCopy(NULL, ((LVAtom*)element)->token->string);
     else
         return LVStringForColl((void*)element);

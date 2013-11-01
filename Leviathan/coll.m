@@ -18,17 +18,17 @@
 
 LVColl* LVCollCreate() {
     LVColl* coll = malloc(sizeof(LVColl));
-    coll->is_atom = NO;
+    coll->isAtom = NO;
     
-    coll->children_cap = LV_COLL_CHUNK_SIZE;
-    coll->children_len = 0;
-    coll->children = malloc(sizeof(LVElement*) * coll->children_cap);
+    coll->childrenCap = LV_COLL_CHUNK_SIZE;
+    coll->childrenLen = 0;
+    coll->children = malloc(sizeof(LVElement*) * coll->childrenCap);
     
     return coll;
 }
 
 void LVCollDestroy(LVColl* coll) {
-    for (int i = 0; i < coll->children_len; i++) {
+    for (int i = 0; i < coll->childrenLen; i++) {
         LVElement* child = coll->children[i];
         LVElementDestroy(child);
     }
@@ -38,23 +38,23 @@ void LVCollDestroy(LVColl* coll) {
 }
 
 void LVElementListAppend(LVColl* coll, LVElement* child) {
-    if (coll->children_len == coll->children_cap) {
-        coll->children_cap += LV_COLL_CHUNK_SIZE;
-        coll->children = realloc(coll->children, sizeof(LVElement*) * coll->children_cap);
+    if (coll->childrenLen == coll->childrenCap) {
+        coll->childrenCap += LV_COLL_CHUNK_SIZE;
+        coll->children = realloc(coll->children, sizeof(LVElement*) * coll->childrenCap);
     }
     
     child->parent = coll;
     
-    coll->children[coll->children_len] = child;
-    coll->children_len++;
+    coll->children[coll->childrenLen] = child;
+    coll->childrenLen++;
 }
 
 
 
 static void appendToString(LVColl* coll, CFMutableStringRef str) {
-    for (size_t i = 0; i < coll->children_len; i++) {
+    for (size_t i = 0; i < coll->childrenLen; i++) {
         LVElement* child = coll->children[i];
-        if (child->is_atom) {
+        if (child->isAtom) {
             LVAtom* atom = (void*)child;
             CFStringAppend(str, atom->token->string);
         }
@@ -71,7 +71,7 @@ CFStringRef LVStringForColl(LVColl* coll) {
 }
 
 size_t LVGetElementIndexInSiblings(LVElement* child) {
-    size_t len = child->parent->children_len;
+    size_t len = child->parent->childrenLen;
     LVElement** children = child->parent->children;
     for (int i = 0; i < len; i++) {
         if (children[i] == child)
@@ -84,7 +84,7 @@ size_t LVGetElementIndexInSiblings(LVElement* child) {
 //    while (coll->parent->parent)
 //        coll = coll->parent;
 //    
-//    if (coll->coll_type == LVCollType_TopLevel)
+//    if (coll->collType == LVCollType_TopLevel)
 //        return NULL;
 //    else
 //        return coll;
@@ -92,7 +92,7 @@ size_t LVGetElementIndexInSiblings(LVElement* child) {
 
 void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count) {
     *count = 0;
-    for (size_t i = startingPos; i < parent->children_len; i++) {
+    for (size_t i = startingPos; i < parent->childrenLen; i++) {
         LVElement* child = parent->children[i];
         
         if (LVElementIsSemantic(child))

@@ -59,7 +59,7 @@ struct __LVToken {
     LVToken* prevToken;
     LVToken* nextToken;
     
-    LVTokenType token_type;
+    LVTokenType tokenType;
     CFStringRef string;
     size_t pos;
     struct __LVAtom* atom;

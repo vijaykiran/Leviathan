@@ -47,10 +47,10 @@ typedef enum __LVAtomType : uint64_t {
 
 typedef struct __LVAtom {
     
-    BOOL is_atom;
+    BOOL isAtom;
     struct __LVColl* parent;
     
-    LVAtomType atom_type;
+    LVAtomType atomType;
     LVToken* token;
     
 } LVAtom;

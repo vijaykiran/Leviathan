@@ -36,14 +36,14 @@ typedef struct __LVColl LVColl;
 
 struct __LVColl {
     
-    BOOL is_atom;
+    BOOL isAtom;
     LVColl* parent;
     
-    LVCollType coll_type;
+    LVCollType collType;
     
     LVElement** children;
-    size_t children_len;
-    size_t children_cap;
+    size_t childrenLen;
+    size_t childrenCap;
     
 };
 

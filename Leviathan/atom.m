@@ -10,8 +10,8 @@
 
 LVAtom* LVAtomCreate(LVAtomType typ, LVToken* tok) {
     LVAtom* atom = malloc(sizeof(LVAtom));
-    atom->is_atom = YES;
-    atom->atom_type = typ;
+    atom->isAtom = YES;
+    atom->atomType = typ;
     atom->token = tok;
     tok->atom = atom;
     return atom;
@@ -23,9 +23,9 @@ void LVAtomDestroy(LVAtom* atom) {
 }
 
 BOOL LVAtomIsSemantic(LVAtom* atom) {
-    return !((atom->atom_type & LVAtomType_Comma)
-             || (atom->atom_type & LVAtomType_Newlines)
-             || (atom->atom_type & LVAtomType_Comment)
-             || (atom->atom_type & LVAtomType_CollDelim)
-             || (atom->atom_type & LVAtomType_Spaces));
+    return !((atom->atomType & LVAtomType_Comma)
+             || (atom->atomType & LVAtomType_Newlines)
+             || (atom->atomType & LVAtomType_Comment)
+             || (atom->atomType & LVAtomType_CollDelim)
+             || (atom->atomType & LVAtomType_Spaces));
 }
