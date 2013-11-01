@@ -660,13 +660,17 @@ void LVMakeTokenMutable(LVToken* token) {
 }
 
 size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
+    size_t count = 0;
     
-    return 0;
+    LVAtom* openingAtom = (LVAtom*)coll->children[0];
+    for (LVToken* token = openingAtom->token; !((token->tokenType & LVTokenType_Newlines) || (token->prevToken == NULL)); token = token->prevToken) {
+        count += CFStringGetLength(token->string);
+    }
+    
+    return count;
 }
 
 - (void) indentText {
-    return;
-    
     // find each newline TOKEN
     // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
     // something else
@@ -676,21 +680,26 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
         if (tok->tokenType & LVTokenType_Newlines) {
             LVToken* nextTok = tok->nextToken;
+            LVMakeTokenMutable(nextTok);
+            CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
+            
             if (nextTok->tokenType & LVTokenType_Spaces) {
-                
-                LVAtom* newlineAtom = tok->atom;
-                LVColl* newlineParent = newlineAtom->parent;
-                
-                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
-                
-//                if (newlineParent->collType & lvcolltype_)
-                
-//                CFStringPad(<#CFMutableStringRef theString#>, <#CFStringRef padString#>, <#CFIndex length#>, <#CFIndex indexIntoPad#>)
-                
-                LVMakeTokenMutable(nextTok);
-                CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
+                // empty it out
                 CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
             }
+            
+            // insert that many spaces to the beginning of NextTok
+            
+            LVAtom* newlineAtom = tok->atom;
+            LVColl* newlineParent = newlineAtom->parent;
+            size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
+            
+            CFMutableStringRef spacesString = CFStringCreateMutable(NULL, 0);
+            CFStringPad(spacesString, CFSTR(" "), indentationForInsideOfColl, 0);
+            
+            CFStringInsert(tmpStr, 0, spacesString);
+            
+            CFRelease(spacesString);
         }
     }
     
