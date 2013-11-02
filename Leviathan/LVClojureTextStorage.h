@@ -10,11 +10,14 @@
 
 #import "doc.h"
 
-@interface LVClojureTextStorage : NSTextStorage
+@interface LVClojureTextStorage : NSTextStorage <NSTextStorageDelegate>
 
 @property NSUndoManager* undoManager;
 
 @property LVDoc* doc;
+
+@property BOOL parsingEnabled;
+- (void) parse;
 
 - (void) rehighlight;
 

@@ -36,6 +36,7 @@
     if (self = [super init]) {
         self.undoManager = [[NSUndoManager alloc] init];
         self.internalStorage = [[NSMutableString alloc] initWithString: str];
+        self.parsingEnabled = YES;
         [self parse];
     }
     return self;
@@ -53,6 +54,7 @@
 }
 
 - (void) parse {
+    NSLog(@"parse called");
     free(self.highlights);
     self.highlights = NULL;
     
@@ -101,23 +103,25 @@
     
     BOOL wholeThingNeedsRehighlight = NO;
     
-    if ([self validateStringCanParse:self.internalStorage]) {
-        if (!self.doc)
-            wholeThingNeedsRehighlight = YES;
-        
-        [self parse];
-    }
-    else {
-        if (self.doc)
-            wholeThingNeedsRehighlight = YES;
-        
-        printf("dang: can't parse.\n");
-        
-        free(self.highlights);
-        LVDocDestroy(self.doc);
-        
-        self.doc = NULL;
-        if (self.highlights) self.highlights = NULL;
+    if (self.parsingEnabled) {
+        if ([self validateStringCanParse:self.internalStorage]) {
+            if (!self.doc)
+                wholeThingNeedsRehighlight = YES;
+            
+            [self parse];
+        }
+        else {
+            if (self.doc)
+                wholeThingNeedsRehighlight = YES;
+            
+            printf("dang: can't parse.\n");
+            
+            free(self.highlights);
+            LVDocDestroy(self.doc);
+            
+            self.doc = NULL;
+            if (self.highlights) self.highlights = NULL;
+        }
     }
     
     [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:(newLen - origLen)];

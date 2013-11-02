@@ -25,6 +25,6 @@
 @property (weak) LVFile* file;
 
 
-- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSUInteger)newpos; // TODO: private!
+- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSRange)newpos; // TODO: private!
 
 @end

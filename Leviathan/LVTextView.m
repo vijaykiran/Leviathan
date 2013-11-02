@@ -122,16 +122,16 @@
 //    [item setKeyEquivalentModifierMask:realMods];
 }
 
-- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSUInteger)newpos {
+- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSRange)selection {
     NSString* oldString = [self.file.textStorage.string substringWithRange:r];
     NSRange newRange = NSMakeRange(r.location, [str length]);
     
     [[[self.file.textStorage undoManager] prepareWithInvocationTarget:self] replace:newRange
                                                                              string:oldString
-                                                                             cursor:self.selectedRange.location];
+                                                                             cursor:self.selectedRange];
     
     [self.file.textStorage replaceCharactersInRange:r withString:str];
-    self.selectedRange = NSMakeRange(newpos, 0);
+//    self.selectedRange = selection;
 }
 
 - (void) keyDown:(NSEvent *)theEvent {
@@ -331,10 +331,10 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
         NSString* newstr = (__bridge_transfer NSString*)LVStringForElement(child);
         
-        [self replace:oldParentRange string:newstr cursor:oldParentRange.location + relativeOffset];
-        [self scrollRangeToVisible:self.selectedRange];
+        // TODO: uhh, oldParentRange.location + relativeOffset
         
-        // TODO: re-indent grandparent (or maybe just child?)
+        [self replace:oldParentRange string:newstr cursor:self.selectedRange];
+        [self scrollRangeToVisible:self.selectedRange];
     }
 }
 
@@ -344,7 +344,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
         NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
         
-        [self replace:rangeToDelete string:@"" cursor:self.selectedRange.location];
+        [self replace:rangeToDelete string:@"" cursor:self.selectedRange];
         
         self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
         [self scrollRangeToVisible:self.selectedRange];
@@ -384,7 +384,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         
         NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, lastPos - self.selectedRange.location);
         
-        [self replace:rangeToDelete string:@"" cursor:self.selectedRange.location];
+        [self replace:rangeToDelete string:@"" cursor:self.selectedRange];
         
         self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
         [self scrollRangeToVisible:self.selectedRange];
@@ -395,24 +395,23 @@ CFRange LVNSRangeToCFRange(NSRange r) {
     size_t childIndex;
     LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
     
-    CFStringRef s = LVStringForColl(self.file.textStorage.doc->topLevelColl);
-    CFMutableStringRef ms = CFStringCreateMutableCopy(NULL, 0, s);
+    NSRange openerRange = LVElementRange((LVElement*)LVCollOpenerAtom(parent));
+    NSRange closerRange = LVElementRange((LVElement*)LVCollCloserAtom(parent));
     
-    NSRange openerRange = LVElementRange((LVElement*)LVCollCloserAtom(parent));
+    [self shouldChangeTextInRanges:@[[NSValue valueWithRange:openerRange],
+                                     [NSValue valueWithRange:closerRange]]
+                replacementStrings:@[@"", @""]];
     
-    CFStringDelete(ms, LVNSRangeToCFRange(openerRange));
-    CFStringDelete(ms, LVNSRangeToCFRange(LVElementRange((LVElement*)LVCollOpenerAtom(parent))));
+    self.file.textStorage.parsingEnabled = NO;
     
-    NSString* newstr = (__bridge_transfer NSString*)ms;
+    [self.textStorage replaceCharactersInRange:closerRange withString:@""];
+    [self.textStorage replaceCharactersInRange:openerRange withString:@""];
     
-    [self replace:NSMakeRange(0, CFStringGetLength(s)) string:newstr cursor:self.selectedRange.location]; // TODO: dang.
+    self.file.textStorage.parsingEnabled = YES;
+    [self.file.textStorage parse];
     
-    CFRelease(s);
+    [self didChangeText];
     
-    NSRange r = self.selectedRange;
-    r.location -= openerRange.length;
-    
-    self.selectedRange = r;
     [self scrollRangeToVisible:self.selectedRange];
 }
 
@@ -430,7 +429,7 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         
         NSString* newstr = (__bridge_transfer NSString*)ms;
         
-        [self replace:NSMakeRange(0, CFStringGetLength(s)) string:newstr cursor:self.selectedRange.location];
+        [self replace:NSMakeRange(0, CFStringGetLength(s)) string:newstr cursor:self.selectedRange];
         
         CFRelease(s);
         
@@ -712,7 +711,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     NSRange r = self.selectedRange;
     
     if (![self.textStorage.string isEqualToString:newstr]) {
-        [self replace:NSMakeRange(0, self.textStorage.length) string:newstr cursor:r.location];
+        [self replace:NSMakeRange(0, self.textStorage.length) string:newstr cursor:r];
     }
     
 //    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];

@@ -50,7 +50,7 @@
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
     
-    self.file.textStorage.delegate = self;
+//    self.file.textStorage.delegate = self;
 }
 
 - (void) makeFirstResponder {
@@ -71,19 +71,19 @@
 
 
 
-- (void) textStorageDidProcessEditing:(NSNotification *)notification {
-    if ([self.textView.undoManager isUndoing] || [self.textView.undoManager isRedoing])
-        return;
-    
-    [self.textView.undoManager beginUndoGrouping];
-    
-    double delayInSeconds = 0.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self indentText];
-        [self.textView.undoManager endUndoGrouping];
-    });
-}
+//- (void) textStorageDidProcessEditing:(NSNotification *)notification {
+//    if ([self.textView.undoManager isUndoing] || [self.textView.undoManager isRedoing])
+//        return;
+//    
+//    [self.textView.undoManager beginUndoGrouping];
+//    
+//    double delayInSeconds = 0.0;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        [self indentText];
+//        [self.textView.undoManager endUndoGrouping];
+//    });
+//}
 
 void LVMakeTokenMutable2(LVToken* token) {
     CFMutableStringRef tmpStr = CFStringCreateMutableCopy(NULL, 0, token->string);
@@ -106,6 +106,10 @@ size_t LVGetIndentationForInsideOfColl2(LVColl* coll) {
     // find each newline TOKEN
     // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
     // something else
+    
+    NSRange r = self.textView.selectedRange;
+    
+    // make sure to delete from R appropriately (sigh)
     
     LVDoc* doc = self.file.textStorage.doc;
     
@@ -140,14 +144,14 @@ size_t LVGetIndentationForInsideOfColl2(LVColl* coll) {
     NSString* newstr = (__bridge_transfer NSString*)s;
     //    NSLog(@"%@", newstr);
     //    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
-    NSRange r = self.textView.selectedRange;
+//    NSRange r = self.textView.selectedRange;
     
     if (![self.file.textStorage.string isEqualToString:newstr]) {
-        [self.textView replace:NSMakeRange(0, self.file.textStorage.length) string:newstr cursor:r.location];
+        [self.textView replace:NSMakeRange(0, self.file.textStorage.length) string:newstr cursor:r];
     }
     
     //    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
-    //    self.selectedRange = r;
+//    self.textView.selectedRange = r;
 }
 
 @end
