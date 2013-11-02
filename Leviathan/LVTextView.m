@@ -757,6 +757,7 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 
 
 
+/************************************************ Semantic Selection ************************************************/
 
 - (NSRange)selectionRangeForProposedRange:(NSRange)proposedSelRange granularity:(NSSelectionGranularity)granularity {
     if (granularity == NSSelectByWord && proposedSelRange.length == 0) {
@@ -822,67 +823,6 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 
 
 
-
-//- (void) insertText:(id)insertString {
-//    [super insertText:insertString];
-//    return;
-//    
-//    size_t childsIndex;
-//    LVColl* coll = LVFindDeepestColl(self.file.topLevelElement, 0, self.selectedRange.location, &childsIndex);
-//    
-//    
-////    printf("coll=%p, idx=%lu, rel=%lu\n", coll, childsIndex, relativePos);
-//    size_t collPos = LVGetAbsolutePosition((void*)coll);
-////    printf("%ld\n", collPos);
-//    
-////    LVElement* tmp = coll->children[childsIndex];
-////    coll->children[childsIndex] = coll->children[childsIndex+2];
-////    coll->children[childsIndex+2] = tmp;
-//    
-//    NSRange range = NSMakeRange(collPos, LVElementLength((void*)coll));
-//    
-//    LVAtom* atom = (void*)coll->children[childsIndex];
-//    atom->token->string->data[0]++;
-////    binsertch(atom->token->string, 0, 1, 'a');
-//    
-//    NSRange oldSelection = self.selectedRange;
-//    
-//    bstring str = LVStringForColl(coll);
-//    NSString* newStr = [NSString stringWithUTF8String:(char*)str->data];
-//    
-//    [self sd_r:range str:newStr];
-//    
-//    bdestroy(str);
-//    
-//    LVHighlight((void*)coll, [self textStorage], collPos);
-//    
-//    self.selectedRange = oldSelection;
-//    
-////    @autoreleasepool {
-////        [super insertText:insertString];
-////        [self indentCurrentBody];
-////    }
-//}
-
-
-
-
-
-
-
-
-//NSUInteger LVFirstNewlineBefore(NSString* str, NSUInteger pos) {
-//    NSUInteger found = [str rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-//                                            options:NSBackwardsSearch
-//                                              range:NSMakeRange(0, pos)].location;
-//    if (found == NSNotFound)
-//        found = 0;
-//    else
-//        found++;
-//    
-//    return found;
-//}
-
 //BOOL LVIsFunctionLike(LVColl* coll) {
 //    // we already assume its a coll with 2+ childs
 //    id<LVElement> firstChild = [[coll childElements] objectAtIndex:0];
@@ -898,15 +838,6 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 //                          ];
 //    
 //    return ([functionLikes containsObject: [atomChild token].val]);
-//}
-
-//NSRange LVExtendRangeToBeginningPos(NSRange r, NSUInteger pos) {
-//    return NSMakeRange(pos, r.length + (r.location - pos));
-//}
-//
-//NSRange LVRangeWithNewAbsoluteLocationButSameEndPoint(NSRange r, NSUInteger absPosWithin) {
-//    // 1 [2 -3- 4 5]
-//    return NSMakeRange(absPosWithin, NSMaxRange(r) - absPosWithin);
 //}
 
 //- (void) indentCurrentBody {
@@ -1039,56 +970,6 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 //    
 //    
 ////    printf("\n");
-//}
-
-//LVElement* LVGetNextSemanticElement(LVColl* parent, size_t childIndex) {
-//    LVElement* semanticChildren[parent->childrenLen];
-//    size_t semanticChildrenCount;
-//    LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
-//    
-//    if (semanticChildrenCount > 0)
-//        return semanticChildren[0];
-//    else
-//        return NULL;
-//}
-
-//- (void) insertText:(id)insertString {
-//    NSDictionary* balancers = @{@"(": @")", @"[": @"]", @"{": @"}"};
-//    NSString* origString = insertString;
-//    NSString* toBalance = [balancers objectForKey:origString];
-//    
-//    if (toBalance) {
-//        NSRange selection = self.selectedRange;
-//        NSString* subString = [[[self textStorage] string] substringWithRange:selection];
-//        
-//        if (selection.length == 0) {
-//            [super insertText:insertString];
-//            [super insertText:toBalance];
-//            [self moveBackward:self];
-//        }
-//        else {
-//            NSString* newString = [NSString stringWithFormat:@"%@%@%@", origString, subString, toBalance];
-//            [self insertText:newString];
-//        }
-//        
-//        return;
-//    }
-//    
-//    if ([[balancers allKeysForObject:origString] count] > 0) {
-//        NSUInteger loc = self.selectedRange.location;
-//        NSString* wholeString = [[self textStorage] string];
-//        
-//        if (loc < [wholeString length]) {
-//            unichar c = [wholeString characterAtIndex:loc];
-//            if (c == [origString characterAtIndex:0]) {
-//                [self moveForward:self];
-//            }
-//        }
-//        
-//        return;
-//    }
-//    
-//    [super insertText:insertString];
 //}
 
 @end
