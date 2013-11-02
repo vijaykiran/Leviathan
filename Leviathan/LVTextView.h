@@ -25,5 +25,6 @@
 @property (weak) LVClojureTextStorage* clojureTextStorage;
 
 - (void) indentText;
+- (void) stripWhitespace;
 
 @end

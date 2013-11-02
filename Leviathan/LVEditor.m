@@ -62,6 +62,7 @@
 }
 
 - (IBAction) saveDocument:(id)sender {
+    [self.textView stripWhitespace];
     [self.file save];
 }
 

@@ -660,14 +660,6 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     LVDoc* doc = self.clojureTextStorage.doc;
     for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
         if (tok->tokenType & LVTokenType_Newlines) {
-            
-//            // empty-out any whitespace tokens IMMEDIATELY BEFORE IT
-//            LVToken* prevTok = tok->prevToken;
-//            if (prevTok->tokenType & LVTokenType_Spaces) {
-//                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(prevTok->pos, CFStringGetLength(prevTok->string))]];
-//                [replacementStrings addObject:@""];
-//            }
-            
             LVToken* nextTok = tok->nextToken;
             
             size_t existingSpaces = 0;
@@ -704,7 +696,6 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     
     if ([replacementRanges count] > 0) {
         [self shouldChangeTextInRanges:replacementRanges replacementStrings:replacementStrings];
-        
         [self.clojureTextStorage withDisabledParsing:^{
             NSInteger offset = 0;
             
@@ -714,6 +705,41 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
                 
                 r.location += offset;
                 [self.textStorage replaceCharactersInRange:r withString:str];
+                offset += [str length] - r.length;
+            }
+        }];
+        [self didChangeText];
+    }
+}
+
+- (void) stripWhitespace {
+    NSMutableArray* replacementRanges = [NSMutableArray array];
+    NSMutableArray* replacementStrings = [NSMutableArray array];
+    
+    LVDoc* doc = self.clojureTextStorage.doc;
+    for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
+        if (tok->tokenType & LVTokenType_Newlines) {
+            // empty-out any whitespace tokens IMMEDIATELY BEFORE IT
+            LVToken* prevTok = tok->prevToken;
+            if (prevTok->tokenType & LVTokenType_Spaces) {
+                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(prevTok->pos, CFStringGetLength(prevTok->string))]];
+                [replacementStrings addObject:@""];
+            }
+        }
+    }
+    
+    if ([replacementRanges count] > 0) {
+        [self shouldChangeTextInRanges:replacementRanges replacementStrings:replacementStrings];
+        
+        [self.clojureTextStorage withDisabledParsing:^{
+            NSInteger offset = 0;
+            
+            for (NSUInteger i = 0; i < [replacementStrings count]; i++) {
+                NSRange r = [[replacementRanges objectAtIndex:i] rangeValue];
+                NSString* str = [replacementStrings objectAtIndex:i];
+                
+                r.location += offset;
+                [self replaceCharactersInRange:r withString:str];
                 offset += [str length] - r.length;
             }
         }];
