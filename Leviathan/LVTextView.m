@@ -642,12 +642,6 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 
 /************************************************ PAREDIT (indentation) ************************************************/
 
-void LVMakeTokenMutable(LVToken* token) {
-    CFMutableStringRef tmpStr = CFStringCreateMutableCopy(NULL, 0, token->string);
-    CFRelease(token->string);
-    token->string = tmpStr;
-}
-
 size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     size_t count = 0;
     
@@ -664,35 +658,50 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
     // something else
     
+    return;
+    
     LVDoc* doc = self.file.textStorage.doc;
     
+    [self shouldChangeTextInRange:NSMakeRange(NSNotFound, 0) replacementString:nil];
     [self.file.textStorage withDisabledParsing:^{
+        size_t offset = 0;
+        
         for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
             if (tok->tokenType & LVTokenType_Newlines) {
                 LVToken* nextTok = tok->nextToken;
-                LVMakeTokenMutable(nextTok);
-                CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
                 
-                if (nextTok->tokenType & LVTokenType_Spaces) {
-                    // empty it out
-                    CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
-                }
-                
-                // insert that many spaces to the beginning of NextTok
+                size_t existingSpaces = 0;
+                if (nextTok->tokenType & LVTokenType_Spaces)
+                    existingSpaces = CFStringGetLength(nextTok->string);
                 
                 LVAtom* newlineAtom = tok->atom;
                 LVColl* newlineParent = newlineAtom->parent;
                 size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
                 
-                CFMutableStringRef spacesString = CFStringCreateMutable(NULL, 0);
-                CFStringPad(spacesString, CFSTR(" "), indentationForInsideOfColl, 0);
+                size_t expectedSpaces = indentationForInsideOfColl;
                 
-                CFStringInsert(tmpStr, 0, spacesString);
-                
-                CFRelease(spacesString);
+                if (existingSpaces < expectedSpaces) {
+                    // you have fewer spaces than you need, so we should insert some
+                    size_t difference = expectedSpaces - existingSpaces;
+                    offset += difference;
+                    
+                    NSString* spaces = [@"" stringByPaddingToLength:difference withString:@" " startingAtIndex:0];
+                    
+                    NSRange r = NSMakeRange(nextTok->pos, 0);
+                    [self.textStorage replaceCharactersInRange:r withString:spaces];
+                }
+                else if (existingSpaces > expectedSpaces) {
+                    // you have too many spaces, so we should delete some
+                    size_t difference = existingSpaces - expectedSpaces;
+                    offset -= difference;
+                    
+                    NSRange r = NSMakeRange(nextTok->pos, difference);
+                    [self.textStorage replaceCharactersInRange:r withString:@""];
+                }
             }
         }
     }];
+    [self didChangeText];
 }
 
 

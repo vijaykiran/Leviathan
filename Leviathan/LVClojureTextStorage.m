@@ -134,6 +134,7 @@
 }
 
 - (void) withDisabledParsing:(void(^)())blk {
+    // TODO: is this right? im not sure. i mean, we're constantly setting self.doc to nil, is that really ok? also, its ugly. clean it up.
     free(self.highlights);
     LVDocDestroy(self.doc);
     
