@@ -350,9 +350,10 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
         NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
         
-        [self replace:rangeToDelete string:@"" cursor:self.selectedRange];
+        [self shouldChangeTextInRange:rangeToDelete replacementString:@""];
+        [self replaceCharactersInRange:rangeToDelete withString:@""];
+        [self didChangeText];
         
-        self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
 }
@@ -390,9 +391,10 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         
         NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, lastPos - self.selectedRange.location);
         
-        [self replace:rangeToDelete string:@"" cursor:self.selectedRange];
+        [self shouldChangeTextInRange:rangeToDelete replacementString:@""];
+        [self replaceCharactersInRange:rangeToDelete withString:@""];
+        [self didChangeText];
         
-        self.selectedRange = NSMakeRange(rangeToDelete.location, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
 }
