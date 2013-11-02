@@ -331,9 +331,15 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         NSRange oldParentRange = NSMakeRange(LVGetAbsolutePosition((void*)parent), LVElementLength((void*)parent));
         NSString* newstr = (__bridge_transfer NSString*)LVStringForElement(child);
         
-        // TODO: uhh, oldParentRange.location + relativeOffset
+        NSRange newSelectionRange = self.selectedRange;
         
-        [self replace:oldParentRange string:newstr cursor:self.selectedRange];
+        [self shouldChangeTextInRange:oldParentRange replacementString:newstr];
+        [self.textStorage replaceCharactersInRange:oldParentRange withString:newstr];
+        [self didChangeText];
+        
+        newSelectionRange.location = oldParentRange.location + relativeOffset;
+        self.selectedRange = newSelectionRange;
+        
         [self scrollRangeToVisible:self.selectedRange];
     }
 }
