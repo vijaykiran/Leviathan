@@ -122,18 +122,6 @@
 //    [item setKeyEquivalentModifierMask:realMods];
 }
 
-- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSRange)selection {
-    NSString* oldString = [self.file.textStorage.string substringWithRange:r];
-    NSRange newRange = NSMakeRange(r.location, [str length]);
-    
-    [[[self.file.textStorage undoManager] prepareWithInvocationTarget:self] replace:newRange
-                                                                             string:oldString
-                                                                             cursor:self.selectedRange];
-    
-    [self.file.textStorage replaceCharactersInRange:r withString:str];
-//    self.selectedRange = selection;
-}
-
 - (void) keyDown:(NSEvent *)theEvent {
     if (!self.file.textStorage.doc) {
         [super keyDown:theEvent];
@@ -678,45 +666,33 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     
     LVDoc* doc = self.file.textStorage.doc;
     
-    for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
-        if (tok->tokenType & LVTokenType_Newlines) {
-            LVToken* nextTok = tok->nextToken;
-            LVMakeTokenMutable(nextTok);
-            CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
-            
-            if (nextTok->tokenType & LVTokenType_Spaces) {
-                // empty it out
-                CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
+    [self.file.textStorage withDisabledParsing:^{
+        for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
+            if (tok->tokenType & LVTokenType_Newlines) {
+                LVToken* nextTok = tok->nextToken;
+                LVMakeTokenMutable(nextTok);
+                CFMutableStringRef tmpStr = (CFMutableStringRef)nextTok->string;
+                
+                if (nextTok->tokenType & LVTokenType_Spaces) {
+                    // empty it out
+                    CFStringDelete(tmpStr, CFRangeMake(0, CFStringGetLength(tmpStr)));
+                }
+                
+                // insert that many spaces to the beginning of NextTok
+                
+                LVAtom* newlineAtom = tok->atom;
+                LVColl* newlineParent = newlineAtom->parent;
+                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
+                
+                CFMutableStringRef spacesString = CFStringCreateMutable(NULL, 0);
+                CFStringPad(spacesString, CFSTR(" "), indentationForInsideOfColl, 0);
+                
+                CFStringInsert(tmpStr, 0, spacesString);
+                
+                CFRelease(spacesString);
             }
-            
-            // insert that many spaces to the beginning of NextTok
-            
-            LVAtom* newlineAtom = tok->atom;
-            LVColl* newlineParent = newlineAtom->parent;
-            size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
-            
-            CFMutableStringRef spacesString = CFStringCreateMutable(NULL, 0);
-            CFStringPad(spacesString, CFSTR(" "), indentationForInsideOfColl, 0);
-            
-            CFStringInsert(tmpStr, 0, spacesString);
-            
-            CFRelease(spacesString);
         }
-    }
-    
-    // rebuild string
-    CFStringRef s = LVStringForColl(doc->topLevelColl);
-    NSString* newstr = (__bridge_transfer NSString*)s;
-//    NSLog(@"%@", newstr);
-//    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
-    NSRange r = self.selectedRange;
-    
-    if (![self.textStorage.string isEqualToString:newstr]) {
-        [self replace:NSMakeRange(0, self.textStorage.length) string:newstr cursor:r];
-    }
-    
-//    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
-//    self.selectedRange = r;
+    }];
 }
 
 
