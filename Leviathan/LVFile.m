@@ -31,14 +31,12 @@
 - (void) loadFromFile {
     // this method assumes it's only called once per file!
     
-    if (self.fileURL) {
+    if (self.fileURL)
         self.textOnDisk = [NSString stringWithContentsOfURL:self.fileURL encoding:NSUTF8StringEncoding error:NULL];
-        self.textStorage = [[LVClojureText alloc] initWithString:self.textOnDisk];
-    }
-    else {
+    else
         self.textOnDisk = @"";
-        self.textStorage = [[LVClojureText alloc] initWithString:@""];
-    }
+    
+    self.textStorage = [[LVClojureTextStorage alloc] initWithString:self.textOnDisk];
 }
 
 - (BOOL) hasChanges {

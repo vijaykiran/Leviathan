@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "LVClojureText.h"
+#import "LVClojureTextStorage.h"
 
 @interface LVFile : NSObject
 
@@ -18,7 +18,7 @@
 @property NSString* longName;
 @property NSString* shortName;
 
-@property LVClojureText* textStorage;
+@property LVClojureTextStorage* textStorage;
 
 - (void) save;
 - (BOOL) hasChanges;

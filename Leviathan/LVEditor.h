@@ -20,7 +20,7 @@
 
 @end
 
-@interface LVEditor : NSViewController <LVTextViewDelegate>
+@interface LVEditor : NSViewController <LVTextViewDelegate, NSTextStorageDelegate>
 
 @property LVFile* file;
 @property (weak) id<LVEditorDelegate> delegate;

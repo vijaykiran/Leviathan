@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "LVClojureText.h"
+#import "LVClojureTextStorage.h"
 
 #import "LVThemeManager.h"
 
 #import "parser.h"
 #import "highlights.h"
 
-@interface LVClojureText ()
+@interface LVClojureTextStorage ()
 
 @property NSMutableString* internalStorage;
 @property LVHighlights* highlights;
@@ -30,7 +30,7 @@
 //    return t.tv_sec + t.tv_usec*1e-6;
 //}
 
-@implementation LVClojureText
+@implementation LVClojureTextStorage
 
 - (id) initWithString:(NSString *)str {
     if (self = [super init]) {

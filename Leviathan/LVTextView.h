@@ -24,4 +24,7 @@
 
 @property (weak) LVFile* file;
 
+
+- (void) replace:(NSRange)r string:(NSString*)str cursor:(NSUInteger)newpos; // TODO: private!
+
 @end

@@ -162,8 +162,6 @@
     }
     
     [super keyDown:theEvent];
-    
-    [self indentText]; // right place?
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
@@ -208,6 +206,9 @@
     self.selectedRange = NSMakeRange(self.selectedRange.location, 0);
 }
 
+//- (void) replaceCharactersInRange:(NSRange)range withString:(NSString *)aString {
+//    NSLog(@"bla");
+//}
 
 
 
@@ -709,8 +710,13 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
 //    NSLog(@"%@", newstr);
 //    NSLog(@"%@", NSStringFromRange(NSMakeRange(0, self.textStorage.length)));
     NSRange r = self.selectedRange;
-    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
-    self.selectedRange = r;
+    
+    if (![self.textStorage.string isEqualToString:newstr]) {
+        [self replace:NSMakeRange(0, self.textStorage.length) string:newstr cursor:r.location];
+    }
+    
+//    [self.file.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withString:newstr];
+//    self.selectedRange = r;
 }
 
 

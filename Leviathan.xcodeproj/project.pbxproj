@@ -57,7 +57,7 @@
 		94D7947A18112CC0003307F4 /* highlights.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7947918112CC0003307F4 /* highlights.m */; };
 		94EB3DCA18161106002E639F /* token.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EB3DC818161106002E639F /* token.m */; };
 		94EF5CF81811E744004836A0 /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EF5CF71811E744004836A0 /* LVTheme.m */; };
-		94F05D85181DAAF4008E9353 /* LVClojureText.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F05D84181DAAF4008E9353 /* LVClojureText.m */; };
+		94F05D85181DAAF4008E9353 /* LVClojureTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F05D84181DAAF4008E9353 /* LVClojureTextStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,8 +160,8 @@
 		94EB3DC918161106002E639F /* token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token.h; sourceTree = "<group>"; };
 		94EF5CF61811E744004836A0 /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
 		94EF5CF71811E744004836A0 /* LVTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVTheme.m; sourceTree = "<group>"; };
-		94F05D83181DAAF4008E9353 /* LVClojureText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVClojureText.h; sourceTree = "<group>"; };
-		94F05D84181DAAF4008E9353 /* LVClojureText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVClojureText.m; sourceTree = "<group>"; };
+		94F05D83181DAAF4008E9353 /* LVClojureTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVClojureTextStorage.h; sourceTree = "<group>"; };
+		94F05D84181DAAF4008E9353 /* LVClojureTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVClojureTextStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,8 +376,8 @@
 				9490D80C18104E81006ECA5E /* LVProject.m */,
 				9490D817181053F2006ECA5E /* LVFile.h */,
 				9490D818181053F2006ECA5E /* LVFile.m */,
-				94F05D83181DAAF4008E9353 /* LVClojureText.h */,
-				94F05D84181DAAF4008E9353 /* LVClojureText.m */,
+				94F05D83181DAAF4008E9353 /* LVClojureTextStorage.h */,
+				94F05D84181DAAF4008E9353 /* LVClojureTextStorage.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -549,7 +549,7 @@
 				949EC52818139226001C9CAB /* LVTestBed.m in Sources */,
 				949EC5251813811E001C9CAB /* lexer.m in Sources */,
 				94ABB132181463C4003415B5 /* coll.m in Sources */,
-				94F05D85181DAAF4008E9353 /* LVClojureText.m in Sources */,
+				94F05D85181DAAF4008E9353 /* LVClojureTextStorage.m in Sources */,
 				94855A12181109A700220186 /* LVPreferencesWindowController.m in Sources */,
 				94D7947A18112CC0003307F4 /* highlights.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,

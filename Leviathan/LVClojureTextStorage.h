@@ -10,7 +10,7 @@
 
 #import "doc.h"
 
-@interface LVClojureText : NSTextStorage
+@interface LVClojureTextStorage : NSTextStorage
 
 @property NSUndoManager* undoManager;
 
