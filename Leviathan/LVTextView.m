@@ -666,12 +666,12 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
             LVColl* newlineParent = newlineAtom->parent;
             size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
             
-            size_t expectedSpaces;
+            size_t expectedSpaces = indentationForInsideOfColl; // default to aligning with the coll's open-token
             
             if (newlineParent->collType & LVCollType_List) {
                 if (newlineParent->collType & LVCollType_Definition) {
                     // its function-like:
-                    expectedSpaces = indentationForInsideOfColl + 1;
+                    expectedSpaces += 1;
                 }
                 else {
                     int semanticChildrenFound = 0;
@@ -697,16 +697,9 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
                     // does it have two semantic elements on the first line of this coll?
                     if (secondChildOnSameLine) {
                         // if so, indent to align with the second one
-                        expectedSpaces = indentationForInsideOfColl + len;
-                    }
-                    else {
-                        // else, resort to the same solution as maps/vectors
-                        expectedSpaces = indentationForInsideOfColl;
+                        expectedSpaces += len;
                     }
                 }
-            }
-            else {
-                expectedSpaces = indentationForInsideOfColl;
             }
             
             if (existingSpaces < expectedSpaces) {
