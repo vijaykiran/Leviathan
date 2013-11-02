@@ -51,7 +51,8 @@ typedef enum __LVTokenType : uint64_t {
     LVTokenType_FalseSymbol = 1 << 28, // must also be Symbol
     LVTokenType_NilSymbol   = 1 << 29, // must also be Symbol
     
-    LVTokenType_Deflike     = 1 << 30, // must also be Symbol
+    LVTokenType_Deflike       = 1 << 30, // must also be Symbol
+    LVTokenType_IndentLikeFn  = 1 << 31, // must also be Symbol
 } LVTokenType;
 
 typedef struct __LVToken LVToken;

@@ -235,6 +235,10 @@ LVToken* LVLex(CFStringRef raw) {
                 if (CFStringCompare(substring, nilConstant, 0) == kCFCompareEqualTo) tok->tokenType |= LVTokenType_NilSymbol;
                 if (CFStringHasPrefix(substring, defConstant)) tok->tokenType |= LVTokenType_Deflike;
                 
+//                cfstringin
+//                
+//                CFArrayContainsValue(<#CFArrayRef theArray#>, <#CFRange range#>, <#const void *value#>)
+                
                 LVAppendToken(&last, tok);
                 i = n-1;
                 
