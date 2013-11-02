@@ -658,16 +658,18 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
     // something else
     
-    return;
+//    return;
     
     LVDoc* doc = self.file.textStorage.doc;
     
     [self shouldChangeTextInRange:NSMakeRange(NSNotFound, 0) replacementString:nil];
     [self.file.textStorage withDisabledParsing:^{
-        size_t offset = 0;
+        NSInteger offset = 0;
         
         for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
+//            NSLog(@"starting loop");
             if (tok->tokenType & LVTokenType_Newlines) {
+//                NSLog(@"found newline");
                 LVToken* nextTok = tok->nextToken;
                 
                 size_t existingSpaces = 0;
@@ -680,6 +682,8 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
                 
                 size_t expectedSpaces = indentationForInsideOfColl;
                 
+                NSUInteger start = nextTok->pos + offset;
+                
                 if (existingSpaces < expectedSpaces) {
                     // you have fewer spaces than you need, so we should insert some
                     size_t difference = expectedSpaces - existingSpaces;
@@ -687,16 +691,18 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
                     
                     NSString* spaces = [@"" stringByPaddingToLength:difference withString:@" " startingAtIndex:0];
                     
-                    NSRange r = NSMakeRange(nextTok->pos, 0);
+                    NSRange r = NSMakeRange(start, 0);
                     [self.textStorage replaceCharactersInRange:r withString:spaces];
+//                    NSLog(@"inserting");
                 }
                 else if (existingSpaces > expectedSpaces) {
                     // you have too many spaces, so we should delete some
                     size_t difference = existingSpaces - expectedSpaces;
                     offset -= difference;
                     
-                    NSRange r = NSMakeRange(nextTok->pos, difference);
+                    NSRange r = NSMakeRange(start, difference);
                     [self.textStorage replaceCharactersInRange:r withString:@""];
+//                    NSLog(@"deleting");
                 }
             }
         }

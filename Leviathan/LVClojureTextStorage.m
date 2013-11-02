@@ -56,6 +56,8 @@
 }
 
 - (void) parse {
+    NSLog(@"parsing");
+    
     free(self.highlights);
     self.highlights = NULL;
     
@@ -98,6 +100,7 @@
 }
 
 - (void)replaceCharactersInRange:(NSRange)aRange withString:(NSString *)aString {
+//    NSLog(@"replacing chars");
     NSUInteger origLen = [self length];
     [self.internalStorage replaceCharactersInRange:aRange withString:aString];
     NSUInteger newLen = [self length];
@@ -134,12 +137,10 @@
 }
 
 - (void) withDisabledParsing:(void(^)())blk {
+//    NSLog(@"disabling parsing");
     // TODO: is this right? im not sure. i mean, we're constantly setting self.doc to nil, is that really ok? also, its ugly. clean it up.
     free(self.highlights);
-    LVDocDestroy(self.doc);
-    
-    self.doc = NULL;
-    if (self.highlights) self.highlights = NULL;
+    self.highlights = NULL;
     
     self.parsingEnabled = NO;
     blk();
