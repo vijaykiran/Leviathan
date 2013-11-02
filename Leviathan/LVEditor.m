@@ -76,8 +76,10 @@
     if ([self.textView.undoManager isUndoing] || [self.textView.undoManager isRedoing])
         return;
     
+    [[self.textView undoManager] beginUndoGrouping];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.textView indentText];
+        [[self.textView undoManager] endUndoGrouping];
     });
 }
 

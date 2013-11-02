@@ -674,12 +674,35 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
                     expectedSpaces = indentationForInsideOfColl + 1;
                 }
                 else {
+                    int semanticChildrenFound = 0;
+                    LVElement* secondChildOnSameLine = NULL;
+                    NSUInteger len = 0; // we'll just add all the children things up to this point, JUST IN CASE
                     
+                    for (size_t i = 1; i < newlineParent->childrenLen; i++) {
+                        LVElement* child = newlineParent->children[i];
+                        
+                        if (LVElementIsSemantic(child)) {
+                            semanticChildrenFound++;
+                            if (semanticChildrenFound == 2) {
+                                secondChildOnSameLine = child;
+                                break;
+                            }
+                        }
+                        else if (child->isAtom && ((LVAtom*)child)->atomType & LVAtomType_Newlines) {
+                            break;
+                        }
+                        len += LVElementLength(child);
+                    }
                     
                     // does it have two semantic elements on the first line of this coll?
-                    // if so, indent to align with the second one
-                    // else, resort to the same solution as maps/vectors
-                    expectedSpaces = indentationForInsideOfColl;
+                    if (secondChildOnSameLine) {
+                        // if so, indent to align with the second one
+                        expectedSpaces = indentationForInsideOfColl + len;
+                    }
+                    else {
+                        // else, resort to the same solution as maps/vectors
+                        expectedSpaces = indentationForInsideOfColl;
+                    }
                 }
             }
             else {
