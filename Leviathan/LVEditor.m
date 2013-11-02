@@ -76,13 +76,8 @@
     if ([self.textView.undoManager isUndoing] || [self.textView.undoManager isRedoing])
         return;
     
-//    [self.textView.undoManager beginUndoGrouping];
-    
-    double delayInSeconds = 0.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    dispatch_async(dispatch_get_main_queue(), ^{
         [self.textView indentText];
-//        [self.textView.undoManager endUndoGrouping];
     });
 }
 

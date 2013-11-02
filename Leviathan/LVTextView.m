@@ -73,6 +73,8 @@
 - (void) setupShortcuts {
     self.shortcuts = [NSMutableArray array];
     
+    [self addShortcut:@selector(commentThing:) title:@"Comment" keyEquiv:@"/" mods:@[@"CMD"]];
+    
     [self addShortcut:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
     [self addShortcut:@selector(killNextSexp:) title:@"Kill Next" keyEquiv:@"k" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(spliceSexp:) title:@"Splice" keyEquiv:@"s" mods:@[@"ALT"]];
@@ -412,41 +414,45 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     [self wrapNextInThing:@"(" and:@")"];
 }
 
-//- (void) insertText:(id)insertString {
-//    if (!self.clojureTextStorage.doc) {
-//        [super insertText:insertString];
-//        return;
-//    }
-//    
-//    LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location);
-//    
-//    BOOL adjusted = NO;
-//    
-//    if (!atom ||
-//        (!(atom->atomType & LVAtomType_Comment) &&
-//        !(atom->atomType & LVAtomType_String) &&
-//        !(atom->atomType & LVAtomType_Regex)))
-//    {
-//        if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"]) {
-//            // TODO: move to the next coll-closer, and if there's only Spaces and Newlines and Commas between it and cursor, delete them all.
-//            return;
-//        }
-//        
-//        if ([insertString isEqualToString: @"("])
-//            insertString = @"()", adjusted = YES;
-//        else if ([insertString isEqualToString: @"["])
-//            insertString = @"[]", adjusted = YES;
-//        else if ([insertString isEqualToString: @"{"])
-//            insertString = @"{}", adjusted = YES;
-//        else if ([insertString isEqualToString: @"\""])
-//            insertString = @"\"\"", adjusted = YES;
-//    }
-//    
-//    [super insertText:insertString];
-//    
-//    if (adjusted)
-//        [self moveBackward:nil];
-//}
+- (void) insertText:(id)insertString {
+    if (!self.clojureTextStorage.doc) {
+        [super insertText:insertString];
+        return;
+    }
+    
+    LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location);
+    
+    BOOL adjusted = NO;
+    
+    if (!atom ||
+        (!(atom->atomType & LVAtomType_Comment) &&
+        !(atom->atomType & LVAtomType_String) &&
+        !(atom->atomType & LVAtomType_Regex)))
+    {
+        if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"]) {
+            // TODO: move to the next coll-closer, and if there's only Spaces and Newlines and Commas between it and cursor, delete them all.
+            return;
+        }
+        
+        if ([insertString isEqualToString: @"("])
+            insertString = @"()", adjusted = YES;
+        else if ([insertString isEqualToString: @"["])
+            insertString = @"[]", adjusted = YES;
+        else if ([insertString isEqualToString: @"{"])
+            insertString = @"{}", adjusted = YES;
+        else if ([insertString isEqualToString: @"\""])
+            insertString = @"\"\"", adjusted = YES;
+    }
+    
+    [super insertText:insertString];
+    
+    if (adjusted)
+        [self moveBackward:nil];
+}
+
+- (void) commentThing:(NSEvent*)event {
+    
+}
 
 
 
