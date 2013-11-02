@@ -44,7 +44,7 @@
     SDFuzzyMatcherWindowController* fuzzyMatcherWindowController = [[SDFuzzyMatcherWindowController alloc] init];
     fuzzyMatcherWindowController.choices = [realChoices copy];
     fuzzyMatcherWindowController.choseCallback = choseCallback;
-    fuzzyMatcherWindowController.listSize = NSMakeSize(charsWide, linesTall);
+    fuzzyMatcherWindowController.listSize = NSMakeSize(MAX(30, charsWide), MAX(10, linesTall));
     
     SDFuzzyMatcher* matcher = [SDFuzzyMatcher sharedFuzzyMatcher];
     
