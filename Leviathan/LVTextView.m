@@ -435,8 +435,6 @@ NSRange LVElementRange(LVElement* element) {
         }];
         
         [self didChangeText];
-        
-//        self.selectedRange = NSMakeRange(rangeToSurround.location + [open length], 0);
     }
 }
 
