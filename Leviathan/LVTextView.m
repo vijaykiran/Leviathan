@@ -223,16 +223,6 @@ NSRange LVElementRange(LVElement* element) {
     return NSMakeRange(LVGetAbsolutePosition(element), LVElementLength(element));
 }
 
-size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
-    size_t count = 0;
-    
-    LVAtom* openingAtom = (LVAtom*)coll->children[0];
-    for (LVToken* token = openingAtom->token; !((token->tokenType & LVTokenType_Newlines) || (token->prevToken == NULL)); token = token->prevToken) {
-        count += CFStringGetLength(token->string);
-    }
-    
-    return count;
-}
 
 
 
@@ -645,6 +635,17 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 
 /************************************************ PAREDIT (indentation) ************************************************/
 
+size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
+    size_t count = 0;
+    
+    LVAtom* openingAtom = (LVAtom*)coll->children[0];
+    for (LVToken* token = openingAtom->token; !((token->tokenType & LVTokenType_Newlines) || (token->prevToken == NULL)); token = token->prevToken) {
+        count += CFStringGetLength(token->string);
+    }
+    
+    return count;
+}
+
 - (void) indentText {
     LVDoc* doc = self.clojureTextStorage.doc;
     if (!doc)
@@ -667,14 +668,19 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
             
             size_t expectedSpaces;
             
-            // TODO: this works fine if its a map or set or vec, but if its a list, we need to get fancier.
             if (newlineParent->collType & LVCollType_List) {
-                
-                // if its function-like:
-                expectedSpaces = indentationForInsideOfColl + 1;
-                
-                // else:
-                // TODO
+                if (newlineParent->collType & LVCollType_Definition) {
+                    // its function-like:
+                    expectedSpaces = indentationForInsideOfColl + 1;
+                }
+                else {
+                    
+                    
+                    // does it have two semantic elements on the first line of this coll?
+                    // if so, indent to align with the second one
+                    // else, resort to the same solution as maps/vectors
+                    expectedSpaces = indentationForInsideOfColl;
+                }
             }
             else {
                 expectedSpaces = indentationForInsideOfColl;
