@@ -56,7 +56,7 @@
 }
 
 - (void) parse {
-    NSLog(@"parsing");
+//    NSLog(@"parsing");
     
     free(self.highlights);
     self.highlights = NULL;
