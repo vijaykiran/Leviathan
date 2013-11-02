@@ -169,7 +169,7 @@
     for (LVFile* file in self.project.files) {
         NSMutableArray* defs = [NSMutableArray array];
         
-        LVFindDefinitions(file.textStorage.doc, defs);
+        LVFindDefinitions(file.clojureTextStorage.doc, defs);
         
         for (LVDefinition* def in defs) {
             [defFiles addObject:file];

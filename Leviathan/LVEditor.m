@@ -17,7 +17,7 @@
 }
 
 - (void) defaultsFontChanged:(NSNotification*)note {
-    [self.file.textStorage rehighlight];
+    [self.file.clojureTextStorage rehighlight];
 }
 
 - (NSString*) nibName {
@@ -25,7 +25,7 @@
 }
 
 - (NSUndoManager *)undoManagerForTextView:(NSTextView *)aTextView {
-    return self.file.textStorage.undoManager;
+    return self.file.clojureTextStorage.undoManager;
 }
 
 - (void) jumpToDefinition:(LVDefinition*)def {
@@ -41,16 +41,16 @@
 - (void) startEditingFile:(LVFile*)file {
     self.file = file;
     self.title = file.shortName;
-    self.textView.file = file;
+    self.textView.clojureTextStorage = file.clojureTextStorage;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     
-    [[self.textView layoutManager] replaceTextStorage:file.textStorage];
+    [[self.textView layoutManager] replaceTextStorage:file.clojureTextStorage];
     [[self.textView undoManager] removeAllActions];
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
     
-    self.file.textStorage.delegate = self;
+    self.file.clojureTextStorage.delegate = self;
 }
 
 - (void) makeFirstResponder {

@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "LVFile.h"
+#import "LVClojureTextStorage.h"
 
 @protocol LVTextViewDelegate <NSObject>
 
@@ -22,7 +22,7 @@
 
 @property (weak) IBOutlet id<LVTextViewDelegate> customDelegate;
 
-@property (weak) LVFile* file;
+@property (weak) LVClojureTextStorage* clojureTextStorage;
 
 - (void) indentText;
 

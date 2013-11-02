@@ -18,7 +18,7 @@
 @property NSString* longName;
 @property NSString* shortName;
 
-@property LVClojureTextStorage* textStorage;
+@property LVClojureTextStorage* clojureTextStorage;
 
 - (void) save;
 - (BOOL) hasChanges;

@@ -123,7 +123,7 @@
 }
 
 - (void) keyDown:(NSEvent *)theEvent {
-    if (!self.file.textStorage.doc) {
+    if (!self.clojureTextStorage.doc) {
         [super keyDown:theEvent];
         return;
     }
@@ -153,7 +153,7 @@
 }
 
 - (void) mouseDown:(NSEvent *)theEvent {
-    if (!self.file.textStorage.doc) {
+    if (!self.clojureTextStorage.doc) {
         [super mouseDown:theEvent];
         return;
     }
@@ -163,7 +163,7 @@
         NSUInteger i1 = [self.layoutManager glyphIndexForPoint:p inTextContainer:self.textContainer];
         NSUInteger idx = [self.layoutManager characterIndexForGlyphAtIndex:i1];
         
-        LVAtom* atom = LVFindAtomFollowingIndex(self.file.textStorage.doc, idx);
+        LVAtom* atom = LVFindAtomFollowingIndex(self.clojureTextStorage.doc, idx);
         
         if (atom->atomType & LVAtomType_CollDelim) {
             NSUInteger start;
@@ -300,7 +300,7 @@ NSRange LVElementRange(LVElement* element) {
 - (void) raiseSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     
-    LVElement* elementToRaise = LVFindNextSemanticChildStartingAt(self.file.textStorage.doc, selection.location);
+    LVElement* elementToRaise = LVFindNextSemanticChildStartingAt(self.clojureTextStorage.doc, selection.location);
     if (elementToRaise) {
         LVElement* child = elementToRaise;
         LVColl* parent = child->parent;
@@ -329,7 +329,7 @@ NSRange LVElementRange(LVElement* element) {
 }
 
 - (void) killNextSexp:(NSEvent*)event {
-    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.file.textStorage.doc, self.selectedRange.location);
+    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
         NSRange rangeToDelete = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
@@ -343,7 +343,7 @@ NSRange LVElementRange(LVElement* element) {
 }
 
 - (void) deleteToEndOfParagraph:(id)sender {
-    if (!self.file.textStorage.doc) {
+    if (!self.clojureTextStorage.doc) {
         [super deleteToEndOfParagraph:sender];
         return;
     }
@@ -351,7 +351,7 @@ NSRange LVElementRange(LVElement* element) {
     LVElement* firstAtomToNotDelete = NULL;
     
     size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
+    LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, self.selectedRange.location, &childIndex);
     
     for (size_t i = childIndex; i < parent->childrenLen; i++) {
         LVElement* element = parent->children[i];
@@ -385,7 +385,7 @@ NSRange LVElementRange(LVElement* element) {
 
 - (IBAction) spliceSexp:(id)sender {
     size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, self.selectedRange.location, &childIndex);
+    LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, self.selectedRange.location, &childIndex);
     
     NSRange openerRange = LVElementRange((LVElement*)LVCollOpenerAtom(parent));
     NSRange closerRange = LVElementRange((LVElement*)LVCollCloserAtom(parent));
@@ -394,7 +394,7 @@ NSRange LVElementRange(LVElement* element) {
                                      [NSValue valueWithRange:closerRange]]
                 replacementStrings:@[@"", @""]];
     
-    [self.file.textStorage withDisabledParsing:^{
+    [self.clojureTextStorage withDisabledParsing:^{
         [self.textStorage replaceCharactersInRange:closerRange withString:@""];
         [self.textStorage replaceCharactersInRange:openerRange withString:@""];
     }];
@@ -405,7 +405,7 @@ NSRange LVElementRange(LVElement* element) {
 }
 
 - (void) wrapNextInThing:(NSString*)open and:(NSString*)close {
-    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.file.textStorage.doc, self.selectedRange.location);
+    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
         NSRange rangeToSurround = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
@@ -417,7 +417,7 @@ NSRange LVElementRange(LVElement* element) {
                                          [NSValue valueWithRange:closeRange]]
                     replacementStrings:@[open, close]];
         
-        [self.file.textStorage withDisabledParsing:^{
+        [self.clojureTextStorage withDisabledParsing:^{
             [self.textStorage replaceCharactersInRange:closeRange withString:close];
             [self.textStorage replaceCharactersInRange:openRange withString:open];
         }];
@@ -439,12 +439,12 @@ NSRange LVElementRange(LVElement* element) {
 }
 
 - (void) insertText:(id)insertString {
-    if (!self.file.textStorage.doc) {
+    if (!self.clojureTextStorage.doc) {
         [super insertText:insertString];
         return;
     }
     
-    LVAtom* atom = LVFindAtomPrecedingIndex(self.file.textStorage.doc, self.selectedRange.location);
+    LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location);
     
     BOOL adjusted = NO;
     
@@ -487,7 +487,7 @@ NSRange LVElementRange(LVElement* element) {
     NSRange selection = self.selectedRange;
     
     size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
+    LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, selection.location, &childIndex);
     
     self.selectedRange = NSMakeRange(LVGetAbsolutePosition((LVElement*)parent), 0);
     [self scrollRangeToVisible:self.selectedRange];
@@ -497,14 +497,14 @@ NSRange LVElementRange(LVElement* element) {
     NSRange selection = self.selectedRange;
     
     size_t childIndex;
-    LVColl* parent = LVFindElementAtPosition(self.file.textStorage.doc, selection.location, &childIndex);
+    LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, selection.location, &childIndex);
     
     self.selectedRange = NSMakeRange(LVGetAbsolutePosition((LVElement*)parent) + LVElementLength((LVElement*)parent), 0);
     [self scrollRangeToVisible:self.selectedRange];
 }
 
 - (void) forwardSexp:(NSEvent*)event {
-    LVElement* elementToMoveToEndOf = LVFindNextSemanticChildStartingAt(self.file.textStorage.doc, self.selectedRange.location);
+    LVElement* elementToMoveToEndOf = LVFindNextSemanticChildStartingAt(self.clojureTextStorage.doc, self.selectedRange.location);
     if (elementToMoveToEndOf) {
         size_t posAfterElement = LVGetAbsolutePosition(elementToMoveToEndOf) + LVElementLength(elementToMoveToEndOf);
         self.selectedRange = NSMakeRange(posAfterElement, 0);
@@ -516,7 +516,7 @@ NSRange LVElementRange(LVElement* element) {
 }
 
 - (void) backwardSexp:(NSEvent*)event {
-    LVAtom* atom = LVFindAtomPrecedingIndex(self.file.textStorage.doc, self.selectedRange.location);
+    LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location);
     
     // if it's a top-level-coll delim, do nothing
     if (!atom)
@@ -546,7 +546,7 @@ NSRange LVElementRange(LVElement* element) {
 
 - (void) inForwardSexp:(NSEvent*)event {
     // find the next coll whose pos >= cursor
-    LVColl* nextColl = LVFindNextCollOnOrAfterPosition(self.file.textStorage.doc, self.selectedRange.location);
+    LVColl* nextColl = LVFindNextCollOnOrAfterPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     
     // if there is one, move to after its first child
     if (nextColl) {
@@ -559,7 +559,7 @@ NSRange LVElementRange(LVElement* element) {
 
 - (void) inBackwardSexp:(NSEvent*)event {
     // find the next coll whose pos >= cursor
-    LVColl* nextColl = LVFindNextCollBeforePosition(self.file.textStorage.doc, self.selectedRange.location);
+    LVColl* nextColl = LVFindNextCollBeforePosition(self.clojureTextStorage.doc, self.selectedRange.location);
     
     // if there is one, move to after its first child
     if (nextColl) {
@@ -579,7 +579,7 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 }
 
 - (void) jumpToNextBlankLineGroup:(NSEvent*)event {
-    LVToken* foundToken = LVGetAtomIndexFollowingPosition(self.file.textStorage.doc, self.selectedRange.location);
+    LVToken* foundToken = LVGetAtomIndexFollowingPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     if (!foundToken)
         return;
     
@@ -596,7 +596,7 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 }
 
 - (void) jumpToPreviousBlankLineGroup:(NSEvent*)event {
-    LVToken* foundToken = LVGetAtomIndexFollowingPosition(self.file.textStorage.doc, self.selectedRange.location);
+    LVToken* foundToken = LVGetAtomIndexFollowingPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     if (!foundToken)
         return;
     
@@ -621,7 +621,7 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 /************************************************ PAREDIT (selecting) ************************************************/
 
 - (void) extendSelectionToNext:(NSEvent*)event {
-    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.file.textStorage.doc, NSMaxRange(self.selectedRange));
+    LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.clojureTextStorage.doc, NSMaxRange(self.selectedRange));
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
         NSRange rangeToSelect = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
@@ -657,7 +657,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     NSMutableArray* replacementRanges = [NSMutableArray array];
     NSMutableArray* replacementStrings = [NSMutableArray array];
     
-    LVDoc* doc = self.file.textStorage.doc;
+    LVDoc* doc = self.clojureTextStorage.doc;
     for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
         if (tok->tokenType & LVTokenType_Newlines) {
             
@@ -705,7 +705,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     if ([replacementRanges count] > 0) {
         [self shouldChangeTextInRanges:replacementRanges replacementStrings:replacementStrings];
         
-        [self.file.textStorage withDisabledParsing:^{
+        [self.clojureTextStorage withDisabledParsing:^{
             NSInteger offset = 0;
             
             for (NSUInteger i = 0; i < [replacementStrings count]; i++) {

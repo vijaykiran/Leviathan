@@ -36,16 +36,16 @@
     else
         self.textOnDisk = @"";
     
-    self.textStorage = [[LVClojureTextStorage alloc] initWithString:self.textOnDisk];
+    self.clojureTextStorage = [[LVClojureTextStorage alloc] initWithString:self.textOnDisk];
 }
 
 - (BOOL) hasChanges {
-    return ![[self.textStorage string] isEqualToString:self.textOnDisk];
+    return ![[self.clojureTextStorage string] isEqualToString:self.textOnDisk];
 }
 
 - (void) save {
     if (self.fileURL) {
-        NSString* tempString = [self.textStorage string];
+        NSString* tempString = [self.clojureTextStorage string];
         
         NSError* __autoreleasing error;
         BOOL success =
