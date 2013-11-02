@@ -38,6 +38,7 @@
 @property NSMutableArray* shortcuts;
 @end
 
+#import <objc/runtime.h>
 
 @implementation LVTextView
 
@@ -52,6 +53,24 @@
 - (void) awakeFromNib {
     [self setupNiceties];
     [self setupShortcuts];
+    [self setupAutoIndentation];
+}
+
+// sel must return (void) and take one (id) arg
+- (void) swizzleMethodWithIndentation:(SEL)sel {
+    Method m = class_getInstanceMethod([self class], sel);
+    IMP oldImp = method_getImplementation(m);
+    method_setImplementation(m, imp_implementationWithBlock([^(id self, id arg) {
+//        [[self undoManager] beginUndoGrouping];
+        oldImp(self, sel, arg);
+        [self indentText];
+//        [[self undoManager] endUndoGrouping];
+    } copy]));
+}
+
+- (void) setupAutoIndentation {
+    [self swizzleMethodWithIndentation:@selector(insertNewline:)];
+    [self swizzleMethodWithIndentation:@selector(insertText:)];
 }
 
 - (void) setupNiceties {
