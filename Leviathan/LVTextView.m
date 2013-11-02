@@ -671,6 +671,7 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
                 }
                 else {
                     int semanticChildrenFound = 0;
+                    LVElement* firstChildOnSameLine = NULL;
                     LVElement* secondChildOnSameLine = NULL;
                     NSUInteger len = 0; // we'll just add all the children things up to this point, JUST IN CASE
                     
@@ -679,7 +680,10 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
                         
                         if (LVElementIsSemantic(child)) {
                             semanticChildrenFound++;
-                            if (semanticChildrenFound == 2) {
+                            if (semanticChildrenFound == 1) {
+                                firstChildOnSameLine = child;
+                            }
+                            else if (semanticChildrenFound == 2) {
                                 secondChildOnSameLine = child;
                                 break;
                             }
@@ -692,8 +696,30 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
                     
                     // does it have two semantic elements on the first line of this coll?
                     if (secondChildOnSameLine) {
-                        // if so, indent to align with the second one
-                        expectedSpaces += len;
+                        static CFMutableArrayRef functionLikes; if (!functionLikes) {
+                            functionLikes = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
+                            CFArrayAppendValue(functionLikes, CFSTR("ns"));
+                            CFArrayAppendValue(functionLikes, CFSTR("let"));
+                            CFArrayAppendValue(functionLikes, CFSTR("for"));
+                            CFArrayAppendValue(functionLikes, CFSTR("assoc"));
+                            CFArrayAppendValue(functionLikes, CFSTR("if"));
+                            CFArrayAppendValue(functionLikes, CFSTR("if-let"));
+                            CFArrayAppendValue(functionLikes, CFSTR("cond"));
+                            CFArrayAppendValue(functionLikes, CFSTR("case"));
+                        }
+                        
+                        // is the first child def-like indentation-wise?
+                        if (firstChildOnSameLine->isAtom &&
+                            (((LVAtom*)firstChildOnSameLine)->atomType & LVAtomType_Symbol) &&
+                            CFArrayContainsValue(functionLikes, CFRangeMake(0, CFArrayGetCount(functionLikes)), ((LVAtom*)firstChildOnSameLine)->token->string))
+                        {
+                            // if so, make it indent like a function
+                            expectedSpaces += 1;
+                        }
+                        else {
+                            // if not, indent to align with the second one
+                            expectedSpaces += len;
+                        }
                     }
                 }
             }
