@@ -270,10 +270,6 @@ NSRange LVElementRange(LVElement* element) {
     return NSMakeRange(LVGetAbsolutePosition(element), LVElementLength(element));
 }
 
-CFRange LVNSRangeToCFRange(NSRange r) {
-    return CFRangeMake(r.location, r.length);
-}
-
 
 
 
@@ -426,19 +422,21 @@ CFRange LVNSRangeToCFRange(NSRange r) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
         NSRange rangeToSurround = NSMakeRange(self.selectedRange.location, afterPos - self.selectedRange.location);
         
-        CFStringRef s = LVStringForColl(self.file.textStorage.doc->topLevelColl);
-        CFMutableStringRef ms = CFStringCreateMutableCopy(NULL, 0, s);
+        NSRange openRange = NSMakeRange(rangeToSurround.location, 0);
+        NSRange closeRange = NSMakeRange(NSMaxRange(rangeToSurround), 0);
         
-        CFStringInsert(ms, NSMaxRange(rangeToSurround), (__bridge CFStringRef)close);
-        CFStringInsert(ms, rangeToSurround.location, (__bridge CFStringRef)open);
+        [self shouldChangeTextInRanges:@[[NSValue valueWithRange:openRange],
+                                         [NSValue valueWithRange:closeRange]]
+                    replacementStrings:@[open, close]];
         
-        NSString* newstr = (__bridge_transfer NSString*)ms;
+        [self.file.textStorage withDisabledParsing:^{
+            [self.textStorage replaceCharactersInRange:closeRange withString:close];
+            [self.textStorage replaceCharactersInRange:openRange withString:open];
+        }];
         
-        [self replace:NSMakeRange(0, CFStringGetLength(s)) string:newstr cursor:self.selectedRange];
+        [self didChangeText];
         
-        CFRelease(s);
-        
-        self.selectedRange = NSMakeRange(rangeToSurround.location + [open length], 0);
+//        self.selectedRange = NSMakeRange(rangeToSurround.location + [open length], 0);
     }
 }
 

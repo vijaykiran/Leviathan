@@ -134,6 +134,12 @@
 }
 
 - (void) withDisabledParsing:(void(^)())blk {
+    free(self.highlights);
+    LVDocDestroy(self.doc);
+    
+    self.doc = NULL;
+    if (self.highlights) self.highlights = NULL;
+    
     self.parsingEnabled = NO;
     blk();
     self.parsingEnabled = YES;
