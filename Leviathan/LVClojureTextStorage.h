@@ -16,8 +16,7 @@
 
 @property LVDoc* doc;
 
-@property BOOL parsingEnabled;
-- (void) parse;
+- (void) withDisabledParsing:(void(^)())blk;
 
 - (void) rehighlight;
 

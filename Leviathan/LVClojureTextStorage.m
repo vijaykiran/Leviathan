@@ -18,6 +18,8 @@
 @property NSMutableString* internalStorage;
 @property LVHighlights* highlights;
 
+@property BOOL parsingEnabled;
+
 @end
 
 //#include <sys/time.h>
@@ -130,6 +132,13 @@
         if (wholeThingNeedsRehighlight)
             [self edited:NSTextStorageEditedAttributes range:NSMakeRange(0, [self.internalStorage length]) changeInLength:0];
     });
+}
+
+- (void) withDisabledParsing:(void(^)())blk {
+    self.parsingEnabled = NO;
+    blk();
+    self.parsingEnabled = YES;
+    [self parse];
 }
 
 - (void)setAttributes:(NSDictionary *)attributes range:(NSRange)aRange {

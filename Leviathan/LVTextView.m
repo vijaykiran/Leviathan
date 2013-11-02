@@ -402,13 +402,10 @@ CFRange LVNSRangeToCFRange(NSRange r) {
                                      [NSValue valueWithRange:closerRange]]
                 replacementStrings:@[@"", @""]];
     
-    self.file.textStorage.parsingEnabled = NO;
-    
-    [self.textStorage replaceCharactersInRange:closerRange withString:@""];
-    [self.textStorage replaceCharactersInRange:openerRange withString:@""];
-    
-    self.file.textStorage.parsingEnabled = YES;
-    [self.file.textStorage parse];
+    [self.file.textStorage withDisabledParsing:^{
+        [self.textStorage replaceCharactersInRange:closerRange withString:@""];
+        [self.textStorage replaceCharactersInRange:openerRange withString:@""];
+    }];
     
     [self didChangeText];
     
