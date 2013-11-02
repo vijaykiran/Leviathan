@@ -654,16 +654,20 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
 }
 
 - (void) indentText {
-    // find each newline TOKEN
-    // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
-    // something else
-    
     NSMutableArray* replacementRanges = [NSMutableArray array];
     NSMutableArray* replacementStrings = [NSMutableArray array];
     
     LVDoc* doc = self.file.textStorage.doc;
     for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
         if (tok->tokenType & LVTokenType_Newlines) {
+            
+//            // empty-out any whitespace tokens IMMEDIATELY BEFORE IT
+//            LVToken* prevTok = tok->prevToken;
+//            if (prevTok->tokenType & LVTokenType_Spaces) {
+//                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(prevTok->pos, CFStringGetLength(prevTok->string))]];
+//                [replacementStrings addObject:@""];
+//            }
+            
             LVToken* nextTok = tok->nextToken;
             
             size_t existingSpaces = 0;
@@ -682,16 +686,14 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
                 
                 NSString* spaces = [@"" stringByPaddingToLength:difference withString:@" " startingAtIndex:0];
                 
-                NSRange r = NSMakeRange(nextTok->pos, 0);
-                [replacementRanges addObject:[NSValue valueWithRange:r]];
+                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(nextTok->pos, 0)]];
                 [replacementStrings addObject:spaces];
             }
             else if (existingSpaces > expectedSpaces) {
                 // you have too many spaces, so we should delete some
                 size_t difference = existingSpaces - expectedSpaces;
                 
-                NSRange r = NSMakeRange(nextTok->pos, difference);
-                [replacementRanges addObject:[NSValue valueWithRange:r]];
+                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(nextTok->pos, difference)]];
                 [replacementStrings addObject:@""];
             }
         }
