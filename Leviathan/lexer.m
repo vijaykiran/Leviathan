@@ -16,6 +16,23 @@ void LVAppendToken(LVToken** lastPtr, LVToken* newToken) {
     *lastPtr = newToken;
 }
 
+//BOOL LVIsFunctionLike(LVColl* coll) {
+//    // we already assume its a coll with 2+ childs
+//    id<LVElement> firstChild = [[coll childElements] objectAtIndex:0];
+//    if (![firstChild isAtom])
+//        return NO;
+//    
+//    LVAtom* atomChild = firstChild;
+//    
+//    static NSArray* functionLikes;
+//    if (!functionLikes)
+//        functionLikes = @[@"let", @"if", @"if-let", @"cond", @"case"
+//                          //    , @"let", @"describe"
+//                          ];
+//    
+//    return ([functionLikes containsObject: [atomChild token].val]);
+//}
+
 LVToken* LVLex(CFStringRef raw) {
     size_t input_string_length = CFStringGetLength(raw);
     
