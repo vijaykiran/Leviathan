@@ -72,7 +72,6 @@ LVToken* LVLex(CFStringRef raw) {
             case '`': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_SyntaxQuote, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
                 
             case ',': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Comma, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(i, 1)))); break;
-            case '\t': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Spaces, CFSTR("  "))); break; // TODO: the way we do this means sometimes there are multiple LVTokenType_Spaces in a row, which isnt good.
                 
             case '\n': {
                 NSUInteger start = i;

@@ -398,6 +398,9 @@ NSRange LVElementRange(LVElement* element) {
 }
 
 - (void) insertText:(id)insertString {
+    if ([insertString rangeOfString:@"\t"].location != NSNotFound)
+        insertString = [insertString stringByReplacingOccurrencesOfString:@"\t" withString:@"  "];
+    
     if (!self.clojureTextStorage.doc) {
         [super insertText:insertString];
         return;

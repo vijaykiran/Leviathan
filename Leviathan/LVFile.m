@@ -36,6 +36,8 @@
     else
         self.textOnDisk = @"";
     
+    self.textOnDisk = [self.textOnDisk stringByReplacingOccurrencesOfString:@"\t" withString:@"  "];
+    
     self.clojureTextStorage = [[LVClojureTextStorage alloc] initWithString:self.textOnDisk];
 }
 
