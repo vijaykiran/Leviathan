@@ -152,51 +152,14 @@
     [super keyDown:theEvent];
 }
 
-- (void) mouseDown:(NSEvent *)theEvent {
-    if (!self.clojureTextStorage.doc) {
-        [super mouseDown:theEvent];
-        return;
-    }
-    
-    if ([theEvent clickCount] == 2) {
-        NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-        NSUInteger i1 = [self.layoutManager glyphIndexForPoint:p inTextContainer:self.textContainer];
-        NSUInteger idx = [self.layoutManager characterIndexForGlyphAtIndex:i1];
-        
-        LVAtom* atom = LVFindAtomFollowingIndex(self.clojureTextStorage.doc, idx);
-        
-        if (atom->atomType & LVAtomType_CollDelim) {
-            NSUInteger start;
-            NSUInteger end;
-            if (atom->atomType & LVAtomType_CollCloser) {
-                end = atom->token->pos;
-                LVAtom* startAtom = (LVAtom*)atom->parent->children[0];
-                start = startAtom->token->pos;
-            }
-            else {
-                start = atom->token->pos;
-                LVAtom* endAtom = (LVAtom*)atom->parent->children[atom->parent->childrenLen - 1];
-                end = endAtom->token->pos;
-            }
-            NSRange r = NSMakeRange(start, end - start + 1);
-            self.selectedRange = r;
-        }
-        else {
-            [super mouseDown: theEvent];
-        }
-    }
-    else {
-        [super mouseDown: theEvent];
-    }
-}
-
 - (IBAction) cancelOperation:(id)sender {
     self.selectedRange = NSMakeRange(self.selectedRange.location, 0);
 }
 
-//- (void) replaceCharactersInRange:(NSRange)range withString:(NSString *)aString {
-//    NSLog(@"bla");
-//}
+
+
+
+
 
 
 
@@ -256,6 +219,17 @@ LVAtom* LVCollCloserAtom(LVColl* coll) {
 
 NSRange LVElementRange(LVElement* element) {
     return NSMakeRange(LVGetAbsolutePosition(element), LVElementLength(element));
+}
+
+size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
+    size_t count = 0;
+    
+    LVAtom* openingAtom = (LVAtom*)coll->children[0];
+    for (LVToken* token = openingAtom->token; !((token->tokenType & LVTokenType_Newlines) || (token->prevToken == NULL)); token = token->prevToken) {
+        count += CFStringGetLength(token->string);
+    }
+    
+    return count;
 }
 
 
@@ -438,41 +412,41 @@ NSRange LVElementRange(LVElement* element) {
     [self wrapNextInThing:@"(" and:@")"];
 }
 
-- (void) insertText:(id)insertString {
-    if (!self.clojureTextStorage.doc) {
-        [super insertText:insertString];
-        return;
-    }
-    
-    LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location);
-    
-    BOOL adjusted = NO;
-    
-    if (!atom ||
-        (!(atom->atomType & LVAtomType_Comment) &&
-        !(atom->atomType & LVAtomType_String) &&
-        !(atom->atomType & LVAtomType_Regex)))
-    {
-        if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"]) {
-            // TODO: move to the next coll-closer, and if there's only Spaces and Newlines and Commas between it and cursor, delete them all.
-            return;
-        }
-        
-        if ([insertString isEqualToString: @"("])
-            insertString = @"()", adjusted = YES;
-        else if ([insertString isEqualToString: @"["])
-            insertString = @"[]", adjusted = YES;
-        else if ([insertString isEqualToString: @"{"])
-            insertString = @"{}", adjusted = YES;
-        else if ([insertString isEqualToString: @"\""])
-            insertString = @"\"\"", adjusted = YES;
-    }
-    
-    [super insertText:insertString];
-    
-    if (adjusted)
-        [self moveBackward:nil];
-}
+//- (void) insertText:(id)insertString {
+//    if (!self.clojureTextStorage.doc) {
+//        [super insertText:insertString];
+//        return;
+//    }
+//    
+//    LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location);
+//    
+//    BOOL adjusted = NO;
+//    
+//    if (!atom ||
+//        (!(atom->atomType & LVAtomType_Comment) &&
+//        !(atom->atomType & LVAtomType_String) &&
+//        !(atom->atomType & LVAtomType_Regex)))
+//    {
+//        if ([insertString isEqualToString: @")"] || [insertString isEqualToString: @"]"] || [insertString isEqualToString: @"}"]) {
+//            // TODO: move to the next coll-closer, and if there's only Spaces and Newlines and Commas between it and cursor, delete them all.
+//            return;
+//        }
+//        
+//        if ([insertString isEqualToString: @"("])
+//            insertString = @"()", adjusted = YES;
+//        else if ([insertString isEqualToString: @"["])
+//            insertString = @"[]", adjusted = YES;
+//        else if ([insertString isEqualToString: @"{"])
+//            insertString = @"{}", adjusted = YES;
+//        else if ([insertString isEqualToString: @"\""])
+//            insertString = @"\"\"", adjusted = YES;
+//    }
+//    
+//    [super insertText:insertString];
+//    
+//    if (adjusted)
+//        [self moveBackward:nil];
+//}
 
 
 
@@ -642,22 +616,14 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 
 /************************************************ PAREDIT (indentation) ************************************************/
 
-size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
-    size_t count = 0;
-    
-    LVAtom* openingAtom = (LVAtom*)coll->children[0];
-    for (LVToken* token = openingAtom->token; !((token->tokenType & LVTokenType_Newlines) || (token->prevToken == NULL)); token = token->prevToken) {
-        count += CFStringGetLength(token->string);
-    }
-    
-    return count;
-}
-
 - (void) indentText {
+    LVDoc* doc = self.clojureTextStorage.doc;
+    if (!doc)
+        return;
+    
     NSMutableArray* replacementRanges = [NSMutableArray array];
     NSMutableArray* replacementStrings = [NSMutableArray array];
     
-    LVDoc* doc = self.clojureTextStorage.doc;
     for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
         if (tok->tokenType & LVTokenType_Newlines) {
             LVToken* nextTok = tok->nextToken;
@@ -748,6 +714,46 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- (NSRange)selectionRangeForProposedRange:(NSRange)proposedSelRange granularity:(NSSelectionGranularity)granularity {
+    if (granularity == NSSelectByWord && proposedSelRange.length == 0) {
+        NSUInteger idx = proposedSelRange.location;
+        
+        LVAtom* atom = LVFindAtomFollowingIndex(self.clojureTextStorage.doc, idx);
+        
+        if (atom->atomType & LVAtomType_CollDelim) {
+            NSUInteger start;
+            NSUInteger end;
+            if (atom->atomType & LVAtomType_CollCloser) {
+                end = atom->token->pos;
+                LVAtom* startAtom = (LVAtom*)atom->parent->children[0];
+                start = startAtom->token->pos;
+            }
+            else {
+                start = atom->token->pos;
+                LVAtom* endAtom = (LVAtom*)atom->parent->children[atom->parent->childrenLen - 1];
+                end = endAtom->token->pos;
+            }
+            return NSMakeRange(start, end - start + 1);
+        }
+    }
+    
+    return proposedSelRange;
+}
 
 
 
