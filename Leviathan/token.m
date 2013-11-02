@@ -8,7 +8,7 @@
 
 #import "token.h"
 
-LVToken* LVTokenCreate(size_t pos, LVTokenType type, CFStringRef val) {
+LVToken* LVTokenCreate(NSUInteger pos, LVTokenType type, CFStringRef val) {
     LVToken* tok = malloc(sizeof(LVToken));
     tok->tokenType = type;
     tok->string = val;

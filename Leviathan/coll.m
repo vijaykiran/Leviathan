@@ -52,7 +52,7 @@ void LVElementListAppend(LVColl* coll, LVElement* child) {
 
 
 static void appendToString(LVColl* coll, CFMutableStringRef str) {
-    for (size_t i = 0; i < coll->childrenLen; i++) {
+    for (NSUInteger i = 0; i < coll->childrenLen; i++) {
         LVElement* child = coll->children[i];
         if (child->isAtom) {
             LVAtom* atom = (void*)child;
@@ -70,8 +70,8 @@ CFStringRef LVStringForColl(LVColl* coll) {
     return str;
 }
 
-size_t LVGetElementIndexInSiblings(LVElement* child) {
-    size_t len = child->parent->childrenLen;
+NSInteger LVGetElementIndexInSiblings(LVElement* child) {
+    NSInteger len = child->parent->childrenLen;
     LVElement** children = child->parent->children;
     for (int i = 0; i < len; i++) {
         if (children[i] == child)
@@ -80,19 +80,9 @@ size_t LVGetElementIndexInSiblings(LVElement* child) {
     return -1;
 }
 
-//LVColl* LVCollHighestParent(LVColl* coll) {
-//    while (coll->parent->parent)
-//        coll = coll->parent;
-//    
-//    if (coll->collType == LVCollType_TopLevel)
-//        return NULL;
-//    else
-//        return coll;
-//}
-
-void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count) {
+void LVGetSemanticDirectChildren(LVColl* parent, NSUInteger startingPos, LVElement** array, NSUInteger* count) {
     *count = 0;
-    for (size_t i = startingPos; i < parent->childrenLen; i++) {
+    for (NSUInteger i = startingPos; i < parent->childrenLen; i++) {
         LVElement* child = parent->children[i];
         
         if (LVElementIsSemantic(child))

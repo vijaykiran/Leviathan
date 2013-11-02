@@ -15,7 +15,7 @@
 
 struct LVTokenList {
     LVToken** toks;
-    size_t size;
+    NSUInteger size;
 };
 
 #define TOKARRAY(...) ((LVToken*[]){ __VA_ARGS__ })

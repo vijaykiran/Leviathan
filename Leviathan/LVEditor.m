@@ -29,7 +29,7 @@
 }
 
 - (void) jumpToDefinition:(LVDefinition*)def {
-    size_t absPos = def.defName->token->pos;
+    NSUInteger absPos = def.defName->token->pos;
     self.textView.selectedRange = NSMakeRange(absPos, CFStringGetLength(def.defName->token->string));
     double delayInSeconds = 0.25;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

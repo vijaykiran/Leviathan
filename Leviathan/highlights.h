@@ -12,8 +12,8 @@
 
 typedef struct __LVHighlights {
     LVAtom* atom;
-    size_t pos;
-    size_t len;
+    NSUInteger pos;
+    NSUInteger len;
     __unsafe_unretained NSDictionary* attrs;
 } LVHighlights;
 

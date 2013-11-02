@@ -170,10 +170,10 @@
 // not sure how generally useful these are yet
 
 LVColl* LVFindNextCollOnOrAfterPosition(LVDoc* doc, NSUInteger pos) {
-    size_t childIndex;
+    NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
     
-    for (size_t i = childIndex; i < parent->childrenLen; i++) {
+    for (NSUInteger i = childIndex; i < parent->childrenLen; i++) {
         LVColl* maybeColl = (LVColl*)parent->children[i];
         
         if (!maybeColl->isAtom)
@@ -184,10 +184,10 @@ LVColl* LVFindNextCollOnOrAfterPosition(LVDoc* doc, NSUInteger pos) {
 }
 
 LVColl* LVFindNextCollBeforePosition(LVDoc* doc, NSUInteger pos) {
-    size_t childIndex;
+    NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
     
-    for (size_t i = childIndex - 1; i >= 1; i--) {
+    for (NSUInteger i = childIndex - 1; i >= 1; i--) {
         LVColl* maybeColl = (LVColl*)parent->children[i];
         
         if (!maybeColl->isAtom)
@@ -198,10 +198,10 @@ LVColl* LVFindNextCollBeforePosition(LVDoc* doc, NSUInteger pos) {
 }
 
 LVElement* LVFindNextSemanticElementStartingAtPosition(LVDoc* doc, NSUInteger pos) {
-    size_t childIndex;
+    NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(doc, pos, &childIndex);
     
-    for (size_t i = childIndex; i < parent->childrenLen; i++) {
+    for (NSUInteger i = childIndex; i < parent->childrenLen; i++) {
         LVElement* element = parent->children[i];
         
         if (LVElementIsSemantic(element))
@@ -229,32 +229,6 @@ NSRange LVElementRange(LVElement* element) {
 
 
 
-/************************************************ Indentation ************************************************/
-
-// TODO: instead of overriding every method ever, maybe we can indent inside -[LVClojureText replaceCharactersInRange:withString:]?
-//       but that would enter an infinite loop. hmm, i dunno.
-
-//- (void) insertNewline:(id)sender {
-//    [super insertNewline:sender];
-//    [self indentCurrentBody];
-//}
-//
-//- (void) deleteWordBackward:(id)sender {
-//    [super deleteWordBackward:sender];
-//    [self indentCurrentBody];
-//}
-//
-//- (void) deleteBackward:(id)sender {
-//    [super deleteBackward:sender];
-//    [self indentCurrentBody];
-//}
-
-
-
-
-
-
-
 
 
 
@@ -274,7 +248,7 @@ NSRange LVElementRange(LVElement* element) {
         if (parent->collType & LVCollType_TopLevel)
             return;
         
-        size_t _absPos = LVGetAbsolutePosition(child);
+        NSUInteger _absPos = LVGetAbsolutePosition(child);
         NSInteger relativeOffset = selection.location - _absPos;
         if (relativeOffset < 0) relativeOffset = 0;
         
@@ -316,10 +290,10 @@ NSRange LVElementRange(LVElement* element) {
     
     LVElement* firstAtomToNotDelete = NULL;
     
-    size_t childIndex;
+    NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, self.selectedRange.location, &childIndex);
     
-    for (size_t i = childIndex; i < parent->childrenLen; i++) {
+    for (NSUInteger i = childIndex; i < parent->childrenLen; i++) {
         LVElement* element = parent->children[i];
         
         // find either a coll-closer (and return it) or a newline (and return the next element)
@@ -350,7 +324,7 @@ NSRange LVElementRange(LVElement* element) {
 }
 
 - (IBAction) spliceSexp:(id)sender {
-    size_t childIndex;
+    NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, self.selectedRange.location, &childIndex);
     
     NSRange openerRange = LVElementRange((LVElement*)LVCollOpenerAtom(parent));
@@ -479,7 +453,7 @@ NSRange LVElementRange(LVElement* element) {
 - (void) outBackwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     
-    size_t childIndex;
+    NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, selection.location, &childIndex);
     
     self.selectedRange = NSMakeRange(LVGetAbsolutePosition((LVElement*)parent), 0);
@@ -489,7 +463,7 @@ NSRange LVElementRange(LVElement* element) {
 - (void) outForwardSexp:(NSEvent*)event {
     NSRange selection = self.selectedRange;
     
-    size_t childIndex;
+    NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, selection.location, &childIndex);
     
     self.selectedRange = NSMakeRange(LVGetAbsolutePosition((LVElement*)parent) + LVElementLength((LVElement*)parent), 0);
@@ -499,7 +473,7 @@ NSRange LVElementRange(LVElement* element) {
 - (void) forwardSexp:(NSEvent*)event {
     LVElement* elementToMoveToEndOf = LVFindNextSemanticChildStartingAt(self.clojureTextStorage.doc, self.selectedRange.location);
     if (elementToMoveToEndOf) {
-        size_t posAfterElement = LVGetAbsolutePosition(elementToMoveToEndOf) + LVElementLength(elementToMoveToEndOf);
+        NSUInteger posAfterElement = LVGetAbsolutePosition(elementToMoveToEndOf) + LVElementLength(elementToMoveToEndOf);
         self.selectedRange = NSMakeRange(posAfterElement, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
@@ -527,7 +501,7 @@ NSRange LVElementRange(LVElement* element) {
     
     if (foundElement) {
         // if you find one, move to the beginning of it
-        size_t pos = LVGetAbsolutePosition(foundElement);
+        NSUInteger pos = LVGetAbsolutePosition(foundElement);
         self.selectedRange = NSMakeRange(pos, 0);
         [self scrollRangeToVisible:self.selectedRange];
     }
@@ -563,7 +537,7 @@ NSRange LVElementRange(LVElement* element) {
     }
 }
 
-LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
+LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, NSUInteger pos) {
     for (LVToken* tok = doc->firstToken->nextToken; tok; tok = tok->nextToken) {
         if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
             return tok;
@@ -635,8 +609,8 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
 
 /************************************************ PAREDIT (indentation) ************************************************/
 
-size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
-    size_t count = 0;
+NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
+    NSUInteger count = 0;
     
     LVAtom* openingAtom = (LVAtom*)coll->children[0];
     for (LVToken* token = openingAtom->token; !((token->tokenType & LVTokenType_Newlines) || (token->prevToken == NULL)); token = token->prevToken) {
@@ -658,15 +632,15 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
         if (tok->tokenType & LVTokenType_Newlines) {
             LVToken* nextTok = tok->nextToken;
             
-            size_t existingSpaces = 0;
+            NSUInteger existingSpaces = 0;
             if (nextTok->tokenType & LVTokenType_Spaces)
                 existingSpaces = CFStringGetLength(nextTok->string);
             
             LVAtom* newlineAtom = tok->atom;
             LVColl* newlineParent = newlineAtom->parent;
-            size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
+            NSUInteger indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
             
-            size_t expectedSpaces = indentationForInsideOfColl; // default to aligning with the coll's open-token
+            NSUInteger expectedSpaces = indentationForInsideOfColl; // default to aligning with the coll's open-token
             
             if (newlineParent->collType & LVCollType_List) {
                 if (newlineParent->collType & LVCollType_Definition) {
@@ -678,7 +652,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
                     LVElement* secondChildOnSameLine = NULL;
                     NSUInteger len = 0; // we'll just add all the children things up to this point, JUST IN CASE
                     
-                    for (size_t i = 1; i < newlineParent->childrenLen; i++) {
+                    for (NSUInteger i = 1; i < newlineParent->childrenLen; i++) {
                         LVElement* child = newlineParent->children[i];
                         
                         if (LVElementIsSemantic(child)) {
@@ -704,7 +678,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
             
             if (existingSpaces < expectedSpaces) {
                 // you have fewer spaces than you need, so we should insert some
-                size_t difference = expectedSpaces - existingSpaces;
+                NSUInteger difference = expectedSpaces - existingSpaces;
                 
                 NSString* spaces = [@"" stringByPaddingToLength:difference withString:@" " startingAtIndex:0];
                 
@@ -713,7 +687,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
             }
             else if (existingSpaces > expectedSpaces) {
                 // you have too many spaces, so we should delete some
-                size_t difference = existingSpaces - expectedSpaces;
+                NSUInteger difference = existingSpaces - expectedSpaces;
                 
                 [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(nextTok->pos, difference)]];
                 [replacementStrings addObject:@""];

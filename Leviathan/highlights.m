@@ -65,7 +65,7 @@ NSDictionary* LVAttributesForAtom(LVAtom* atom) {
     if (atom->atomType & LVAtomType_Symbol) return theme.symbol;
     
     if (atom->atomType & LVAtomType_CollDelim) {
-        size_t depth = LVGetElementDepth((LVElement*)atom);
+        NSUInteger depth = LVGetElementDepth((LVElement*)atom);
         NSArray* rainbows = [LVThemeManager sharedThemeManager].currentTheme.rainbowparens;
         return [rainbows objectAtIndex: depth % [rainbows count]];
     }

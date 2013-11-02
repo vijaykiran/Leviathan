@@ -42,8 +42,8 @@ struct __LVColl {
     LVCollType collType;
     
     LVElement** children;
-    size_t childrenLen;
-    size_t childrenCap;
+    NSUInteger childrenLen;
+    NSUInteger childrenCap;
     
 };
 
@@ -52,10 +52,8 @@ void LVCollDestroy(LVColl* coll);
 
 void LVElementListAppend(LVColl* coll, LVElement* child);
 
-//LVColl* LVCollHighestParent(LVColl* coll);
-
-size_t LVGetElementIndexInSiblings(LVElement* child);
+NSInteger LVGetElementIndexInSiblings(LVElement* child);
 
 CFStringRef LVStringForColl(LVColl* coll);
 
-void LVGetSemanticDirectChildren(LVColl* parent, size_t startingPos, LVElement** array, size_t* count);
+void LVGetSemanticDirectChildren(LVColl* parent, NSUInteger startingPos, LVElement** array, NSUInteger* count);

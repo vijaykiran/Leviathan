@@ -34,7 +34,7 @@ void LVAppendToken(LVToken** lastPtr, LVToken* newToken) {
 //}
 
 LVToken* LVLex(CFStringRef raw) {
-    size_t input_string_length = CFStringGetLength(raw);
+    NSUInteger input_string_length = CFStringGetLength(raw);
     
     UniChar chars[input_string_length];
     CFStringGetCharacters(raw, CFRangeMake(0, input_string_length), chars);
@@ -51,7 +51,7 @@ LVToken* LVLex(CFStringRef raw) {
     
     last = head;
     
-    size_t i = 0;
+    NSUInteger i = 0;
     while (i < input_string_length) {
         
         UniChar c = chars[i];
@@ -75,7 +75,7 @@ LVToken* LVLex(CFStringRef raw) {
             case '\t': LVAppendToken(&last, LVTokenCreate(i, LVTokenType_Spaces, CFSTR("  "))); break; // TODO: the way we do this means sometimes there are multiple LVTokenType_Spaces in a row, which isnt good.
                 
             case '\n': {
-                size_t start = i;
+                NSUInteger start = i;
                 while (chars[++i] == '\n');
                 LVAppendToken(&last, LVTokenCreate(start, LVTokenType_Newlines, CFStringCreateWithSubstring(NULL, raw, CFRangeMake(start, i - start))));
                 i--;
@@ -122,7 +122,7 @@ LVToken* LVLex(CFStringRef raw) {
             }
                 
             case '"': {
-                size_t seeker = i;
+                NSUInteger seeker = i;
                 do {
                     do seeker++; while (seeker < input_string_length && chars[seeker] != '"');
                     if (seeker == input_string_length) {
@@ -172,7 +172,7 @@ LVToken* LVLex(CFStringRef raw) {
                 
                 switch (next) {
                     case '"': {
-                        size_t seeker = i + 1;
+                        NSUInteger seeker = i + 1;
                         do {
                             do seeker++; while (seeker < input_string_length && chars[seeker] != '"');
                             if (seeker == input_string_length) {

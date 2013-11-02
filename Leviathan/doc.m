@@ -85,7 +85,7 @@ void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs) {
 
 // questionable but in-use
 
-LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, size_t pos) {
+LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, NSUInteger pos) {
     LVToken* tok = doc->firstToken->nextToken;
     for (; tok->nextToken; tok = tok->nextToken) {
         if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
@@ -94,7 +94,7 @@ LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, size_t pos) {
     return tok->atom;
 }
 
-LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
+LVColl* LVFindElementAtPosition(LVDoc* doc, NSUInteger pos, NSUInteger* childIndex) {
     LVAtom* atom = LVFindAtomFollowingIndex(doc, pos);
     
     LVElement* el = (void*)atom;
@@ -105,18 +105,18 @@ LVColl* LVFindElementAtPosition(LVDoc* doc, size_t pos, size_t* childIndex) {
     return el->parent;
 }
 
-LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, size_t idx) {
-    size_t childIndex;
+LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, NSUInteger idx) {
+    NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(doc, idx, &childIndex);
     
     LVElement* semanticChildren[parent->childrenLen];
-    size_t semanticChildrenCount;
+    NSUInteger semanticChildrenCount;
     LVGetSemanticDirectChildren(parent, childIndex, semanticChildren, &semanticChildrenCount);
     
     for (int i = 0; i < semanticChildrenCount; i++) {
         LVElement* semanticChild = semanticChildren[i];
         
-        size_t posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
+        NSUInteger posAfterElement = LVGetAbsolutePosition(semanticChild) + LVElementLength(semanticChild);
         
         // are we in the middle of the semantic element?
         // if so, great! we'll use this one

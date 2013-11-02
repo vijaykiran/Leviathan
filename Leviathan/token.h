@@ -62,10 +62,10 @@ struct __LVToken {
     
     LVTokenType tokenType;
     CFStringRef string;
-    size_t pos;
+    NSUInteger pos;
     struct __LVAtom* atom;
 };
 
 
-LVToken* LVTokenCreate(size_t pos, LVTokenType type, CFStringRef val);
+LVToken* LVTokenCreate(NSUInteger pos, LVTokenType type, CFStringRef val);
 void LVTokenDelete(LVToken* tok);

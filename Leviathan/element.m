@@ -11,14 +11,14 @@
 #import "coll.h"
 #import "atom.h"
 
-size_t LVElementLength(LVElement* element) {
+NSUInteger LVElementLength(LVElement* element) {
     if (element->isAtom) {
         LVAtom* atom = (LVAtom*)element;
         return CFStringGetLength(atom->token->string);
     }
     else {
         LVColl* coll = (LVColl*)element;
-        size_t len = 0;
+        NSUInteger len = 0;
         for (int i = 0; i < coll->childrenLen; i++) {
             LVElement* child = coll->children[i];
             len += LVElementLength(child);
@@ -62,7 +62,7 @@ BOOL LVElementIsSemantic(LVElement* el) {
     return (!el->isAtom || LVAtomIsSemantic((LVAtom*)el));
 }
 
-size_t LVGetAbsolutePosition(LVElement* el) {
+NSUInteger LVGetAbsolutePosition(LVElement* el) {
     if (el->isAtom) {
         LVAtom* atom = (void*)el;
         return atom->token->pos;
@@ -74,8 +74,8 @@ size_t LVGetAbsolutePosition(LVElement* el) {
     }
 }
 
-size_t LVGetElementDepth(LVElement* needle) {
-    size_t i = 0;
+NSUInteger LVGetElementDepth(LVElement* needle) {
+    NSUInteger i = 0;
     
     LVElement* iter = needle;
     
