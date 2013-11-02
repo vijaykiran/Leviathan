@@ -423,6 +423,7 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location);
     
     BOOL adjusted = NO;
+    NSUInteger adjustedBy = 0;
     
     if (!atom ||
         (!(atom->atomType & LVAtomType_Comment) &&
@@ -435,18 +436,36 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
         }
         
         if ([insertString isEqualToString: @"("])
-            insertString = @"()", adjusted = YES;
+            insertString = @"()", adjusted = YES, adjustedBy++;
         else if ([insertString isEqualToString: @"["])
-            insertString = @"[]", adjusted = YES;
+            insertString = @"[]", adjusted = YES, adjustedBy++;
         else if ([insertString isEqualToString: @"{"])
-            insertString = @"{}", adjusted = YES;
+            insertString = @"{}", adjusted = YES, adjustedBy++;
         else if ([insertString isEqualToString: @"\""])
-            insertString = @"\"\"", adjusted = YES;
+            insertString = @"\"\"", adjusted = YES, adjustedBy++;
+        
+        if (adjusted) {
+            NSUInteger pos = self.selectedRange.location;
+            
+            // if not at very beginning and character right before cursor is NOT " " or "\n", then add " " to beginning
+            if (pos > 0) {
+                unichar c = [self.textStorage.string characterAtIndex:pos - 1];
+                if (c != ' ' && c != '\n' && c != '(' && c != '{' && c != '[')
+                    insertString = [@" " stringByAppendingString:insertString];
+                
+                // if not at very end and next character is NOT space or newline, add space after
+                if (pos < [self.textStorage.string length] - 1) {
+                    unichar c = [self.textStorage.string characterAtIndex:pos];
+                    if (c != ' ' && c != '\n')
+                        insertString = [insertString stringByAppendingString:@" "], adjustedBy++;
+                }
+            }
+        }
     }
     
     [super insertText:insertString];
     
-    if (adjusted)
+    for (int i = 0; i < adjustedBy; i++)
         [self moveBackward:nil];
 }
 
