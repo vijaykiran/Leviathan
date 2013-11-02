@@ -658,56 +658,62 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     // NEVER MIND: empty-out any whitespace tokens IMMEDIATELY BEFORE IT
     // something else
     
-//    return;
+    NSMutableArray* replacementRanges = [NSMutableArray array];
+    NSMutableArray* replacementStrings = [NSMutableArray array];
     
     LVDoc* doc = self.file.textStorage.doc;
-    
-    [self shouldChangeTextInRange:NSMakeRange(NSNotFound, 0) replacementString:nil];
-    [self.file.textStorage withDisabledParsing:^{
-        NSInteger offset = 0;
-        
-        for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
-//            NSLog(@"starting loop");
-            if (tok->tokenType & LVTokenType_Newlines) {
-//                NSLog(@"found newline");
-                LVToken* nextTok = tok->nextToken;
+    for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
+        if (tok->tokenType & LVTokenType_Newlines) {
+            LVToken* nextTok = tok->nextToken;
+            
+            size_t existingSpaces = 0;
+            if (nextTok->tokenType & LVTokenType_Spaces)
+                existingSpaces = CFStringGetLength(nextTok->string);
+            
+            LVAtom* newlineAtom = tok->atom;
+            LVColl* newlineParent = newlineAtom->parent;
+            size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
+            
+            size_t expectedSpaces = indentationForInsideOfColl;
+            
+            if (existingSpaces < expectedSpaces) {
+                // you have fewer spaces than you need, so we should insert some
+                size_t difference = expectedSpaces - existingSpaces;
                 
-                size_t existingSpaces = 0;
-                if (nextTok->tokenType & LVTokenType_Spaces)
-                    existingSpaces = CFStringGetLength(nextTok->string);
+                NSString* spaces = [@"" stringByPaddingToLength:difference withString:@" " startingAtIndex:0];
                 
-                LVAtom* newlineAtom = tok->atom;
-                LVColl* newlineParent = newlineAtom->parent;
-                size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
+                NSRange r = NSMakeRange(nextTok->pos, 0);
+                [replacementRanges addObject:[NSValue valueWithRange:r]];
+                [replacementStrings addObject:spaces];
+            }
+            else if (existingSpaces > expectedSpaces) {
+                // you have too many spaces, so we should delete some
+                size_t difference = existingSpaces - expectedSpaces;
                 
-                size_t expectedSpaces = indentationForInsideOfColl;
-                
-                NSUInteger start = nextTok->pos + offset;
-                
-                if (existingSpaces < expectedSpaces) {
-                    // you have fewer spaces than you need, so we should insert some
-                    size_t difference = expectedSpaces - existingSpaces;
-                    offset += difference;
-                    
-                    NSString* spaces = [@"" stringByPaddingToLength:difference withString:@" " startingAtIndex:0];
-                    
-                    NSRange r = NSMakeRange(start, 0);
-                    [self.textStorage replaceCharactersInRange:r withString:spaces];
-//                    NSLog(@"inserting");
-                }
-                else if (existingSpaces > expectedSpaces) {
-                    // you have too many spaces, so we should delete some
-                    size_t difference = existingSpaces - expectedSpaces;
-                    offset -= difference;
-                    
-                    NSRange r = NSMakeRange(start, difference);
-                    [self.textStorage replaceCharactersInRange:r withString:@""];
-//                    NSLog(@"deleting");
-                }
+                NSRange r = NSMakeRange(nextTok->pos, difference);
+                [replacementRanges addObject:[NSValue valueWithRange:r]];
+                [replacementStrings addObject:@""];
             }
         }
-    }];
-    [self didChangeText];
+    }
+    
+    if ([replacementRanges count] > 0) {
+        [self shouldChangeTextInRanges:replacementRanges replacementStrings:replacementStrings];
+        
+        [self.file.textStorage withDisabledParsing:^{
+            NSInteger offset = 0;
+            
+            for (NSUInteger i = 0; i < [replacementStrings count]; i++) {
+                NSRange r = [[replacementRanges objectAtIndex:i] rangeValue];
+                NSString* str = [replacementStrings objectAtIndex:i];
+                
+                r.location += offset;
+                [self.textStorage replaceCharactersInRange:r withString:str];
+                offset += [str length] - r.length;
+            }
+        }];
+        [self didChangeText];
+    }
 }
 
 
