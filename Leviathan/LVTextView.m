@@ -678,7 +678,10 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
             LVColl* newlineParent = newlineAtom->parent;
             size_t indentationForInsideOfColl = LVGetIndentationForInsideOfColl(newlineParent);
             
-            size_t expectedSpaces = indentationForInsideOfColl;
+            size_t expectedSpaces;
+            
+            // TODO: this works fine if its a map or set or vec, but if its a list, we need to get fancier.
+            expectedSpaces = indentationForInsideOfColl;
             
             if (existingSpaces < expectedSpaces) {
                 // you have fewer spaces than you need, so we should insert some
