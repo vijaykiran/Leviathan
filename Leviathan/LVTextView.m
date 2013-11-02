@@ -668,7 +668,17 @@ LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, size_t pos) {
             size_t expectedSpaces;
             
             // TODO: this works fine if its a map or set or vec, but if its a list, we need to get fancier.
-            expectedSpaces = indentationForInsideOfColl;
+            if (newlineParent->collType & LVCollType_List) {
+                
+                // if its function-like:
+                expectedSpaces = indentationForInsideOfColl + 1;
+                
+                // else:
+                // TODO
+            }
+            else {
+                expectedSpaces = indentationForInsideOfColl;
+            }
             
             if (existingSpaces < expectedSpaces) {
                 // you have fewer spaces than you need, so we should insert some
