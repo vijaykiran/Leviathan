@@ -473,6 +473,10 @@ size_t LVGetIndentationForInsideOfColl(LVColl* coll) {
     
 }
 
+//- (void) doCommandBySelector:(SEL)aSelector {
+//    NSLog(@"%@", NSStringFromSelector(aSelector));
+//    [super doCommandBySelector:aSelector];
+//}
 
 
 

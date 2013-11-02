@@ -76,6 +76,26 @@
     [self saveProjects];
 }
 
+- (void) expireSoon {
+    NSString* s = [NSString stringWithFormat:@"%s, %s", __DATE__, __TIME__];
+    NSDate* compileDate = [NSDate dateWithNaturalLanguageString:s];
+    
+    NSDate* fireDate = [compileDate dateByAddingTimeInterval:60.0 * 60.0 * 24.0 * 7.0];
+    
+    NSTimer* expirationTimer = [[NSTimer alloc] initWithFireDate:fireDate interval:0 target:self selector:@selector(quitTrial:) userInfo:nil repeats:NO];
+    [[NSRunLoop mainRunLoop] addTimer:expirationTimer forMode:NSRunLoopCommonModes];
+}
+
+- (void) quitTrial:(NSTimer*)timer {
+    NSRunAlertPanel(@"This build has expired", @"I've probably got a new build. If I haven't sent it to you, please email me.\n\nAfter you close this popup, you've got 3 minutes to save your work.", @"OK", @"", nil);
+    
+    double delayInSeconds = 60.0 * 3.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        exit(1);
+    });
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [LVTestBed runTests];
     
@@ -93,11 +113,7 @@
     
     [self restoreProjects];
     
-    double delayInSeconds = 60.0 * 5.0; // quit after 5 mins
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [NSApp terminate:self];
-    });
+    [self expireSoon];
 }
 
 - (void) projectWindowClosed:(LVProjectWindowController *)controller {
