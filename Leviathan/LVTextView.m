@@ -79,6 +79,9 @@
     self.automaticTextReplacementEnabled = NO;
     self.automaticSpellingCorrectionEnabled = NO;
     self.automaticQuoteSubstitutionEnabled = NO;
+    self.automaticDashSubstitutionEnabled = NO;
+    self.automaticLinkDetectionEnabled = NO;
+    self.automaticDataDetectionEnabled = NO;
     
     self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
     self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
