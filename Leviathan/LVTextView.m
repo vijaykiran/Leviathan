@@ -96,6 +96,7 @@
     self.shortcuts = [NSMutableArray array];
     
     [self addShortcut:@selector(commentThing:) title:@"Comment" keyEquiv:@"/" mods:@[@"CMD"]];
+    [self addShortcut:@selector(indentSection:) title:@"Indent Section" keyEquiv:@"q" mods:@[@"ALT"]];
     
     [self addShortcut:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
     [self addShortcut:@selector(killNextSexp:) title:@"Kill Next" keyEquiv:@"k" mods:@[@"CTRL", @"ALT"]];
@@ -645,7 +646,19 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     return count;
 }
 
-- (void) indentText {
+LVToken* LVGetPreviousSectionSeparatorToken(LVDoc* doc, NSUInteger pos) {
+    LVToken* tok = LVFindAtomFollowingIndex(doc, pos)->token;
+    for (; tok->prevToken && !((tok->tokenType & LVTokenType_Newlines) && CFStringGetLength(tok->string) > 1); tok = tok->prevToken);
+    return tok;
+}
+
+LVToken* LVGetNextSectionSeparatorToken(LVToken* startToken) {
+    LVToken* tok = startToken->nextToken;
+    for (; tok->nextToken && !((tok->tokenType & LVTokenType_Newlines) && CFStringGetLength(tok->string) > 1); tok = tok->nextToken);
+    return tok;
+}
+
+- (void) indentSection:(NSEvent*)event {
     LVDoc* doc = self.clojureTextStorage.doc;
     if (!doc)
         return;
@@ -653,7 +666,10 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     NSMutableArray* replacementRanges = [NSMutableArray array];
     NSMutableArray* replacementStrings = [NSMutableArray array];
     
-    for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken) {
+    LVToken* startToken = LVGetPreviousSectionSeparatorToken(doc, self.selectedRange.location);
+    LVToken* endToken = LVGetNextSectionSeparatorToken(startToken);
+    
+    for (LVToken* tok = startToken; tok != endToken; tok = tok->nextToken) {
         if (tok->tokenType & LVTokenType_Newlines) {
             LVToken* nextTok = tok->nextToken;
             
@@ -699,10 +715,22 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
                     
                     // does it have two semantic elements on the first line of this coll?
                     if (secondChildOnSameLine) {
+                        static CFMutableArrayRef functionLikes; if (!functionLikes) {
+                            functionLikes = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
+                            CFArrayAppendValue(functionLikes, CFSTR("ns"));
+                            CFArrayAppendValue(functionLikes, CFSTR("let"));
+                            CFArrayAppendValue(functionLikes, CFSTR("for"));
+                            CFArrayAppendValue(functionLikes, CFSTR("assoc"));
+                            CFArrayAppendValue(functionLikes, CFSTR("if"));
+                            CFArrayAppendValue(functionLikes, CFSTR("if-let"));
+                            CFArrayAppendValue(functionLikes, CFSTR("cond"));
+                            CFArrayAppendValue(functionLikes, CFSTR("case"));
+                        }
+                        
                         // is the first child def-like indentation-wise?
                         if (firstChildOnSameLine->isAtom &&
                             (((LVAtom*)firstChildOnSameLine)->atomType & LVAtomType_Symbol) &&
-                            ((LVAtom*)firstChildOnSameLine)->token->tokenType & LVTokenType_IndentLikeFn)
+                            CFArrayContainsValue(functionLikes, CFRangeMake(0, CFArrayGetCount(functionLikes)), ((LVAtom*)firstChildOnSameLine)->token->string))
                         {
                             // if so, make it indent like a function
                             expectedSpaces += 1;
@@ -749,7 +777,12 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
             }
         }];
         [self didChangeText];
+        [self indentSection:event];
     }
+}
+
+- (void) indentText {
+    // for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken)
 }
 
 - (void) stripWhitespace {

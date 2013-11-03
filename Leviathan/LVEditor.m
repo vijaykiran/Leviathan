@@ -50,7 +50,7 @@
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
     
-    self.file.clojureTextStorage.delegate = self;
+//    self.file.clojureTextStorage.delegate = self;
 }
 
 - (void) makeFirstResponder {
@@ -72,15 +72,15 @@
 
 
 
-- (void) textStorageDidProcessEditing:(NSNotification *)notification {
-    if ([self.textView.undoManager isUndoing] || [self.textView.undoManager isRedoing])
-        return;
-    
-//    [[self.textView undoManager] beginUndoGrouping];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.textView indentText];
-//        [[self.textView undoManager] endUndoGrouping];
-    });
-}
+//- (void) textStorageDidProcessEditing:(NSNotification *)notification {
+//    if ([self.textView.undoManager isUndoing] || [self.textView.undoManager isRedoing])
+//        return;
+//    
+////    [[self.textView undoManager] beginUndoGrouping];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.textView indentText];
+////        [[self.textView undoManager] endUndoGrouping];
+//    });
+//}
 
 @end
