@@ -646,18 +646,6 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     return count;
 }
 
-LVToken* LVGetPreviousSectionSeparatorToken(LVDoc* doc, NSUInteger pos) {
-    LVToken* tok = LVFindAtomFollowingIndex(doc, pos)->token;
-    for (; tok->prevToken && !((tok->tokenType & LVTokenType_Newlines) && CFStringGetLength(tok->string) > 1); tok = tok->prevToken);
-    return tok;
-}
-
-LVToken* LVGetNextSectionSeparatorToken(LVToken* startToken) {
-    LVToken* tok = startToken->nextToken;
-    for (; tok->nextToken && !((tok->tokenType & LVTokenType_Newlines) && CFStringGetLength(tok->string) > 1); tok = tok->nextToken);
-    return tok;
-}
-
 - (void) indentSection:(NSEvent*)event {
     LVDoc* doc = self.clojureTextStorage.doc;
     if (!doc)
@@ -666,8 +654,13 @@ LVToken* LVGetNextSectionSeparatorToken(LVToken* startToken) {
     NSMutableArray* replacementRanges = [NSMutableArray array];
     NSMutableArray* replacementStrings = [NSMutableArray array];
     
-    LVToken* startToken = LVGetPreviousSectionSeparatorToken(doc, self.selectedRange.location);
-    LVToken* endToken = LVGetNextSectionSeparatorToken(startToken);
+    LVElement* element = (LVElement*)LVFindAtomFollowingIndex(doc, self.selectedRange.location);
+    while (element->parent)
+        element = (LVElement*)element->parent;
+    
+    LVColl* highestColl = (LVColl*)element;
+    LVToken* startToken = ((LVAtom*)highestColl->children[0])->token;
+    LVToken* endToken = ((LVAtom*)highestColl->children[highestColl->childrenLen - 1])->token;
     
     for (LVToken* tok = startToken; tok != endToken; tok = tok->nextToken) {
         if (tok->tokenType & LVTokenType_Newlines) {
