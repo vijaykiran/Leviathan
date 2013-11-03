@@ -43,6 +43,8 @@ typedef enum __LVAtomType : uint64_t {
     LVAtomType_DefType = 1 << 23,  // must also be Symbol
     LVAtomType_DefName = 1 << 24,  // must also be Symbol
     LVAtomType_Ns      = 1 << 25,  // must also be Symbol
+    
+    LVAtomType_Operator  = 1 << 26,  // must also be Symbol
 } LVAtomType;
 
 typedef struct __LVAtom {

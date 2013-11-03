@@ -43,6 +43,8 @@ NSDictionary* LVAttributesForAtom(LVAtom* atom) {
     if (atom->atomType & LVAtomType_Newlines) return theme.symbol;
     if (atom->atomType & LVAtomType_Comma) return theme.symbol;
     
+    if (atom->atomType & LVAtomType_Operator) return theme.def;
+    
     if (atom->atomType & LVAtomType_DefType) return theme.def;
     if (atom->atomType & LVAtomType_DefName) return theme.defname;
     if (atom->atomType & LVAtomType_Keyword) return theme.keyword;

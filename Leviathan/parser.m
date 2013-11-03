@@ -144,50 +144,29 @@ static LVColl* parseColl(LVToken** iter, LVCollType collType, LVTokenType endTok
     }
     
     if (coll->collType & LVCollType_List) {
-        LVAtom* defAtom = nil;
+        LVElement* semanticChildren[coll->childrenLen];
+        NSUInteger semanticChildrenCount;
+        LVGetSemanticDirectChildren(coll, 0, semanticChildren, &semanticChildrenCount);
         
-        BOOL lastWasTypeOp = NO;
-        
-        for (int i = 0; i < coll->childrenLen; i++) {
-            LVElement* child = coll->children[i];
-            LVAtom* atom = (void*)child;
+        if (semanticChildrenCount >= 1) {
+            LVAtom* firstAtom = (LVAtom*)semanticChildren[0];
             
-            if (!atom->isAtom || !LVAtomIsSemantic(atom))
-                continue;
-            
-            // finally found a semantic atom!
-            
-            if (!defAtom) {
-                // it's the first one, too!
-                
-                if (atom->token->tokenType & LVTokenType_Deflike) {
-                    defAtom = atom;
-                    // it's deflike!
+            if (firstAtom->isAtom) {
+                if (firstAtom->token->tokenType & LVTokenType_Deflike) {
+                    coll->collType |= LVCollType_Definition;
+                    firstAtom->atomType |= LVAtomType_DefType;
+                    
+                    for (int i = 1; i < semanticChildrenCount; i++) {
+                        LVAtom* semanticChild = (LVAtom*)semanticChildren[i];
+                        if (semanticChild->isAtom && semanticChild->atomType & LVAtomType_Symbol) {
+                            semanticChild->atomType |= LVAtomType_DefName;
+                            break;
+                        }
+                    }
                 }
-                else {
-                    // womp womp, it's not deflike.
-                    break;
+                else if (firstAtom->token->tokenType & LVTokenType_Symbol) {
+                    firstAtom->atomType |= LVAtomType_Operator;
                 }
-            }
-            else {
-                if (atom->atomType & LVAtomType_TypeOp) {
-                    lastWasTypeOp = YES;
-                    continue;
-                }
-                
-                if (lastWasTypeOp) {
-                    lastWasTypeOp = NO;
-                    continue;
-                }
-                
-                lastWasTypeOp = NO;
-                
-                LVAtom* defName = atom;
-                coll->collType |= LVCollType_Definition;
-                defAtom->atomType |= LVAtomType_DefType;
-                defName->atomType |= LVAtomType_DefName;
-                
-                break;
             }
         }
     }
