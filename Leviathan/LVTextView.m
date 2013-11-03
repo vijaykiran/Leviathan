@@ -836,7 +836,7 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
         }
     }
     
-    return proposedSelRange;
+    return [super selectionRangeForProposedRange:proposedSelRange granularity:granularity];
 }
 
 @end
