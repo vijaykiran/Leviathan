@@ -779,7 +779,6 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     
     if ([replacementRanges count] > 0) {
         [self shouldChangeTextInRanges:replacementRanges replacementStrings:replacementStrings];
-        
         [self.clojureTextStorage withDisabledParsing:^{
             NSInteger offset = 0;
             
