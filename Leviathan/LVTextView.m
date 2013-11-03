@@ -699,22 +699,10 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
                     
                     // does it have two semantic elements on the first line of this coll?
                     if (secondChildOnSameLine) {
-                        static CFMutableArrayRef functionLikes; if (!functionLikes) {
-                            functionLikes = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
-                            CFArrayAppendValue(functionLikes, CFSTR("ns"));
-                            CFArrayAppendValue(functionLikes, CFSTR("let"));
-                            CFArrayAppendValue(functionLikes, CFSTR("for"));
-                            CFArrayAppendValue(functionLikes, CFSTR("assoc"));
-                            CFArrayAppendValue(functionLikes, CFSTR("if"));
-                            CFArrayAppendValue(functionLikes, CFSTR("if-let"));
-                            CFArrayAppendValue(functionLikes, CFSTR("cond"));
-                            CFArrayAppendValue(functionLikes, CFSTR("case"));
-                        }
-                        
                         // is the first child def-like indentation-wise?
                         if (firstChildOnSameLine->isAtom &&
                             (((LVAtom*)firstChildOnSameLine)->atomType & LVAtomType_Symbol) &&
-                            CFArrayContainsValue(functionLikes, CFRangeMake(0, CFArrayGetCount(functionLikes)), ((LVAtom*)firstChildOnSameLine)->token->string))
+                            ((LVAtom*)firstChildOnSameLine)->token->tokenType & LVTokenType_IndentLikeFn)
                         {
                             // if so, make it indent like a function
                             expectedSpaces += 1;

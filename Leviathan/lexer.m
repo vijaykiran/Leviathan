@@ -212,10 +212,23 @@ LVToken* LVLex(CFStringRef raw) {
                 static CFStringRef nilConstant = CFSTR("nil");
                 static CFStringRef defConstant = CFSTR("def");
                 
-                if (CFStringCompare(substring, trueConstant, 0) == kCFCompareEqualTo) tok->tokenType |= LVTokenType_TrueSymbol;
-                if (CFStringCompare(substring, falseConstant, 0) == kCFCompareEqualTo) tok->tokenType |= LVTokenType_FalseSymbol;
-                if (CFStringCompare(substring, nilConstant, 0) == kCFCompareEqualTo) tok->tokenType |= LVTokenType_NilSymbol;
-                if (CFStringHasPrefix(substring, defConstant)) tok->tokenType |= LVTokenType_Deflike;
+                static CFMutableArrayRef functionLikes; if (!functionLikes) {
+                    functionLikes = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
+                    CFArrayAppendValue(functionLikes, CFSTR("ns"));
+                    CFArrayAppendValue(functionLikes, CFSTR("let"));
+                    CFArrayAppendValue(functionLikes, CFSTR("for"));
+                    CFArrayAppendValue(functionLikes, CFSTR("assoc"));
+                    CFArrayAppendValue(functionLikes, CFSTR("if"));
+                    CFArrayAppendValue(functionLikes, CFSTR("if-let"));
+                    CFArrayAppendValue(functionLikes, CFSTR("cond"));
+                    CFArrayAppendValue(functionLikes, CFSTR("case"));
+                }
+                
+                if (CFEqual(substring, trueConstant)) tok->tokenType |= LVTokenType_TrueSymbol;
+                else if (CFEqual(substring, falseConstant)) tok->tokenType |= LVTokenType_FalseSymbol;
+                else if (CFEqual(substring, nilConstant)) tok->tokenType |= LVTokenType_NilSymbol;
+                else if (CFStringHasPrefix(substring, defConstant)) tok->tokenType |= LVTokenType_Deflike | LVTokenType_IndentLikeFn;
+                else if (CFArrayContainsValue(functionLikes, CFRangeMake(0, CFArrayGetCount(functionLikes)), substring)) tok->tokenType |= LVTokenType_IndentLikeFn;
                 
                 LVAppendToken(&last, tok);
                 i = n-1;
