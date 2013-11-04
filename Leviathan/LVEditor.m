@@ -31,11 +31,11 @@
 - (void) jumpToDefinition:(LVDefinition*)def {
     NSUInteger absPos = def.defName->token->pos;
     self.textView.selectedRange = NSMakeRange(absPos, CFStringGetLength(def.defName->token->string));
-    double delayInSeconds = 0.25;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//    double delayInSeconds = 0.25;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self.textView centerSelectionInVisibleArea:nil];
-    });
+//    });
 }
 
 - (void) startEditingFile:(LVFile*)file {
