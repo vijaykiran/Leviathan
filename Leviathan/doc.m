@@ -148,11 +148,11 @@ LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, NSUInteger idx) {
 
 // new and good
 
-// returns the atom where (cursor >= atom.pos + 1) and (cursor <= atom.pos + atom.length), or NULL if pos = 0
+// returns the atom where (cursor >= atom.pos + 1) and (cursor <= atom.pos + atom.length), or the first token's atom if pos = 0
 LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, NSUInteger pos) {
     for (LVToken* tok = doc->firstToken->nextToken; tok; tok = tok->nextToken) {
         if (pos >= tok->pos + 1 && pos <= tok->pos + CFStringGetLength(tok->string))
             return tok->atom;
     }
-    return NULL;
+    return doc->firstToken->atom;
 }

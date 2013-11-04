@@ -109,6 +109,8 @@
     [self addShortcut:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
     [self addShortcut:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
     
+    [self addShortcut:@selector(jumpToFirstNonBlankCharacterOnLine:) title:@"Go To Semantic Beginning Of Line" keyEquiv:@"m" mods:@[@"ALT"]];
+    
     [self addShortcut:@selector(extendSelectionToNext:) title:@"Extend Seletion to Next" keyEquiv:@" " mods:@[@"CTRL", @"ALT"]];
     
     [self addShortcut:@selector(wrapNextInParens:) title:@"Wrap Next in Parens" keyEquiv:@"9" mods:@[@"CTRL"]];
@@ -474,6 +476,30 @@ NSRange LVElementRange(LVElement* element) {
 /************************************************ PAREDIT (navigating) ************************************************/
 
 
+// TODO: Cmd+Shift+V should show a list of previous pastes and let you choose which one to paste. or maybe Cmd+Shift+C should do the same but choose which one to Copy again. Or maybe both!?
+
+- (void) jumpToFirstNonBlankCharacterOnLine:(NSEvent*)event {
+    NSRange selection = self.selectedRange;
+    
+    LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, selection.location);
+    LVToken* token = atom->token;
+    
+    // find the beginning-of-line token
+    while (!((token->tokenType & LVTokenType_FileBegin) || (token->tokenType & LVTokenType_Newlines)))
+        token = token->prevToken;
+    
+    // but if its a newline, cold-stop!
+    if (token->tokenType & LVTokenType_Newlines && CFStringGetLength(token->string) > 1 && selection.location < token->pos + CFStringGetLength(token->string))
+        return;
+    
+    // move to the next token while its spaces
+    do token = token->nextToken;
+    while (token->tokenType & LVTokenType_Spaces);
+    
+    // its not spaces! move to pos
+    self.selectedRange = NSMakeRange(token->pos, 0);
+    [self scrollRangeToVisible:self.selectedRange];
+}
 
 
 - (void) outBackwardSexp:(NSEvent*)event {
