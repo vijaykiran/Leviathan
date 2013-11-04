@@ -732,6 +732,9 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
                         len += LVElementLength(child);
                     }
                     
+                    // TODO: this is totally incorrect. both Deflikes and IndentLikeFns should indent 2 spaces on every-but-first line NO MATTER WHAT.
+                    //       the only time it should care if there's a second-semantic-child on the first line is when it's not one of these types (i.e. just a normal list).
+                    
                     // does it have two semantic elements on the first line of this coll?
                     if (secondChildOnSameLine) {
                         static CFMutableArrayRef functionLikes; if (!functionLikes) {
@@ -744,6 +747,7 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
                             CFArrayAppendValue(functionLikes, CFSTR("if-let"));
                             CFArrayAppendValue(functionLikes, CFSTR("cond"));
                             CFArrayAppendValue(functionLikes, CFSTR("case"));
+                            CFArrayAppendValue(functionLikes, CFSTR("list"));
                         }
                         
                         // is the first child def-like indentation-wise?
