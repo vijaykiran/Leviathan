@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LVPreferencesWindowController">
             <connections>
+                <outlet property="themesButton" destination="d0y-8j-63y" id="3RD-C0-E4D"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
@@ -73,6 +74,9 @@
                                 </items>
                             </menu>
                         </popUpButtonCell>
+                        <connections>
+                            <action selector="changeTheme:" target="-2" id="Gpq-TM-2mm"/>
+                        </connections>
                     </popUpButton>
                 </subviews>
             </view>

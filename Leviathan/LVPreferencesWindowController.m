@@ -9,8 +9,11 @@
 #import "LVPreferencesWindowController.h"
 
 #import "LVPreferences.h"
+#import "LVThemeManager.h"
 
 @interface LVPreferencesWindowController ()
+
+@property (weak) IBOutlet NSPopUpButton* themesButton;
 
 @end
 
@@ -33,6 +36,7 @@
     NSDisableScreenUpdates();
     [super showWindow:sender];
     [[self window] center];
+    [self setupThemeNames];
     NSEnableScreenUpdates();
 }
 
@@ -44,6 +48,18 @@
 
 - (IBAction) moveSettingsDirectory:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[LVPreferences settingsDirectory]];
+}
+
+- (void) setupThemeNames {
+    NSArray* names = [[LVThemeManager sharedThemeManager] potentialThemeNames];
+    [self.themesButton removeAllItems];
+    [self.themesButton addItemsWithTitles:names];
+    [self.themesButton sizeToFit];
+}
+
+- (IBAction) changeTheme:(id)sender {
+    NSString* newTheme = [self.themesButton titleOfSelectedItem];
+    [LVPreferences setTheme:newTheme];
 }
 
 @end

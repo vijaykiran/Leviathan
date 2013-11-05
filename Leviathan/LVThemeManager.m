@@ -47,6 +47,21 @@
     self.currentTheme = [LVTheme themeFromData:themeData];
 }
 
+- (NSArray*) potentialThemeNames {
+    NSArray* themeURLs = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self themesDirectory]
+                                                       includingPropertiesForKeys:@[]
+                                                                          options:NSDirectoryEnumerationSkipsSubdirectoryDescendants
+                                                                            error:NULL];
+    
+    NSMutableArray* names = [NSMutableArray array];
+    
+    for (NSURL* themeURL in themeURLs) {
+        [names addObject:[themeURL lastPathComponent]];
+    }
+    
+    return names;
+}
+
 - (NSURL*) themeFileURL {
     NSString* themeName = [LVPreferences theme];
     NSURL* themeDestURL = [[self themesDirectory] URLByAppendingPathComponent:themeName];

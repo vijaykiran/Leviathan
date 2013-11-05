@@ -13,6 +13,8 @@
 @interface LVThemeManager : NSObject
 
 + (LVThemeManager*) sharedThemeManager;
+
+- (NSArray*) potentialThemeNames;
 - (void) loadThemes;
 
 @property LVTheme* currentTheme;
