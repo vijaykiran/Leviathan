@@ -77,16 +77,8 @@ LVToken* LVLex(LVStorage* storage) {
             }
                 
             case ' ': {
-                static CFCharacterSetRef nonSpaceCharSet;
-                if (!nonSpaceCharSet) {
-                    CFCharacterSetRef spaceCharSet = CFCharacterSetCreateWithCharactersInString(NULL, CFSTR(" "));
-                    nonSpaceCharSet = CFCharacterSetCreateInvertedSet(NULL, spaceCharSet);
-                    CFRelease(spaceCharSet);
-                }
-                
-                CFRange range;
-                Boolean found = CFStringFindCharacterFromSet(storage->wholeString, nonSpaceCharSet, CFRangeMake(i, inputStringLength - i), 0, &range);
-                CFIndex n = (found ? range.location : inputStringLength);
+                CFIndex n = i; // TODO: starting at i, find next non-' ' char, or end-of-string
+                do n++; while (n < inputStringLength && chars[n] == ' ');
                 
                 LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_Spaces));
                 i = n-1;

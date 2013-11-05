@@ -20,7 +20,7 @@ LVDoc* LVDocCreate(NSString* raw) {
     NSUInteger max = ([raw length] + 2);
     storage->tokens = malloc(sizeof(LVToken) * max);
     storage->atoms = malloc(sizeof(LVAtom) * max);
-    storage->colls = malloc(sizeof(LVColl) * max);
+    storage->colls = malloc(sizeof(LVColl) * max / 2);
     
     storage->tokenCount = 0;
     storage->atomCount = 0;

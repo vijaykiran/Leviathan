@@ -67,7 +67,7 @@ double get_time() {
     self.doc = LVDocCreate([self string]);
     
     double T2 = get_time();
-    if (0) printf("%f\n", T2-T1);
+    if (1) printf("%f\n", T2-T1);
     
     self.highlights = LVHighlightsForDoc(self.doc);
 }
