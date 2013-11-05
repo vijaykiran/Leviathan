@@ -30,47 +30,7 @@
 }
 
 - (void) loadThemes {
-    [self copyDefaultThemeMaybe];
-    [self loadCurrentTheme];
-}
-
-- (NSURL*) themesDirectory {
-    NSURL* dataDirURL = [[LVPreferences settingsDirectory] URLByAppendingPathComponent:@"Themes"];
-    
-    [[NSFileManager defaultManager] createDirectoryAtURL:dataDirURL
-                             withIntermediateDirectories:YES
-                                              attributes:nil
-                                                   error:NULL];
-    
-    return dataDirURL;
-}
-
-- (NSURL*) currentThemeFile {
-    return [[self themesDirectory] URLByAppendingPathComponent:@"CURRENT_THEME.clj"];
-}
-
-- (void) copyFileOrElse:(NSURL*)from to:(NSURL*)to {
-    NSError*__autoreleasing error;
-    if (![[NSFileManager defaultManager] copyItemAtURL:from toURL:to error:&error]) {
-        [NSApp presentError:error];
-        [NSApp terminate:self];
-        return;
-    }
-}
-
-- (void) copyDefaultThemeMaybe {
-    NSURL* currentThemeInAppSupport = [self currentThemeFile];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[currentThemeInAppSupport path]]) {
-        NSURL* defaultThemeInBundle = [[NSBundle mainBundle] URLForResource:@"default_leviathan_theme" withExtension:@"clj"];
-        
-        [self copyFileOrElse:defaultThemeInBundle to:currentThemeInAppSupport];
-        [self copyFileOrElse:defaultThemeInBundle to:[[currentThemeInAppSupport URLByDeletingLastPathComponent] URLByAppendingPathComponent:@"DefaultTheme.clj"]];
-    }
-}
-
-- (void) loadCurrentTheme {
-    NSData* data = [NSData dataWithContentsOfURL:[self currentThemeFile]];
+    NSData* data = [NSData dataWithContentsOfURL:[self themeFileURL]];
     NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary* themeData = [LVParseConfigFromString(str) copy];
     
@@ -85,6 +45,45 @@
     }
     
     self.currentTheme = [LVTheme themeFromData:themeData];
+}
+
+- (NSURL*) themeFileURL {
+    NSString* themeName = [LVPreferences theme];
+    NSURL* themeDestURL = [[self themesDirectory] URLByAppendingPathComponent:themeName];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[themeDestURL path]]) {
+        if ([themeName isEqualToString: @"Default.clj"]) {
+            // copy file and try again
+            NSURL* bundledThemesDir = [[NSBundle mainBundle] URLForResource:@"Themes" withExtension:@""];
+            [[NSFileManager defaultManager] createDirectoryAtURL:[self themesDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+            
+            NSArray* bundledThemeURLs = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:bundledThemesDir includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsSubdirectoryDescendants error:NULL];
+            
+            for (NSURL* themeURL in bundledThemeURLs) {
+                [[NSFileManager defaultManager] copyItemAtURL:themeURL
+                                                        toURL:[[self themesDirectory] URLByAppendingPathComponent:[themeURL lastPathComponent]]
+                                                        error:NULL];
+            }
+        }
+        else {
+            // use default theme and try again
+            [LVPreferences setTheme:@"Default.clj"];
+        }
+        return [self themeFileURL];
+    }
+    
+    return themeDestURL;
+}
+
+- (NSURL*) themesDirectory {
+    NSURL* dataDirURL = [[LVPreferences settingsDirectory] URLByAppendingPathComponent:@"Themes"];
+    
+    [[NSFileManager defaultManager] createDirectoryAtURL:dataDirURL
+                             withIntermediateDirectories:YES
+                                              attributes:nil
+                                                   error:NULL];
+    
+    return dataDirURL;
 }
 
 @end

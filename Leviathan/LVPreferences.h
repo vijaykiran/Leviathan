@@ -18,4 +18,7 @@ extern NSString* LVCurrentThemeChangedNotification;
 
 + (NSURL*) settingsDirectory;
 
++ (NSString*) theme;
++ (void) setTheme:(NSString*)theme;
+
 @end
