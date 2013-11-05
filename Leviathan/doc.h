@@ -15,7 +15,7 @@
 typedef struct __LVDoc {
     LVColl* topLevelColl;
     LVToken* firstToken;
-    LVStorage* storage;
+    LVStorage storage;
 } LVDoc;
 
 LVDoc* LVDocCreate(NSString* raw);

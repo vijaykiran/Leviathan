@@ -13,7 +13,7 @@
 #import "atom.h"
 
 LVHighlights* LVHighlightsForDoc(LVDoc* doc) {
-    LVHighlights* hs = malloc(sizeof(LVHighlights) * CFStringGetLength(doc->storage->wholeString));
+    LVHighlights* hs = malloc(sizeof(LVHighlights) * CFStringGetLength(doc->storage.wholeString));
     
     int idx = 0;
     

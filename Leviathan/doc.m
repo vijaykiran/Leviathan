@@ -15,7 +15,7 @@
 
 LVDoc* LVDocCreate(NSString* raw) {
     LVDoc* doc = malloc(sizeof(LVDoc));
-    LVStorage* storage = malloc(sizeof(LVStorage));
+    LVStorage* storage = &doc->storage;
     
     NSUInteger max = ([raw length] + 2);
     storage->tokens = malloc(sizeof(LVToken) * max);
@@ -27,7 +27,6 @@ LVDoc* LVDocCreate(NSString* raw) {
     storage->collCount = 0;
     
     storage->wholeString = (__bridge_retained CFStringRef)raw;
-    doc->storage = storage;
     
     @try {
         doc->firstToken = LVLex(storage);
@@ -45,21 +44,21 @@ void LVDocDestroy(LVDoc* doc) {
     if (!doc)
         return;
     
-    CFRelease(doc->storage->wholeString);
+    CFRelease(doc->storage.wholeString);
     
-    for (int i = 0; i < doc->storage->tokenCount; i++) {
-        CFStringRef s = doc->storage->tokens[i].string;
+    for (int i = 0; i < doc->storage.tokenCount; i++) {
+        CFStringRef s = doc->storage.tokens[i].string;
         CFRelease(s);
     }
     
-    for (int i = 0; i < doc->storage->collCount; i++) {
-        LVColl coll = doc->storage->colls[i];
+    for (int i = 0; i < doc->storage.collCount; i++) {
+        LVColl coll = doc->storage.colls[i];
         free(coll.children);
     }
     
-    free(doc->storage->tokens);
-    free(doc->storage->atoms);
-    free(doc->storage->colls);
+    free(doc->storage.tokens);
+    free(doc->storage.atoms);
+    free(doc->storage.colls);
     
     free(doc);
 }
