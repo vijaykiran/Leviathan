@@ -29,24 +29,29 @@ NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotificatio
 }
 
 
-
-
 + (NSURL*) settingsDirectory {
     NSData* dirData = [[NSUserDefaults standardUserDefaults] dataForKey:@"settingsDirectoryData"];
-    if (dirData) {
-        BOOL stale;
-        NSError* __autoreleasing error;
-        return [NSURL URLByResolvingBookmarkData:dirData
-                                         options:0
-                                   relativeToURL:nil
-                             bookmarkDataIsStale:&stale
-                                           error:&error];
-    }
-    else {
+    
+    if (!dirData) {
         [[NSUserDefaults standardUserDefaults] setObject:[self defaultSettingsDirectoryBookmarkData]
                                                   forKey:@"settingsDirectoryData"];
         return [self settingsDirectory];
     }
+    
+    BOOL stale;
+    NSError* __autoreleasing error;
+    NSURL* dir = [NSURL URLByResolvingBookmarkData:dirData
+                                           options:0
+                                     relativeToURL:nil
+                               bookmarkDataIsStale:&stale
+                                             error:&error];
+    
+    if ([[dir pathComponents] containsObject: @".Trash"]) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"settingsDirectoryData"];
+        return [self settingsDirectory];
+    }
+    
+    return dir;
 }
 
 + (NSData*) defaultSettingsDirectoryBookmarkData {
