@@ -25,8 +25,7 @@ LVToken* LVLex(LVStorage* storage) {
     LVToken* head = NULL;
     LVToken* last = NULL;
     
-    static CFCharacterSetRef endAtomCharSet;
-    if (!endAtomCharSet) endAtomCharSet = CFCharacterSetCreateWithCharactersInString(NULL, CFSTR("()[]{}, \"\r\n\t;"));
+    static char* endAtomCharSet = "()[]{}, \"\r\n\t;";
     
     head = LVTokenCreate(storage, 0, 0, LVTokenType_FileBegin);
     head->prevToken = NULL;
@@ -86,9 +85,8 @@ LVToken* LVLex(LVStorage* storage) {
             }
                 
             case ':': {
-                CFRange range;
-                Boolean found = CFStringFindCharacterFromSet(storage->wholeString, endAtomCharSet, CFRangeMake(i, inputStringLength - i), 0, &range);
-                CFIndex n = (found ? range.location : inputStringLength);
+                CFIndex n = i;
+                do n++; while (n < inputStringLength && !strchr(endAtomCharSet, chars[n]));
                 
                 LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_Keyword));
                 i = n-1;
@@ -123,9 +121,8 @@ LVToken* LVLex(LVStorage* storage) {
             }
                 
             case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
-                CFRange range;
-                Boolean found = CFStringFindCharacterFromSet(storage->wholeString, endAtomCharSet, CFRangeMake(i, inputStringLength - i), 0, &range);
-                CFIndex n = (found ? range.location : inputStringLength);
+                CFIndex n = i;
+                do n++; while (n < inputStringLength && !strchr(endAtomCharSet, chars[n]));
                 
                 LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_Number));
                 i = n-1;
@@ -158,9 +155,8 @@ LVToken* LVLex(LVStorage* storage) {
                     }
                         
                     case '\'': {
-                        CFRange range;
-                        Boolean found = CFStringFindCharacterFromSet(storage->wholeString, endAtomCharSet, CFRangeMake(i, inputStringLength - i), 0, &range);
-                        CFIndex n = (found ? range.location : inputStringLength);
+                        CFIndex n = i;
+                        do n++; while (n < inputStringLength && !strchr(endAtomCharSet, chars[n]));
                         
                         LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_Var));
                         i = n-1;
@@ -172,9 +168,8 @@ LVToken* LVLex(LVStorage* storage) {
                     case '_': LVAppendToken(&last, LVTokenCreate(storage, i, 2, LVTokenType_ReaderCommentStart)); i++; break;
                         
                     default: {
-                        CFRange range;
-                        Boolean found = CFStringFindCharacterFromSet(storage->wholeString, endAtomCharSet, CFRangeMake(i, inputStringLength - i), 0, &range);
-                        CFIndex n = (found ? range.location : inputStringLength);
+                        CFIndex n = i;
+                        do n++; while (n < inputStringLength && !strchr(endAtomCharSet, chars[n]));
                         
                         LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_ReaderMacro));
                         i = n-1;
@@ -186,9 +181,8 @@ LVToken* LVLex(LVStorage* storage) {
             }
                 
             default: {
-                CFRange range;
-                Boolean found = CFStringFindCharacterFromSet(storage->wholeString, endAtomCharSet, CFRangeMake(i, inputStringLength - i), 0, &range);
-                CFIndex n = (found ? range.location : inputStringLength);
+                CFIndex n = i;
+                do n++; while (n < inputStringLength && !strchr(endAtomCharSet, chars[n]));
                 
                 LVToken* tok = LVTokenCreate(storage, i, n - i, LVTokenType_Symbol);
                 CFStringRef substring = tok->string;
