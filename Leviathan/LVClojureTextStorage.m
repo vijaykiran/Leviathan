@@ -124,9 +124,7 @@ double get_time() { struct timeval t; struct timezone tzp; gettimeofday(&t, &tzp
 }
 
 - (void) rehighlight {
-    free(self.highlights), self.highlights = NULL;
-    
-    [[LVThemeManager sharedThemeManager] loadTheme];
+    free(self.highlights);
     self.highlights = LVHighlightsForDoc(self.doc);
     
     [self edited:NSTextStorageEditedAttributes range:NSMakeRange(0, [self.internalStorage length]) changeInLength:0];

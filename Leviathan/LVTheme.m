@@ -48,42 +48,51 @@ static NSDictionary* LVThemeSelectionStyleFrom(NSDictionary* data) {
     return selectionAttrs;
 }
 
+@interface LVTheme ()
+
+@property NSDictionary* themeData;
+
+@end
+
 @implementation LVTheme
 
 + (LVTheme*) themeFromData:(NSDictionary*)data {
     LVTheme* theme = [[LVTheme alloc] init];
+    theme.themeData = data;
+    [theme rebuild];
+    return theme;
+}
+
+- (void) rebuild {
+    self.selection = LVThemeSelectionStyleFrom([self.themeData objectForKey:@"selection-style"]);
     
-    theme.selection = LVThemeSelectionStyleFrom([data objectForKey:@"selection-style"]);
+    self.backgroundColor = LVColorFromHex([self.themeData objectForKey:@"background-color"]);
+    self.cursorColor = LVColorFromHex([self.themeData objectForKey:@"cursor-color"]);
     
-    theme.backgroundColor = LVColorFromHex([data objectForKey:@"background-color"]);
-    theme.cursorColor = LVColorFromHex([data objectForKey:@"cursor-color"]);
-    
-    theme.symbol = LVThemeStyleFrom([data objectForKey:@"symbol-style"]);
-    theme.def = LVThemeStyleFrom([data objectForKey:@"def-keyord-style"]);
-    theme.defname = LVThemeStyleFrom([data objectForKey:@"def-name-style"]);
-    theme.keyword = LVThemeStyleFrom([data objectForKey:@"keyword-style"]);
-    theme.comment = LVThemeStyleFrom([data objectForKey:@"comment-style"]);
-    theme.typeop = LVThemeStyleFrom([data objectForKey:@"typehint-style"]);
-    theme.quote = LVThemeStyleFrom([data objectForKey:@"quote-style"]);
-    theme.unquote = LVThemeStyleFrom([data objectForKey:@"unquote-style"]);
-    theme.syntaxquote = LVThemeStyleFrom([data objectForKey:@"syntaxquote-style"]);
-    theme.number = LVThemeStyleFrom([data objectForKey:@"number-style"]);
-    theme.syntaxerror = LVThemeStyleFrom([data objectForKey:@"syntax-error-style"]);
-    theme.string = LVThemeStyleFrom([data objectForKey:@"string-style"]);
-    theme.regex = LVThemeStyleFrom([data objectForKey:@"regex-style"]);
-    theme.splice = LVThemeStyleFrom([data objectForKey:@"splice-style"]);
-    theme._true = LVThemeStyleFrom([data objectForKey:@"true-style"]);
-    theme._false = LVThemeStyleFrom([data objectForKey:@"false-style"]);
-    theme._nil = LVThemeStyleFrom([data objectForKey:@"nil-style"]);
+    self.symbol = LVThemeStyleFrom([self.themeData objectForKey:@"symbol-style"]);
+    self.def = LVThemeStyleFrom([self.themeData objectForKey:@"def-keyord-style"]);
+    self.defname = LVThemeStyleFrom([self.themeData objectForKey:@"def-name-style"]);
+    self.keyword = LVThemeStyleFrom([self.themeData objectForKey:@"keyword-style"]);
+    self.comment = LVThemeStyleFrom([self.themeData objectForKey:@"comment-style"]);
+    self.typeop = LVThemeStyleFrom([self.themeData objectForKey:@"typehint-style"]);
+    self.quote = LVThemeStyleFrom([self.themeData objectForKey:@"quote-style"]);
+    self.unquote = LVThemeStyleFrom([self.themeData objectForKey:@"unquote-style"]);
+    self.syntaxquote = LVThemeStyleFrom([self.themeData objectForKey:@"syntaxquote-style"]);
+    self.number = LVThemeStyleFrom([self.themeData objectForKey:@"number-style"]);
+    self.syntaxerror = LVThemeStyleFrom([self.themeData objectForKey:@"syntax-error-style"]);
+    self.string = LVThemeStyleFrom([self.themeData objectForKey:@"string-style"]);
+    self.regex = LVThemeStyleFrom([self.themeData objectForKey:@"regex-style"]);
+    self.splice = LVThemeStyleFrom([self.themeData objectForKey:@"splice-style"]);
+    self._true = LVThemeStyleFrom([self.themeData objectForKey:@"true-style"]);
+    self._false = LVThemeStyleFrom([self.themeData objectForKey:@"false-style"]);
+    self._nil = LVThemeStyleFrom([self.themeData objectForKey:@"nil-style"]);
     
     NSMutableArray* rainbowStyles = [NSMutableArray array];
-    for (NSDictionary* rainbowParen in [data objectForKey:@"rainbow-parens-styles"]) {
+    for (NSDictionary* rainbowParen in [self.themeData objectForKey:@"rainbow-parens-styles"]) {
         [rainbowStyles addObject:LVThemeStyleFrom(rainbowParen)];
     }
     
-    theme.rainbowparens = rainbowStyles;
-    
-    return theme;
+    self.rainbowparens = rainbowStyles;
 }
 
 @end

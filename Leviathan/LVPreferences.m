@@ -24,6 +24,7 @@ NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotificatio
 + (void) setUserFont:(NSFont*)font {
     [[NSUserDefaults standardUserDefaults] setDouble:[font pointSize] forKey:@"fontSize"];
     [[NSUserDefaults standardUserDefaults] setObject:[font fontName] forKey:@"fontName"];
+    [[[LVThemeManager sharedThemeManager] currentTheme] rebuild];
     [[NSNotificationCenter defaultCenter] postNotificationName:LVDefaultsFontChangedNotification object:nil];
 }
 
@@ -75,6 +76,7 @@ NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotificatio
 
 + (void) setTheme:(NSString*)theme {
     [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"currentThemeName"];
+    [[LVThemeManager sharedThemeManager] loadTheme];
     [[NSNotificationCenter defaultCenter] postNotificationName:LVCurrentThemeChangedNotification object:nil];
 }
 

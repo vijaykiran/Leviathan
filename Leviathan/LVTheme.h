@@ -35,4 +35,6 @@
 @property NSDictionary* _false;
 @property NSDictionary* _nil;
 
+- (void) rebuild;
+
 @end
