@@ -34,7 +34,8 @@ LVDoc* LVDocCreate(NSString* raw) {
         doc->topLevelColl = LVParseTokens(storage, doc->firstToken);
     }
     @catch (LVParseError *exception) {
-        // ignore it!
+        LVDocDestroy(doc);
+        return NULL;
     }
     
     return doc;
@@ -47,8 +48,8 @@ void LVDocDestroy(LVDoc* doc) {
     CFRelease(doc->storage->wholeString);
     
     for (int i = 0; i < doc->storage->tokenCount; i++) {
-        CFStringRef ss = doc->storage->tokens[i].string;
-        CFRelease(ss);
+        CFStringRef s = doc->storage->tokens[i].string;
+        CFRelease(s);
     }
     
     for (int i = 0; i < doc->storage->collCount; i++) {
