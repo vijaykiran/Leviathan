@@ -13,9 +13,9 @@
 
 #import "LVParseError.h"
 
-static LVColl* parseColl(LVStorage* storage, LVToken** iter, LVCollType collType, LVTokenType endTokenType);
+static LVColl* parseColl(LVDocStorage* storage, LVToken** iter, LVCollType collType, LVTokenType endTokenType);
 
-static LVElement* parseOne(LVStorage* storage, LVToken** iter) {
+static LVElement* parseOne(LVDocStorage* storage, LVToken** iter) {
     LVToken* currentToken = *iter;
     
     if (currentToken->tokenType & LVTokenType_LParen) {
@@ -117,7 +117,7 @@ static LVElement* parseOne(LVStorage* storage, LVToken** iter) {
     @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
 }
 
-static LVColl* parseColl(LVStorage* storage, LVToken** iter, LVCollType collType, LVTokenType endTokenType) {
+static LVColl* parseColl(LVDocStorage* storage, LVToken** iter, LVCollType collType, LVTokenType endTokenType) {
     LVColl* coll = LVCollCreate(storage);
     coll->collType = collType;
     
@@ -174,7 +174,7 @@ static LVColl* parseColl(LVStorage* storage, LVToken** iter, LVCollType collType
     return coll;
 }
 
-LVColl* LVParseTokens(LVStorage* storage, LVToken* firstToken) {
+LVColl* LVParseTokens(LVDocStorage* storage, LVToken* firstToken) {
     LVColl* topLevelColl = parseColl(storage, &firstToken, LVCollType_TopLevel, LVTokenType_FileEnd);
     topLevelColl->parent = NULL;
     return topLevelColl;

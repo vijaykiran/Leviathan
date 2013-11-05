@@ -11,7 +11,7 @@
 #import "coll.h"
 #import "token.h"
 
-typedef struct __LVStorage {
+typedef struct __LVDocStorage {
     CFStringRef wholeString;
     
     LVToken* tokens;
@@ -21,12 +21,12 @@ typedef struct __LVStorage {
     NSUInteger tokenCount;
     NSUInteger atomCount;
     NSUInteger collCount;
-} LVStorage;
+} LVDocStorage;
 
 typedef struct __LVDoc {
     LVColl* topLevelColl;
     LVToken* firstToken;
-    LVStorage storage;
+    LVDocStorage storage;
 } LVDoc;
 
 LVDoc* LVDocCreate(NSString* raw);

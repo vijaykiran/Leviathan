@@ -10,7 +10,7 @@
 
 #import "doc.h"
 
-LVToken* LVTokenCreate(struct __LVStorage* storage, NSUInteger pos, NSUInteger len, LVTokenType type) {
+LVToken* LVTokenCreate(struct __LVDocStorage* storage, NSUInteger pos, NSUInteger len, LVTokenType type) {
     LVToken* tok = storage->tokens + storage->tokenCount++;
     tok->tokenType = type;
     tok->string = CFStringCreateWithSubstring(NULL, storage->wholeString, CFRangeMake(pos, len));

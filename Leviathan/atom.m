@@ -10,7 +10,7 @@
 
 #import "doc.h"
 
-LVAtom* LVAtomCreate(LVStorage* storage, LVAtomType typ, LVToken* tok) {
+LVAtom* LVAtomCreate(LVDocStorage* storage, LVAtomType typ, LVToken* tok) {
     LVAtom* atom = storage->atoms + storage->atomCount++;
     atom->isAtom = YES;
     atom->atomType = typ;

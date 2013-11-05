@@ -16,7 +16,7 @@
 
 #define LV_COLL_CHUNK_SIZE (20)
 
-LVColl* LVCollCreate(LVStorage* storage) {
+LVColl* LVCollCreate(LVDocStorage* storage) {
     LVColl* coll = storage->colls + storage->collCount++;
     coll->isAtom = NO;
     

@@ -15,7 +15,7 @@
 
 LVDoc* LVDocCreate(NSString* raw) {
     LVDoc* doc = malloc(sizeof(LVDoc));
-    LVStorage* storage = &doc->storage;
+    LVDocStorage* storage = &doc->storage;
     
     NSUInteger max = ([raw length] + 2);
     storage->tokens = malloc(sizeof(LVToken) * max);

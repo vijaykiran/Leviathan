@@ -10,7 +10,7 @@
 #import "token.h"
 #import "atom.h"
 
-struct __LVStorage;
+struct __LVDocStorage;
 
 @interface LVDefinition : NSObject
 
@@ -49,7 +49,7 @@ struct __LVColl {
     
 };
 
-LVColl* LVCollCreate(struct __LVStorage* storage);
+LVColl* LVCollCreate(struct __LVDocStorage* storage);
 
 void LVElementListAppend(LVColl* coll, LVElement* child);
 

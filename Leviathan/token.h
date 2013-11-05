@@ -8,7 +8,7 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 
-struct __LVStorage;
+struct __LVDocStorage;
 struct __LVAtom;
 
 typedef enum __LVTokenType : uint64_t {
@@ -68,4 +68,4 @@ struct __LVToken {
 };
 
 
-LVToken* LVTokenCreate(struct __LVStorage* storage, NSUInteger pos, NSUInteger len, LVTokenType type);
+LVToken* LVTokenCreate(struct __LVDocStorage* storage, NSUInteger pos, NSUInteger len, LVTokenType type);

@@ -9,6 +9,6 @@
 #import "coll.h"
 #import "token.h"
 
-struct __LVStorage;
+struct __LVDocStorage;
 
-LVColl* LVParseTokens(struct __LVStorage* storage, LVToken* firstToken);
+LVColl* LVParseTokens(struct __LVDocStorage* storage, LVToken* firstToken);

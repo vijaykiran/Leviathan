@@ -16,7 +16,7 @@ void LVAppendToken(LVToken** lastPtr, LVToken* newToken) {
     *lastPtr = newToken;
 }
 
-LVToken* LVLex(LVStorage* storage) {
+LVToken* LVLex(LVDocStorage* storage) {
     NSUInteger inputStringLength = CFStringGetLength(storage->wholeString);
     
     UniChar chars[inputStringLength];

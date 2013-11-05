@@ -8,4 +8,4 @@
 
 #include "doc.h"
 
-LVToken* LVLex(LVStorage* storage);
+LVToken* LVLex(LVDocStorage* storage);
