@@ -14,29 +14,30 @@
 #import "LVParseError.h"
 
 LVDoc* LVDocCreate(NSString* raw) {
+    LVDoc* doc = malloc(sizeof(LVDoc));
+    LVStorage* storage = malloc(sizeof(LVStorage));
+    
+    NSUInteger max = ([raw length] + 2);
+    storage->tokens = malloc(sizeof(LVToken) * max);
+    storage->atoms = malloc(sizeof(LVAtom) * max);
+    storage->colls = malloc(sizeof(LVColl) * max);
+    
+    storage->tokenCount = 0;
+    storage->atomCount = 0;
+    storage->collCount = 0;
+    
+    storage->wholeString = (__bridge_retained CFStringRef)raw;
+    doc->storage = storage;
+    
     @try {
-        LVDoc* doc = malloc(sizeof(LVDoc));
-        LVStorage* storage = malloc(sizeof(LVStorage));
-        
-        NSUInteger max = [raw length];
-        storage->tokens = malloc(sizeof(LVToken) * max);
-        storage->atoms = malloc(sizeof(LVAtom) * max);
-        storage->colls = malloc(sizeof(LVColl) * max);
-        
-        storage->tokenCount = 0;
-        storage->atomCount = 0;
-        storage->collCount = 0;
-        
-        storage->wholeString = (__bridge_retained CFStringRef)raw;
-        doc->storage = storage;
         doc->firstToken = LVLex(storage);
         doc->topLevelColl = LVParseTokens(storage, doc->firstToken);
-        
-        return doc;
     }
     @catch (LVParseError *exception) {
-        return nil;
+        // ignore it!
     }
+    
+    return doc;
 }
 
 void LVDocDestroy(LVDoc* doc) {
