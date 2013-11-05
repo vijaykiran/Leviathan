@@ -265,6 +265,10 @@ NSRange LVElementRange(LVElement* element) {
     return NSMakeRange(LVGetAbsolutePosition(element), LVElementLength(element));
 }
 
+BOOL LVIsMultiNewlineToken(LVToken* token) {
+    return ((token->tokenType & LVTokenType_Newlines) && CFStringGetLength(token->string) > 1);
+}
+
 
 
 
@@ -606,46 +610,20 @@ NSRange LVElementRange(LVElement* element) {
     }
 }
 
-LVToken* LVGetAtomIndexFollowingPosition(LVDoc* doc, NSUInteger pos) {
-    for (LVToken* tok = doc->firstToken->nextToken; tok; tok = tok->nextToken) {
-        if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
-            return tok;
-    }
-    return NULL; // TODO: uhh, what does this mean again?
-}
-
 - (void) jumpToNextBlankLineGroup:(NSEvent*)event {
-    LVToken* foundToken = LVGetAtomIndexFollowingPosition(self.clojureTextStorage.doc, self.selectedRange.location);
-    if (!foundToken)
-        return;
+    LVToken* token = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location)->token;
+    do token = token->nextToken; while (token && !(token->tokenType & LVTokenType_FileEnd) && !LVIsMultiNewlineToken(token));
     
-    for (LVToken* token = foundToken->nextToken; token; token = token->nextToken) {
-        if (token->tokenType & LVTokenType_Newlines) {
-            if (CFStringGetLength(token->string) > 1) {
-                NSUInteger pos = token->pos + 1;
-                self.selectedRange = NSMakeRange(pos, 0);
-                [self scrollRangeToVisible:self.selectedRange];
-                return;
-            }
-        }
-    }
+    self.selectedRange = NSMakeRange(token->pos + MIN(1, CFStringGetLength(token->string)), 0);
+    [self scrollRangeToVisible:self.selectedRange];
 }
 
 - (void) jumpToPreviousBlankLineGroup:(NSEvent*)event {
-    LVToken* foundToken = LVGetAtomIndexFollowingPosition(self.clojureTextStorage.doc, self.selectedRange.location);
-    if (!foundToken)
-        return;
+    LVToken* token = LVFindAtomFollowingIndex(self.clojureTextStorage.doc, self.selectedRange.location)->token;
+    do token = token->prevToken; while (token && !(token->tokenType & LVTokenType_FileBegin) && !LVIsMultiNewlineToken(token));
     
-    for (LVToken* token = foundToken->prevToken; token; token = token->prevToken) {
-        if (token->tokenType & LVTokenType_Newlines) {
-            if (CFStringGetLength(token->string) > 1) {
-                NSUInteger pos = token->pos + 1;
-                self.selectedRange = NSMakeRange(pos, 0);
-                [self scrollRangeToVisible:self.selectedRange];
-                return;
-            }
-        }
-    }
+    self.selectedRange = NSMakeRange(token->pos + MIN(1, CFStringGetLength(token->string)), 0);
+    [self scrollRangeToVisible:self.selectedRange];
 }
 
 

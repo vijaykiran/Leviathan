@@ -113,15 +113,6 @@ void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs) {
 
 // questionable but in-use
 
-LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, NSUInteger pos) {
-    LVToken* tok = doc->firstToken->nextToken;
-    for (; tok->nextToken; tok = tok->nextToken) {
-        if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
-            return tok->atom;
-    }
-    return tok->atom;
-}
-
 LVColl* LVFindElementAtPosition(LVDoc* doc, NSUInteger pos, NSUInteger* childIndex) {
     LVAtom* atom = LVFindAtomFollowingIndex(doc, pos);
     
@@ -176,11 +167,22 @@ LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, NSUInteger idx) {
 
 // new and good
 
-// returns the atom where (cursor >= atom.pos + 1) and (cursor <= atom.pos + atom.length), or the first token's atom if pos = 0
 LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, NSUInteger pos) {
+    if (pos == 0) {
+        return doc->firstToken->atom;
+    }
     for (LVToken* tok = doc->firstToken->nextToken; tok; tok = tok->nextToken) {
         if (pos >= tok->pos + 1 && pos <= tok->pos + CFStringGetLength(tok->string))
             return tok->atom;
     }
-    return doc->firstToken->atom;
+    abort();
+}
+
+LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, NSUInteger pos) {
+    LVToken* tok = doc->firstToken->nextToken;
+    for (; tok->nextToken; tok = tok->nextToken) {
+        if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
+            return tok->atom;
+    }
+    return tok->atom;
 }

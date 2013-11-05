@@ -34,7 +34,6 @@ void LVDocDestroy(LVDoc* doc);
 
 void LVFindDefinitions(LVDoc* doc, NSMutableArray* defs);
 
-LVAtom* LVFindAtomFollowingIndex(struct __LVDoc* doc, NSUInteger pos);
 
 LVColl* LVFindElementAtPosition(LVDoc* doc, NSUInteger pos, NSUInteger* childIndex);
 
@@ -49,3 +48,4 @@ LVElement* LVFindNextSemanticChildStartingAt(LVDoc* doc, NSUInteger idx);
 // new and good
 
 LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, NSUInteger pos);
+LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, NSUInteger pos);
