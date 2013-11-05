@@ -25,12 +25,8 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
-double get_time() {
-    struct timeval t;
-    struct timezone tzp;
-    gettimeofday(&t, &tzp);
-    return t.tv_sec + t.tv_usec*1e-6;
-}
+#define PRINT_PARSE_TIMES (NO)
+double get_time() { struct timeval t; struct timezone tzp; gettimeofday(&t, &tzp); return t.tv_sec + t.tv_usec*1e-6; }
 
 @implementation LVClojureTextStorage
 
@@ -49,27 +45,19 @@ double get_time() {
     LVDocDestroy(self.doc);
 }
 
-- (BOOL) validateStringCanParse:(NSString*)string {
-    LVDoc* tempDoc = LVDocCreate(string);
-    LVDocDestroy(tempDoc);
-    return tempDoc != nil;
-}
-
 - (void) parse {
-//    NSLog(@"parsing");
-    
-    free(self.highlights);
-    self.highlights = NULL;
-    
-    double T1 = get_time();
+    free(self.highlights), self.highlights = NULL;
     
     LVDocDestroy(self.doc);
-    self.doc = LVDocCreate([self string]);
-    
+    double T1 = get_time();
+    self.doc = LVDocCreate(self.internalStorage);
     double T2 = get_time();
-    if (1) printf("%f\n", T2-T1);
+    if (PRINT_PARSE_TIMES) printf("%f ", T2-T1);
     
-    self.highlights = LVHighlightsForDoc(self.doc);
+    if (self.doc)
+        self.highlights = LVHighlightsForDoc(self.doc);
+    else
+        printf("dang: can't parse.\n");
 }
 
 - (NSString*) string {
@@ -88,8 +76,9 @@ double get_time() {
     LVHighlights* h = &self.highlights[index];
     
     assert(h->atom != NULL);
-    if (!h->attrs)
+    if (!h->attrs) {
         h->attrs = LVAttributesForAtom(h->atom);
+    }
     
     if (aRange) {
         aRange->location = h->pos;
@@ -105,42 +94,24 @@ double get_time() {
     [self.internalStorage replaceCharactersInRange:aRange withString:aString];
     NSUInteger newLen = [self length];
     
-    BOOL wholeThingNeedsRehighlight = NO;
-    
     if (self.parsingEnabled) {
-        if ([self validateStringCanParse:self.internalStorage]) {
-            if (!self.doc)
-                wholeThingNeedsRehighlight = YES;
-            
-            [self parse];
-        }
-        else {
-            if (self.doc)
-                wholeThingNeedsRehighlight = YES;
-            
-            printf("dang: can't parse.\n");
-            
-            free(self.highlights);
-            LVDocDestroy(self.doc);
-            
-            self.doc = NULL;
-            if (self.highlights) self.highlights = NULL;
+        LVDoc* oldDoc = self.doc;
+        [self parse];
+        
+        if ((oldDoc == NULL && self.doc != NULL) || (oldDoc != NULL && self.doc == NULL)) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self edited:NSTextStorageEditedAttributes
+                       range:NSMakeRange(0, [self.internalStorage length])
+              changeInLength:0];
+            });
         }
     }
     
     [self edited:NSTextStorageEditedCharacters range:aRange changeInLength:(newLen - origLen)];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (wholeThingNeedsRehighlight)
-            [self edited:NSTextStorageEditedAttributes range:NSMakeRange(0, [self.internalStorage length]) changeInLength:0];
-    });
 }
 
 - (void) withDisabledParsing:(void(^)())blk {
-//    NSLog(@"disabling parsing");
-    // TODO: is this right? im not sure. i mean, we're constantly setting self.doc to nil, is that really ok? also, its ugly. clean it up.
-    free(self.highlights);
-    self.highlights = NULL;
+    free(self.highlights), self.highlights = NULL;
     
     self.parsingEnabled = NO;
     blk();
@@ -153,8 +124,7 @@ double get_time() {
 }
 
 - (void) rehighlight {
-    free(self.highlights);
-    self.highlights = NULL;
+    free(self.highlights), self.highlights = NULL;
     
     [[LVThemeManager sharedThemeManager] loadTheme];
     self.highlights = LVHighlightsForDoc(self.doc);
