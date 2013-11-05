@@ -437,6 +437,13 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="hcH-Rs-CNG"/>
+                            <menuItem title="Reload Theme" tag="3" id="2bI-SJ-22z">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="reloadCurrentTheme:" target="494" id="Dbc-K0-a6E"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="oOW-CI-sQz"/>
                             <menuItem title="Change Font" tag="3" id="7Xm-uE-tj9">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>

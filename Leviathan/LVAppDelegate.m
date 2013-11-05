@@ -108,7 +108,7 @@
                                                  name:NSWindowDidBecomeKeyNotification
                                                object:nil];
     
-    [[LVThemeManager sharedThemeManager] loadThemes];
+    [[LVThemeManager sharedThemeManager] loadTheme];
     
     self.projectWindowControllers = [NSMutableArray array];
     
@@ -133,10 +133,7 @@
 }
 
 - (IBAction) reloadCurrentTheme:(id)sender {
-    // TODO: hook this up to a menu item somewhere
-    [[LVThemeManager sharedThemeManager] loadThemes];
-    
-    // TODO: send notification of LVCurrentThemeChangedNotification! (meh, boring)
+    [LVPreferences setTheme:[LVPreferences theme]];
 }
 
 - (void) windowDidBecomeKey:(NSNotification*)note {

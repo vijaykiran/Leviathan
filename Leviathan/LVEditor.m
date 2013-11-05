@@ -8,17 +8,7 @@
 
 #import "LVEditor.h"
 
-#import "LVPreferences.h"
-
 @implementation LVEditor
-
-- (void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void) defaultsFontChanged:(NSNotification*)note {
-    [self.file.clojureTextStorage rehighlight];
-}
 
 - (NSString*) nibName {
     return @"Editor";
@@ -42,8 +32,6 @@
     self.file = file;
     self.title = file.shortName;
     self.textView.clojureTextStorage = file.clojureTextStorage;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     
     [[self.textView layoutManager] replaceTextStorage:file.clojureTextStorage];
     [[self.textView undoManager] removeAllActions];

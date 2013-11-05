@@ -8,6 +8,8 @@
 
 #import "LVPreferences.h"
 
+#import "LVThemeManager.h"
+
 NSString* LVDefaultsFontChangedNotification = @"LVDefaultsFontChangedNotification";
 NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotification";
 
@@ -73,7 +75,7 @@ NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotificatio
 
 + (void) setTheme:(NSString*)theme {
     [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"currentThemeName"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:LVDefaultsFontChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LVCurrentThemeChangedNotification object:nil];
 }
 
 @end

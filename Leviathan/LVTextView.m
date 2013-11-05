@@ -50,7 +50,14 @@
     return did;
 }
 
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void) awakeFromNib {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];
+    
     [self setupNiceties];
     [self setupShortcuts];
 //    [self setupAutoIndentation];
@@ -72,6 +79,16 @@
 //    [self swizzleMethodWithIndentation:@selector(insertNewline:)];
 //    [self swizzleMethodWithIndentation:@selector(insertText:)];
 //}
+
+- (void) defaultsFontChanged:(NSNotification*)note {
+    [self.clojureTextStorage rehighlight];
+    [self setupNiceties];
+}
+
+- (void) defaultsThemeChanged:(NSNotification*)note {
+    [self.clojureTextStorage rehighlight];
+    [self setupNiceties];
+}
 
 - (void) setupNiceties {
     self.enclosingScrollView.verticalScroller.knobStyle = self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;

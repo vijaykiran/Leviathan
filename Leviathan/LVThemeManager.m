@@ -29,7 +29,7 @@
     return sharedThemeManager;
 }
 
-- (void) loadThemes {
+- (void) loadTheme {
     NSData* data = [NSData dataWithContentsOfURL:[self themeFileURL]];
     NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary* themeData = [LVParseConfigFromString(str) copy];
