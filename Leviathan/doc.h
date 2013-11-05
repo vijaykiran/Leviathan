@@ -10,11 +10,12 @@
 
 #import "coll.h"
 #import "token.h"
+#import "storage.h"
 
 typedef struct __LVDoc {
-    CFStringRef string;
     LVColl* topLevelColl;
     LVToken* firstToken;
+    LVStorage* storage;
 } LVDoc;
 
 LVDoc* LVDocCreate(NSString* raw);

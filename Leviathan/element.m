@@ -27,13 +27,6 @@ NSUInteger LVElementLength(LVElement* element) {
     }
 }
 
-void LVElementDestroy(LVElement* element) {
-    if (element->isAtom)
-        LVAtomDestroy((LVAtom*)element);
-    else
-        LVCollDestroy((LVColl*)element);
-}
-
 LVColl* LVGetTopLevelElement(LVElement* any) {
     LVColl* iter = (void*)any;
     

@@ -22,15 +22,15 @@
 
 @end
 
-//#include <sys/time.h>
-//#include <sys/resource.h>
-//
-//double get_time() {
-//    struct timeval t;
-//    struct timezone tzp;
-//    gettimeofday(&t, &tzp);
-//    return t.tv_sec + t.tv_usec*1e-6;
-//}
+#include <sys/time.h>
+#include <sys/resource.h>
+
+double get_time() {
+    struct timeval t;
+    struct timezone tzp;
+    gettimeofday(&t, &tzp);
+    return t.tv_sec + t.tv_usec*1e-6;
+}
 
 @implementation LVClojureTextStorage
 
@@ -61,13 +61,13 @@
     free(self.highlights);
     self.highlights = NULL;
     
-//    double T1 = get_time();
+    double T1 = get_time();
     
     LVDocDestroy(self.doc);
     self.doc = LVDocCreate([self string]);
     
-//    double T2 = get_time();
-//    printf("%f\n", T2-T1);
+    double T2 = get_time();
+    if (0) printf("%f\n", T2-T1);
     
     self.highlights = LVHighlightsForDoc(self.doc);
 }

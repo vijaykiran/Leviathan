@@ -16,9 +16,24 @@
 LVDoc* LVDocCreate(NSString* raw) {
     @try {
         LVDoc* doc = malloc(sizeof(LVDoc));
-        doc->string = (__bridge_retained CFStringRef)raw;
-        doc->firstToken = LVLex(doc->string);
-        doc->topLevelColl = LVParseTokens(doc->firstToken);
+        NSUInteger max = [raw length];
+        
+        LVStorage* storage = malloc(sizeof(LVStorage));
+        
+        storage->tokens = malloc(sizeof(LVToken) * max);
+        storage->atoms = malloc(sizeof(LVAtom) * max);
+        storage->colls = malloc(sizeof(LVColl) * max);
+        storage->substrings = malloc(sizeof(CFStringRef) * max);
+        
+        storage->tokenCount = 0;
+        storage->atomCount = 0;
+        storage->collCount = 0;
+        storage->substringCount = 0;
+        
+        storage->wholeString = (__bridge_retained CFStringRef)raw;
+        doc->storage = storage;
+        doc->firstToken = LVLex(storage);
+        doc->topLevelColl = LVParseTokens(storage, doc->firstToken);
         return doc;
     }
     @catch (LVParseError *exception) {
@@ -30,8 +45,18 @@ void LVDocDestroy(LVDoc* doc) {
     if (!doc)
         return;
     
-    LVCollDestroy(doc->topLevelColl);
-    CFRelease(doc->string);
+    CFRelease(doc->storage->wholeString);
+    
+    for (int i = 0; i < doc->storage->substringCount; i++) {
+        CFStringRef ss = doc->storage->substrings[i];
+        CFRelease(ss);
+    }
+    
+    free(doc->storage->tokens);
+    free(doc->storage->atoms);
+    free(doc->storage->colls);
+    free(doc->storage->substrings);
+    
     free(doc);
 }
 

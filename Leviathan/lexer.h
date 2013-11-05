@@ -6,6 +6,6 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#include "token.h"
+#include "doc.h"
 
-LVToken* LVLex(CFStringRef raw);
+LVToken* LVLex(LVStorage* storage);

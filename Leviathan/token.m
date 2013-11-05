@@ -8,15 +8,12 @@
 
 #import "token.h"
 
-LVToken* LVTokenCreate(NSUInteger pos, LVTokenType type, CFStringRef val) {
-    LVToken* tok = malloc(sizeof(LVToken));
+#import "storage.h"
+
+LVToken* LVTokenCreate(struct __LVStorage* storage, NSUInteger pos, NSUInteger len, LVTokenType type) {
+    LVToken* tok = &(storage->tokens[storage->tokenCount++]);
     tok->tokenType = type;
-    tok->string = val;
+    tok->string = CFStringCreateWithSubstring(NULL, storage->wholeString, CFRangeMake(pos, len));
     tok->pos = pos;
     return tok;
-}
-
-void LVTokenDelete(LVToken* tok) {
-    CFRelease(tok->string);
-    free(tok);
 }

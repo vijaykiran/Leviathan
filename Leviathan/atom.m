@@ -17,11 +17,6 @@ LVAtom* LVAtomCreate(LVAtomType typ, LVToken* tok) {
     return atom;
 }
 
-void LVAtomDestroy(LVAtom* atom) {
-    LVTokenDelete(atom->token);
-    free(atom);
-}
-
 BOOL LVAtomIsSemantic(LVAtom* atom) {
     return !((atom->atomType & LVAtomType_Comma)
              || (atom->atomType & LVAtomType_Newlines)
