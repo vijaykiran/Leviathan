@@ -56,11 +56,10 @@ LVToken* LVLex(LVDocStorage* storage) {
             case ',': LVAppendToken(&last, LVTokenCreate(storage, i, 1, LVTokenType_Comma)); break;
                 
             case '\n': {
-                NSUInteger start = i;
-                while (chars[++i] == '\n');
-                LVAppendToken(&last, LVTokenCreate(storage, start, i - start, LVTokenType_Newlines));
-                i--;
-                
+                CFIndex n = i;
+                do n++; while (n < inputStringLength && chars[n] == '\n');
+                LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_Newlines));
+                i = n - 1;
                 break;
             }
                 
@@ -76,9 +75,8 @@ LVToken* LVLex(LVDocStorage* storage) {
             }
                 
             case ' ': {
-                CFIndex n = i; // TODO: starting at i, find next non-' ' char, or end-of-string
+                CFIndex n = i;
                 do n++; while (n < inputStringLength && chars[n] == ' ');
-                
                 LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_Spaces));
                 i = n-1;
                 break;
@@ -87,7 +85,6 @@ LVToken* LVLex(LVDocStorage* storage) {
             case ':': {
                 CFIndex n = i;
                 do n++; while (n < inputStringLength && !strchr(endAtomCharSet, chars[n]));
-                
                 LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_Keyword));
                 i = n-1;
                 break;
@@ -110,13 +107,10 @@ LVToken* LVLex(LVDocStorage* storage) {
             }
                 
             case ';': {
-                CFRange range;
-                Boolean found = CFStringFindWithOptions(storage->wholeString, CFSTR("\n"), CFRangeMake(i, inputStringLength - i), 0, &range);
-                CFIndex n = (found ? range.location : inputStringLength);
-                
+                CFIndex n = i;
+                do n++; while (n < inputStringLength && chars[n] != '\n');
                 LVAppendToken(&last, LVTokenCreate(storage, i, n - i, LVTokenType_CommentLiteral));
-                i = n-1;
-                
+                i = n - 1;
                 break;
             }
                 
