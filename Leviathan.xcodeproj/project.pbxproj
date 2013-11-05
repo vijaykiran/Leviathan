@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		940F83811828C629005C77B1 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 940F83801828C629005C77B1 /* Themes */; };
-		941DE77F18295346005233DE /* storage.m in Sources */ = {isa = PBXBuildFile; fileRef = 941DE77E18295346005233DE /* storage.m */; };
 		94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94370E721820DD2300EBB871 /* libBeowulf.a */; };
 		94370E761820DD7800EBB871 /* prelude.bwlf in Resources */ = {isa = PBXBuildFile; fileRef = 94370E751820DD7800EBB871 /* prelude.bwlf */; };
 		945544FE18187BFF00D69E63 /* element.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544FD18187BFF00D69E63 /* element.m */; };
@@ -72,8 +71,6 @@
 
 /* Begin PBXFileReference section */
 		940F83801828C629005C77B1 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
-		941DE77D18295346005233DE /* storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = storage.h; sourceTree = "<group>"; };
-		941DE77E18295346005233DE /* storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = storage.m; sourceTree = "<group>"; };
 		94370E6F1820DD2300EBB871 /* Beowulf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beowulf.h; sourceTree = "<group>"; };
 		94370E701820DD2300EBB871 /* BWCallable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWCallable.h; sourceTree = "<group>"; };
 		94370E711820DD2300EBB871 /* BWEnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWEnv.h; sourceTree = "<group>"; };
@@ -207,8 +204,6 @@
 			children = (
 				94CA3654181E165900926D6B /* doc.h */,
 				94CA3655181E165900926D6B /* doc.m */,
-				941DE77D18295346005233DE /* storage.h */,
-				941DE77E18295346005233DE /* storage.m */,
 				94EB3DC918161106002E639F /* token.h */,
 				94EB3DC818161106002E639F /* token.m */,
 				94ABB133181463D3003415B5 /* element.h */,
@@ -564,7 +559,6 @@
 				94ABB12F181463B6003415B5 /* atom.m in Sources */,
 				9490D84018107FD6006ECA5E /* SDFuzzyMatcherWindowController.m in Sources */,
 				94855A1718110E2200220186 /* LVPreferences.m in Sources */,
-				941DE77F18295346005233DE /* storage.m in Sources */,
 				9490D84318107FD6006ECA5E /* NSString+Score.m in Sources */,
 				9490D80D18104E81006ECA5E /* LVProject.m in Sources */,
 				9490D84118107FD6006ECA5E /* SDChoiceTableView.m in Sources */,

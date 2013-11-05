@@ -8,7 +8,7 @@
 
 #import "token.h"
 
-#import "storage.h"
+#import "doc.h"
 
 LVToken* LVTokenCreate(struct __LVStorage* storage, NSUInteger pos, NSUInteger len, LVTokenType type) {
     LVToken* tok = storage->tokens + storage->tokenCount++;

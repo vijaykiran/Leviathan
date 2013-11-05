@@ -8,7 +8,7 @@
 
 #import "atom.h"
 
-#import "storage.h"
+#import "doc.h"
 
 LVAtom* LVAtomCreate(LVStorage* storage, LVAtomType typ, LVToken* tok) {
     LVAtom* atom = storage->atoms + storage->atomCount++;
