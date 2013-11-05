@@ -16,4 +16,6 @@ extern NSString* LVCurrentThemeChangedNotification;
 + (NSFont*) userFont;
 + (void) setUserFont:(NSFont*)font;
 
++ (NSURL*) settingsDirectory;
+
 @end

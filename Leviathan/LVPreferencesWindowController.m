@@ -42,4 +42,8 @@
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
+- (IBAction) moveSettingsDirectory:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[LVPreferences settingsDirectory]];
+}
+
 @end

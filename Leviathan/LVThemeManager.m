@@ -9,7 +9,7 @@
 #import "LVThemeManager.h"
 
 #import "configs.h"
-
+#import "LVPreferences.h"
 
 @interface LVThemeManager ()
 
@@ -34,22 +34,19 @@
     [self loadCurrentTheme];
 }
 
-- (NSURL*) currentThemeFile {
-    NSError *error;
-    NSURL *appSupportDir = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory
-                                                                  inDomain:NSUserDomainMask
-                                                         appropriateForURL:nil
-                                                                    create:YES
-                                                                     error:&error];
-    
-    NSURL* dataDirURL = [[appSupportDir URLByAppendingPathComponent:@"Leviathan"] URLByAppendingPathComponent:@"Themes"];
+- (NSURL*) themesDirectory {
+    NSURL* dataDirURL = [[LVPreferences settingsDirectory] URLByAppendingPathComponent:@"Themes"];
     
     [[NSFileManager defaultManager] createDirectoryAtURL:dataDirURL
                              withIntermediateDirectories:YES
                                               attributes:nil
                                                    error:NULL];
     
-    return [dataDirURL URLByAppendingPathComponent:@"CURRENT_THEME.clj"];
+    return dataDirURL;
+}
+
+- (NSURL*) currentThemeFile {
+    return [[self themesDirectory] URLByAppendingPathComponent:@"CURRENT_THEME.clj"];
 }
 
 - (void) copyFileOrElse:(NSURL*)from to:(NSURL*)to {
