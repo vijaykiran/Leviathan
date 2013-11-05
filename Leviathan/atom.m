@@ -8,8 +8,10 @@
 
 #import "atom.h"
 
-LVAtom* LVAtomCreate(LVAtomType typ, LVToken* tok) {
-    LVAtom* atom = malloc(sizeof(LVAtom));
+#import "storage.h"
+
+LVAtom* LVAtomCreate(LVStorage* storage, LVAtomType typ, LVToken* tok) {
+    LVAtom* atom = storage->atoms + storage->atomCount++;
     atom->isAtom = YES;
     atom->atomType = typ;
     atom->token = tok;

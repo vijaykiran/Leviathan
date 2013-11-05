@@ -11,13 +11,15 @@
 #import "atom.h"
 #import "doc.h"
 
+#import "storage.h"
+
 @implementation LVDefinition
 @end
 
 #define LV_COLL_CHUNK_SIZE (20)
 
-LVColl* LVCollCreate() {
-    LVColl* coll = malloc(sizeof(LVColl));
+LVColl* LVCollCreate(LVStorage* storage) {
+    LVColl* coll = storage->colls + storage->collCount++;
     coll->isAtom = NO;
     
     coll->childrenCap = LV_COLL_CHUNK_SIZE;
@@ -25,16 +27,6 @@ LVColl* LVCollCreate() {
     coll->children = malloc(sizeof(LVElement*) * coll->childrenCap);
     
     return coll;
-}
-
-void LVCollDestroy(LVColl* coll) {
-    for (int i = 0; i < coll->childrenLen; i++) {
-        LVElement* child = coll->children[i];
-        LVElementDestroy(child);
-    }
-    
-    free(coll->children);
-    free(coll);
 }
 
 void LVElementListAppend(LVColl* coll, LVElement* child) {

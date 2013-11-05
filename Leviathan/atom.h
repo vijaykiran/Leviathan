@@ -9,6 +9,7 @@
 #import "token.h"
 
 struct __LVColl;
+struct __LVStorage;
 
 typedef enum __LVAtomType : uint64_t {
     LVAtomType_Symbol  = 1 << 0,
@@ -57,6 +58,6 @@ typedef struct __LVAtom {
     
 } LVAtom;
 
-LVAtom* LVAtomCreate(LVAtomType typ, LVToken* tok);
+LVAtom* LVAtomCreate(struct __LVStorage* storage, LVAtomType typ, LVToken* tok);
 
 BOOL LVAtomIsSemantic(LVAtom* atom);

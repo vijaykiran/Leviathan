@@ -17,10 +17,8 @@ typedef struct __LVStorage {
     LVToken* tokens;
     LVAtom* atoms;
     LVColl* colls;
-    CFStringRef* substrings;
     
     NSUInteger tokenCount;
     NSUInteger atomCount;
     NSUInteger collCount;
-    NSUInteger substringCount;
 } LVStorage;

@@ -18,7 +18,6 @@ typedef struct __LVElement {
 } LVElement;
 
 NSUInteger LVElementLength(LVElement* el);
-void LVElementDestroy(LVElement* el);
 
 struct __LVColl* LVGetTopLevelElement(LVElement* any);
 
