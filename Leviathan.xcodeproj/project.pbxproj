@@ -430,12 +430,12 @@
 			isa = PBXGroup;
 			children = (
 				94D1B35F182A004800D9CE49 /* Keybindings.clj */,
-				94E7DF40182ACE4600A97D82 /* LVKeyTranslator.h */,
-				94E7DF41182ACE4600A97D82 /* LVKeyTranslator.m */,
 				94E7DF37182A94E500A97D82 /* LVShortcutHandler.h */,
 				94E7DF38182A94E500A97D82 /* LVShortcutHandler.m */,
 				94E7DF3A182A9AD200A97D82 /* LVShortcut.h */,
 				94E7DF3B182A9AD200A97D82 /* LVShortcut.m */,
+				94E7DF40182ACE4600A97D82 /* LVKeyTranslator.h */,
+				94E7DF41182ACE4600A97D82 /* LVKeyTranslator.m */,
 			);
 			name = "Key Bindings";
 			sourceTree = "<group>";

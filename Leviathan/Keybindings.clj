@@ -1,55 +1,55 @@
 {;; Project menu
 
- "openProject:" [:fn "o"]
- "newTab:" [:cmd "t"]
+ [:fn "o"] "openProject:"
+ [:cmd "t"] "newTab:"
 
- "jumpToFile:" [:cmd "o"]
- "jumpToDefinition:" [:cmd :shift "o"]
- "jumpToDefinitionAtPoint:" [:cmd :ctrl "e"]
+ [:cmd "o"] "jumpToFile:"
+ [:cmd :shift "o"] "jumpToDefinition:"
+ [:cmd :ctrl "e"] "jumpToDefinitionAtPoint:"
 
- "addSplitToEast:" [:cmd :ctrl "right"]
+ [:cmd :ctrl "right"] "addSplitToEast:"
 
- "selectPreviousTab:" [:cmd :shift "["]
- "selectNextTab:" [:cmd :shift "]"]
+ [:cmd :shift "["] "selectPreviousTab:"
+ [:cmd :shift "]"] "selectNextTab:"
 
- "selectPreviousSplit:" [:cmd :ctrl "["]
- "selectNextSplit:" [:cmd :ctrl "]"]
+ [:cmd :ctrl "["] "selectPreviousSplit:"
+ [:cmd :ctrl "]"] "selectNextSplit:"
 
- "moveTabLeft:" [:cmd :shift "left"]
- "moveTabRight:" [:cmd :shift "right"]
+ [:cmd :shift "left"] "moveTabLeft:"
+ [:cmd :shift "right"] "moveTabRight:"
 
- "openTestInSplit:" [:cmd :shift "t"]
+ [:cmd :shift "t"] "openTestInSplit:"
 
- "openProjectInTerminal:" [:cmd :ctrl "t"]
- "openProjectInGitx:" [:cmd :ctrl "g"]
+ [:cmd :ctrl "t"] "openProjectInTerminal:"
+ [:cmd :ctrl "g"] "openProjectInGitx:"
 
 
  ;; Paredit menu
 
- "commentLinesFirstExpression:" [:cmd "/"]
- "indentCurrentSection:" [:alt "q"]
+ [:cmd "/"] "commentLinesFirstExpression:"
+ [:alt "q"] "indentCurrentSection:"
 
- "deselectText:" ["escape"]
+ ["escape"] "deselectText:"
 
- "raiseExpression:" [:alt "r"]
- "deleteNextExpression:" [:ctrl :alt "k"]
- "deleteToEndOfExpression:" [:ctrl "k"]
- "spliceExpression:" [:alt "s"]
+ [:alt "r"] "raiseExpression:"
+ [:ctrl :alt "k"] "deleteNextExpression:"
+ [:ctrl "k"] "deleteToEndOfExpression:"
+ [:alt "s"] "spliceExpression:"
 
- "moveBackwardExpression:" [:ctrl :alt "b"]
- "moveForwardExpression:" [:ctrl :alt "f"]
- "moveIntoNextExpression:" [:ctrl :alt "d"]
- "moveIntoPreviousExpression:" [:ctrl :alt "p"]
- "moveOutExpressionBackward:" [:ctrl :alt "u"]
- "moveOutExpressionForward:" [:ctrl :alt "n"]
+ [:ctrl :alt "b"] "moveBackwardExpression:"
+ [:ctrl :alt "f"] "moveForwardExpression:"
+ [:ctrl :alt "d"] "moveIntoNextExpression:"
+ [:ctrl :alt "p"] "moveIntoPreviousExpression:"
+ [:ctrl :alt "u"] "moveOutExpressionBackward:"
+ [:ctrl :alt "n"] "moveOutExpressionForward:"
 
- "moveToFirstNonBlankCharacterOnLine:" [:alt "m"]
+ [:alt "m"] "moveToFirstNonBlankCharacterOnLine:"
 
- "extendSelectionToNextExpression:" [:ctrl :alt "space"]
+ [:ctrl :alt "space"] "extendSelectionToNextExpression:"
 
- "wrapNextExpressionInParentheses:" [:ctrl "9"]
- "wrapNextExpressionInBrackets:" [:ctrl "["]
- "wrapNextExpressionInBraces:" [:ctrl :shift "["]
+ [:ctrl "9"] "wrapNextExpressionInParentheses:"
+ [:ctrl "["] "wrapNextExpressionInBrackets:"
+ [:ctrl :shift "["] "wrapNextExpressionInBraces:"
 
- "moveToNextBlankLines:" [:alt :shift "]"]
- "moveToPreviousBlankLines:" [:alt :shift "["]}
+ [:alt :shift "]"] "moveToNextBlankLines:"
+ [:alt :shift "["] "moveToPreviousBlankLines:"}

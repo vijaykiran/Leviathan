@@ -96,8 +96,12 @@
     self.shortcuts = [NSMutableArray array];
     
     NSDictionary* shortcuts = LVParseConfigFromString([self keybindingsFileURL]);
-    for (NSString* selName in shortcuts) {
-        NSMutableArray* mods = [[shortcuts objectForKey:selName] mutableCopy];
+    for (NSArray* immutableMods in shortcuts) {
+        id mapped = [shortcuts objectForKey:immutableMods];
+        
+        NSString* selName = mapped;
+        
+        NSMutableArray* mods = [immutableMods mutableCopy];
         NSString* key = [mods lastObject];
         [mods removeLastObject];
         [self.shortcuts addObject:[LVShortcut withAction:NSSelectorFromString(selName) mods:mods key:key]];

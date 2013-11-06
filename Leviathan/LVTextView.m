@@ -263,7 +263,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
 }
 
 - (IBAction) deleteToEndOfExpression:(id)sender {
-    [self deleteToBeginningOfParagraph:sender];
+    [self deleteToEndOfParagraph:sender];
 }
 
 - (IBAction) deleteToEndOfParagraph:(id)sender {
