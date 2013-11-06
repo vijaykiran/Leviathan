@@ -8,7 +8,6 @@
 
 #import "LVThemeManager.h"
 
-#import "configs.h"
 #import "LVPreferences.h"
 
 @interface LVThemeManager ()
@@ -30,9 +29,7 @@
 }
 
 - (void) loadTheme {
-    NSData* data = [NSData dataWithContentsOfURL:[self themeFileURL]];
-    NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSDictionary* themeData = [LVParseConfigFromString(str) copy];
+    NSDictionary* themeData = LVParseConfigFromString([self themeFileURL]);
     
     if (self.currentTheme) {
         [self.oldThemes addObject: self.currentTheme];

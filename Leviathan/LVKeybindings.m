@@ -8,6 +8,21 @@
 
 #import "LVKeybindings.h"
 
+#import "LVPreferences.h"
+
 @implementation LVKeybindings
+
+- (NSURL*) keybindingsFileURL {
+    NSURL* settingsDestURL = [[LVPreferences settingsDirectory] URLByAppendingPathComponent:@"Keybindings.clj"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[settingsDestURL path]]) {
+        NSURL* origFile = [[NSBundle mainBundle] URLForResource:@"Keybindings" withExtension:@"clj"];
+        [[NSFileManager defaultManager] copyItemAtURL:origFile
+                                                toURL:settingsDestURL
+                                                error:NULL];
+    }
+    
+    return settingsDestURL;
+}
 
 @end

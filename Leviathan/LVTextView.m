@@ -59,7 +59,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];
     
     [self setupNiceties];
-    [self setupShortcuts];
 //    [self setupAutoIndentation];
 }
 
@@ -107,35 +106,6 @@
     [self sd_disableLineWrapping];
     
 //    [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
-}
-
-- (void) setupShortcuts {
-    self.shortcuts = [NSMutableArray array];
-    
-    [self addShortcut:@selector(commentThing:) title:@"Comment" keyEquiv:@"/" mods:@[@"CMD"]];
-    [self addShortcut:@selector(indentSection:) title:@"Indent Section" keyEquiv:@"q" mods:@[@"ALT"]];
-    
-    [self addShortcut:@selector(raiseSexp:) title:@"Raise" keyEquiv:@"r" mods:@[@"ALT"]];
-    [self addShortcut:@selector(killNextSexp:) title:@"Kill Next" keyEquiv:@"k" mods:@[@"CTRL", @"ALT"]];
-    [self addShortcut:@selector(spliceSexp:) title:@"Splice" keyEquiv:@"s" mods:@[@"ALT"]];
-    
-    [self addShortcut:@selector(backwardSexp:) title:@"Backward" keyEquiv:@"b" mods:@[@"CTRL", @"ALT"]];
-    [self addShortcut:@selector(forwardSexp:) title:@"Forward" keyEquiv:@"f" mods:@[@"CTRL", @"ALT"]];
-    [self addShortcut:@selector(inForwardSexp:) title:@"In Forward" keyEquiv:@"d" mods:@[@"CTRL", @"ALT"]];
-    [self addShortcut:@selector(inBackwardSexp:) title:@"In Backward" keyEquiv:@"p" mods:@[@"CTRL", @"ALT"]];
-    [self addShortcut:@selector(outBackwardSexp:) title:@"Out Backward" keyEquiv:@"u" mods:@[@"CTRL", @"ALT"]];
-    [self addShortcut:@selector(outForwardSexp:) title:@"Out Forward" keyEquiv:@"n" mods:@[@"CTRL", @"ALT"]];
-    
-    [self addShortcut:@selector(jumpToFirstNonBlankCharacterOnLine:) title:@"Go To Semantic Beginning Of Line" keyEquiv:@"m" mods:@[@"ALT"]];
-    
-    [self addShortcut:@selector(extendSelectionToNext:) title:@"Extend Seletion to Next" keyEquiv:@" " mods:@[@"CTRL", @"ALT"]];
-    
-    [self addShortcut:@selector(wrapNextInParens:) title:@"Wrap Next in Parens" keyEquiv:@"9" mods:@[@"CTRL"]];
-    [self addShortcut:@selector(wrapNextInBrackets:) title:@"Wrap Next in Brackets" keyEquiv:@"[" mods:@[@"CTRL"]];
-    [self addShortcut:@selector(wrapNextInBraces:) title:@"Wrap Next in Braces" keyEquiv:@"{" mods:@[@"CTRL"]];
-    
-    [self addShortcut:@selector(jumpToNextBlankLineGroup:) title:@"Jump to Next Blank Line" keyEquiv:@"}" mods:@[@"ALT"]];
-    [self addShortcut:@selector(jumpToPreviousBlankLineGroup:) title:@"Jump to Previous Blank Line" keyEquiv:@"{" mods:@[@"ALT"]];
 }
 
 
@@ -280,7 +250,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
 /************************************************ PAREDIT (editing) ************************************************/
 
 
-- (void) raiseSexp:(NSEvent*)event {
+- (IBAction) raiseExpression:(id)sender {
     NSRange selection = self.selectedRange;
     
     LVElement* elementToRaise = LVFindNextSemanticChildStartingAt(self.clojureTextStorage.doc, selection.location);
@@ -311,7 +281,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     }
 }
 
-- (void) killNextSexp:(NSEvent*)event {
+- (IBAction) deleteNextExpression:(id)sender {
     LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
@@ -325,7 +295,11 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     }
 }
 
-- (void) deleteToEndOfParagraph:(id)sender {
+- (IBAction) deleteToEndOfExpression:(id)sender {
+    [self deleteToBeginningOfParagraph:sender];
+}
+
+- (IBAction) deleteToEndOfParagraph:(id)sender {
     if (!self.clojureTextStorage.doc) {
         [super deleteToEndOfParagraph:sender];
         return;
@@ -366,7 +340,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     }
 }
 
-- (IBAction) spliceSexp:(id)sender {
+- (IBAction) spliceExpression:(id)sender {
     NSUInteger childIndex;
     LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, self.selectedRange.location, &childIndex);
     
@@ -409,15 +383,15 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     }
 }
 
-- (void) wrapNextInBrackets:(NSEvent*)event {
+- (IBAction) wrapNextExpressionInBrackets:(id)sender {
     [self wrapNextInThing:@"[" and:@"]"];
 }
 
-- (void) wrapNextInBraces:(NSEvent*)event {
+- (IBAction) wrapNextExpressionInBraces:(id)sender {
     [self wrapNextInThing:@"{" and:@"}"];
 }
 
-- (void) wrapNextInParens:(NSEvent*)event {
+- (IBAction) wrapNextExpressionInParentheses:(id)sender {
     [self wrapNextInThing:@"(" and:@")"];
 }
 
@@ -479,7 +453,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
         [self moveBackward:nil];
 }
 
-- (void) commentThing:(NSEvent*)event {
+- (IBAction) commentLinesFirstExpression:(id)sender {
     
 }
 
@@ -496,7 +470,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
 
 // TODO: Cmd+Shift+V should show a list of previous pastes and let you choose which one to paste. or maybe Cmd+Shift+C should do the same but choose which one to Copy again. Or maybe both!?
 
-- (void) jumpToFirstNonBlankCharacterOnLine:(NSEvent*)event {
+- (IBAction) moveToFirstNonBlankCharacterOnLine:(id)sender {
     NSRange selection = self.selectedRange;
     
     LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, selection.location);
@@ -520,7 +494,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
 }
 
 
-- (void) outBackwardSexp:(NSEvent*)event {
+- (IBAction) moveOutExpressionBackward:(id)sender {
     NSRange selection = self.selectedRange;
     
     NSUInteger childIndex;
@@ -530,7 +504,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     [self scrollRangeToVisible:self.selectedRange];
 }
 
-- (void) outForwardSexp:(NSEvent*)event {
+- (IBAction) moveOutExpressionForward:(id)sender {
     NSRange selection = self.selectedRange;
     
     NSUInteger childIndex;
@@ -540,7 +514,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     [self scrollRangeToVisible:self.selectedRange];
 }
 
-- (void) forwardSexp:(NSEvent*)event {
+- (IBAction) moveForwardExpression:(id)sender {
     LVElement* elementToMoveToEndOf = LVFindNextSemanticChildStartingAt(self.clojureTextStorage.doc, self.selectedRange.location);
     if (elementToMoveToEndOf) {
         NSUInteger posAfterElement = LVGetAbsolutePosition(elementToMoveToEndOf) + LVElementLength(elementToMoveToEndOf);
@@ -548,11 +522,11 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
         [self scrollRangeToVisible:self.selectedRange];
     }
     else {
-        [self outForwardSexp:event];
+        [self moveOutExpressionForward:sender];
     }
 }
 
-- (void) backwardSexp:(NSEvent*)event {
+- (IBAction) moveBackwardExpression:(id)sender {
     LVAtom* atom = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location);
     
     // if it's a top-level-coll delim, do nothing
@@ -577,11 +551,11 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     }
     else {
         // otherwise, move to the beginning of it. otherwise do "out backward sexp"
-        [self outBackwardSexp:event];
+        [self moveOutExpressionBackward:sender];
     }
 }
 
-- (void) inForwardSexp:(NSEvent*)event {
+- (IBAction) moveIntoNextExpression:(id)sender {
     // find the next coll whose pos >= cursor
     LVColl* nextColl = LVFindNextCollOnOrAfterPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     
@@ -594,7 +568,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     }
 }
 
-- (void) inBackwardSexp:(NSEvent*)event {
+- (IBAction) moveIntoPreviousExpression:(id)sender {
     // find the next coll whose pos >= cursor
     LVColl* nextColl = LVFindNextCollBeforePosition(self.clojureTextStorage.doc, self.selectedRange.location);
     
@@ -607,7 +581,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     }
 }
 
-- (void) jumpToNextBlankLineGroup:(NSEvent*)event {
+- (IBAction) moveToNextBlankLines:(id)sender {
     LVToken* token = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location)->token;
     do token = token->nextToken; while (token && !(token->tokenType & LVTokenType_FileEnd) && !LVIsMultiNewlineToken(token));
     
@@ -615,7 +589,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     [self scrollRangeToVisible:self.selectedRange];
 }
 
-- (void) jumpToPreviousBlankLineGroup:(NSEvent*)event {
+- (IBAction) moveToPreviousBlankLines:(id)sender {
     LVToken* token = LVFindAtomFollowingIndex(self.clojureTextStorage.doc, self.selectedRange.location)->token;
     do token = token->prevToken; while (token && !(token->tokenType & LVTokenType_FileBegin) && !LVIsMultiNewlineToken(token));
     
@@ -631,7 +605,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
 
 /************************************************ PAREDIT (selecting) ************************************************/
 
-- (void) extendSelectionToNext:(NSEvent*)event {
+- (IBAction) extendSelectionToNextExpression:(id)sender {
     LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.clojureTextStorage.doc, NSMaxRange(self.selectedRange));
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
@@ -664,7 +638,7 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     return count;
 }
 
-- (void) indentSection:(NSEvent*)event {
+- (IBAction) indentCurrentSection:(id)sender {
     LVDoc* doc = self.clojureTextStorage.doc;
     if (!doc)
         return;
@@ -792,7 +766,7 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
             }
         }];
         [self didChangeText];
-        [self indentSection:event];
+        [self indentCurrentSection:sender];
     }
 }
 

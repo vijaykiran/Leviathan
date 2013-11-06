@@ -457,16 +457,124 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Paredit" id="7Yv-mS-iAe">
                         <items>
+                            <menuItem title="Comment Line's First Expression" id="61u-sd-Y2B">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="commentLinesFirstExpression:" target="-1" id="DZD-Bm-FfY"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Indent Current Section" id="yEG-OQ-Vr8">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="indentCurrentSection:" target="-1" id="F5u-1L-RtR"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="q3j-6S-IIy"/>
                             <menuItem title="Raise Expression" id="uOh-kq-e25">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="raiseSexp:" target="-1" id="4nz-hU-udX"/>
+                                    <action selector="raiseExpression:" target="-1" id="enZ-l1-fdH"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Delete Expression" id="aTh-6h-ayS">
+                            <menuItem title="Splice Expression" id="3nG-GV-odF">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="killNextSexp:" target="-1" id="x7p-Tb-bNV"/>
+                                    <action selector="spliceExpression:" target="-1" id="fVT-eW-8FS"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Delete Next Expression" id="aTh-6h-ayS">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="deleteNextExpression:" target="-1" id="wbI-Rq-3Os"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Delete To End of Expression" id="fgy-xY-l5N">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="deleteToEndOfExpression:" target="-1" id="ZNC-Cd-mUI"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="FJP-Cm-Xac"/>
+                            <menuItem title="Move Backward Expression" id="Dwd-Qt-RTR">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveBackwardExpression:" target="-1" id="IF7-HC-LPg"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move Forward Expression" id="Jpa-2V-2Xf">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveForwardExpression:" target="-1" id="JzB-dY-Gyx"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move Into Next Expression" id="tfY-Tl-ffB">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveIntoNextExpression:" target="-1" id="yQp-xG-Xtm"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move Into Previous Expression" id="CB3-ev-BAr">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveIntoPreviousExpression:" target="-1" id="lUZ-Kx-xxr"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move Out of Expression Forward" id="pgz-Ls-ZFd">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveOutExpressionForward:" target="-1" id="otU-MK-RuV"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move Out of Expression Backward" id="lxh-Hr-9Ac">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveOutExpressionBackward:" target="-1" id="PlY-UJ-qTA"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Jem-qO-YTe"/>
+                            <menuItem title="Move to First Non-blank Character on Line" id="0Lh-xc-Lcb">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveToFirstNonBlankCharacterOnLine:" target="-1" id="avb-wd-DS1"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="QTH-d1-QAl"/>
+                            <menuItem title="Extend Selection to Next Expression" id="JeU-Mu-FiT">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="extendSelectionToNextExpression:" target="-1" id="qdk-x8-Pk6"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="ps1-WW-hIW"/>
+                            <menuItem title="Wrap Next Expression in Parentheses" id="qXP-7R-SVQ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="wrapNextExpressionInParentheses:" target="-1" id="b70-Ar-Rb4"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Wrap Next Expression in Brackets" id="38A-fc-B0a">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="wrapNextExpressionInBrackets:" target="-1" id="2Zo-wZ-a99"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Wrap Next Expression in Braces" id="ma4-Fg-0RT">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="wrapNextExpressionInBraces:" target="-1" id="egZ-HY-rFR"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="68i-g1-VQH"/>
+                            <menuItem title="Move to Next Blank Lines" id="c5W-Tz-INu">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveToNextBlankLines:" target="-1" id="93n-Sy-MVZ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move to Previous Blank Lines" id="qpb-Fa-WO2">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="moveToPreviousBlankLines:" target="-1" id="YpL-VD-HdF"/>
                                 </connections>
                             </menuItem>
                         </items>

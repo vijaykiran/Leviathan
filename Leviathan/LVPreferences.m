@@ -86,3 +86,14 @@ NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotificatio
 }
 
 @end
+
+#import "Beowulf.h"
+
+id LVParseConfigFromString(NSURL* url) {
+    NSData* data = [NSData dataWithContentsOfURL:url];
+    NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    BWEnv* env = [Beowulf basicEnv];
+    NSString* prelude = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"prelude" withExtension:@"bwlf"] encoding:NSUTF8StringEncoding error:NULL];
+    [Beowulf eval:prelude env:env error:NULL];
+    return [Beowulf eval:str env:env error:NULL];
+}

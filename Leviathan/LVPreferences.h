@@ -22,3 +22,5 @@ extern NSString* LVCurrentThemeChangedNotification;
 + (void) setTheme:(NSString*)theme;
 
 @end
+
+id LVParseConfigFromString(NSURL* url);

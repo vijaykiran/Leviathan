@@ -12,8 +12,6 @@
 #import "LVPreferences.h"
 #import "LVThemeManager.h"
 
-#import "LVTestBed.h"
-
 @interface LVAppDelegate ()
 
 @property IBOutlet NSMenuItem* closeWindowItem;
@@ -98,8 +96,6 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [LVTestBed runTests];
-    
 //    NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 //    [pStyle setTabStops:@[[[NSTextTab alloc] initWithType:NSLeftTabStopType location:100.0]]];
 //    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
