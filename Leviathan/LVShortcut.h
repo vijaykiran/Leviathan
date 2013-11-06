@@ -16,7 +16,7 @@
 @property NSString* key;
 @property NSUInteger mods;
 
-- (NSString*) keyEquivalentString;
+@property NSString* keyEquivalentString;
 
 - (BOOL) matches:(NSEvent*)event;
 

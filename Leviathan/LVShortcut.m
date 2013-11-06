@@ -28,23 +28,26 @@
     if ([mods containsObject:@"ctrl"]) shortcut.mods |= NSControlKeyMask;
     if ([mods containsObject:@"alt"]) shortcut.mods |= NSAlternateKeyMask;
     if ([mods containsObject:@"shift"]) shortcut.mods |= NSShiftKeyMask;
+    if ([mods containsObject:@"fn"]) shortcut.mods |= NSFunctionKeyMask;
     
+    [shortcut setupKeyEquivalentString];
     return shortcut;
 }
 
-- (NSString*) keyEquivalentString {
+- (void) setupKeyEquivalentString {
     NSMutableString* string = [NSMutableString string];
     if (self.mods & NSControlKeyMask) [string appendString:@"⌃"];
     if (self.mods & NSAlternateKeyMask) [string appendString:@"⌥"];
     if (self.mods & NSShiftKeyMask) [string appendString:@"⇧"];
     if (self.mods & NSCommandKeyMask) [string appendString:@"⌘"];
+    if (self.mods & NSFunctionKeyMask) [string appendString:@"Fn"];
     
     NSString* s;
     if ([self.key isEqualToString:@" "]) s = @"⎵";
     else s = [self.key uppercaseString];
     
     [string appendFormat:@"\t%@", s];
-    return string;
+    self.keyEquivalentString = string;
 }
 
 - (BOOL) matches:(NSEvent*)event {
