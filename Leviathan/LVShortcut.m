@@ -39,13 +39,8 @@
         shortcut.keyCode == kVK_DownArrow)
         shortcut.testMods |= NSFunctionKeyMask | NSNumericPadKeyMask;
     
-    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:shortcut.prettyMods], [self buildPrettyKey:key]];
+    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:shortcut.prettyMods], [key capitalizedString]];
     return shortcut;
-}
-
-+ (NSString*) buildPrettyKey:(NSString*)key {
-    if ([key isEqualToString:@" "]) return @"Space";
-    return [key capitalizedString];
 }
 
 + (NSString*) buildPrettyMods:(NSUInteger)mods {
