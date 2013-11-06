@@ -45,7 +45,7 @@
 
  "moveToFirstNonBlankCharacterOnLine:" [:alt "m"]
 
- "extendSelectionToNextExpression:" [:ctrl :alt " "]
+ "extendSelectionToNextExpression:" [:ctrl :alt "space"]
 
  "wrapNextExpressionInParentheses:" [:ctrl "9"]
  "wrapNextExpressionInBrackets:" [:ctrl "["]
