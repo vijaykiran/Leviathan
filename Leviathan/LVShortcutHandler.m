@@ -39,22 +39,10 @@
 
 - (NSEvent*) handleEvent:(NSEvent*)event {
     for (LVShortcut* shortcut in self.shortcuts) {
-        if (![[event charactersIgnoringModifiers] isEqualToString: shortcut.key])
-            continue;
-        
-        NSMutableArray* needsMods = [NSMutableArray array];
-        
-        if ([event modifierFlags] & NSCommandKeyMask) [needsMods addObject:@"cmd"];
-        if ([event modifierFlags] & NSShiftKeyMask) [needsMods addObject:@"shift"];
-        if ([event modifierFlags] & NSControlKeyMask) [needsMods addObject:@"ctrl"];
-        if ([event modifierFlags] & NSAlternateKeyMask) [needsMods addObject:@"alt"];
-        
-        if (![needsMods isEqualToArray: shortcut.mods])
-            continue;
-        
-        [NSApp sendAction:shortcut.action to:nil from:nil];
-        
-        return nil;
+        if ([shortcut matches: event]) {
+            [NSApp sendAction:shortcut.action to:nil from:nil];
+            return nil;
+        }
     }
     
     return event;
@@ -69,34 +57,38 @@
 }
 
 - (void) adjustMenuItemStrings {
-    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
+    NSArray* specialMenus = @[@"Project", @"Paredit"];
     
-    for (NSMenuItem* item in [menu itemArray]) {
-        NSString* title = [item title];
+    for (NSString* specialMenu in specialMenus) {
+        NSMenu* menu = [[[NSApp menu] itemWithTitle:specialMenu] submenu];
         
-        NSUInteger tabLocationInTitle = [title rangeOfString:@"\t"].location;
-        if (tabLocationInTitle != NSNotFound)
-            title = [title substringToIndex:tabLocationInTitle];
+        for (NSMenuItem* item in [menu itemArray]) {
+            NSString* title = [item title];
+            
+            NSUInteger tabLocationInTitle = [title rangeOfString:@"\t"].location;
+            if (tabLocationInTitle != NSNotFound)
+                title = [title substringToIndex:tabLocationInTitle];
+            
+            [item setTitle:title];
+        }
         
-        [item setTitle:title];
-    }
-    
-    NSNumber* longestTitleLen = [[menu itemArray] valueForKeyPath:@"title.@max.length"];
-    CGFloat tabStopLoc = [longestTitleLen doubleValue] * 8.75;
-    
-    NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    [pStyle setTabStops:@[]];
-    [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSRightTabStopType location:tabStopLoc]];
-    [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSLeftTabStopType location:tabStopLoc + 2.0]];
-    NSDictionary* attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:14], NSParagraphStyleAttributeName: pStyle};
-    
-    for (NSMenuItem* item in [menu itemArray]) {
-        NSString* title = [item title];
-        LVShortcut* shortcut = [self shortcutForAction:[item action]];
-        NSString* modsString = (shortcut ? [shortcut keyEquivalentString] : @"");
-        NSString* newTitle = [NSString stringWithFormat:@"%@\t%@", title, modsString];
-        NSAttributedString* attrTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:attrs];
-        [item setAttributedTitle:attrTitle];
+        NSNumber* longestTitleLen = [[menu itemArray] valueForKeyPath:@"title.@max.length"];
+        CGFloat tabStopLoc = [longestTitleLen doubleValue] * 8.75;
+        
+        NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        [pStyle setTabStops:@[]];
+        [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSRightTabStopType location:tabStopLoc]];
+        [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSLeftTabStopType location:tabStopLoc + 2.0]];
+        NSDictionary* attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:14], NSParagraphStyleAttributeName: pStyle};
+        
+        for (NSMenuItem* item in [menu itemArray]) {
+            NSString* title = [item title];
+            LVShortcut* shortcut = [self shortcutForAction:[item action]];
+            NSString* modsString = (shortcut ? [shortcut keyEquivalentString] : @"");
+            NSString* newTitle = [NSString stringWithFormat:@"%@\t%@", title, modsString];
+            NSAttributedString* attrTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:attrs];
+            [item setAttributedTitle:attrTitle];
+        }
     }
 }
 
@@ -108,7 +100,7 @@
         NSMutableArray* mods = [[shortcuts objectForKey:selName] mutableCopy];
         NSString* key = [mods lastObject];
         [mods removeLastObject];
-        [self addShortcut:NSSelectorFromString(selName) mods:mods key:key];
+        [self.shortcuts addObject:[LVShortcut withAction:NSSelectorFromString(selName) mods:mods key:key]];
     }
     
     [self adjustMenuItemStrings];
@@ -122,14 +114,6 @@
     self.pathWatcher = [LVPathWatcher watcherFor:[self keybindingsFileURL] handler:^{
         [self reloadKeyBindings];
     }];
-}
-
-- (void) addShortcut:(SEL)action mods:(NSArray*)mods key:(NSString*)key {
-    LVShortcut* shortcut = [[LVShortcut alloc] init];
-    shortcut.key = key;
-    shortcut.action = action;
-    shortcut.mods = mods;
-    [self.shortcuts addObject:shortcut];
 }
 
 @end

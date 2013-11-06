@@ -120,23 +120,26 @@
                             <menuItem isSeparatorItem="YES" id="XJa-0G-3Nd">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="New Tab" keyEquivalent="t" id="SXE-hk-h9X">
+                            <menuItem title="New Tab" id="SXE-hk-h9X">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="newTabInProject:" target="-1" id="bd2-QM-CDq"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Jump to File..." keyEquivalent="o" id="Nbu-2p-Lfc">
+                            <menuItem title="Jump to File..." id="Nbu-2p-Lfc">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="jumpToFile:" target="-1" id="dqA-H9-okB"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Jump to Definition..." keyEquivalent="O" id="zEs-uK-0K9">
+                            <menuItem title="Jump to Definition..." id="zEs-uK-0K9">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="jumpToDefinition:" target="-1" id="P8C-nU-XvE"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Jump to Definition At Point" keyEquivalent="e" id="Q1I-Nk-sAT">
-                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                            <menuItem title="Jump to Definition At Point" id="Q1I-Nk-sAT">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="jumpToDefinitionAtPoint:" target="-1" id="bxb-W0-AxR"/>
                                 </connections>
@@ -144,8 +147,8 @@
                             <menuItem isSeparatorItem="YES" id="qIH-am-mPJ">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Add Split to East" keyEquivalent="" id="MUs-DR-oPY">
-                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                            <menuItem title="Add Split to East" id="MUs-DR-oPY">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="addSplitToEast:" target="-1" id="Aca-92-uNc"/>
                                 </connections>
@@ -153,14 +156,14 @@
                             <menuItem isSeparatorItem="YES" id="oLZ-tz-S3o">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Select Previous Tab" keyEquivalent="[" id="3ej-8d-1Es">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                            <menuItem title="Select Previous Tab" id="3ej-8d-1Es">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="selectPreviousTab:" target="-1" id="fCJ-qZ-bFx"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Select Next Tab" keyEquivalent="]" id="lfx-dW-yy1">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                            <menuItem title="Select Next Tab" id="lfx-dW-yy1">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="selectNextTab:" target="-1" id="mPg-Az-VXD"/>
                                 </connections>
@@ -168,14 +171,14 @@
                             <menuItem isSeparatorItem="YES" id="BA8-8h-i20">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Select Previous Split" keyEquivalent="[" id="D03-iR-YMR">
-                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                            <menuItem title="Select Previous Split" id="D03-iR-YMR">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="selectPreviousSplit:" target="-1" id="w7h-1e-qS4"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Select Next Split" keyEquivalent="]" id="8vW-SR-t8F">
-                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                            <menuItem title="Select Next Split" id="8vW-SR-t8F">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="selectNextSplit:" target="-1" id="glA-Me-FG8"/>
                                 </connections>
@@ -183,14 +186,14 @@
                             <menuItem isSeparatorItem="YES" id="SMP-c1-x7e">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Move Tab Left" keyEquivalent="" id="9RR-1Y-QFj">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                            <menuItem title="Move Tab Left" id="9RR-1Y-QFj">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="moveTabLeft:" target="-1" id="35P-xP-3QH"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Move Tab Right" keyEquivalent="" id="Axv-LL-hft">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                            <menuItem title="Move Tab Right" id="Axv-LL-hft">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="moveTabRight:" target="-1" id="Jlk-64-wax"/>
                                 </connections>
@@ -198,7 +201,8 @@
                             <menuItem isSeparatorItem="YES" id="0y5-N8-OJk">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Open Test in Split" keyEquivalent="T" id="Kcn-vM-b2C">
+                            <menuItem title="Open Test in Split" id="Kcn-vM-b2C">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="openTestInSplit:" target="-1" id="v0i-11-Mqf"/>
                                 </connections>
@@ -206,14 +210,14 @@
                             <menuItem isSeparatorItem="YES" id="xvn-Cw-mc3">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Open Project in Terminal" keyEquivalent="t" id="xJk-Oh-BaY">
-                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                            <menuItem title="Open Project in Terminal" id="xJk-Oh-BaY">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="openProjectInTerminal:" target="-1" id="Jvi-5C-XPx"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Open Project in GitX" keyEquivalent="g" id="PnL-wY-wlb">
-                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                            <menuItem title="Open Project in GitX" id="PnL-wY-wlb">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="openProjectInGitx:" target="-1" id="gSj-QZ-Uno"/>
                                 </connections>

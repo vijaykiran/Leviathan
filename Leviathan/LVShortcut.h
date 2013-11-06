@@ -10,10 +10,14 @@
 
 @interface LVShortcut : NSObject
 
++ (LVShortcut*) withAction:(SEL)action mods:(NSArray*)mods key:(NSString*)key;
+
 @property SEL action;
 @property NSString* key;
 @property NSArray* mods;
 
 - (NSString*) keyEquivalentString;
+
+- (BOOL) matches:(NSEvent*)event;
 
 @end
