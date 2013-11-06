@@ -14,9 +14,8 @@
 #import "LVThemeManager.h"
 #import "LVPreferences.h"
 
-
-
 //#import <objc/runtime.h>
+
 
 @implementation LVTextView
 
@@ -92,7 +91,7 @@
     [super drawViewBackgroundInRect:rect];
     
     NSColor* highlightLineColor = [LVThemeManager sharedThemeManager].currentTheme.highlightLineColor;
-    if (self.selectedRange.length == 0 && highlightLineColor != nil) {
+    if (highlightLineColor != nil) {
         NSUInteger count;
         NSRectArray array = [[self layoutManager] rectArrayForCharacterRange:self.selectedRange
                                                 withinSelectedCharacterRange:self.selectedRange
@@ -107,12 +106,14 @@
         r.origin.x = 0;
         r.size.width = self.bounds.size.width;
         
-        [self setNeedsDisplay:YES];
-        
         [NSGraphicsContext saveGraphicsState];
         [highlightLineColor setFill];
         [[NSBezierPath bezierPathWithRect:r] fill];
         [NSGraphicsContext restoreGraphicsState];
+        
+        dispatch_async(dispatch_get_current_queue(), ^{
+            [self setNeedsDisplayInRect:r];
+        });
     }
 }
 
