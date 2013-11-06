@@ -139,10 +139,6 @@
     [LVPreferences setUserFont: [sender convertFont:[LVPreferences userFont]]];
 }
 
-- (IBAction) reloadCurrentTheme:(id)sender {
-    [LVPreferences setTheme:[LVPreferences theme]];
-}
-
 - (void) windowDidBecomeKey:(NSNotification*)note {
     NSWindow* window = [note object];
     
