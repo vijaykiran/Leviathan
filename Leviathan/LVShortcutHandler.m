@@ -16,7 +16,8 @@
 @interface LVShortcutHandler ()
 
 @property id globalKeyDownObserver;
-@property NSMutableArray* shortcuts;
+@property NSMutableDictionary* shortcutCombos;
+@property NSMutableDictionary* shortcutKeyEquivalents;
 
 @property LVPathWatcher* pathWatcher;
 
@@ -38,22 +39,15 @@
 }
 
 - (NSEvent*) handleEvent:(NSEvent*)event {
-    for (LVShortcut* shortcut in self.shortcuts) {
-        if ([shortcut matches: event]) {
-            [NSApp sendAction:shortcut.action to:nil from:nil];
-            return nil;
-        }
+    NSArray* combo = @[@([event keyCode]), @([event modifierFlags] & NSDeviceIndependentModifierFlagsMask)];
+    NSString* action = [self.shortcutCombos objectForKey:combo];
+    
+    if (action) {
+        [NSApp sendAction:NSSelectorFromString(action) to:nil from:nil];
+        return nil;
     }
     
     return event;
-}
-
-- (LVShortcut*) shortcutForAction:(SEL)action {
-    for (LVShortcut* shortcut in self.shortcuts) {
-        if (shortcut.action == action)
-            return shortcut;
-    }
-    return nil;
 }
 
 - (void) adjustMenuItemStrings {
@@ -83,8 +77,8 @@
         
         for (NSMenuItem* item in [menu itemArray]) {
             NSString* title = [item title];
-            LVShortcut* shortcut = [self shortcutForAction:[item action]];
-            NSString* modsString = (shortcut ? [shortcut keyEquivalentString] : @"");
+            NSString* keyEquiv = self.shortcutKeyEquivalents[NSStringFromSelector([item action])];
+            NSString* modsString = (keyEquiv ?: @"");
             NSString* newTitle = [NSString stringWithFormat:@"%@\t%@", title, modsString];
             NSAttributedString* attrTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:attrs];
             [item setAttributedTitle:attrTitle];
@@ -93,18 +87,21 @@
 }
 
 - (void) reloadKeyBindings {
-    self.shortcuts = [NSMutableArray array];
+    self.shortcutCombos = [NSMutableDictionary dictionary];
+    self.shortcutKeyEquivalents = [NSMutableDictionary dictionary];
     
     NSDictionary* shortcuts = LVParseConfigFromString([self keybindingsFileURL]);
     for (NSArray* immutableMods in shortcuts) {
         id mapped = [shortcuts objectForKey:immutableMods];
-        
         NSString* selName = mapped;
         
         NSMutableArray* mods = [immutableMods mutableCopy];
         NSString* key = [mods lastObject];
         [mods removeLastObject];
-        [self.shortcuts addObject:[LVShortcut withAction:NSSelectorFromString(selName) mods:mods key:key]];
+        
+        LVShortcut* shortcut = [LVShortcut withMods:mods key:key];
+        self.shortcutCombos[shortcut.combo] = selName;
+        self.shortcutKeyEquivalents[selName] = shortcut.keyEquivalentString;
     }
     
     [self adjustMenuItemStrings];

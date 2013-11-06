@@ -11,35 +11,30 @@
 #import "LVKeyTranslator.h"
 #import <Carbon/Carbon.h>
 
-@interface LVShortcut ()
-
-@property unsigned short keyCode;
-@property NSUInteger prettyMods;
-@property NSUInteger testMods;
-
-@end
-
 @implementation LVShortcut
 
-+ (LVShortcut*) withAction:(SEL)action mods:(NSArray*)mods key:(NSString*)key {
++ (LVShortcut*) withMods:(NSArray*)mods key:(NSString*)key {
     LVShortcut* shortcut = [[LVShortcut alloc] init];
-    shortcut.keyCode = [LVKeyTranslator keyCodeForString:key];
-    shortcut.action = action;
     
-    if ([mods containsObject:@"cmd"]) shortcut.testMods |= NSCommandKeyMask;
-    if ([mods containsObject:@"ctrl"]) shortcut.testMods |= NSControlKeyMask;
-    if ([mods containsObject:@"alt"]) shortcut.testMods |= NSAlternateKeyMask;
-    if ([mods containsObject:@"shift"]) shortcut.testMods |= NSShiftKeyMask;
-    if ([mods containsObject:@"fn"]) shortcut.testMods |= NSFunctionKeyMask;
+    NSUInteger keyCode = [LVKeyTranslator keyCodeForString:key];
+    NSUInteger testMods = 0;
     
-    shortcut.prettyMods = shortcut.testMods;
-    if (shortcut.keyCode == kVK_RightArrow ||
-        shortcut.keyCode == kVK_LeftArrow ||
-        shortcut.keyCode == kVK_UpArrow ||
-        shortcut.keyCode == kVK_DownArrow)
-        shortcut.testMods |= NSFunctionKeyMask | NSNumericPadKeyMask;
+    if ([mods containsObject:@"cmd"]) testMods |= NSCommandKeyMask;
+    if ([mods containsObject:@"ctrl"]) testMods |= NSControlKeyMask;
+    if ([mods containsObject:@"alt"]) testMods |= NSAlternateKeyMask;
+    if ([mods containsObject:@"shift"]) testMods |= NSShiftKeyMask;
+    if ([mods containsObject:@"fn"]) testMods |= NSFunctionKeyMask;
     
-    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:shortcut.prettyMods], [key capitalizedString]];
+    NSUInteger prettyMods = testMods;
+    if (keyCode == kVK_RightArrow ||
+        keyCode == kVK_LeftArrow ||
+        keyCode == kVK_UpArrow ||
+        keyCode == kVK_DownArrow)
+        testMods |= NSFunctionKeyMask | NSNumericPadKeyMask;
+    
+    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:prettyMods], [key capitalizedString]];
+    shortcut.combo = @[@(keyCode), @(testMods)];
+    
     return shortcut;
 }
 
@@ -51,11 +46,6 @@
     if (mods & NSCommandKeyMask) [string appendString:@"⌘"];
     if (mods & NSFunctionKeyMask) [string appendString:@"Fn"];
     return string;
-}
-
-- (BOOL) matches:(NSEvent*)event {
-    return ([event keyCode] == self.keyCode &&
-            ([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == self.testMods);
 }
 
 @end
