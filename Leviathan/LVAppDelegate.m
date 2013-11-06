@@ -100,6 +100,13 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [LVTestBed runTests];
     
+//    NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+//    [pStyle setTabStops:@[[[NSTextTab alloc] initWithType:NSLeftTabStopType location:100.0]]];
+//    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
+//    NSDictionary* attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:14], NSParagraphStyleAttributeName: pStyle};
+//    [[[menu itemArray] objectAtIndex:0] setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Foobar\t⌘K, ⌘B" attributes:attrs]];
+//    [[[menu itemArray] objectAtIndex:1] setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Bazquux\t⌘K" attributes:attrs]];
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultDefaults]];
     [[NSFontManager sharedFontManager] setTarget:self];
     

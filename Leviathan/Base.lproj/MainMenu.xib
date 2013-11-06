@@ -457,14 +457,14 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Paredit" id="7Yv-mS-iAe">
                         <items>
-                            <menuItem title="Raise Expression" keyEquivalent="r" id="uOh-kq-e25">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                            <menuItem title="Raise Expression" id="uOh-kq-e25">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="raiseSexp:" target="-1" id="4nz-hU-udX"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Delete Expression" keyEquivalent="k" id="aTh-6h-ayS">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                            <menuItem title="Delete Expression" id="aTh-6h-ayS">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="killNextSexp:" target="-1" id="x7p-Tb-bNV"/>
                                 </connections>
