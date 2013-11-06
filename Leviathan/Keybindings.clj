@@ -1,4 +1,4 @@
-["commentLinesFirstExpression:" [:cmd "/"]
+{"commentLinesFirstExpression:" [:cmd "/"]
  "indentCurrentSection:" [:alt "q"]
 
  "raiseExpression:" [:alt "r"]
@@ -22,4 +22,4 @@
  "wrapNextExpressionInBraces:" [:ctrl "{"]
 
  "moveToNextBlankLines:" [:alt "}"]
- "moveToPreviousBlankLines:" [:alt "{"]]
+ "moveToPreviousBlankLines:" [:alt "{"]}

@@ -12,6 +12,8 @@
 #import "LVPreferences.h"
 #import "LVThemeManager.h"
 
+#import "LVShortcutHandler.h"
+
 @interface LVAppDelegate ()
 
 @property IBOutlet NSMenuItem* closeWindowItem;
@@ -21,9 +23,15 @@
 
 @property BOOL quitting;
 
+@property LVShortcutHandler* shortcutHandler;
+
 @end
 
 @implementation LVAppDelegate
+
+//- (void) keyDown:(NSEvent *)theEvent {
+//    NSLog(@"im me");
+//}
 
 - (NSDictionary*) defaultDefaults {
     return @{@"fontName": @"Menlo",
@@ -96,12 +104,8 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-//    NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-//    [pStyle setTabStops:@[[[NSTextTab alloc] initWithType:NSLeftTabStopType location:100.0]]];
-//    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
-//    NSDictionary* attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:14], NSParagraphStyleAttributeName: pStyle};
-//    [[[menu itemArray] objectAtIndex:0] setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Foobar\t⌘K, ⌘B" attributes:attrs]];
-//    [[[menu itemArray] objectAtIndex:1] setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Bazquux\t⌘K" attributes:attrs]];
+    self.shortcutHandler = [[LVShortcutHandler alloc] init];
+    [self.shortcutHandler setup];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultDefaults]];
     [[NSFontManager sharedFontManager] setTarget:self];

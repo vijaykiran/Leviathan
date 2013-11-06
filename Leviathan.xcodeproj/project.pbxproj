@@ -51,9 +51,10 @@
 		94ABB132181463C4003415B5 /* coll.m in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB130181463C4003415B5 /* coll.m */; };
 		94CA3656181E165900926D6B /* doc.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA3655181E165900926D6B /* doc.m */; };
 		94D1B360182A004800D9CE49 /* Keybindings.clj in Resources */ = {isa = PBXBuildFile; fileRef = 94D1B35F182A004800D9CE49 /* Keybindings.clj */; };
-		94D1B363182A007F00D9CE49 /* LVKeybindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D1B362182A007F00D9CE49 /* LVKeybindings.m */; };
 		94D794341811226D003307F4 /* LVThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D794331811226D003307F4 /* LVThemeManager.m */; };
 		94D7947A18112CC0003307F4 /* highlights.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7947918112CC0003307F4 /* highlights.m */; };
+		94E7DF39182A94E500A97D82 /* LVShortcutHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF38182A94E500A97D82 /* LVShortcutHandler.m */; };
+		94E7DF3C182A9AD200A97D82 /* LVShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF3B182A9AD200A97D82 /* LVShortcut.m */; };
 		94EB3DCA18161106002E639F /* token.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EB3DC818161106002E639F /* token.m */; };
 		94EF5CF81811E744004836A0 /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EF5CF71811E744004836A0 /* LVTheme.m */; };
 		94F05D85181DAAF4008E9353 /* LVClojureTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F05D84181DAAF4008E9353 /* LVClojureTextStorage.m */; };
@@ -148,12 +149,14 @@
 		94CA3654181E165900926D6B /* doc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = doc.h; sourceTree = "<group>"; };
 		94CA3655181E165900926D6B /* doc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = doc.m; sourceTree = "<group>"; };
 		94D1B35F182A004800D9CE49 /* Keybindings.clj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Keybindings.clj; sourceTree = "<group>"; };
-		94D1B361182A007F00D9CE49 /* LVKeybindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVKeybindings.h; sourceTree = "<group>"; };
-		94D1B362182A007F00D9CE49 /* LVKeybindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVKeybindings.m; sourceTree = "<group>"; };
 		94D794321811226D003307F4 /* LVThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeManager.h; sourceTree = "<group>"; };
 		94D794331811226D003307F4 /* LVThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeManager.m; sourceTree = "<group>"; };
 		94D7947818112CC0003307F4 /* highlights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = highlights.h; sourceTree = "<group>"; };
 		94D7947918112CC0003307F4 /* highlights.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = highlights.m; sourceTree = "<group>"; };
+		94E7DF37182A94E500A97D82 /* LVShortcutHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVShortcutHandler.h; sourceTree = "<group>"; };
+		94E7DF38182A94E500A97D82 /* LVShortcutHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVShortcutHandler.m; sourceTree = "<group>"; };
+		94E7DF3A182A9AD200A97D82 /* LVShortcut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVShortcut.h; sourceTree = "<group>"; };
+		94E7DF3B182A9AD200A97D82 /* LVShortcut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVShortcut.m; sourceTree = "<group>"; };
 		94EB3DC818161106002E639F /* token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = token.m; sourceTree = "<group>"; };
 		94EB3DC918161106002E639F /* token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token.h; sourceTree = "<group>"; };
 		94EF5CF61811E744004836A0 /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
@@ -415,8 +418,10 @@
 			isa = PBXGroup;
 			children = (
 				94D1B35F182A004800D9CE49 /* Keybindings.clj */,
-				94D1B361182A007F00D9CE49 /* LVKeybindings.h */,
-				94D1B362182A007F00D9CE49 /* LVKeybindings.m */,
+				94E7DF37182A94E500A97D82 /* LVShortcutHandler.h */,
+				94E7DF38182A94E500A97D82 /* LVShortcutHandler.m */,
+				94E7DF3A182A9AD200A97D82 /* LVShortcut.h */,
+				94E7DF3B182A9AD200A97D82 /* LVShortcut.m */,
 			);
 			name = "Key Bindings";
 			sourceTree = "<group>";
@@ -541,10 +546,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94E7DF39182A94E500A97D82 /* LVShortcutHandler.m in Sources */,
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				9490D82D1810781D006ECA5E /* LVTextView.m in Sources */,
+				94E7DF3C182A9AD200A97D82 /* LVShortcut.m in Sources */,
 				9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */,
-				94D1B363182A007F00D9CE49 /* LVKeybindings.m in Sources */,
 				94D794341811226D003307F4 /* LVThemeManager.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,

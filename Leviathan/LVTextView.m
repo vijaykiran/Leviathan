@@ -16,29 +16,7 @@
 
 
 
-
-
-
-@interface LVShortcut : NSObject
-@property SEL action;
-@property NSString* title;
-@property NSString* keyEquiv;
-@property NSArray* mods;
-@end
-
-@implementation LVShortcut
-@end
-
-
-
-
-
-
-@interface LVTextView ()
-@property NSMutableArray* shortcuts;
-@end
-
-#import <objc/runtime.h>
+//#import <objc/runtime.h>
 
 @implementation LVTextView
 
@@ -119,49 +97,6 @@
     [[self textContainer] setContainerSize:layoutSize];
 }
 
-
-- (void) addShortcut:(SEL)action title:(NSString*)title keyEquiv:(NSString*)keyEquiv mods:(NSArray*)mods {
-    LVShortcut* shortcut = [[LVShortcut alloc] init];
-    shortcut.title = title;
-    shortcut.keyEquiv = keyEquiv;
-    shortcut.action = action;
-    shortcut.mods = mods;
-    [self.shortcuts addObject:shortcut];
-    
-//    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
-//    NSMenuItem* item = [menu insertItemWithTitle:shortcut.title action:shortcut.action keyEquivalent:shortcut.keyEquiv atIndex:0];
-//    NSUInteger realMods = 0;
-//    if ([mods containsObject:@"CTRL"]) realMods |= NSControlKeyMask;
-//    if ([mods containsObject:@"ALT"]) realMods |= NSAlternateKeyMask;
-//    [item setKeyEquivalentModifierMask:realMods];
-}
-
-- (void) keyDown:(NSEvent *)theEvent {
-    if (!self.clojureTextStorage.doc) {
-        [super keyDown:theEvent];
-        return;
-    }
-    
-    for (LVShortcut* shortcut in self.shortcuts) {
-        if (![[theEvent charactersIgnoringModifiers] isEqualToString: shortcut.keyEquiv])
-            continue;
-        
-        NSMutableArray* needs = [NSMutableArray array];
-        
-        if ([theEvent modifierFlags] & NSControlKeyMask) [needs addObject:@"CTRL"];
-        if ([theEvent modifierFlags] & NSAlternateKeyMask) [needs addObject:@"ALT"];
-        
-        if (![needs isEqualToArray: shortcut.mods])
-            continue;
-        
-        [NSApp sendAction:shortcut.action to:nil from:nil];
-        [[NSApp menu] performActionForItemAtIndex:3];
-        
-        return;
-    }
-    
-    [super keyDown:theEvent];
-}
 
 - (IBAction) cancelOperation:(id)sender {
     self.selectedRange = NSMakeRange(self.selectedRange.location, 0);
