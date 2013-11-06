@@ -16,6 +16,9 @@ static NSFont* LVAdjustFont(NSFont* font, BOOL haveIt, int trait) {
 }
 
 static NSColor* LVColorFromHex(NSString* hex) {
+    if (hex == nil)
+        return nil;
+    
     unsigned container = 0;
     [[NSScanner scannerWithString:hex] scanHexInt:&container];
     return [NSColor colorWithCalibratedRed:(CGFloat)(unsigned char)(container >> 16) / 0xff
@@ -68,6 +71,7 @@ static NSDictionary* LVThemeSelectionStyleFrom(NSDictionary* data) {
     
     self.backgroundColor = LVColorFromHex([self.themeData objectForKey:@"background-color"]);
     self.cursorColor = LVColorFromHex([self.themeData objectForKey:@"cursor-color"]);
+    self.highlightLineColor = LVColorFromHex([self.themeData objectForKey:@"highlight-line-color"]);
     
     self.symbol = LVThemeStyleFrom([self.themeData objectForKey:@"symbol-style"]);
     self.def = LVThemeStyleFrom([self.themeData objectForKey:@"def-keyord-style"]);

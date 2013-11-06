@@ -87,6 +87,37 @@
 }
 
 
+
+- (void) drawViewBackgroundInRect:(NSRect)rect {
+    [super drawViewBackgroundInRect:rect];
+    
+    NSColor* highlightLineColor = [LVThemeManager sharedThemeManager].currentTheme.highlightLineColor;
+    if (self.selectedRange.length == 0 && highlightLineColor != nil) {
+        NSUInteger count;
+        NSRectArray array = [[self layoutManager] rectArrayForCharacterRange:self.selectedRange
+                                                withinSelectedCharacterRange:self.selectedRange
+                                                             inTextContainer:[self textContainer]
+                                                                   rectCount:&count];
+        
+        if (count < 1)
+            return;
+        
+        NSRect r = array[0];
+        
+        r.origin.x = 0;
+        r.size.width = self.bounds.size.width;
+        
+        [self setNeedsDisplay:YES];
+        
+        [NSGraphicsContext saveGraphicsState];
+        [highlightLineColor setFill];
+        [[NSBezierPath bezierPathWithRect:r] fill];
+        [NSGraphicsContext restoreGraphicsState];
+    }
+}
+
+
+
 - (void) sd_disableLineWrapping {
     [[self enclosingScrollView] setHasHorizontalScroller:YES];
     [self setHorizontallyResizable:YES];

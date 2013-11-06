@@ -1,4 +1,5 @@
 {:cursor-color "babdb6"
+ :highlight-line-color "444444"
  :background-color "252A2B"
  :selection-style {:background-color "5c3566"}
  :unquote-style {:color "edd400" :bold true}

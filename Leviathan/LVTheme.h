@@ -15,6 +15,7 @@
 @property NSColor* backgroundColor;
 @property NSDictionary* selection;
 @property NSColor* cursorColor;
+@property NSColor* highlightLineColor;
 
 @property NSArray* rainbowparens;
 @property NSDictionary* symbol;
