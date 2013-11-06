@@ -13,9 +13,6 @@
 + (LVShortcut*) withAction:(SEL)action mods:(NSArray*)mods key:(NSString*)key;
 
 @property SEL action;
-@property NSString* key;
-@property NSUInteger mods;
-
 @property NSString* keyEquivalentString;
 
 - (BOOL) matches:(NSEvent*)event;

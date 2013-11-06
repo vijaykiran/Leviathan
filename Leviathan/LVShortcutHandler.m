@@ -39,8 +39,8 @@
 
 - (NSEvent*) handleEvent:(NSEvent*)event {
 //    NSLog(@"%d", [event keyCode]);
-//    NSLog(@"%@", [event characters]);
-//    NSLog(@"%@", [event charactersIgnoringModifiers]);
+////    NSLog(@"%@", [event characters]);
+    NSLog(@"%d", [[event charactersIgnoringModifiers] characterAtIndex:0]);
 //    return nil;
     for (LVShortcut* shortcut in self.shortcuts) {
         if ([shortcut matches: event]) {

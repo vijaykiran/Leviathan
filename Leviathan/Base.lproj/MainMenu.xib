@@ -123,7 +123,7 @@
                             <menuItem title="New Tab" id="SXE-hk-h9X">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="newTabInProject:" target="-1" id="bd2-QM-CDq"/>
+                                    <action selector="newTab:" target="-1" id="Vl8-f9-rWI"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Jump to File..." id="Nbu-2p-Lfc">

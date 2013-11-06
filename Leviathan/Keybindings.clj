@@ -1,6 +1,6 @@
 {;; Project menu
 
- ;; "openDocument:" [:cmd "o"]
+ "openDocument:" [:fn "o"]
  "newTab:" [:cmd "t"]
 
  "jumpToFile:" [:cmd "o"]
@@ -27,7 +27,7 @@
  ;; Paredit menu
 
  "commentLinesFirstExpression:" [:cmd "/"]
- "indentCurrentSection:" [:fn "q"]
+ "indentCurrentSection:" [:alt "q"]
 
  "raiseExpression:" [:alt "r"]
  "deleteNextExpression:" [:ctrl :alt "k"]
