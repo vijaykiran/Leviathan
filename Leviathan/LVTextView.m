@@ -130,7 +130,7 @@
 }
 
 
-- (IBAction) cancelOperation:(id)sender {
+- (IBAction) deselectText:(id)sender {
     self.selectedRange = NSMakeRange(self.selectedRange.location, 0);
 }
 

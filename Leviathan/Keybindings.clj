@@ -29,6 +29,8 @@
  "commentLinesFirstExpression:" [:cmd "/"]
  "indentCurrentSection:" [:alt "q"]
 
+ "deselectText:" ["escape"]
+
  "raiseExpression:" [:alt "r"]
  "deleteNextExpression:" [:ctrl :alt "k"]
  "deleteToEndOfExpression:" [:ctrl "k"]
