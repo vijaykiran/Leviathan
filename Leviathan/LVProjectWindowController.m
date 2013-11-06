@@ -43,7 +43,7 @@
 - (void)windowDidLoad {
     [super windowDidLoad];
     
-    [self openProjectTab:nil];
+    [self newTab:nil];
 }
 
 
@@ -110,7 +110,7 @@
        inDirection:LVSplitDirectionEast];
 }
 
-- (IBAction) openProjectTab:(id)sender {
+- (IBAction) newTab:(id)sender {
     [self editFileInNewTab:[self.project openNewFile]];
 }
 
@@ -159,6 +159,11 @@
                       LVFile* file = [files objectAtIndex:chosenIndex];
                       [self editFileInCurrentEditor:file];
                   }];
+}
+
+- (IBAction) jumpToDefinitionAtPoint:(id)sender {
+    NSLog(@"not ready yet");
+    NSBeep();
 }
 
 - (IBAction) jumpToDefinition:(id)sender {

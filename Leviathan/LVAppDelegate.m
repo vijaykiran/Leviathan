@@ -52,7 +52,7 @@
     return (anyCantClose ? NSTerminateCancel : NSTerminateNow);
 }
 
-- (IBAction) openDocument:(id)sender {
+- (IBAction) openProject:(id)sender {
     NSOpenPanel* openPanel = [NSOpenPanel openPanel];
     openPanel.canChooseDirectories = YES;
     openPanel.canChooseFiles = NO;

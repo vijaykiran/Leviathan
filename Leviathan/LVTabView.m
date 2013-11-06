@@ -48,7 +48,7 @@
     [self updateTabTitles];
 }
 
-- (IBAction) selectNextTabViewItem:(id)sender {
+- (IBAction) selectNextTab:(id)sender {
     NSUInteger idx = [self.tabs indexOfObject: self.currentTab];
     idx++;
     if (idx == [self.tabs count])
@@ -58,7 +58,7 @@
     [self.tabBar manuallySelectTab:idx];
 }
 
-- (IBAction) selectPreviousTabViewItem:(id)sender {
+- (IBAction) selectPreviousTab:(id)sender {
     NSUInteger idx = [self.tabs indexOfObject: self.currentTab];
     idx--;
     if (idx == -1)
@@ -77,7 +77,7 @@
     [self.tabBar moveTab:from to:to];
 }
 
-- (IBAction) moveTabToLeft:(id)sender {
+- (IBAction) moveTabLeft:(id)sender {
     NSUInteger from = [self.tabs indexOfObject: self.currentTab];
     
     NSUInteger to = from - 1;
@@ -87,7 +87,7 @@
     [self moveTab:from to:to];
 }
 
-- (IBAction) moveTabToRight:(id)sender {
+- (IBAction) moveTabRight:(id)sender {
     NSUInteger from = [self.tabs indexOfObject: self.currentTab];
     
     NSUInteger to = from + 1;
