@@ -59,13 +59,8 @@
 }
 
 - (BOOL) matches:(NSEvent*)event {
-    if ([event keyCode] != self.keyCode)
-        return NO;
-    
-    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) != self.testMods)
-        return NO;
-    
-    return YES;
+    return ([event keyCode] == self.keyCode &&
+            ([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == self.testMods);
 }
 
 @end
