@@ -18,7 +18,7 @@
     if ([self.mods containsObject:@"cmd"]) [string appendString:@"⌘"];
     
     NSString* s;
-    if ([self.key isEqualToString:@" "]) s = @"Space";
+    if ([self.key isEqualToString:@" "]) s = @"⎵";
     else s = [self.key uppercaseString];
     
     [string appendFormat:@"\t%@", s];

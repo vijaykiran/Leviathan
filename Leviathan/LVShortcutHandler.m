@@ -82,11 +82,12 @@
     }
     
     NSNumber* longestTitleLen = [[menu itemArray] valueForKeyPath:@"title.@max.length"];
+    CGFloat tabStopLoc = [longestTitleLen doubleValue] * 8.75;
     
     NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     [pStyle setTabStops:@[]];
-    [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSRightTabStopType location:[longestTitleLen doubleValue] * 8.75]];
-    [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSLeftTabStopType location:[longestTitleLen doubleValue] * 8.75 + 5]];
+    [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSRightTabStopType location:tabStopLoc]];
+    [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSLeftTabStopType location:tabStopLoc + 2.0]];
     NSDictionary* attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:14], NSParagraphStyleAttributeName: pStyle};
     
     for (NSMenuItem* item in [menu itemArray]) {
