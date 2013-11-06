@@ -14,7 +14,7 @@
 
 @property SEL action;
 @property NSString* key;
-@property NSArray* mods;
+@property NSUInteger mods;
 
 - (NSString*) keyEquivalentString;
 

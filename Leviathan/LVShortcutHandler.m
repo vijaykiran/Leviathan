@@ -38,6 +38,10 @@
 }
 
 - (NSEvent*) handleEvent:(NSEvent*)event {
+//    NSLog(@"%d", [event keyCode]);
+//    NSLog(@"%@", [event characters]);
+//    NSLog(@"%@", [event charactersIgnoringModifiers]);
+//    return nil;
     for (LVShortcut* shortcut in self.shortcuts) {
         if ([shortcut matches: event]) {
             [NSApp sendAction:shortcut.action to:nil from:nil];

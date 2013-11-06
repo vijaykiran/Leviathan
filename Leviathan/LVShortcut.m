@@ -22,16 +22,22 @@
     LVShortcut* shortcut = [[LVShortcut alloc] init];
     shortcut.key = key;
     shortcut.action = action;
-    shortcut.mods = mods;
+    
+    shortcut.mods = 0;
+    if ([mods containsObject:@"cmd"]) shortcut.mods |= NSCommandKeyMask;
+    if ([mods containsObject:@"ctrl"]) shortcut.mods |= NSControlKeyMask;
+    if ([mods containsObject:@"alt"]) shortcut.mods |= NSAlternateKeyMask;
+    if ([mods containsObject:@"shift"]) shortcut.mods |= NSShiftKeyMask;
+    
     return shortcut;
 }
 
 - (NSString*) keyEquivalentString {
     NSMutableString* string = [NSMutableString string];
-    if ([self.mods containsObject:@"ctrl"]) [string appendString:@"⌃"];
-    if ([self.mods containsObject:@"alt"]) [string appendString:@"⌥"];
-    if ([self.mods containsObject:@"shift"]) [string appendString:@"⇧"];
-    if ([self.mods containsObject:@"cmd"]) [string appendString:@"⌘"];
+    if (self.mods & NSControlKeyMask) [string appendString:@"⌃"];
+    if (self.mods & NSAlternateKeyMask) [string appendString:@"⌥"];
+    if (self.mods & NSShiftKeyMask) [string appendString:@"⇧"];
+    if (self.mods & NSCommandKeyMask) [string appendString:@"⌘"];
     
     NSString* s;
     if ([self.key isEqualToString:@" "]) s = @"⎵";
@@ -47,14 +53,7 @@
     if (![[event charactersIgnoringModifiers] isEqualToString: self.key])
         return NO;
     
-    NSMutableArray* needsMods = [NSMutableArray array];
-    
-    if ([event modifierFlags] & NSCommandKeyMask) [needsMods addObject:@"cmd"];
-    if ([event modifierFlags] & NSShiftKeyMask) [needsMods addObject:@"shift"];
-    if ([event modifierFlags] & NSControlKeyMask) [needsMods addObject:@"ctrl"];
-    if ([event modifierFlags] & NSAlternateKeyMask) [needsMods addObject:@"alt"];
-    
-    if (![needsMods isEqualToArray: self.mods])
+    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) != self.mods)
         return NO;
     
     return YES;
