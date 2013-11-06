@@ -43,8 +43,10 @@
     NSString* action = [self.shortcutCombos objectForKey:combo];
     
     if (action) {
-        [NSApp sendAction:NSSelectorFromString(action) to:nil from:nil];
-        return nil;
+        SEL sel = NSSelectorFromString(action);
+        BOOL worked = [NSApp sendAction:sel to:nil from:nil];
+        if (worked)
+            return nil;
     }
     
     return event;
