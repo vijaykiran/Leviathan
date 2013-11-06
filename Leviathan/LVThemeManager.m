@@ -9,10 +9,12 @@
 #import "LVThemeManager.h"
 
 #import "LVPreferences.h"
+#import "LVPathWatcher.h"
 
 @interface LVThemeManager ()
 
 @property NSMutableArray* oldThemes; // TODO: this is a TOTAL hack
+@property LVPathWatcher* pathWatcher;
 
 @end
 
@@ -23,9 +25,18 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedThemeManager = [[LVThemeManager alloc] init];
-        sharedThemeManager.oldThemes = [NSMutableArray array];
     });
     return sharedThemeManager;
+}
+
+- (id) init {
+    if (self = [super init]) {
+        self.oldThemes = [NSMutableArray array];
+        self.pathWatcher = [LVPathWatcher watcherFor:[self themesDirectory] handler:^{
+            [LVPreferences setTheme:[LVPreferences theme]];
+        }];
+    }
+    return self;
 }
 
 - (void) loadTheme {

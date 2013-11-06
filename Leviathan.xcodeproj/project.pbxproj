@@ -229,6 +229,8 @@
 				94855A10181109A700220186 /* LVPreferencesWindowController.m */,
 				94855A1518110E2200220186 /* LVPreferences.h */,
 				94855A1618110E2200220186 /* LVPreferences.m */,
+				94E7DF3D182AA69300A97D82 /* LVPathWatcher.h */,
+				94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -280,8 +282,6 @@
 				9490D7E718104D58006ECA5E /* MainMenu.xib */,
 				9490D7E418104D58006ECA5E /* LVAppDelegate.h */,
 				9490D7E518104D58006ECA5E /* LVAppDelegate.m */,
-				94E7DF3D182AA69300A97D82 /* LVPathWatcher.h */,
-				94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */,
 				94E7DF36182A8B1600A97D82 /* Key Bindings */,
 				945544FC18187B5600D69E63 /* Types */,
 				94EB3DCB18161DD5002E639F /* Parser */,
