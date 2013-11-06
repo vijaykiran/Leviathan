@@ -50,23 +50,40 @@
         
         [NSApp sendAction:shortcut.action to:nil from:nil];
         
-//        NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
-//        [menu performActionForItemAtIndex:[menu indexOfItemWithTarget:nil andAction:shortcut.action]];
-        
         return nil;
     }
     
-//    NSLog(@"%@", event);
     return event;
 }
 
+- (LVShortcut*) shortcutForAction:(SEL)action {
+    for (LVShortcut* shortcut in self.shortcuts) {
+        if (shortcut.action == action)
+            return shortcut;
+    }
+    return nil;
+}
+
 - (void) adjustMenuItemStrings {
-//    NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-//    [pStyle setTabStops:@[[[NSTextTab alloc] initWithType:NSLeftTabStopType location:100.0]]];
-//    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
-//    NSDictionary* attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:14], NSParagraphStyleAttributeName: pStyle};
-//    [[[menu itemArray] objectAtIndex:0] setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Foobar\t⌘K, ⌘B" attributes:attrs]];
-//    [[[menu itemArray] objectAtIndex:1] setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Bazquux\t⌘K" attributes:attrs]];
+    NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
+    
+    NSNumber* longestTitleLen = [[menu itemArray] valueForKeyPath:@"title.@max.length"];
+    
+    NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [pStyle setTabStops:@[]];
+    [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSRightTabStopType location:[longestTitleLen doubleValue] * 8.75]];
+    [pStyle addTabStop:[[NSTextTab alloc] initWithType:NSLeftTabStopType location:[longestTitleLen doubleValue] * 8.75 + 5]];
+    NSDictionary* attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:14], NSParagraphStyleAttributeName: pStyle};
+    
+    for (NSMenuItem* item in [menu itemArray]) {
+        NSString* title = [item title];
+        
+        LVShortcut* shortcut = [self shortcutForAction:[item action]];
+        NSString* modsString = [shortcut keyEquivalentString];
+        NSString* newTitle = [NSString stringWithFormat:@"%@\t%@", title, modsString];
+        NSAttributedString* attrTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:attrs];
+        [item setAttributedTitle:attrTitle];
+    }
 }
 
 - (void) reloadKeyBindings {

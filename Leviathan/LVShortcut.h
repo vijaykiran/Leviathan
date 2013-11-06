@@ -14,4 +14,6 @@
 @property NSString* key;
 @property NSArray* mods;
 
+- (NSString*) keyEquivalentString;
+
 @end
