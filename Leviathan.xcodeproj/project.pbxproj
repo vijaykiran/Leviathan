@@ -56,6 +56,8 @@
 		94E7DF39182A94E500A97D82 /* LVShortcutHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF38182A94E500A97D82 /* LVShortcutHandler.m */; };
 		94E7DF3C182A9AD200A97D82 /* LVShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF3B182A9AD200A97D82 /* LVShortcut.m */; };
 		94E7DF3F182AA69300A97D82 /* LVPathWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */; };
+		94E7DF42182ACE4600A97D82 /* LVKeyTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF41182ACE4600A97D82 /* LVKeyTranslator.m */; };
+		94E7DF44182ACE8000A97D82 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94E7DF43182ACE8000A97D82 /* Carbon.framework */; };
 		94EB3DCA18161106002E639F /* token.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EB3DC818161106002E639F /* token.m */; };
 		94EF5CF81811E744004836A0 /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EF5CF71811E744004836A0 /* LVTheme.m */; };
 		94F05D85181DAAF4008E9353 /* LVClojureTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F05D84181DAAF4008E9353 /* LVClojureTextStorage.m */; };
@@ -160,6 +162,9 @@
 		94E7DF3B182A9AD200A97D82 /* LVShortcut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVShortcut.m; sourceTree = "<group>"; };
 		94E7DF3D182AA69300A97D82 /* LVPathWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVPathWatcher.h; sourceTree = "<group>"; };
 		94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVPathWatcher.m; sourceTree = "<group>"; };
+		94E7DF40182ACE4600A97D82 /* LVKeyTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVKeyTranslator.h; sourceTree = "<group>"; };
+		94E7DF41182ACE4600A97D82 /* LVKeyTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVKeyTranslator.m; sourceTree = "<group>"; };
+		94E7DF43182ACE8000A97D82 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		94EB3DC818161106002E639F /* token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = token.m; sourceTree = "<group>"; };
 		94EB3DC918161106002E639F /* token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token.h; sourceTree = "<group>"; };
 		94EF5CF61811E744004836A0 /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
@@ -173,6 +178,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94E7DF44182ACE8000A97D82 /* Carbon.framework in Frameworks */,
 				9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */,
 				9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */,
 				94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */,
@@ -258,6 +264,7 @@
 		9490D7D118104D58006ECA5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				94E7DF43182ACE8000A97D82 /* Carbon.framework */,
 				9490D82418105EBB006ECA5E /* QuartzCore.framework */,
 				9490D7D218104D58006ECA5E /* Cocoa.framework */,
 				9490D7F118104D59006ECA5E /* XCTest.framework */,
@@ -423,6 +430,8 @@
 			isa = PBXGroup;
 			children = (
 				94D1B35F182A004800D9CE49 /* Keybindings.clj */,
+				94E7DF40182ACE4600A97D82 /* LVKeyTranslator.h */,
+				94E7DF41182ACE4600A97D82 /* LVKeyTranslator.m */,
 				94E7DF37182A94E500A97D82 /* LVShortcutHandler.h */,
 				94E7DF38182A94E500A97D82 /* LVShortcutHandler.m */,
 				94E7DF3A182A9AD200A97D82 /* LVShortcut.h */,
@@ -552,6 +561,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				94E7DF39182A94E500A97D82 /* LVShortcutHandler.m in Sources */,
+				94E7DF42182ACE4600A97D82 /* LVKeyTranslator.m in Sources */,
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				9490D82D1810781D006ECA5E /* LVTextView.m in Sources */,
 				94E7DF3C182A9AD200A97D82 /* LVShortcut.m in Sources */,

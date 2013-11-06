@@ -8,9 +8,12 @@
 
 #import "LVShortcut.h"
 
+#import "LVKeyTranslator.h"
+#import <Carbon/Carbon.h>
+
 @interface LVShortcut ()
 
-@property unichar matchKey;
+@property unsigned short keyCode;
 @property NSUInteger mods;
 
 @end
@@ -19,7 +22,7 @@
 
 + (LVShortcut*) withAction:(SEL)action mods:(NSArray*)mods key:(NSString*)key {
     LVShortcut* shortcut = [[LVShortcut alloc] init];
-    shortcut.matchKey = [self buildMatchKey:key];
+    shortcut.keyCode = [LVKeyTranslator keyCodeForString:key];
     shortcut.action = action;
     
     if ([mods containsObject:@"cmd"]) shortcut.mods |= NSCommandKeyMask;
@@ -28,45 +31,13 @@
     if ([mods containsObject:@"shift"]) shortcut.mods |= NSShiftKeyMask;
     if ([mods containsObject:@"fn"]) shortcut.mods |= NSFunctionKeyMask;
     
-    if (shortcut.matchKey == NSUpArrowFunctionKey ||
-        shortcut.matchKey == NSDownArrowFunctionKey ||
-        shortcut.matchKey == NSLeftArrowFunctionKey ||
-        shortcut.matchKey == NSRightArrowFunctionKey)
-        shortcut.mods |= NSFunctionKeyMask | NSNumericPadKeyMask;
-    
-//    NSLog(@"%s %d", sel_getName(action), shortcut.matchKey);
-    
-    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:shortcut.mods], [self buildPrettyKey:shortcut.matchKey]];
+    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:shortcut.mods], [self buildPrettyKey:key]];
     return shortcut;
 }
 
-+ (unichar) buildMatchKey:(NSString*)key {
-//    if ([key isEqualToString:@"RETURN"]) shortcut.matchKey = kVK_Return;
-//    if ([key isEqualToString:@"TAB"]) shortcut.matchKey = kVK_Tab;
-//    if ([key isEqualToString:@"SPACE"]) shortcut.matchKey = kVK_Space;
-//    if ([key isEqualToString:@"DELETE"]) shortcut.matchKey = kVK_Delete;
-//    if ([key isEqualToString:@"ESCAPE"]) shortcut.matchKey = kVK_Escape;
-//    if ([key isEqualToString:@"HELP"]) shortcut.matchKey = kVK_Help;
-//    if ([key isEqualToString:@"HOME"]) shortcut.matchKey = kVK_Home;
-//    if ([key isEqualToString:@"PAGE_UP"]) shortcut.matchKey = kVK_PageUp;
-//    if ([key isEqualToString:@"FORWARD_DELETE"]) shortcut.matchKey = kVK_ForwardDelete;
-//    if ([key isEqualToString:@"END"]) shortcut.matchKey = kVK_End;
-//    if ([key isEqualToString:@"PAGE_DOWN"]) shortcut.matchKey = kVK_PageDown;
-    if ([[key uppercaseString] isEqualToString:@"LEFT"]) return NSLeftArrowFunctionKey;
-    if ([[key uppercaseString] isEqualToString:@"RIGHT"]) return NSRightArrowFunctionKey;
-    if ([[key uppercaseString] isEqualToString:@"DOWN"]) return NSDownArrowFunctionKey;
-    if ([[key uppercaseString] isEqualToString:@"UP"]) return NSUpArrowFunctionKey;
-    return [key characterAtIndex:0];
-}
-
-+ (NSString*) buildPrettyKey:(unichar)key {
-    if (key == NSLeftArrowFunctionKey) return @"Left";
-    if (key == NSRightArrowFunctionKey) return @"Right";
-    if (key == NSDownArrowFunctionKey) return @"Down";
-    if (key == NSUpArrowFunctionKey) return @"Up";
-    if (key == ' ') return @"Space";
-    
-    return [[NSString stringWithFormat:@"%C", key] uppercaseString];
++ (NSString*) buildPrettyKey:(NSString*)key {
+    if ([key isEqualToString:@" "]) return @"Space";
+    return [key capitalizedString];
 }
 
 + (NSString*) buildPrettyMods:(NSUInteger)mods {
@@ -80,12 +51,18 @@
 }
 
 - (BOOL) matches:(NSEvent*)event {
-    // if theres a :shift mod, then the KEY must be one that requires the shift key
-    
-    if ([[event charactersIgnoringModifiers] characterAtIndex:0] != self.matchKey)
+    if ([event keyCode] != self.keyCode)
         return NO;
     
-    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) != self.mods)
+    NSUInteger mods = self.mods;
+    
+    if (self.keyCode == kVK_RightArrow ||
+        self.keyCode == kVK_LeftArrow ||
+        self.keyCode == kVK_UpArrow ||
+        self.keyCode == kVK_DownArrow)
+        mods |= NSFunctionKeyMask | NSNumericPadKeyMask;
+    
+    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) != mods)
         return NO;
     
     return YES;
