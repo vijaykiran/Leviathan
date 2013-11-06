@@ -11,10 +11,14 @@
 #import "LVPreferences.h"
 #import "LVShortcut.h"
 
+#import "LVPathWatcher.h"
+
 @interface LVShortcutHandler ()
 
 @property id globalKeyDownObserver;
 @property NSMutableArray* shortcuts;
+
+@property LVPathWatcher* pathWatcher;
 
 @end
 
@@ -87,6 +91,7 @@
 }
 
 - (void) reloadKeyBindings {
+    NSLog(@"relaoding");
     self.shortcuts = [NSMutableArray array];
     
     NSDictionary* shortcuts = LVParseConfigFromString([self keybindingsFileURL]);
@@ -102,10 +107,12 @@
 
 - (void) setup {
     [self reloadKeyBindings];
-    self.globalKeyDownObserver = [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask
-                                                                       handler:^NSEvent*(NSEvent* event) {
-                                                                           return [self handleEvent:event];
-                                                                       }];
+    self.globalKeyDownObserver = [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent*(NSEvent* event) {
+        return [self handleEvent:event];
+    }];
+    self.pathWatcher = [LVPathWatcher watcherFor:[self keybindingsFileURL] handler:^{
+        [self reloadKeyBindings];
+    }];
 }
 
 - (void) addShortcut:(SEL)action mods:(NSArray*)mods key:(NSString*)key {

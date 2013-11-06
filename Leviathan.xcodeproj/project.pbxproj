@@ -55,6 +55,7 @@
 		94D7947A18112CC0003307F4 /* highlights.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D7947918112CC0003307F4 /* highlights.m */; };
 		94E7DF39182A94E500A97D82 /* LVShortcutHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF38182A94E500A97D82 /* LVShortcutHandler.m */; };
 		94E7DF3C182A9AD200A97D82 /* LVShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF3B182A9AD200A97D82 /* LVShortcut.m */; };
+		94E7DF3F182AA69300A97D82 /* LVPathWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */; };
 		94EB3DCA18161106002E639F /* token.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EB3DC818161106002E639F /* token.m */; };
 		94EF5CF81811E744004836A0 /* LVTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 94EF5CF71811E744004836A0 /* LVTheme.m */; };
 		94F05D85181DAAF4008E9353 /* LVClojureTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F05D84181DAAF4008E9353 /* LVClojureTextStorage.m */; };
@@ -157,6 +158,8 @@
 		94E7DF38182A94E500A97D82 /* LVShortcutHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVShortcutHandler.m; sourceTree = "<group>"; };
 		94E7DF3A182A9AD200A97D82 /* LVShortcut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVShortcut.h; sourceTree = "<group>"; };
 		94E7DF3B182A9AD200A97D82 /* LVShortcut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVShortcut.m; sourceTree = "<group>"; };
+		94E7DF3D182AA69300A97D82 /* LVPathWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVPathWatcher.h; sourceTree = "<group>"; };
+		94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVPathWatcher.m; sourceTree = "<group>"; };
 		94EB3DC818161106002E639F /* token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = token.m; sourceTree = "<group>"; };
 		94EB3DC918161106002E639F /* token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token.h; sourceTree = "<group>"; };
 		94EF5CF61811E744004836A0 /* LVTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVTheme.h; sourceTree = "<group>"; };
@@ -277,6 +280,8 @@
 				9490D7E718104D58006ECA5E /* MainMenu.xib */,
 				9490D7E418104D58006ECA5E /* LVAppDelegate.h */,
 				9490D7E518104D58006ECA5E /* LVAppDelegate.m */,
+				94E7DF3D182AA69300A97D82 /* LVPathWatcher.h */,
+				94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */,
 				94E7DF36182A8B1600A97D82 /* Key Bindings */,
 				945544FC18187B5600D69E63 /* Types */,
 				94EB3DCB18161DD5002E639F /* Parser */,
@@ -553,6 +558,7 @@
 				9490D83E18107FD6006ECA5E /* SDFuzzyMatcher.m in Sources */,
 				94D794341811226D003307F4 /* LVThemeManager.m in Sources */,
 				9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */,
+				94E7DF3F182AA69300A97D82 /* LVPathWatcher.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
 				9493C77D18232CE5004FEBBB /* LVParseError.m in Sources */,
