@@ -14,7 +14,8 @@
 @interface LVShortcut ()
 
 @property unsigned short keyCode;
-@property NSUInteger mods;
+@property NSUInteger prettyMods;
+@property NSUInteger testMods;
 
 @end
 
@@ -25,13 +26,20 @@
     shortcut.keyCode = [LVKeyTranslator keyCodeForString:key];
     shortcut.action = action;
     
-    if ([mods containsObject:@"cmd"]) shortcut.mods |= NSCommandKeyMask;
-    if ([mods containsObject:@"ctrl"]) shortcut.mods |= NSControlKeyMask;
-    if ([mods containsObject:@"alt"]) shortcut.mods |= NSAlternateKeyMask;
-    if ([mods containsObject:@"shift"]) shortcut.mods |= NSShiftKeyMask;
-    if ([mods containsObject:@"fn"]) shortcut.mods |= NSFunctionKeyMask;
+    if ([mods containsObject:@"cmd"]) shortcut.testMods |= NSCommandKeyMask;
+    if ([mods containsObject:@"ctrl"]) shortcut.testMods |= NSControlKeyMask;
+    if ([mods containsObject:@"alt"]) shortcut.testMods |= NSAlternateKeyMask;
+    if ([mods containsObject:@"shift"]) shortcut.testMods |= NSShiftKeyMask;
+    if ([mods containsObject:@"fn"]) shortcut.testMods |= NSFunctionKeyMask;
     
-    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:shortcut.mods], [self buildPrettyKey:key]];
+    shortcut.prettyMods = shortcut.testMods;
+    if (shortcut.keyCode == kVK_RightArrow ||
+        shortcut.keyCode == kVK_LeftArrow ||
+        shortcut.keyCode == kVK_UpArrow ||
+        shortcut.keyCode == kVK_DownArrow)
+        shortcut.testMods |= NSFunctionKeyMask | NSNumericPadKeyMask;
+    
+    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:shortcut.prettyMods], [self buildPrettyKey:key]];
     return shortcut;
 }
 
@@ -54,15 +62,7 @@
     if ([event keyCode] != self.keyCode)
         return NO;
     
-    NSUInteger mods = self.mods;
-    
-    if (self.keyCode == kVK_RightArrow ||
-        self.keyCode == kVK_LeftArrow ||
-        self.keyCode == kVK_UpArrow ||
-        self.keyCode == kVK_DownArrow)
-        mods |= NSFunctionKeyMask | NSNumericPadKeyMask;
-    
-    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) != mods)
+    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) != self.testMods)
         return NO;
     
     return YES;
