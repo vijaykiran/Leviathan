@@ -455,7 +455,22 @@
                 </menuItem>
                 <menuItem title="Paredit" id="QBs-Py-2mA">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Paredit" id="7Yv-mS-iAe"/>
+                    <menu key="submenu" title="Paredit" id="7Yv-mS-iAe">
+                        <items>
+                            <menuItem title="Raise Expression" keyEquivalent="r" id="uOh-kq-e25">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                <connections>
+                                    <action selector="raiseSexp:" target="-1" id="4nz-hU-udX"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Delete Expression" keyEquivalent="k" id="aTh-6h-ayS">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                <connections>
+                                    <action selector="killNextSexp:" target="-1" id="x7p-Tb-bNV"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
                 </menuItem>
                 <menuItem title="Window" id="19">
                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -495,6 +510,9 @@
                     </menu>
                 </menuItem>
             </items>
+            <connections>
+                <outlet property="delegate" destination="494" id="83C-T5-s4S"/>
+            </connections>
         </menu>
         <customObject id="494" customClass="LVAppDelegate">
             <connections>

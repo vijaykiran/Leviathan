@@ -184,11 +184,8 @@
         if (![needs isEqualToArray: shortcut.mods])
             continue;
         
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:shortcut.action
-                   withObject:theEvent];
-#pragma clang diagnostic pop
+        [NSApp sendAction:shortcut.action to:nil from:nil];
+        [[NSApp menu] performActionForItemAtIndex:3];
         
         return;
     }
