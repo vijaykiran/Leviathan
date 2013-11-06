@@ -47,7 +47,7 @@
 
  "wrapNextExpressionInParentheses:" [:ctrl "9"]
  "wrapNextExpressionInBrackets:" [:ctrl "["]
- "wrapNextExpressionInBraces:" [:ctrl "{"]
+ "wrapNextExpressionInBraces:" [:ctrl :shift "["]
 
- "moveToNextBlankLines:" [:alt "}"]
- "moveToPreviousBlankLines:" [:alt "{"]}
+ "moveToNextBlankLines:" [:alt :shift "]"]
+ "moveToPreviousBlankLines:" [:alt :shift "["]}
