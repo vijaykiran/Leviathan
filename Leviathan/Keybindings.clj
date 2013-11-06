@@ -1,6 +1,6 @@
 {;; Project menu
 
- "openDocument:" [:fn "o"]
+ "openProject:" [:fn "o"]
  "newTab:" [:cmd "t"]
 
  "jumpToFile:" [:cmd "o"]

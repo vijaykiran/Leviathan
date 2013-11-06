@@ -188,7 +188,7 @@
     [SDFuzzyMatcher showChoices:readableNames
                       charsWide:maxLen * 2.2 / 3.0
                       linesTall:10
-                    windowTitle:@"Jump to File"
+                    windowTitle:@"Jump to Definition"
                   choseCallback:^(long chosenIndex) {
                       [self openDefinition:[defDefs objectAtIndex:chosenIndex]
                                     inFile:[defFiles objectAtIndex:chosenIndex]];
