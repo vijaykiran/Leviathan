@@ -71,6 +71,16 @@
 - (void) adjustMenuItemStrings {
     NSMenu* menu = [[[NSApp menu] itemWithTitle:@"Paredit"] submenu];
     
+    for (NSMenuItem* item in [menu itemArray]) {
+        NSString* title = [item title];
+        
+        NSUInteger tabLocationInTitle = [title rangeOfString:@"\t"].location;
+        if (tabLocationInTitle != NSNotFound)
+            title = [title substringToIndex:tabLocationInTitle];
+        
+        [item setTitle:title];
+    }
+    
     NSNumber* longestTitleLen = [[menu itemArray] valueForKeyPath:@"title.@max.length"];
     
     NSMutableParagraphStyle* pStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
@@ -81,9 +91,8 @@
     
     for (NSMenuItem* item in [menu itemArray]) {
         NSString* title = [item title];
-        
         LVShortcut* shortcut = [self shortcutForAction:[item action]];
-        NSString* modsString = [shortcut keyEquivalentString];
+        NSString* modsString = (shortcut ? [shortcut keyEquivalentString] : @"");
         NSString* newTitle = [NSString stringWithFormat:@"%@\t%@", title, modsString];
         NSAttributedString* attrTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:attrs];
         [item setAttributedTitle:attrTitle];
@@ -91,7 +100,6 @@
 }
 
 - (void) reloadKeyBindings {
-    NSLog(@"relaoding");
     self.shortcuts = [NSMutableArray array];
     
     NSDictionary* shortcuts = LVParseConfigFromString([self keybindingsFileURL]);
