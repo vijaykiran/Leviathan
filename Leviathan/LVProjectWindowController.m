@@ -277,4 +277,25 @@
     return NO;
 }
 
+- (void) editFileInUntitledEditor:(LVFile*)file {
+    LVFile* currentEditorFile = self.tabView.currentTab.currentEditor.file;
+    if (![self switchToOpenFile:file]) {
+        if (!currentEditorFile.hasChanges && [[[currentEditorFile clojureTextStorage] string] isEqualToString:@""]) { // TODO: method -isEmpty
+            [self editFileInCurrentEditor:file];
+        }
+        else {
+            [self editFileInNewTab:file];
+        }
+    }
+}
+
+- (void) editFileWithLongName:(NSString*)subpath {
+    for (LVFile* file in self.project.files) {
+        if ([[file longName] isEqualToString:subpath]) {
+            [self editFileInUntitledEditor:file];
+            return;
+        }
+    }
+}
+
 @end

@@ -49,7 +49,13 @@
 }
 
 - (IBAction) openProject:(id)sender {
-    [self openDocument:sender];
+    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+    openPanel.canChooseDirectories = YES;
+    openPanel.canChooseFiles = NO;
+    openPanel.allowsMultipleSelection = NO;
+    if ([openPanel runModal] == NSFileHandlingPanelOKButton) {
+        [self openProjectForURL:[openPanel URL]];
+    }
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {
@@ -58,13 +64,7 @@
 }
 
 - (IBAction) openDocument:(id)sender {
-    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-    openPanel.canChooseDirectories = YES;
-    openPanel.canChooseFiles = NO;
-    openPanel.allowsMultipleSelection = NO;
-    if ([openPanel runModal] == NSFileHandlingPanelOKButton) {
-        [self openProjectForURL:[openPanel URL]];
-    }
+    [self openProject:sender];
 }
 
 - (void) saveProjects {
@@ -82,12 +82,18 @@
     }
 }
 
-- (void) openProjectForURL:(NSURL*)url {
+- (LVProjectWindowController*) openProjectForURL:(NSURL*)url {
+    for (LVProjectWindowController* existing in self.projectWindowControllers) {
+        if ([existing.project.projectURL isEqual: url]) {
+            return existing;
+        }
+    }
+    
     LVProjectWindowController* controller = [LVProjectWindowController openWith:url delegate:self];
     [self.projectWindowControllers addObject:controller];
     [self saveProjects];
-    
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+    return controller;
 }
 
 - (void) expireSoon {
@@ -129,6 +135,16 @@
     [self restoreProjects];
     
     [self expireSoon];
+}
+
+- (IBAction) editKeyBindingsFile:(id)sender {
+    LVProjectWindowController* pc = [self openProjectForURL:[LVPreferences settingsDirectory]];
+    [pc editFileWithLongName:@"Keybindings.clj"];
+}
+
+- (IBAction) editThemeFile:(id)sender {
+    LVProjectWindowController* pc = [self openProjectForURL:[LVPreferences settingsDirectory]];
+    [pc editFileWithLongName:[@"Themes" stringByAppendingPathComponent:[LVPreferences theme]]];
 }
 
 - (void) projectWindowClosed:(LVProjectWindowController *)controller {

@@ -28,4 +28,6 @@
 
 - (BOOL) tryClosingCompletely;
 
+- (void) editFileWithLongName:(NSString*)subpath;
+
 @end

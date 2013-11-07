@@ -29,7 +29,7 @@
  [:cmd "/"] "commentLinesFirstExpression:"
  [:alt "q"] "indentCurrentSection:"
 
- ["escape"] "deselectText:"
+ [:ctrl "g"] "deselectText:"
 
  [:alt "r"] "raiseExpression:"
  [:ctrl :alt "k"] "deleteNextExpression:"
