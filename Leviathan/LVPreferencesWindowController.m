@@ -54,7 +54,7 @@
     NSArray* names = [[LVThemeManager sharedThemeManager] potentialThemeNames];
     [self.themesButton removeAllItems];
     [self.themesButton addItemsWithTitles:names];
-    [self.themesButton sizeToFit];
+    [self.themesButton selectItemWithTitle:[LVPreferences theme]];
 }
 
 - (IBAction) changeTheme:(id)sender {

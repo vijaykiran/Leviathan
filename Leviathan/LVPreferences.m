@@ -13,6 +13,8 @@
 NSString* LVDefaultsFontChangedNotification = @"LVDefaultsFontChangedNotification";
 NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotification";
 
+NSString* LVDefaultThemeName = @"TomorrowNightEighties.clj";
+
 @implementation LVPreferences
 
 + (NSFont*) userFont {
@@ -89,7 +91,7 @@ NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotificatio
 
 #import "Beowulf.h"
 
-id LVParseConfigFromString(NSURL* url) {
+id LVParseConfig(NSURL* url) {
     NSData* data = [NSData dataWithContentsOfURL:url];
     NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     BWEnv* env = [Beowulf basicEnv];

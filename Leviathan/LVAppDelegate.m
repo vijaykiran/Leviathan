@@ -32,7 +32,7 @@
 - (NSDictionary*) defaultDefaults {
     return @{@"fontName": @"Menlo",
              @"fontSize": @12,
-             @"currentThemeName": @"Default.clj"};
+             @"currentThemeName": LVDefaultThemeName};
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {

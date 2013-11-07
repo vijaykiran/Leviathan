@@ -11,6 +11,8 @@
 extern NSString* LVDefaultsFontChangedNotification;
 extern NSString* LVCurrentThemeChangedNotification;
 
+extern NSString* LVDefaultThemeName;
+
 @interface LVPreferences : NSObject
 
 + (NSFont*) userFont;
@@ -23,4 +25,4 @@ extern NSString* LVCurrentThemeChangedNotification;
 
 @end
 
-id LVParseConfigFromString(NSURL* url);
+id LVParseConfig(NSURL* url);

@@ -40,7 +40,7 @@
 }
 
 - (void) loadTheme {
-    NSDictionary* themeData = LVParseConfigFromString([self themeFileURL]);
+    NSDictionary* themeData = LVParseConfig([self themeFileURL]);
     
     if (self.currentTheme) {
         [self.oldThemes addObject: self.currentTheme];
@@ -75,7 +75,7 @@
     NSURL* themeDestURL = [[self themesDirectory] URLByAppendingPathComponent:themeName];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:[themeDestURL path]]) {
-        if ([themeName isEqualToString: @"Default.clj"]) {
+        if ([themeName isEqualToString: LVDefaultThemeName]) {
             // copy file and try again
             NSURL* bundledThemesDir = [[NSBundle mainBundle] URLForResource:@"Themes" withExtension:@""];
             [[NSFileManager defaultManager] createDirectoryAtURL:[self themesDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
@@ -90,7 +90,7 @@
         }
         else {
             // use default theme and try again
-            [LVPreferences setTheme:@"Default.clj"];
+            [LVPreferences setTheme:LVDefaultThemeName];
         }
         return [self themeFileURL];
     }
