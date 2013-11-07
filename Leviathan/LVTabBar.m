@@ -26,11 +26,11 @@
 @implementation LVTabBar
 
 - (void) unhighlightTab:(CALayer*)tabLayer {
-    tabLayer.backgroundColor = [NSColor colorWithCalibratedWhite:0.52 alpha:1.0].CGColor;
+//    tabLayer.backgroundColor = [NSColor colorWithCalibratedWhite:0.52 alpha:1.0].CGColor;
 }
 
 - (void) highlightTab:(CALayer*)tabLayer {
-    tabLayer.backgroundColor = [NSColor colorWithCalibratedWhite:0.82 alpha:1.0].CGColor;
+//    tabLayer.backgroundColor = [NSColor colorWithCalibratedWhite:0.72 alpha:1.0].CGColor;
 }
 
 - (id)initWithFrame:(NSRect)frame {
@@ -39,34 +39,67 @@
         
         self.layer = [CALayer layer];
         self.layer.contentsScale = [[NSScreen mainScreen] backingScaleFactor];
-        self.layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.32 alpha:1.0].CGColor;
         [self setWantsLayer:YES];
     }
     return self;
 }
 
 - (CALayer*) makeTabTitleLayer:(CGRect)rect title:(NSString*)title {
+    rect = NSInsetRect(rect, 10, 5);
+    
     CATextLayer* textLayer = [CATextLayer layer];
+    textLayer.frame = rect;
+    textLayer.contentsScale = self.layer.contentsScale;
     textLayer.string = title;
     textLayer.font = (__bridge CGFontRef)[NSFont fontWithName:@"Helvetica Neue" size:13.0];
-    textLayer.fontSize = 14.0;
+    textLayer.fontSize = 13.0;
     textLayer.foregroundColor = [NSColor blackColor].CGColor;
-    textLayer.contentsScale = self.layer.contentsScale;
-    textLayer.frame = rect;
     return textLayer;
+}
+
+- (CALayer*) makeBorderLayer:(CGRect)rect {
+    CALayer* layer = [CALayer layer];
+    layer.frame = rect;
+    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.75 alpha:1.0].CGColor;
+    return layer;
+}
+
+- (CALayer*) makeHighlightLayer:(CGRect)rect {
+    rect.size.height -= 1;
+    CALayer* layer = [CALayer layer];
+    layer.frame = rect;
+    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.85 alpha:1.0].CGColor;
+    return layer;
+}
+
+- (CALayer*) makeGradientLayer:(CGRect)rect {
+    rect.size.height -= 2;
+    CALayer* layer = [CALayer layer];
+    layer.frame = rect;
+    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.95 alpha:1.0].CGColor;
+    return layer;
 }
 
 - (CALayer*) makeTab:(NSString*)title {
     CGRect realTabRect = CGRectMake(0, 0, SD_TAB_WIDTH, 25);
     
-    CALayer* tabLayer = [CALayer layer];
-    tabLayer.backgroundColor = [NSColor whiteColor].CGColor;
-    tabLayer.contentsScale = self.layer.contentsScale;
-    tabLayer.frame = realTabRect;
+    CALayer* tab = [CALayer layer];
+    tab.contentsScale = self.layer.contentsScale;
+    tab.frame = realTabRect;
     
-    [tabLayer addSublayer:[self makeTabTitleLayer:NSInsetRect(realTabRect, 10, 4) title:title]];
+    CALayer* borderLayer = [self makeBorderLayer:realTabRect];
+    [tab addSublayer:borderLayer];
     
-    return tabLayer;
+    CALayer* highlightLayer = [self makeHighlightLayer:realTabRect];
+    [borderLayer addSublayer:highlightLayer];
+    
+    CALayer* gradientLayer = [self makeGradientLayer:realTabRect];
+    [highlightLayer addSublayer:gradientLayer];
+    
+    CALayer* titleLayer = [self makeTabTitleLayer:realTabRect title:title];
+    [gradientLayer addSublayer:titleLayer];
+    
+    return tab;
 }
 
 - (void) selectTabLayer:(CALayer*)tabLayer {
@@ -138,7 +171,7 @@
     for (int i = 0; i < [titles count]; i++) {
         CALayer* tabLayer = [self.tabs objectAtIndex:i];
         NSString* title = [titles objectAtIndex:i];
-        CATextLayer* titleLayer = [[tabLayer sublayers] lastObject];
+        CATextLayer* titleLayer = (id)[tabLayer hitTest:CGPointMake(tabLayer.frame.origin.x + 15, tabLayer.frame.origin.y + 10)];
         
         titleLayer.string = title;
     }

@@ -15,6 +15,16 @@
 
 #import "SDFuzzyMatcher.h"
 
+#import <objc/runtime.h>
+
+static void sd_swizzle(Class kls, NSString* selName, IMP imp) {
+    SEL sel = NSSelectorFromString(selName);
+    Method meth = class_getInstanceMethod(kls, sel);
+    const char* enc = method_getTypeEncoding(meth);
+    class_addMethod(kls, sel, imp, enc);
+}
+
+
 @interface LVProjectWindowController ()
 
 @property (weak) id<LVProjectWindowController> delegate;
@@ -43,7 +53,28 @@
 - (void)windowDidLoad {
     [super windowDidLoad];
     
+//    [self makeTitleBarPrettier];
+    
     [self newTab:nil];
+}
+
+- (void) makeTitleBarPrettier {
+//    [[self.window standardWindowButton:NSWindowCloseButton] setHidden:YES];
+//    [[self.window standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
+//    [[self.window standardWindowButton:NSWindowZoomButton] setHidden:YES];
+    
+    NSView* themeView = [self.window.contentView superview];
+    NSString* className = [@"SD" stringByAppendingString: [themeView className]];
+    Class c = NSClassFromString(className);
+    if (c == nil) {
+        c = objc_allocateClassPair([themeView class], [className UTF8String], 0);
+        sd_swizzle(c, @"class", imp_implementationWithBlock(^{ return NSClassFromString(@"NSThemeFrame"); }));
+        sd_swizzle(c, @"className", imp_implementationWithBlock(^{ return @"NSThemeFrame"; }));
+//        sd_swizzle(c, @"_titlebarTitleRect", imp_implementationWithBlock(^{ return NSZeroRect; }));
+        sd_swizzle(c, @"_titlebarHeight", imp_implementationWithBlock(^{ return 52.0; }));
+        objc_registerClassPair(c);
+    }
+    object_setClass(themeView, c);
 }
 
 
