@@ -61,33 +61,43 @@
     
     CGPathMoveToPoint(path, NULL, NSMinX(rect), NSMinY(rect));
     
+#define THREE_X (rect.size.width / 66.66)
+#define THREE_Y (rect.size.height / 8.3)
+    
+#define FIVE_X (rect.size.width / 40.0)
+#define FIVE_Y (rect.size.height / 5.0)
+
+#define ELEVEN_X (rect.size.width / 18.18)
+#define THIRTEEN_X (rect.size.width / 15.38)
+#define SIXTEEN_X (rect.size.width / 12.5)
+    
     // bottom-left curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMinX(rect) + 3, NSMinY(rect),
-                              NSMinX(rect) + 5, NSMinY(rect) + 5);
+                              NSMinX(rect) + THREE_X, NSMinY(rect),
+                              NSMinX(rect) + FIVE_X, NSMinY(rect) + FIVE_Y);
     
     // left side
-    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + 11, NSMaxY(rect) - 3);
+    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + ELEVEN_X, NSMaxY(rect) - THREE_Y);
     
     // top-left curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMinX(rect) + 13, NSMaxY(rect),
-                              NSMinX(rect) + 16, NSMaxY(rect));
+                              NSMinX(rect) + THIRTEEN_X, NSMaxY(rect),
+                              NSMinX(rect) + SIXTEEN_X, NSMaxY(rect));
     
     // top side
-    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - 16, NSMaxY(rect));
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - SIXTEEN_X, NSMaxY(rect));
     
     // top-right curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMaxX(rect) - 13, NSMaxY(rect),
-                              NSMaxX(rect) - 11, NSMaxY(rect) - 3);
+                              NSMaxX(rect) - THIRTEEN_X, NSMaxY(rect),
+                              NSMaxX(rect) - ELEVEN_X, NSMaxY(rect) - THREE_Y);
     
     // right side
-    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - 5, NSMinY(rect) + 5);
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - FIVE_X, NSMinY(rect) + FIVE_Y);
     
     // bottom-right curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMaxX(rect) - 3, NSMinY(rect),
+                              NSMaxX(rect) - THREE_X, NSMinY(rect),
                               NSMaxX(rect), NSMinY(rect));
     
     return path;
@@ -104,13 +114,13 @@
 }
 
 - (CALayer*) makeHighlightLayer:(CGRect)rect {
-    rect.size.height -= 1;
+    rect.size.height -= 1.0;
     rect.origin.x += 0.5;
-    rect.size.width -= 2;
+    rect.size.width -= 2.0;
     
     CAShapeLayer* layer = [CAShapeLayer layer];
     layer.frame = rect;
-    layer.fillColor = [NSColor colorWithCalibratedWhite:0.99 alpha:1.0].CGColor;
+    layer.fillColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0].CGColor;
     CGPathRef path = [self tabPathForRect:rect];
     layer.path = path;
     CFRelease(path);
@@ -118,9 +128,9 @@
 }
 
 - (CALayer*) makeGradientLayer:(CGRect)rect {
-    rect.size.height -= 1;
+    rect.size.height -= 1.0;
     rect.origin.x += 0.5;
-    rect.size.width -= 1.5;
+    rect.size.width -= 1.0;
     
     CAGradientLayer* layer = [CAGradientLayer layer];
     layer.frame = rect;
@@ -234,7 +244,6 @@
             deepest = [[deepest sublayers] lastObject];
         
         CATextLayer* titleLayer = (id)deepest;
-        
         titleLayer.string = title;
     }
     
