@@ -45,13 +45,13 @@
 }
 
 - (CALayer*) makeTabTitleLayer:(CGRect)rect {
-    rect = NSInsetRect(rect, 10, 4);
+    rect = NSInsetRect(rect, 18, 4);
     
     CATextLayer* textLayer = [CATextLayer layer];
     textLayer.frame = rect;
     textLayer.contentsScale = self.layer.contentsScale;
-    textLayer.font = (__bridge CGFontRef)[NSFont fontWithName:@"Helvetica Neue" size:13.0];
-    textLayer.fontSize = 13.0;
+    textLayer.font = (__bridge CGFontRef)[NSFont fontWithName:@"Helvetica Neue" size:12.0];
+    textLayer.fontSize = 12.0;
     textLayer.foregroundColor = [NSColor blackColor].CGColor;
     return textLayer;
 }
@@ -64,10 +64,10 @@
     
     // curve to bottom-left-ish
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMinX(rect) + 5, NSMinY(rect),
+                              NSMinX(rect) + 3, NSMinY(rect),
                               NSMinX(rect) + 5, NSMinY(rect) + 5);
     
-    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + 10, NSMaxY(rect));
+    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + 12, NSMaxY(rect));
     
     CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - 10, NSMaxY(rect));
     
