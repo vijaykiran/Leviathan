@@ -26,11 +26,19 @@
 @implementation LVTabBar
 
 - (void) unhighlightTab:(CALayer*)tabLayer {
-//    tabLayer.backgroundColor = [NSColor colorWithCalibratedWhite:0.52 alpha:1.0].CGColor;
+    CALayer* borderLayer = [[tabLayer sublayers] lastObject];
+    CALayer* highlightLayer = [[borderLayer sublayers] lastObject];
+    CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
+    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.70 alpha:1.0].CGColor,
+                             (id)[NSColor colorWithCalibratedWhite:0.90 alpha:1.0].CGColor];
 }
 
 - (void) highlightTab:(CALayer*)tabLayer {
-//    tabLayer.backgroundColor = [NSColor colorWithCalibratedWhite:0.72 alpha:1.0].CGColor;
+    CALayer* borderLayer = [[tabLayer sublayers] lastObject];
+    CALayer* highlightLayer = [[borderLayer sublayers] lastObject];
+    CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
+    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.80 alpha:1.0].CGColor,
+                             (id)[NSColor colorWithCalibratedWhite:0.999 alpha:1.0].CGColor];
 }
 
 - (id)initWithFrame:(NSRect)frame {
@@ -45,14 +53,19 @@
 }
 
 - (CALayer*) makeTabTitleLayer:(CGRect)rect {
-    rect = NSInsetRect(rect, 18, 4);
+    rect = NSInsetRect(rect, 18, 3);
+    
+    CGFloat fontSize = 12.0;
+    
+    NSFont* font = [NSFont fontWithName:@"Helvetica Neue" size:fontSize];
+    font = [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSFontBoldTrait];
     
     CATextLayer* textLayer = [CATextLayer layer];
     textLayer.frame = rect;
     textLayer.contentsScale = self.layer.contentsScale;
-    textLayer.font = (__bridge CGFontRef)[NSFont fontWithName:@"Helvetica Neue" size:12.0];
-    textLayer.fontSize = 12.0;
-    textLayer.foregroundColor = [NSColor blackColor].CGColor;
+    textLayer.font = (__bridge CGFontRef)font;
+    textLayer.fontSize = fontSize;
+    textLayer.foregroundColor = [NSColor colorWithCalibratedWhite:0.15 alpha:1.0].CGColor;
     return textLayer;
 }
 
