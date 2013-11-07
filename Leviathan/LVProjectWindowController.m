@@ -40,11 +40,11 @@
     return @"ProjectWindow";
 }
 
-- (void) windowDidBecomeKey:(NSNotification *)notification {
+- (void) windowDidBecomeMain:(NSNotification *)notification {
     [self.tabView undim];
 }
 
-- (void) windowDidResignKey:(NSNotification *)notification {
+- (void) windowDidResignMain:(NSNotification *)notification {
     [self.tabView dim];
 }
 
