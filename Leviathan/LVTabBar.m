@@ -45,6 +45,17 @@
     return self;
 }
 
+- (CALayer*) makeTabTitleLayer:(CGRect)rect title:(NSString*)title {
+    CATextLayer* textLayer = [CATextLayer layer];
+    textLayer.string = title;
+    textLayer.font = (__bridge CGFontRef)[NSFont fontWithName:@"Helvetica Neue" size:13.0];
+    textLayer.fontSize = 14.0;
+    textLayer.foregroundColor = [NSColor blackColor].CGColor;
+    textLayer.contentsScale = self.layer.contentsScale;
+    textLayer.frame = rect;
+    return textLayer;
+}
+
 - (CALayer*) makeTab:(NSString*)title {
     CGRect realTabRect = CGRectMake(0, 0, SD_TAB_WIDTH, 25);
     
@@ -53,18 +64,7 @@
     tabLayer.contentsScale = self.layer.contentsScale;
     tabLayer.frame = realTabRect;
     
-    CATextLayer* textLayer = [CATextLayer layer];
-    
-    NSFont* font = [NSFont fontWithName:@"Helvetica Neue" size:13.0];
-//    font = [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSFontBoldTrait];
-    
-    textLayer.string = title;
-    textLayer.font = (__bridge CGFontRef)font;
-    textLayer.fontSize = 14.0;
-    textLayer.foregroundColor = [NSColor blackColor].CGColor;
-    textLayer.contentsScale = self.layer.contentsScale;
-    textLayer.frame = NSInsetRect(realTabRect, 10, 4);
-    [tabLayer addSublayer:textLayer];
+    [tabLayer addSublayer:[self makeTabTitleLayer:NSInsetRect(realTabRect, 10, 4) title:title]];
     
     return tabLayer;
 }
