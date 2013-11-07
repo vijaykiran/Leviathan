@@ -117,9 +117,9 @@
                                     <action selector="openProject:" target="-1" id="Tkd-Wk-Akn"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Open Recent" id="q0W-cY-gAr">
+                            <menuItem title="Open Recent Project" id="q0W-cY-gAr">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="eyt-lW-fCD">
+                                <menu key="submenu" title="Open Recent Project" systemMenu="recentDocuments" id="eyt-lW-fCD">
                                     <items>
                                         <menuItem title="Clear Menu" id="w0d-zR-Fjo">
                                             <connections>
