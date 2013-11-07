@@ -19,10 +19,19 @@
 
 @implementation LVTextView
 
+- (BOOL) resignFirstResponder {
+    BOOL did = [super resignFirstResponder];
+    if (did) {
+        [self dim];
+    }
+    return did;
+}
+
 - (BOOL) becomeFirstResponder {
     BOOL did = [super becomeFirstResponder];
     if (did) {
         [self.customDelegate textViewWasFocused:self];
+        [self undim];
     }
     return did;
 }
@@ -32,6 +41,8 @@
 }
 
 - (void) awakeFromNib {
+//    [self setWantsLayer:YES];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];
     
@@ -55,6 +66,15 @@
 //    [self swizzleMethodWithIndentation:@selector(insertNewline:)];
 //    [self swizzleMethodWithIndentation:@selector(insertText:)];
 //}
+
+- (void) undim {
+    self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
+}
+
+- (void) dim {
+    self.backgroundColor = [[LVThemeManager sharedThemeManager].currentTheme.backgroundColor blendedColorWithFraction:0.1
+                                                                                                              ofColor:[NSColor whiteColor]];
+}
 
 - (void) defaultsFontChanged:(NSNotification*)note {
     [self.clojureTextStorage rehighlight];
