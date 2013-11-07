@@ -53,6 +53,15 @@
 }
 
 - (IBAction) openProject:(id)sender {
+    [self openDocument:sender];
+}
+
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {
+    [self openProjectForURL:[NSURL fileURLWithPath:filename]];
+    return YES;
+}
+
+- (IBAction) openDocument:(id)sender {
     NSOpenPanel* openPanel = [NSOpenPanel openPanel];
     openPanel.canChooseDirectories = YES;
     openPanel.canChooseFiles = NO;
@@ -81,6 +90,8 @@
     LVProjectWindowController* controller = [LVProjectWindowController openWith:url delegate:self];
     [self.projectWindowControllers addObject:controller];
     [self saveProjects];
+    
+    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
 }
 
 - (void) expireSoon {

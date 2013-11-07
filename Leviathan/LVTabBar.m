@@ -353,15 +353,15 @@
     [self repositionTabs:self.tabs];
 }
 
-//- (NSView*) hitTest:(NSPoint)aPoint {
-//    NSPoint p = [self convertPoint:aPoint fromView:nil];
-//    NSUInteger idx = p.x / SD_TAB_WIDTH;
-//    
-//    if (idx >= [self.tabs count])
-//        return nil;
-//    
-//    return self;
-//}
+- (BOOL) acceptsFirstMouse:(NSEvent *)theEvent {
+    NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    NSUInteger idx = p.x / SD_TAB_WIDTH;
+    
+    if (idx >= [self.tabs count])
+        return YES;
+    
+    return NO;
+}
 
 - (void) mouseDown:(NSEvent *)theEvent {
     NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];

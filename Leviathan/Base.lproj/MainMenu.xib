@@ -70,6 +70,21 @@
                 <menuItem title="File" id="83">
                     <menu key="submenu" title="File" id="81">
                         <items>
+                            <menuItem title="Open Recent" id="q0W-cY-gAr">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="eyt-lW-fCD">
+                                    <items>
+                                        <menuItem title="Clear Menu" id="w0d-zR-Fjo">
+                                            <connections>
+                                                <action selector="clearRecentDocuments:" target="-1" id="Jxj-7z-9s5"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="0ru-tk-sgW">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
                             <menuItem title="Close Window" keyEquivalent="W" id="73">
                                 <connections>
                                     <action selector="closeProjectWindow:" target="-1" id="96v-O2-DpQ"/>
@@ -91,7 +106,7 @@
                                     <action selector="performClose:" target="-1" id="bVb-ow-EOl"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="0ru-tk-sgW">
+                            <menuItem isSeparatorItem="YES" id="yAm-iJ-f4F">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
                             <menuItem title="Save…" keyEquivalent="s" id="75">
