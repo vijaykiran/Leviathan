@@ -83,7 +83,7 @@
     CGPathMoveToPoint(path, NULL, NSMinX(rect), NSMinY(rect));
     
 #define THREE_X (rect.size.width / 66.66)
-#define THREE_Y (rect.size.height / 8.3)
+#define THREE_Y (rect.size.height / 5.3)
     
 #define FIVE_X (rect.size.width / 40.0)
 #define FIVE_Y (rect.size.height / 5.0)
@@ -128,6 +128,7 @@
     rect.origin.x += 10;
     
     CAShapeLayer* layer = [CAShapeLayer layer];
+    layer.contentsScale = self.layer.contentsScale;
     layer.frame = rect;
     CGPathRef path = [self tabPathForRect:rect];
     layer.path = path;
@@ -136,11 +137,12 @@
 }
 
 - (CALayer*) makeHighlightLayer:(CGRect)rect {
-    rect.size.height -= 0.5;
-    rect.origin.x += 0.25;
-    rect.size.width -= 1.0;
+    rect.size.height -= 1.0 / self.layer.contentsScale;
+    rect.origin.x += 0.5 / self.layer.contentsScale;
+    rect.size.width -= 2.0 / self.layer.contentsScale;
     
     CAShapeLayer* layer = [CAShapeLayer layer];
+    layer.contentsScale = self.layer.contentsScale;
     layer.frame = rect;
     CGPathRef path = [self tabPathForRect:rect];
     layer.path = path;
@@ -149,14 +151,16 @@
 }
 
 - (CALayer*) makeGradientLayer:(CGRect)rect {
-    rect.size.height -= 0.5;
-    rect.origin.x += 0.25;
-    rect.size.width -= 0.5;
+    rect.size.height -= 1.0 / self.layer.contentsScale;
+    rect.origin.x += 0.5 / self.layer.contentsScale;
+    rect.size.width -= 1.0 / self.layer.contentsScale;
     
     CAGradientLayer* layer = [CAGradientLayer layer];
+    layer.contentsScale = self.layer.contentsScale;
     layer.frame = rect;
     
     CAShapeLayer* maskLayer = [CAShapeLayer layer];
+    maskLayer.contentsScale = self.layer.contentsScale;
     maskLayer.fillColor = [NSColor blackColor].CGColor;
     CGPathRef path = [self tabPathForRect:rect];
     maskLayer.path = path;
