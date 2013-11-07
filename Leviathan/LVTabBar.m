@@ -56,31 +56,50 @@
     return textLayer;
 }
 
+- (CGPathRef) tabPathForRect:(CGRect)rect {
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddRoundedRect(path, NULL, rect, 10, 10);
+    return path;
+}
+
 - (CALayer*) makeBorderLayer:(CGRect)rect {
-    CALayer* layer = [CALayer layer];
+    CAShapeLayer* layer = [CAShapeLayer layer];
     layer.frame = rect;
-    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor;
+    layer.fillColor = [NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor;
+    CGPathRef path = [self tabPathForRect:rect];
+    layer.path = path;
+    CFRelease(path);
     return layer;
 }
 
 - (CALayer*) makeHighlightLayer:(CGRect)rect {
     rect.size.height -= 1;
-    rect = NSInsetRect(rect, 1, 0);
+//    rect = NSInsetRect(rect, 1, 0);
     
-    CALayer* layer = [CALayer layer];
+    CAShapeLayer* layer = [CAShapeLayer layer];
     layer.frame = rect;
-    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.99 alpha:1.0].CGColor;
+    layer.fillColor = [NSColor colorWithCalibratedWhite:0.99 alpha:1.0].CGColor;
+    CGPathRef path = [self tabPathForRect:rect];
+    layer.path = path;
+    CFRelease(path);
     return layer;
 }
 
 - (CALayer*) makeGradientLayer:(CGRect)rect {
     rect.size.height -= 1;
-    rect = NSInsetRect(rect, 1, 0);
+//    rect = NSInsetRect(rect, 1, 0);
     
     CAGradientLayer* layer = [CAGradientLayer layer];
     layer.frame = rect;
     layer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.75 alpha:1.0].CGColor,
                      (id)[NSColor colorWithCalibratedWhite:0.95 alpha:1.0].CGColor];
+    
+    CAShapeLayer* maskLayer = [CAShapeLayer layer];
+    CGPathRef path = [self tabPathForRect:rect];
+    maskLayer.path = path;
+    CFRelease(path);
+    layer.mask = maskLayer;
+    
     return layer;
 }
 
@@ -175,7 +194,12 @@
     for (int i = 0; i < [titles count]; i++) {
         CALayer* tabLayer = [self.tabs objectAtIndex:i];
         NSString* title = [titles objectAtIndex:i];
-        CATextLayer* titleLayer = (id)[tabLayer hitTest:CGPointMake(tabLayer.frame.origin.x + 15, tabLayer.frame.origin.y + 10)];
+        
+        CALayer* deepest = tabLayer;
+        while ([[deepest sublayers] count] > 0)
+            deepest = [[deepest sublayers] lastObject];
+        
+        CATextLayer* titleLayer = (id)deepest;
         
         titleLayer.string = title;
     }
