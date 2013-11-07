@@ -25,4 +25,7 @@
 
 - (void) updateTabTitles;
 
+- (void) dim;
+- (void) undim;
+
 @end

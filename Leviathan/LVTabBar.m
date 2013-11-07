@@ -24,23 +24,39 @@
 
 @property CALayer* selectedTab;
 
+@property BOOL dimmed;
+
 @end
 
 @implementation LVTabBar
 
 - (void) colorize:(CALayer*)tabLayer border:(CGFloat)border highlight:(CGFloat)highlight topGradient:(CGFloat)top bottomGradient:(CGFloat)bottom {
+    NSColor* borderColor = [NSColor colorWithCalibratedWhite:border alpha:1.0];
+    NSColor* highlightColor = [NSColor colorWithCalibratedWhite:highlight alpha:1.0];
+    NSColor* topColor = [NSColor colorWithCalibratedWhite:top alpha:1.0];
+    NSColor* bottomColor = [NSColor colorWithCalibratedWhite:bottom alpha:1.0];
+    
+    if (self.dimmed) {
+        CGFloat percent = 0.4;
+        NSColor* blender = [NSColor whiteColor];
+        borderColor = [borderColor blendedColorWithFraction:percent ofColor:blender];
+        highlightColor = [highlightColor blendedColorWithFraction:percent ofColor:blender];
+        topColor = [topColor blendedColorWithFraction:percent ofColor:blender];
+        bottomColor = [bottomColor blendedColorWithFraction:percent ofColor:blender];
+    }
+    
     CAShapeLayer* borderLayer = [[tabLayer sublayers] lastObject];
-    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:border alpha:1.0].CGColor;
+    borderLayer.fillColor = borderColor.CGColor;
     
     CAShapeLayer* highlightLayer = [[borderLayer sublayers] lastObject];
-    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:highlight alpha:1.0].CGColor;
+    highlightLayer.fillColor = highlightColor.CGColor;
     
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
-    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:bottom alpha:1.0].CGColor,
-                             (id)[NSColor colorWithCalibratedWhite:top alpha:1.0].CGColor];
+    gradientLayer.colors = @[(id)bottomColor.CGColor,
+                             (id)topColor.CGColor];
     
     CATextLayer* textLayer = [[gradientLayer sublayers] lastObject];
-    textLayer.shadowColor = [NSColor colorWithCalibratedWhite:highlight alpha:1.0].CGColor;
+    textLayer.shadowColor = highlightColor.CGColor;
 }
 
 - (void) unhighlightTab:(CALayer*)tabLayer {
@@ -68,6 +84,30 @@
         [self setWantsLayer:YES];
     }
     return self;
+}
+
+- (void) restyleAllTabs {
+    [CATransaction begin];
+    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    
+    for (CALayer* tab in self.tabs) {
+        if (tab == self.selectedTab)
+            [self highlightTab:tab];
+        else
+            [self unhighlightTab:tab];
+    }
+    
+    [CATransaction commit];
+}
+
+- (void) dim {
+    self.dimmed = YES;
+    [self restyleAllTabs];
+}
+
+- (void) undim {
+    self.dimmed = NO;
+    [self restyleAllTabs];
 }
 
 - (CALayer*) makeTabTitleLayer:(CGRect)rect {

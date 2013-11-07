@@ -40,6 +40,14 @@
     return @"ProjectWindow";
 }
 
+- (void) windowDidBecomeKey:(NSNotification *)notification {
+    [self.tabView undim];
+}
+
+- (void) windowDidResignKey:(NSNotification *)notification {
+    [self.tabView dim];
+}
+
 - (void) awakeFromNib {
     [super awakeFromNib];
     [self makeTitleBarPrettier];

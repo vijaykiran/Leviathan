@@ -28,4 +28,7 @@
 - (void) manuallySelectTab:(NSUInteger)tabIndex;
 - (void) moveTab:(NSUInteger)from to:(NSUInteger)to;
 
+- (void) dim;
+- (void) undim;
+
 @end

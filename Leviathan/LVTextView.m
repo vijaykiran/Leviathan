@@ -86,36 +86,36 @@
 }
 
 
-
-- (void) drawViewBackgroundInRect:(NSRect)rect {
-    [super drawViewBackgroundInRect:rect];
-    
-    NSColor* highlightLineColor = [LVThemeManager sharedThemeManager].currentTheme.highlightLineColor;
-    if (highlightLineColor != nil) {
-        NSUInteger count;
-        NSRectArray array = [[self layoutManager] rectArrayForCharacterRange:self.selectedRange
-                                                withinSelectedCharacterRange:self.selectedRange
-                                                             inTextContainer:[self textContainer]
-                                                                   rectCount:&count];
-        
-        if (count < 1)
-            return;
-        
-        NSRect r = array[0];
-        
-        r.origin.x = 0;
-        r.size.width = self.bounds.size.width;
-        
-        [NSGraphicsContext saveGraphicsState];
-        [highlightLineColor setFill];
-        [[NSBezierPath bezierPathWithRect:r] fill];
-        [NSGraphicsContext restoreGraphicsState];
-        
-        dispatch_async(dispatch_get_current_queue(), ^{
-            [self setNeedsDisplayInRect:r];
-        });
-    }
-}
+// TODO: this takes up too much CPU for some reason. dont uncomment until it can be way more efficient
+//- (void) drawViewBackgroundInRect:(NSRect)rect {
+//    [super drawViewBackgroundInRect:rect];
+//    
+//    NSColor* highlightLineColor = [LVThemeManager sharedThemeManager].currentTheme.highlightLineColor;
+//    if (highlightLineColor != nil) {
+//        NSUInteger count;
+//        NSRectArray array = [[self layoutManager] rectArrayForCharacterRange:self.selectedRange
+//                                                withinSelectedCharacterRange:self.selectedRange
+//                                                             inTextContainer:[self textContainer]
+//                                                                   rectCount:&count];
+//        
+//        if (count < 1)
+//            return;
+//        
+//        NSRect r = array[0];
+//        
+//        r.origin.x = 0;
+//        r.size.width = self.bounds.size.width;
+//        
+//        [NSGraphicsContext saveGraphicsState];
+//        [highlightLineColor setFill];
+//        [[NSBezierPath bezierPathWithRect:r] fill];
+//        [NSGraphicsContext restoreGraphicsState];
+//        
+//        dispatch_async(dispatch_get_current_queue(), ^{
+//            [self setNeedsDisplayInRect:r];
+//        });
+//    }
+//}
 
 
 

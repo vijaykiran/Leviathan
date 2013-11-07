@@ -44,6 +44,14 @@
     [self addSubview:self.bodyView];
 }
 
+- (void) dim {
+    [self.tabBar dim];
+}
+
+- (void) undim {
+    [self.tabBar undim];
+}
+
 - (void) currentEditorChanged:(LVTab*)tab {
     [self updateTabTitles];
 }
