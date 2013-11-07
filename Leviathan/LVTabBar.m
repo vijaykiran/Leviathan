@@ -25,6 +25,14 @@
 
 @implementation LVTabBar
 
+- (void) unhighlightTab:(CALayer*)tabLayer {
+    tabLayer.backgroundColor = [NSColor colorWithCalibratedWhite:0.52 alpha:1.0].CGColor;
+}
+
+- (void) highlightTab:(CALayer*)tabLayer {
+    tabLayer.backgroundColor = [NSColor colorWithCalibratedWhite:0.82 alpha:1.0].CGColor;
+}
+
 - (id)initWithFrame:(NSRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.tabs = [NSMutableArray array];
@@ -38,22 +46,24 @@
 }
 
 - (CALayer*) makeTab:(NSString*)title {
+    CGRect realTabRect = CGRectMake(0, 0, SD_TAB_WIDTH, 25);
+    
     CALayer* tabLayer = [CALayer layer];
     tabLayer.backgroundColor = [NSColor whiteColor].CGColor;
     tabLayer.contentsScale = self.layer.contentsScale;
-    tabLayer.frame = CGRectMake(0, 0, SD_TAB_WIDTH, 30);
+    tabLayer.frame = realTabRect;
     
     CATextLayer* textLayer = [CATextLayer layer];
     
-    NSFont* font = [NSFont fontWithName:@"Helvetica Neue" size:14.0];
-    font = [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSFontBoldTrait];
+    NSFont* font = [NSFont fontWithName:@"Helvetica Neue" size:13.0];
+//    font = [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSFontBoldTrait];
     
     textLayer.string = title;
     textLayer.font = (__bridge CGFontRef)font;
     textLayer.fontSize = 14.0;
     textLayer.foregroundColor = [NSColor blackColor].CGColor;
     textLayer.contentsScale = self.layer.contentsScale;
-    textLayer.frame = CGRectMake(10, 6, SD_TAB_WIDTH - 10, 18);
+    textLayer.frame = NSInsetRect(realTabRect, 10, 4);
     [tabLayer addSublayer:textLayer];
     
     return tabLayer;
@@ -65,12 +75,12 @@
     
     for (CALayer* tab in self.tabs) {
         tab.zPosition = 0;
-        tab.backgroundColor = [NSColor colorWithCalibratedWhite:0.52 alpha:1.0].CGColor;
+        [self unhighlightTab:tab];
     }
     
     self.selectedTab.zPosition = 1;
     self.selectedTab = tabLayer;
-    self.selectedTab.backgroundColor = [NSColor colorWithCalibratedWhite:0.82 alpha:1.0].CGColor;
+    [self highlightTab:self.selectedTab];
     
     [CATransaction commit];
 }
