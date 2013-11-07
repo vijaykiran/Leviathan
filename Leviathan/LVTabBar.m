@@ -26,16 +26,24 @@
 @implementation LVTabBar
 
 - (void) unhighlightTab:(CALayer*)tabLayer {
-    CALayer* borderLayer = [[tabLayer sublayers] lastObject];
-    CALayer* highlightLayer = [[borderLayer sublayers] lastObject];
+    CAShapeLayer* borderLayer = [[tabLayer sublayers] lastObject];
+    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor;
+    
+    CAShapeLayer* highlightLayer = [[borderLayer sublayers] lastObject];
+    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0].CGColor;
+    
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
     gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.70 alpha:1.0].CGColor,
                              (id)[NSColor colorWithCalibratedWhite:0.90 alpha:1.0].CGColor];
 }
 
 - (void) highlightTab:(CALayer*)tabLayer {
-    CALayer* borderLayer = [[tabLayer sublayers] lastObject];
-    CALayer* highlightLayer = [[borderLayer sublayers] lastObject];
+    CAShapeLayer* borderLayer = [[tabLayer sublayers] lastObject];
+    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor;
+    
+    CAShapeLayer* highlightLayer = [[borderLayer sublayers] lastObject];
+    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0].CGColor;
+    
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
     gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.80 alpha:1.0].CGColor,
                              (id)[NSColor colorWithCalibratedWhite:0.999 alpha:1.0].CGColor];
@@ -117,9 +125,10 @@
 }
 
 - (CALayer*) makeBorderLayer:(CGRect)rect {
+    rect.origin.x += 10;
+    
     CAShapeLayer* layer = [CAShapeLayer layer];
     layer.frame = rect;
-    layer.fillColor = [NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor;
     CGPathRef path = [self tabPathForRect:rect];
     layer.path = path;
     CFRelease(path);
@@ -133,7 +142,6 @@
     
     CAShapeLayer* layer = [CAShapeLayer layer];
     layer.frame = rect;
-    layer.fillColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0].CGColor;
     CGPathRef path = [self tabPathForRect:rect];
     layer.path = path;
     CFRelease(path);
@@ -147,8 +155,6 @@
     
     CAGradientLayer* layer = [CAGradientLayer layer];
     layer.frame = rect;
-    layer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.70 alpha:1.0].CGColor,
-                     (id)[NSColor colorWithCalibratedWhite:0.90 alpha:1.0].CGColor];
     
     CAShapeLayer* maskLayer = [CAShapeLayer layer];
     maskLayer.fillColor = [NSColor blackColor].CGColor;
@@ -162,6 +168,8 @@
 
 - (CALayer*) makeTab {
     CGRect realTabRect = CGRectMake(0, 0, SD_TAB_WIDTH, 25);
+    
+    realTabRect = NSInsetRect(realTabRect, -10, 0);
     
     CALayer* tab = [CALayer layer];
     tab.contentsScale = self.layer.contentsScale;
