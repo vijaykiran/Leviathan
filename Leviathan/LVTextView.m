@@ -16,13 +16,20 @@
 
 //#import <objc/runtime.h>
 
+@interface LVTextView ()
+
+@property BOOL dimmed;
+
+@end
+
 
 @implementation LVTextView
 
 - (BOOL) resignFirstResponder {
     BOOL did = [super resignFirstResponder];
     if (did) {
-        [self dim];
+        self.dimmed = YES;
+        [self setupUserDefinedProperties];
     }
     return did;
 }
@@ -31,7 +38,8 @@
     BOOL did = [super becomeFirstResponder];
     if (did) {
         [self.customDelegate textViewWasFocused:self];
-        [self undim];
+        self.dimmed = NO;
+        [self setupUserDefinedProperties];
     }
     return did;
 }
@@ -46,7 +54,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];
     
-    [self setupNiceties];
+    [self setupUserDefinedProperties];
+    [self setupHardcodedProperties];
+    [self disableLineWrapping];
 //    [self setupAutoIndentation];
 }
 
@@ -67,42 +77,36 @@
 //    [self swizzleMethodWithIndentation:@selector(insertText:)];
 //}
 
-- (void) undim {
-    self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
-}
-
-- (void) dim {
-    self.backgroundColor = [[LVThemeManager sharedThemeManager].currentTheme.backgroundColor blendedColorWithFraction:0.1
-                                                                                                              ofColor:[NSColor whiteColor]];
-}
-
 - (void) defaultsFontChanged:(NSNotification*)note {
     [self.clojureTextStorage rehighlight];
-    [self setupNiceties];
+    [self setupUserDefinedProperties];
 }
 
 - (void) defaultsThemeChanged:(NSNotification*)note {
     [self.clojureTextStorage rehighlight];
-    [self setupNiceties];
+    [self setupUserDefinedProperties];
 }
 
-- (void) setupNiceties {
-    self.enclosingScrollView.verticalScroller.knobStyle = self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
-    
+- (void) setupHardcodedProperties {
     self.automaticTextReplacementEnabled = NO;
     self.automaticSpellingCorrectionEnabled = NO;
     self.automaticQuoteSubstitutionEnabled = NO;
     self.automaticDashSubstitutionEnabled = NO;
     self.automaticLinkDetectionEnabled = NO;
     self.automaticDataDetectionEnabled = NO;
+//    self.textContainerInset = NSMakeSize(0.0f, 4.0f);
+}
+
+- (void) setupUserDefinedProperties {
+    self.enclosingScrollView.verticalScroller.knobStyle = self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
-    self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
+    NSColor* backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
+    if (self.dimmed)
+        backgroundColor = [backgroundColor blendedColorWithFraction:0.1 ofColor:[NSColor whiteColor]];
+    
+    self.backgroundColor = backgroundColor;
     self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
     self.selectedTextAttributes = [LVThemeManager sharedThemeManager].currentTheme.selection;
-    
-    [self sd_disableLineWrapping];
-    
-//    [super setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
 }
 
 
@@ -139,7 +143,7 @@
 
 
 
-- (void) sd_disableLineWrapping {
+- (void) disableLineWrapping {
     [[self enclosingScrollView] setHasHorizontalScroller:YES];
     [self setHorizontallyResizable:YES];
     NSSize layoutSize = [self maxSize];
