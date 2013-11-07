@@ -61,7 +61,7 @@
 }
 
 - (CALayer*) makeTabTitleLayer:(CGRect)rect {
-    rect = NSInsetRect(rect, 18, 3);
+    rect = NSInsetRect(rect, 18, 4);
     
     CGFloat fontSize = 12.0;
     
