@@ -44,13 +44,12 @@
     return self;
 }
 
-- (CALayer*) makeTabTitleLayer:(CGRect)rect title:(NSString*)title {
-    rect = NSInsetRect(rect, 10, 5);
+- (CALayer*) makeTabTitleLayer:(CGRect)rect {
+    rect = NSInsetRect(rect, 10, 4);
     
     CATextLayer* textLayer = [CATextLayer layer];
     textLayer.frame = rect;
     textLayer.contentsScale = self.layer.contentsScale;
-    textLayer.string = title;
     textLayer.font = (__bridge CGFontRef)[NSFont fontWithName:@"Helvetica Neue" size:13.0];
     textLayer.fontSize = 13.0;
     textLayer.foregroundColor = [NSColor blackColor].CGColor;
@@ -60,27 +59,32 @@
 - (CALayer*) makeBorderLayer:(CGRect)rect {
     CALayer* layer = [CALayer layer];
     layer.frame = rect;
-    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.75 alpha:1.0].CGColor;
+    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor;
     return layer;
 }
 
 - (CALayer*) makeHighlightLayer:(CGRect)rect {
     rect.size.height -= 1;
+    rect = NSInsetRect(rect, 1, 0);
+    
     CALayer* layer = [CALayer layer];
     layer.frame = rect;
-    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.85 alpha:1.0].CGColor;
+    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.99 alpha:1.0].CGColor;
     return layer;
 }
 
 - (CALayer*) makeGradientLayer:(CGRect)rect {
-    rect.size.height -= 2;
-    CALayer* layer = [CALayer layer];
+    rect.size.height -= 1;
+    rect = NSInsetRect(rect, 1, 0);
+    
+    CAGradientLayer* layer = [CAGradientLayer layer];
     layer.frame = rect;
-    layer.backgroundColor = [NSColor colorWithCalibratedWhite:0.95 alpha:1.0].CGColor;
+    layer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.75 alpha:1.0].CGColor,
+                     (id)[NSColor colorWithCalibratedWhite:0.95 alpha:1.0].CGColor];
     return layer;
 }
 
-- (CALayer*) makeTab:(NSString*)title {
+- (CALayer*) makeTab {
     CGRect realTabRect = CGRectMake(0, 0, SD_TAB_WIDTH, 25);
     
     CALayer* tab = [CALayer layer];
@@ -90,13 +94,13 @@
     CALayer* borderLayer = [self makeBorderLayer:realTabRect];
     [tab addSublayer:borderLayer];
     
-    CALayer* highlightLayer = [self makeHighlightLayer:realTabRect];
+    CALayer* highlightLayer = [self makeHighlightLayer:borderLayer.bounds];
     [borderLayer addSublayer:highlightLayer];
     
-    CALayer* gradientLayer = [self makeGradientLayer:realTabRect];
+    CALayer* gradientLayer = [self makeGradientLayer:highlightLayer.bounds];
     [highlightLayer addSublayer:gradientLayer];
     
-    CALayer* titleLayer = [self makeTabTitleLayer:realTabRect title:title];
+    CALayer* titleLayer = [self makeTabTitleLayer:gradientLayer.bounds];
     [gradientLayer addSublayer:titleLayer];
     
     return tab;
@@ -119,7 +123,7 @@
 }
 
 - (void) addTab:(NSString*)title {
-    CALayer* tabLayer = [self makeTab:title];
+    CALayer* tabLayer = [self makeTab];
     tabLayer.name = title;
     
     CGRect tabFrame = tabLayer.frame;
