@@ -27,26 +27,26 @@
 
 - (void) unhighlightTab:(CALayer*)tabLayer {
     CAShapeLayer* borderLayer = [[tabLayer sublayers] lastObject];
-    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor;
+    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:0.55 alpha:1.0].CGColor;
     
     CAShapeLayer* highlightLayer = [[borderLayer sublayers] lastObject];
-    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0].CGColor;
+    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.88 alpha:1.0].CGColor;
     
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
-    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.70 alpha:1.0].CGColor,
-                             (id)[NSColor colorWithCalibratedWhite:0.90 alpha:1.0].CGColor];
+    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor,
+                             (id)[NSColor colorWithCalibratedWhite:0.85 alpha:1.0].CGColor];
 }
 
 - (void) highlightTab:(CALayer*)tabLayer {
     CAShapeLayer* borderLayer = [[tabLayer sublayers] lastObject];
-    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor;
+    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:0.55 alpha:1.0].CGColor;
     
     CAShapeLayer* highlightLayer = [[borderLayer sublayers] lastObject];
-    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0].CGColor;
+    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.98 alpha:1.0].CGColor;
     
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
-    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.80 alpha:1.0].CGColor,
-                             (id)[NSColor colorWithCalibratedWhite:0.999 alpha:1.0].CGColor];
+    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.75 alpha:1.0].CGColor,
+                             (id)[NSColor colorWithCalibratedWhite:0.95 alpha:1.0].CGColor];
 }
 
 - (id)initWithFrame:(NSRect)frame {
@@ -136,9 +136,9 @@
 }
 
 - (CALayer*) makeHighlightLayer:(CGRect)rect {
-    rect.size.height -= 1.0;
-    rect.origin.x += 0.5;
-    rect.size.width -= 2.0;
+    rect.size.height -= 0.5;
+    rect.origin.x += 0.25;
+    rect.size.width -= 1.0;
     
     CAShapeLayer* layer = [CAShapeLayer layer];
     layer.frame = rect;
@@ -149,9 +149,9 @@
 }
 
 - (CALayer*) makeGradientLayer:(CGRect)rect {
-    rect.size.height -= 1.0;
-    rect.origin.x += 0.5;
-    rect.size.width -= 1.0;
+    rect.size.height -= 0.5;
+    rect.origin.x += 0.25;
+    rect.size.width -= 0.5;
     
     CAGradientLayer* layer = [CAGradientLayer layer];
     layer.frame = rect;
@@ -199,8 +199,8 @@
         [self unhighlightTab:tab];
     }
     
-    self.selectedTab.zPosition = 1;
     self.selectedTab = tabLayer;
+    self.selectedTab.zPosition = 1;
     [self highlightTab:self.selectedTab];
     
     [CATransaction commit];

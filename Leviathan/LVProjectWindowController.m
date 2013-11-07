@@ -55,6 +55,9 @@ static void sd_swizzle(Class kls, NSString* selName, IMP imp) {
     
 //    [self makeTitleBarPrettier];
     
+    self.window.styleMask |= NSTexturedBackgroundWindowMask;
+    [self.window setContentBorderThickness:0.0 forEdge:NSMaxYEdge];
+    
     [self newTab:nil];
 }
 
