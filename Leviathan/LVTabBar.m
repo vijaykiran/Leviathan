@@ -59,20 +59,36 @@
 - (CGPathRef) tabPathForRect:(CGRect)rect {
     CGMutablePathRef path = CGPathCreateMutable();
     
-    // start before bottom-left
     CGPathMoveToPoint(path, NULL, NSMinX(rect), NSMinY(rect));
     
-    // curve to bottom-left-ish
+    // bottom-left curve
     CGPathAddQuadCurveToPoint(path, NULL,
                               NSMinX(rect) + 3, NSMinY(rect),
                               NSMinX(rect) + 5, NSMinY(rect) + 5);
     
-    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + 12, NSMaxY(rect));
+    // left side
+    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + 11, NSMaxY(rect) - 3);
     
-    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - 10, NSMaxY(rect));
+    // top-left curve
+    CGPathAddQuadCurveToPoint(path, NULL,
+                              NSMinX(rect) + 13, NSMaxY(rect),
+                              NSMinX(rect) + 16, NSMaxY(rect));
     
-    // end after bottom-right
-    CGPathAddLineToPoint(path, NULL, NSMaxX(rect), NSMinY(rect));
+    // top side
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - 16, NSMaxY(rect));
+    
+    // top-right curve
+    CGPathAddQuadCurveToPoint(path, NULL,
+                              NSMaxX(rect) - 13, NSMaxY(rect),
+                              NSMaxX(rect) - 11, NSMaxY(rect) - 3);
+    
+    // right side
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - 5, NSMinY(rect) + 5);
+    
+    // bottom-right curve
+    CGPathAddQuadCurveToPoint(path, NULL,
+                              NSMaxX(rect) - 3, NSMinY(rect),
+                              NSMaxX(rect), NSMinY(rect));
     
     return path;
 }
