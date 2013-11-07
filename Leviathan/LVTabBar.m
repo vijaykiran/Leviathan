@@ -223,44 +223,80 @@
     
     CGRect tabFrame = tabLayer.frame;
     tabFrame.origin.x = [self.tabs count] * (SD_TAB_WIDTH + 1.0);
+    tabLayer.zPosition = 1;
     tabLayer.frame = tabFrame;
+    
+    [CATransaction begin];
+    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
     
     [self.tabs addObject:tabLayer];
     [self.layer addSublayer:tabLayer];
     
+    [CATransaction commit];
+    
     if ([self.tabs count] > 1) {
-        CGRect animateFromRect = tabFrame;
-        animateFromRect.origin.x -= (SD_TAB_WIDTH + 1.0);
-//        animateFromRect.origin.y -= 30.0;
-        tabLayer.zPosition = -1;
-        tabLayer.frame = animateFromRect;
+        CGPoint animatedFromPosition = tabLayer.position;
+        animatedFromPosition.x -= (SD_TAB_WIDTH + 1.0);
         
-        double delayInSeconds = 0.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            tabLayer.zPosition = 1;
-            tabLayer.frame = tabFrame;
-        });
+        CAAnimationGroup* animationGroup = [CAAnimationGroup animation];
+        
+        CABasicAnimation* positionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+        positionAnimation.fromValue = [NSValue valueWithPoint:animatedFromPosition];
+        positionAnimation.toValue = [NSValue valueWithPoint:tabLayer.position];
+        
+        CABasicAnimation* zPosAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        zPosAnimation.fromValue = @0.0;
+        zPosAnimation.toValue = @(tabLayer.opacity);
+        
+        animationGroup.animations = @[positionAnimation, zPosAnimation];
+        animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        animationGroup.duration = 0.1;
+        [tabLayer addAnimation:animationGroup forKey:@"newtab"];
     }
     
     [self selectTabLayer:tabLayer];
 }
 
 - (void) closeCurrentTab {
-    NSUInteger newIndex = [self.tabs indexOfObject:self.selectedTab];
+    [CATransaction begin];
     
-    [self.selectedTab removeFromSuperlayer];
-    [self.tabs removeObject:self.selectedTab]; // TODO: animate this
+    CGPoint animatedToPosition = self.selectedTab.position;
+    animatedToPosition.y -= 25.0;
     
-    if (newIndex == [self.tabs count])
-        newIndex--;
+    CAAnimationGroup* animationGroup = [CAAnimationGroup animation];
     
-    if ([self.tabs count] == 0)
-        return;
+    CABasicAnimation* positionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+    positionAnimation.fromValue = [NSValue valueWithPoint:self.selectedTab.position];
+    positionAnimation.toValue = [NSValue valueWithPoint:animatedToPosition];
     
-    [self selectTabLayer:[self.tabs objectAtIndex:newIndex]];
+    animationGroup.animations = @[positionAnimation];
+    animationGroup.duration = 0.05;
+    animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animationGroup.delegate = self;
+    [self.selectedTab addAnimation:animationGroup forKey:@"newtab"];
     
-    [self repositionTabs];
+    [CATransaction setCompletionBlock:^{
+        NSUInteger newIndex = [self.tabs indexOfObject:self.selectedTab];
+        
+        [CATransaction begin];
+        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+        
+        [self.selectedTab removeFromSuperlayer];
+        [self.tabs removeObject:self.selectedTab];
+        
+        [CATransaction commit];
+        
+        if (newIndex == [self.tabs count])
+            newIndex--;
+        
+        if ([self.tabs count] == 0)
+            return;
+        
+        [self selectTabLayer:[self.tabs objectAtIndex:newIndex]];
+        
+        [self repositionTabs];
+    }];
+    [CATransaction commit];
 }
 
 - (void) changeTitles:(NSArray*)titles {
@@ -283,6 +319,9 @@
 }
 
 - (void) repositionTabs:(NSArray*)tabs {
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:0.1];
+    
     int i = 0;
     for (CALayer* tab in tabs) {
         tab.zPosition = (tab == self.selectedTab ? 1 : 0);
@@ -295,6 +334,8 @@
         }
         i++;
     }
+    
+    [CATransaction commit];
 //    self.draggingTab.zPosition = 2;
 }
 
