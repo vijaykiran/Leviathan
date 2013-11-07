@@ -58,7 +58,22 @@
 
 - (CGPathRef) tabPathForRect:(CGRect)rect {
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRoundedRect(path, NULL, rect, 10, 10);
+    
+    // start before bottom-left
+    CGPathMoveToPoint(path, NULL, NSMinX(rect), NSMinY(rect));
+    
+    // curve to bottom-left-ish
+    CGPathAddQuadCurveToPoint(path, NULL,
+                              NSMinX(rect) + 5, NSMinY(rect),
+                              NSMinX(rect) + 5, NSMinY(rect) + 5);
+    
+    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + 10, NSMaxY(rect));
+    
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - 10, NSMaxY(rect));
+    
+    // end after bottom-right
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect), NSMinY(rect));
+    
     return path;
 }
 
@@ -74,7 +89,8 @@
 
 - (CALayer*) makeHighlightLayer:(CGRect)rect {
     rect.size.height -= 1;
-//    rect = NSInsetRect(rect, 1, 0);
+    rect.origin.x += 0.5;
+    rect.size.width -= 2;
     
     CAShapeLayer* layer = [CAShapeLayer layer];
     layer.frame = rect;
@@ -87,14 +103,16 @@
 
 - (CALayer*) makeGradientLayer:(CGRect)rect {
     rect.size.height -= 1;
-//    rect = NSInsetRect(rect, 1, 0);
+    rect.origin.x += 0.5;
+    rect.size.width -= 1.5;
     
     CAGradientLayer* layer = [CAGradientLayer layer];
     layer.frame = rect;
-    layer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.75 alpha:1.0].CGColor,
-                     (id)[NSColor colorWithCalibratedWhite:0.95 alpha:1.0].CGColor];
+    layer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.70 alpha:1.0].CGColor,
+                     (id)[NSColor colorWithCalibratedWhite:0.90 alpha:1.0].CGColor];
     
     CAShapeLayer* maskLayer = [CAShapeLayer layer];
+    maskLayer.fillColor = [NSColor blackColor].CGColor;
     CGPathRef path = [self tabPathForRect:rect];
     maskLayer.path = path;
     CFRelease(path);
