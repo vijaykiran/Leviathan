@@ -25,28 +25,32 @@
 
 @implementation LVTabBar
 
-- (void) unhighlightTab:(CALayer*)tabLayer {
+- (void) colorize:(CALayer*)tabLayer border:(CGFloat)border highlight:(CGFloat)highlight topGradient:(CGFloat)top bottomGradient:(CGFloat)bottom {
     CAShapeLayer* borderLayer = [[tabLayer sublayers] lastObject];
-    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:0.55 alpha:1.0].CGColor;
+    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:border alpha:1.0].CGColor;
     
     CAShapeLayer* highlightLayer = [[borderLayer sublayers] lastObject];
-    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.88 alpha:1.0].CGColor;
+    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:highlight alpha:1.0].CGColor;
     
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
-    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.60 alpha:1.0].CGColor,
-                             (id)[NSColor colorWithCalibratedWhite:0.85 alpha:1.0].CGColor];
+    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:bottom alpha:1.0].CGColor,
+                             (id)[NSColor colorWithCalibratedWhite:top alpha:1.0].CGColor];
+}
+
+- (void) unhighlightTab:(CALayer*)tabLayer {
+    [self colorize:tabLayer
+            border:0.55
+         highlight:0.88
+       topGradient:0.85
+    bottomGradient:0.65];
 }
 
 - (void) highlightTab:(CALayer*)tabLayer {
-    CAShapeLayer* borderLayer = [[tabLayer sublayers] lastObject];
-    borderLayer.fillColor = [NSColor colorWithCalibratedWhite:0.55 alpha:1.0].CGColor;
-    
-    CAShapeLayer* highlightLayer = [[borderLayer sublayers] lastObject];
-    highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.98 alpha:1.0].CGColor;
-    
-    CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
-    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.70 alpha:1.0].CGColor,
-                             (id)[NSColor colorWithCalibratedWhite:0.95 alpha:1.0].CGColor];
+    [self colorize:tabLayer
+            border:0.55
+         highlight:0.98
+       topGradient:0.95
+    bottomGradient:0.75];
 }
 
 - (id)initWithFrame:(NSRect)frame {
