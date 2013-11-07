@@ -29,10 +29,6 @@
 
 @implementation LVAppDelegate
 
-//- (void) keyDown:(NSEvent *)theEvent {
-//    NSLog(@"im me");
-//}
-
 - (NSDictionary*) defaultDefaults {
     return @{@"fontName": @"Menlo",
              @"fontSize": @12,
