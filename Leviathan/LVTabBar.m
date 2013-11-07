@@ -19,6 +19,9 @@
 @property CALayer* draggingTab;
 @property CGFloat dragOffset;
 
+@property CGPoint dragWindowOffset;
+@property CGPoint dragWindowPosition;
+
 @property CALayer* selectedTab;
 
 @end
@@ -35,6 +38,9 @@
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
     gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:bottom alpha:1.0].CGColor,
                              (id)[NSColor colorWithCalibratedWhite:top alpha:1.0].CGColor];
+    
+    CATextLayer* textLayer = [[gradientLayer sublayers] lastObject];
+    textLayer.shadowColor = [NSColor colorWithCalibratedWhite:highlight alpha:1.0].CGColor;
 }
 
 - (void) unhighlightTab:(CALayer*)tabLayer {
@@ -77,7 +83,11 @@
     textLayer.contentsScale = self.layer.contentsScale;
     textLayer.font = (__bridge CGFontRef)font;
     textLayer.fontSize = fontSize;
-    textLayer.foregroundColor = [NSColor colorWithCalibratedWhite:0.15 alpha:1.0].CGColor;
+    textLayer.foregroundColor = [NSColor colorWithCalibratedWhite:0.20 alpha:1.0].CGColor;
+    textLayer.shadowColor = [NSColor colorWithCalibratedWhite:0.85 alpha:1.0].CGColor;
+    textLayer.shadowOffset = CGSizeMake(0, -1);
+    textLayer.shadowOpacity = 1.0;
+    textLayer.shadowRadius = 0.0;
     return textLayer;
 }
 
@@ -343,9 +353,22 @@
     [self repositionTabs:self.tabs];
 }
 
+//- (NSView*) hitTest:(NSPoint)aPoint {
+//    NSPoint p = [self convertPoint:aPoint fromView:nil];
+//    NSUInteger idx = p.x / SD_TAB_WIDTH;
+//    
+//    if (idx >= [self.tabs count])
+//        return nil;
+//    
+//    return self;
+//}
+
 - (void) mouseDown:(NSEvent *)theEvent {
     NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     NSUInteger idx = p.x / SD_TAB_WIDTH;
+    
+    self.dragWindowOffset = [NSEvent mouseLocation];
+    self.dragWindowPosition = NSMakePoint(NSMinX([[self window] frame]), NSMaxY([[self window] frame]));
     
     if (idx >= [self.tabs count])
         return;
@@ -359,8 +382,16 @@
 }
 
 - (void) mouseDragged:(NSEvent *)theEvent {
-    if (self.draggingTab == nil)
+    [super mouseDragged:theEvent];
+    
+    if (self.draggingTab == nil) {
+        NSPoint p = [NSEvent mouseLocation];
+        NSPoint newWindowPoint;
+        newWindowPoint.x = self.dragWindowPosition.x - (self.dragWindowOffset.x - p.x);
+        newWindowPoint.y = self.dragWindowPosition.y - (self.dragWindowOffset.y - p.y);
+        [[self window] setFrameTopLeftPoint:newWindowPoint];
         return;
+    }
     
     NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     NSUInteger idx = p.x / SD_TAB_WIDTH;
