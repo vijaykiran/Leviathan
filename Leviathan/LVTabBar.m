@@ -33,7 +33,7 @@
     highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.88 alpha:1.0].CGColor;
     
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
-    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.65 alpha:1.0].CGColor,
+    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.60 alpha:1.0].CGColor,
                              (id)[NSColor colorWithCalibratedWhite:0.85 alpha:1.0].CGColor];
 }
 
@@ -45,7 +45,7 @@
     highlightLayer.fillColor = [NSColor colorWithCalibratedWhite:0.98 alpha:1.0].CGColor;
     
     CAGradientLayer* gradientLayer = [[highlightLayer sublayers] lastObject];
-    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.75 alpha:1.0].CGColor,
+    gradientLayer.colors = @[(id)[NSColor colorWithCalibratedWhite:0.70 alpha:1.0].CGColor,
                              (id)[NSColor colorWithCalibratedWhite:0.95 alpha:1.0].CGColor];
 }
 
@@ -186,6 +186,9 @@
     
     CALayer* titleLayer = [self makeTabTitleLayer:gradientLayer.bounds];
     [gradientLayer addSublayer:titleLayer];
+    
+    realTabRect.origin.y += 1.0;
+    tab.frame = realTabRect;
     
     return tab;
 }
