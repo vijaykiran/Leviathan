@@ -10,6 +10,10 @@
 
 @implementation LVEditor
 
+- (void) dealloc {
+    NSLog(@"editor dealloced for %@", self.file.shortName);
+}
+
 - (NSString*) nibName {
     return @"Editor";
 }
@@ -21,11 +25,7 @@
 - (void) jumpToDefinition:(LVDefinition*)def {
     NSUInteger absPos = def.defName->token->pos;
     self.textView.selectedRange = NSMakeRange(absPos, CFStringGetLength(def.defName->token->string));
-//    double delayInSeconds = 0.25;
-//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self.textView centerSelectionInVisibleArea:nil];
-//    });
+    [self.textView centerSelectionInVisibleArea:nil];
 }
 
 - (void) startEditingFile:(LVFile*)file {
@@ -37,8 +37,6 @@
 //    [[self.textView undoManager] removeAllActions]; // TODO: this line is a /really/ stupid idea. why was it here?
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
-    
-//    self.file.clojureTextStorage.delegate = self;
 }
 
 - (void) makeFirstResponder {
@@ -53,26 +51,5 @@
     [self.textView stripWhitespace];
     [self.file save];
 }
-
-- (void) dealloc {
-    NSLog(@"editor dealloced for %@", self.file.shortName);
-}
-
-
-
-
-
-
-
-//- (void) textStorageDidProcessEditing:(NSNotification *)notification {
-//    if ([self.textView.undoManager isUndoing] || [self.textView.undoManager isRedoing])
-//        return;
-//    
-////    [[self.textView undoManager] beginUndoGrouping];
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.textView indentText];
-////        [[self.textView undoManager] endUndoGrouping];
-//    });
-//}
 
 @end
