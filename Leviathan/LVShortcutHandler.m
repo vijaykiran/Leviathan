@@ -19,6 +19,8 @@
 @property NSMutableDictionary* shortcutCombos;
 @property NSMutableDictionary* shortcutKeyEquivalents;
 
+@property NSDictionary* currentChord;
+
 @property LVPathWatcher* pathWatcher;
 
 @end
@@ -40,13 +42,29 @@
 
 - (NSEvent*) handleEvent:(NSEvent*)event {
     NSArray* combo = @[@([event keyCode]), @([event modifierFlags] & NSDeviceIndependentModifierFlagsMask)];
-    NSString* action = [self.shortcutCombos objectForKey:combo];
+    id action = [self.currentChord objectForKey:combo];
     
     if (action) {
-        SEL sel = NSSelectorFromString(action);
-        BOOL worked = [NSApp sendAction:sel to:nil from:nil];
-        if (worked)
+        if ([action isKindOfClass:[NSString self]]) {
+            // just do it
+            
+            SEL sel = NSSelectorFromString(action);
+            BOOL worked = [NSApp sendAction:sel to:nil from:nil];
+            if (worked)
+                return nil;
+        }
+        else {
+            self.currentChord = action;
+            
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                self.currentChord = self.shortcutCombos;
+                // they took too look
+            });
+            
             return nil;
+        }
     }
     
     return event;
@@ -131,6 +149,8 @@
         NSArray* combo = [orderedCombos lastObject];
         currentHash[combo] = selName;
     }
+    
+    self.currentChord = self.shortcutCombos;
     
     [self adjustMenuItemStrings];
 }
