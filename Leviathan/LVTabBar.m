@@ -141,7 +141,8 @@
     
     CGFloat X_TOP_BEFORE_CURVE = (X_BOTTOM_AFTER_CURVE + 6.0);
     CGFloat Y_TOP_BEFORE_CURVE = (5.0);
-    CGFloat X_TOP_CONTROL_POINT = (X_TOP_BEFORE_CURVE + 3.0);
+    CGFloat X_TOP_CONTROL_POINT = (X_TOP_BEFORE_CURVE + 2.0);
+    CGFloat Y_TOP_CONTROL_POINT = (0.0);
     CGFloat X_TOP_AFTER_CURVE = (X_TOP_CONTROL_POINT + 3.0);
     
     CGPathMoveToPoint(path, NULL, NSMinX(rect) + X_BOTTOM_BEFORE_CURVE, NSMinY(rect));
@@ -156,7 +157,7 @@
     
     // top-left curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMinX(rect) + X_TOP_CONTROL_POINT, NSMaxY(rect),
+                              NSMinX(rect) + X_TOP_CONTROL_POINT, NSMaxY(rect) - Y_TOP_CONTROL_POINT,
                               NSMinX(rect) + X_TOP_AFTER_CURVE, NSMaxY(rect));
     
     // top side
@@ -164,7 +165,7 @@
     
     // top-right curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMaxX(rect) - X_TOP_CONTROL_POINT, NSMaxY(rect),
+                              NSMaxX(rect) - X_TOP_CONTROL_POINT, NSMaxY(rect) - Y_TOP_CONTROL_POINT,
                               NSMaxX(rect) - X_TOP_BEFORE_CURVE, NSMaxY(rect) - Y_TOP_BEFORE_CURVE);
     
     // right side
