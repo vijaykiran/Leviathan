@@ -134,8 +134,7 @@
 - (CGPathRef) tabPathForRect:(CGRect)rect {
     CGMutablePathRef path = CGPathCreateMutable();
     
-    CGPathMoveToPoint(path, NULL, NSMinX(rect), NSMinY(rect));
-    
+#define TWO_X (rect.size.width / 96.66)
 #define THREE_X (rect.size.width / 66.66)
 #define THREE_Y (rect.size.height / 5.3)
     
@@ -145,6 +144,8 @@
 #define ELEVEN_X (rect.size.width / 18.18)
 #define THIRTEEN_X (rect.size.width / 15.38)
 #define SIXTEEN_X (rect.size.width / 12.5)
+    
+    CGPathMoveToPoint(path, NULL, NSMinX(rect) + TWO_X, NSMinY(rect));
     
     // bottom-left curve
     CGPathAddQuadCurveToPoint(path, NULL,
@@ -173,7 +174,7 @@
     // bottom-right curve
     CGPathAddQuadCurveToPoint(path, NULL,
                               NSMaxX(rect) - THREE_X, NSMinY(rect),
-                              NSMaxX(rect), NSMinY(rect));
+                              NSMaxX(rect) - TWO_X, NSMinY(rect));
     
     return path;
 }
