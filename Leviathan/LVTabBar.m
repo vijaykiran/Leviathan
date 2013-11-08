@@ -180,7 +180,7 @@
 }
 
 - (CALayer*) makeBorderLayer:(CGRect)rect {
-    rect.origin.x += 10;
+    rect.origin.x += 8;
     
     CAShapeLayer* layer = [CAShapeLayer layer];
     layer.contentsScale = self.layer.contentsScale;
@@ -228,7 +228,7 @@
 - (CALayer*) makeTab {
     CGRect realTabRect = CGRectMake(0, 0, SD_TAB_WIDTH, 25);
     
-    realTabRect = NSInsetRect(realTabRect, -10, 0);
+    realTabRect = NSInsetRect(realTabRect, -8, 0);
     
     CALayer* tab = [CALayer layer];
     tab.contentsScale = self.layer.contentsScale;
