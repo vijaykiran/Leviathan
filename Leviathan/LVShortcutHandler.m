@@ -97,8 +97,63 @@
         NSString* selName = [shortcuts objectForKey:combo];
         
         LVShortcut* shortcut = [LVShortcut with:combo];
-        self.shortcutCombos[shortcut.combo] = selName;
         self.shortcutKeyEquivalents[selName] = shortcut.keyEquivalentString;
+        
+        NSMutableArray* orderedCombos = [[shortcut.orderedCombos arrayByAddingObject:selName] mutableCopy];
+        
+        /*
+         
+         // [cmd-I] = "indent"
+         // [cmd-K cmd-R] = "raise"
+         // [cmd-K cmd-S] = "splice"
+         
+         {cmd-I = "indent"}
+         {cmd-K = {cmd-R = "raise", cmd-S = "splice"}}
+         
+         Plan:
+         
+         1. Combine them, so that:
+         
+         // [cmd-I, "indent"]
+         // [cmd-K, cmd-R, "raise"]
+         
+         2. Take the last two off, join them as a single key-value dictionary, add it back onto array:
+         
+         // [{cmd-I: "indent"}]
+         // [cmd-K, {cmd-R: "raise"}]
+         
+         3. Loop until the list only has 1 element. That's the action!
+         
+         // [{cmd-I: "indent"}]
+         // [{cmd-K: {cmd-R: "raise"}}]
+         
+         // {cmd-I: "indent"}
+         // {cmd-K: {cmd-R: "raise"}}
+         
+         4. But they might have like, hash-key collisions. So we need to add them back into the main one manually.
+         
+         */
+        
+        do {
+            id action = [orderedCombos lastObject];
+            [orderedCombos removeLastObject];
+            
+            NSArray* combo = [orderedCombos lastObject];
+            [orderedCombos removeLastObject];
+            
+            NSDictionary* combined = @{combo: action};
+            [orderedCombos addObject:combined];
+        } while ([orderedCombos count] > 1);
+        
+        NSDictionary* action = [orderedCombos lastObject];
+        
+        // now add it carefully into the main tree
+        
+        NSLog(@"%@", action);
+        
+//        for (NSArray* combo in orderedCombos) {
+//            comboGroup[combo] = next;
+//        }
     }
     
     [self adjustMenuItemStrings];

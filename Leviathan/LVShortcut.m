@@ -20,7 +20,7 @@
     LVShortcut* shortcut = [[LVShortcut alloc] init];
     
     NSMutableArray* keyEquivStrings = [NSMutableArray array];
-    NSMutableArray* allCombos = [NSMutableArray array];
+    NSMutableArray* orderedCombos = [NSMutableArray array];
     
     for (NSArray* combo in combos) {
         NSMutableArray* mods = [combo mutableCopy];
@@ -44,11 +44,11 @@
             testMods |= NSFunctionKeyMask | NSNumericPadKeyMask;
         
         [keyEquivStrings addObject:[NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:prettyMods], [key capitalizedString]]];
-        [allCombos addObject:@[@(keyCode), @(testMods)]];
+        [orderedCombos addObject:@[@(keyCode), @(testMods)]];
     }
     
     shortcut.keyEquivalentString = [keyEquivStrings componentsJoinedByString:@", "];
-    shortcut.combo = [allCombos lastObject];
+    shortcut.orderedCombos = orderedCombos;
     
     return shortcut;
 }
