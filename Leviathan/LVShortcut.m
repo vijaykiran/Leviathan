@@ -13,27 +13,42 @@
 
 @implementation LVShortcut
 
-+ (LVShortcut*) withMods:(NSArray*)mods key:(NSString*)key {
++ (LVShortcut*) with:(NSArray*)combos {
+    if (![[combos firstObject] isKindOfClass:[NSArray self]])
+        combos = @[combos];
+    
     LVShortcut* shortcut = [[LVShortcut alloc] init];
     
-    NSUInteger keyCode = [LVKeyTranslator keyCodeForString:key];
-    NSUInteger testMods = 0;
+    NSMutableArray* keyEquivStrings = [NSMutableArray array];
+    NSMutableArray* allCombos = [NSMutableArray array];
     
-    if ([mods containsObject:@"cmd"]) testMods |= NSCommandKeyMask;
-    if ([mods containsObject:@"ctrl"]) testMods |= NSControlKeyMask;
-    if ([mods containsObject:@"alt"]) testMods |= NSAlternateKeyMask;
-    if ([mods containsObject:@"shift"]) testMods |= NSShiftKeyMask;
-    if ([mods containsObject:@"fn"]) testMods |= NSFunctionKeyMask;
+    for (NSArray* combo in combos) {
+        NSMutableArray* mods = [combo mutableCopy];
+        NSString* key = [mods lastObject];
+        [mods removeLastObject];
+        
+        NSUInteger keyCode = [LVKeyTranslator keyCodeForString:key];
+        NSUInteger testMods = 0;
+        
+        if ([mods containsObject:@"cmd"]) testMods |= NSCommandKeyMask;
+        if ([mods containsObject:@"ctrl"]) testMods |= NSControlKeyMask;
+        if ([mods containsObject:@"alt"]) testMods |= NSAlternateKeyMask;
+        if ([mods containsObject:@"shift"]) testMods |= NSShiftKeyMask;
+        if ([mods containsObject:@"fn"]) testMods |= NSFunctionKeyMask;
+        
+        NSUInteger prettyMods = testMods;
+        if (keyCode == kVK_RightArrow ||
+            keyCode == kVK_LeftArrow ||
+            keyCode == kVK_UpArrow ||
+            keyCode == kVK_DownArrow)
+            testMods |= NSFunctionKeyMask | NSNumericPadKeyMask;
+        
+        [keyEquivStrings addObject:[NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:prettyMods], [key capitalizedString]]];
+        [allCombos addObject:@[@(keyCode), @(testMods)]];
+    }
     
-    NSUInteger prettyMods = testMods;
-    if (keyCode == kVK_RightArrow ||
-        keyCode == kVK_LeftArrow ||
-        keyCode == kVK_UpArrow ||
-        keyCode == kVK_DownArrow)
-        testMods |= NSFunctionKeyMask | NSNumericPadKeyMask;
-    
-    shortcut.keyEquivalentString = [NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:prettyMods], [key capitalizedString]];
-    shortcut.combo = @[@(keyCode), @(testMods)];
+    shortcut.keyEquivalentString = [keyEquivStrings componentsJoinedByString:@", "];
+    shortcut.combo = [allCombos lastObject];
     
     return shortcut;
 }

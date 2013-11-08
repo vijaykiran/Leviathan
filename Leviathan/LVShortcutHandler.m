@@ -93,15 +93,10 @@
     self.shortcutKeyEquivalents = [NSMutableDictionary dictionary];
     
     NSDictionary* shortcuts = LVParseConfig([self keybindingsFileURL]);
-    for (NSArray* immutableMods in shortcuts) {
-        id mapped = [shortcuts objectForKey:immutableMods];
-        NSString* selName = mapped;
+    for (NSArray* combo in shortcuts) {
+        NSString* selName = [shortcuts objectForKey:combo];
         
-        NSMutableArray* mods = [immutableMods mutableCopy];
-        NSString* key = [mods lastObject];
-        [mods removeLastObject];
-        
-        LVShortcut* shortcut = [LVShortcut withMods:mods key:key];
+        LVShortcut* shortcut = [LVShortcut with:combo];
         self.shortcutCombos[shortcut.combo] = selName;
         self.shortcutKeyEquivalents[selName] = shortcut.keyEquivalentString;
     }

@@ -31,7 +31,7 @@
 
  [:ctrl "g"] "deselectText:"
 
- [:alt "r"] "raiseExpression:"
+ [[:cmd "k"] [:cmd "r"]] "raiseExpression:"
  [:ctrl :alt "k"] "deleteNextExpression:"
  [:ctrl "k"] "deleteToEndOfExpression:"
  [:alt "s"] "spliceExpression:"

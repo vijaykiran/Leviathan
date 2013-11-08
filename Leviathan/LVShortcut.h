@@ -10,7 +10,7 @@
 
 @interface LVShortcut : NSObject
 
-+ (LVShortcut*) withMods:(NSArray*)mods key:(NSString*)key;
++ (LVShortcut*) with:(NSArray*)combo;
 
 @property NSString* keyEquivalentString;
 @property NSArray* combo;

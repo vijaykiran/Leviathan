@@ -30,11 +30,12 @@
 
 @implementation LVTabBar
 
-- (void) colorize:(CALayer*)tabLayer border:(CGFloat)border highlight:(CGFloat)highlight topGradient:(CGFloat)top bottomGradient:(CGFloat)bottom {
+- (void) colorize:(CALayer*)tabLayer border:(CGFloat)border highlight:(CGFloat)highlight topGradient:(CGFloat)top bottomGradient:(CGFloat)bottom text:(CGFloat)text {
     NSColor* borderColor = [NSColor colorWithCalibratedWhite:border alpha:1.0];
     NSColor* highlightColor = [NSColor colorWithCalibratedWhite:highlight alpha:1.0];
     NSColor* topColor = [NSColor colorWithCalibratedWhite:top alpha:1.0];
     NSColor* bottomColor = [NSColor colorWithCalibratedWhite:bottom alpha:1.0];
+    NSColor* textColor = [NSColor colorWithCalibratedWhite:text alpha:1.0];
     
     if (self.dimmed) {
         CGFloat percent = 0.4;
@@ -43,6 +44,7 @@
         highlightColor = [highlightColor blendedColorWithFraction:percent ofColor:blender];
         topColor = [topColor blendedColorWithFraction:percent ofColor:blender];
         bottomColor = [bottomColor blendedColorWithFraction:percent ofColor:blender];
+        textColor = [textColor blendedColorWithFraction:percent ofColor:blender];
     }
     
     CAShapeLayer* borderLayer = [[tabLayer sublayers] lastObject];
@@ -56,6 +58,7 @@
                              (id)topColor.CGColor];
     
     CATextLayer* textLayer = [[gradientLayer sublayers] lastObject];
+    textLayer.foregroundColor = textColor.CGColor;
     textLayer.shadowColor = highlightColor.CGColor;
 }
 
@@ -64,7 +67,8 @@
             border:0.55
          highlight:0.88
        topGradient:0.85
-    bottomGradient:0.65];
+    bottomGradient:0.65
+              text:0.30];
 }
 
 - (void) highlightTab:(CALayer*)tabLayer {
@@ -72,7 +76,8 @@
             border:0.55
          highlight:0.98
        topGradient:0.95
-    bottomGradient:0.75];
+    bottomGradient:0.75
+              text:0.20];
 }
 
 - (id)initWithFrame:(NSRect)frame {
@@ -88,7 +93,7 @@
 
 - (void) restyleAllTabs {
     [CATransaction begin];
-    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    [CATransaction setValue:@YES forKey:kCATransactionDisableActions];
     
     for (CALayer* tab in self.tabs) {
         if (tab == self.selectedTab)
@@ -111,7 +116,7 @@
 }
 
 - (CALayer*) makeTabTitleLayer:(CGRect)rect {
-    rect = NSInsetRect(rect, 18, 4);
+    rect = NSInsetRect(rect, 15, 4);
     
     CGFloat fontSize = 12.0;
     
@@ -134,23 +139,13 @@
 - (CGPathRef) tabPathForRect:(CGRect)rect {
     CGMutablePathRef path = CGPathCreateMutable();
     
-    CGFloat X_BOTTOM_BEFORE_CURVE = (0.0);
-    CGFloat X_BOTTOM_CONTROL_POINT = (X_BOTTOM_BEFORE_CURVE + 1.0);
-    CGFloat X_BOTTOM_AFTER_CURVE = (X_BOTTOM_CONTROL_POINT + 2.0);
-    CGFloat Y_BOTTOM_AFTER_CURVE = (5.0);
-    
-    CGFloat X_TOP_BEFORE_CURVE = (X_BOTTOM_AFTER_CURVE + 6.0);
+    CGFloat X_TOP_BEFORE_CURVE = (7.0);
     CGFloat Y_TOP_BEFORE_CURVE = (5.0);
     CGFloat X_TOP_CONTROL_POINT = (X_TOP_BEFORE_CURVE + 2.0);
     CGFloat Y_TOP_CONTROL_POINT = (0.0);
     CGFloat X_TOP_AFTER_CURVE = (X_TOP_CONTROL_POINT + 3.0);
     
-    CGPathMoveToPoint(path, NULL, NSMinX(rect) + X_BOTTOM_BEFORE_CURVE, NSMinY(rect));
-    
-    // bottom-left curve
-    CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMinX(rect) + X_BOTTOM_CONTROL_POINT, NSMinY(rect),
-                              NSMinX(rect) + X_BOTTOM_AFTER_CURVE, NSMinY(rect) + Y_BOTTOM_AFTER_CURVE);
+    CGPathMoveToPoint(path, NULL, NSMinX(rect), NSMinY(rect));
     
     // left side
     CGPathAddLineToPoint(path, NULL, NSMinX(rect) + X_TOP_BEFORE_CURVE, NSMaxY(rect) - Y_TOP_BEFORE_CURVE);
@@ -169,18 +164,15 @@
                               NSMaxX(rect) - X_TOP_BEFORE_CURVE, NSMaxY(rect) - Y_TOP_BEFORE_CURVE);
     
     // right side
-    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - X_BOTTOM_AFTER_CURVE, NSMinY(rect) + Y_BOTTOM_AFTER_CURVE);
-    
-    // bottom-right curve
-    CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMaxX(rect) - X_BOTTOM_CONTROL_POINT, NSMinY(rect),
-                              NSMaxX(rect) - X_BOTTOM_BEFORE_CURVE, NSMinY(rect));
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect), NSMinY(rect));
     
     return path;
 }
 
+#define SD_TAP_OVERLAP (6.0)
+
 - (CALayer*) makeBorderLayer:(CGRect)rect {
-    rect.origin.x += 8;
+    rect.origin.x += SD_TAP_OVERLAP;
     
     CAShapeLayer* layer = [CAShapeLayer layer];
     layer.contentsScale = self.layer.contentsScale;
@@ -228,7 +220,7 @@
 - (CALayer*) makeTab {
     CGRect realTabRect = CGRectMake(0, 0, SD_TAB_WIDTH, 25);
     
-    realTabRect = NSInsetRect(realTabRect, -8, 0);
+    realTabRect = NSInsetRect(realTabRect, -SD_TAP_OVERLAP, 0);
     
     CALayer* tab = [CALayer layer];
     tab.contentsScale = self.layer.contentsScale;
