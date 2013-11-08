@@ -32,9 +32,7 @@
     self.file = file;
     self.title = file.shortName;
     self.textView.clojureTextStorage = file.clojureTextStorage;
-    
     [[self.textView layoutManager] replaceTextStorage:file.clojureTextStorage];
-//    [[self.textView undoManager] removeAllActions]; // TODO: this line is a /really/ stupid idea. why was it here?
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
 }
