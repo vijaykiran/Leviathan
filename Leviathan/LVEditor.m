@@ -10,9 +10,9 @@
 
 @implementation LVEditor
 
-- (void) dealloc {
-    NSLog(@"editor dealloced for %@", self.file.shortName);
-}
+//- (void) dealloc {
+//    NSLog(@"editor dealloced for %@", self.file.shortName);
+//}
 
 - (NSString*) nibName {
     return @"Editor";

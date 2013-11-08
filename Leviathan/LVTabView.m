@@ -148,6 +148,8 @@
 }
 
 - (void) closeCurrentTab {
+    [self.currentTab.currentEditor.file.clojureTextStorage removeLayoutManager:self.currentTab.currentEditor.textView.layoutManager];
+    
     [self.tabBar closeCurrentTab];
     
     NSUInteger newIndex = [self.tabs indexOfObject:self.currentTab];

@@ -45,7 +45,7 @@
 }
 
 - (void) dealloc {
-    NSLog(@"TODO: this thing needs to dealloc when a tab is closed. (esp for customDelegate.) why isnt it? btw if you see this message actually printed, then its working fine and disregard it.");
+//    NSLog(@"textview deallocated");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
