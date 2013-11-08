@@ -313,7 +313,7 @@
     positionAnimation.toValue = [NSValue valueWithPoint:animatedToPosition];
     
     animationGroup.animations = @[positionAnimation];
-    animationGroup.duration = 0.05;
+    animationGroup.duration = 0.1;
     animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     animationGroup.delegate = self;
     [self.selectedTab addAnimation:animationGroup forKey:@"newtab"];
