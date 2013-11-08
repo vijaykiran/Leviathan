@@ -103,7 +103,7 @@
     
     NSColor* backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
     if (self.dimmed)
-        backgroundColor = [backgroundColor blendedColorWithFraction:0.1 ofColor:[NSColor whiteColor]];
+        backgroundColor = [backgroundColor blendedColorWithFraction:0.025 ofColor:[NSColor whiteColor]];
     
     self.backgroundColor = backgroundColor;
     self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
