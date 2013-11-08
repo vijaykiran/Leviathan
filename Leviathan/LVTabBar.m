@@ -10,7 +10,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#define SD_TAB_WIDTH (200.0)
+#define SD_TAB_WIDTH (150.0)
 
 @interface LVTabBar ()
 
@@ -134,47 +134,46 @@
 - (CGPathRef) tabPathForRect:(CGRect)rect {
     CGMutablePathRef path = CGPathCreateMutable();
     
-#define TWO_X (rect.size.width / 96.66)
-#define THREE_X (rect.size.width / 66.66)
-#define THREE_Y (rect.size.height / 5.3)
+    CGFloat X_BOTTOM_BEFORE_CURVE = (0.0);
+    CGFloat X_BOTTOM_CONTROL_POINT = (X_BOTTOM_BEFORE_CURVE + 1.0);
+    CGFloat X_BOTTOM_AFTER_CURVE = (X_BOTTOM_CONTROL_POINT + 2.0);
+    CGFloat Y_BOTTOM_AFTER_CURVE = (5.0);
     
-#define FIVE_X (rect.size.width / 40.0)
-#define FIVE_Y (rect.size.height / 5.0)
-
-#define ELEVEN_X (rect.size.width / 18.18)
-#define THIRTEEN_X (rect.size.width / 15.38)
-#define SIXTEEN_X (rect.size.width / 12.5)
+    CGFloat X_TOP_BEFORE_CURVE = (X_BOTTOM_AFTER_CURVE + 6.0);
+    CGFloat Y_TOP_BEFORE_CURVE = (5.0);
+    CGFloat X_TOP_CONTROL_POINT = (X_TOP_BEFORE_CURVE + 3.0);
+    CGFloat X_TOP_AFTER_CURVE = (X_TOP_CONTROL_POINT + 3.0);
     
-    CGPathMoveToPoint(path, NULL, NSMinX(rect) + TWO_X, NSMinY(rect));
+    CGPathMoveToPoint(path, NULL, NSMinX(rect) + X_BOTTOM_BEFORE_CURVE, NSMinY(rect));
     
     // bottom-left curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMinX(rect) + THREE_X, NSMinY(rect),
-                              NSMinX(rect) + FIVE_X, NSMinY(rect) + FIVE_Y);
+                              NSMinX(rect) + X_BOTTOM_CONTROL_POINT, NSMinY(rect),
+                              NSMinX(rect) + X_BOTTOM_AFTER_CURVE, NSMinY(rect) + Y_BOTTOM_AFTER_CURVE);
     
     // left side
-    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + ELEVEN_X, NSMaxY(rect) - THREE_Y);
+    CGPathAddLineToPoint(path, NULL, NSMinX(rect) + X_TOP_BEFORE_CURVE, NSMaxY(rect) - Y_TOP_BEFORE_CURVE);
     
     // top-left curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMinX(rect) + THIRTEEN_X, NSMaxY(rect),
-                              NSMinX(rect) + SIXTEEN_X, NSMaxY(rect));
+                              NSMinX(rect) + X_TOP_CONTROL_POINT, NSMaxY(rect),
+                              NSMinX(rect) + X_TOP_AFTER_CURVE, NSMaxY(rect));
     
     // top side
-    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - SIXTEEN_X, NSMaxY(rect));
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - X_TOP_AFTER_CURVE, NSMaxY(rect));
     
     // top-right curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMaxX(rect) - THIRTEEN_X, NSMaxY(rect),
-                              NSMaxX(rect) - ELEVEN_X, NSMaxY(rect) - THREE_Y);
+                              NSMaxX(rect) - X_TOP_CONTROL_POINT, NSMaxY(rect),
+                              NSMaxX(rect) - X_TOP_BEFORE_CURVE, NSMaxY(rect) - Y_TOP_BEFORE_CURVE);
     
     // right side
-    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - FIVE_X, NSMinY(rect) + FIVE_Y);
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - X_BOTTOM_AFTER_CURVE, NSMinY(rect) + Y_BOTTOM_AFTER_CURVE);
     
     // bottom-right curve
     CGPathAddQuadCurveToPoint(path, NULL,
-                              NSMaxX(rect) - THREE_X, NSMinY(rect),
-                              NSMaxX(rect) - TWO_X, NSMinY(rect));
+                              NSMaxX(rect) - X_BOTTOM_CONTROL_POINT, NSMinY(rect),
+                              NSMaxX(rect) - X_BOTTOM_BEFORE_CURVE, NSMinY(rect));
     
     return path;
 }
@@ -192,9 +191,9 @@
 }
 
 - (CALayer*) makeHighlightLayer:(CGRect)rect {
-    rect.size.height -= 1.0 / self.layer.contentsScale;
-    rect.origin.x += 0.5 / self.layer.contentsScale;
-    rect.size.width -= 2.0 / self.layer.contentsScale;
+    rect.size.height -= 1.0;
+    rect.origin.x += 0.5;
+    rect.size.width -= 2.0;
     
     CAShapeLayer* layer = [CAShapeLayer layer];
     layer.contentsScale = self.layer.contentsScale;
@@ -206,9 +205,9 @@
 }
 
 - (CALayer*) makeGradientLayer:(CGRect)rect {
-    rect.size.height -= 1.0 / self.layer.contentsScale;
-    rect.origin.x += 0.5 / self.layer.contentsScale;
-    rect.size.width -= 1.0 / self.layer.contentsScale;
+    rect.size.height -= 1.0;
+    rect.origin.x += 0.5;
+    rect.size.width -= 1.0;
     
     CAGradientLayer* layer = [CAGradientLayer layer];
     layer.contentsScale = self.layer.contentsScale;
