@@ -34,7 +34,7 @@
     self.textView.clojureTextStorage = file.clojureTextStorage;
     
     [[self.textView layoutManager] replaceTextStorage:file.clojureTextStorage];
-    [[self.textView undoManager] removeAllActions];
+//    [[self.textView undoManager] removeAllActions]; // TODO: this line is a /really/ stupid idea. why was it here?
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
     
@@ -52,6 +52,10 @@
 - (IBAction) saveDocument:(id)sender {
     [self.textView stripWhitespace];
     [self.file save];
+}
+
+- (void) dealloc {
+    NSLog(@"editor dealloced for %@", self.file.shortName);
 }
 
 
