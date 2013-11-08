@@ -99,7 +99,7 @@
         LVShortcut* shortcut = [LVShortcut with:combo];
         self.shortcutKeyEquivalents[selName] = shortcut.keyEquivalentString;
         
-        NSMutableArray* orderedCombos = [[shortcut.orderedCombos arrayByAddingObject:selName] mutableCopy];
+        NSMutableArray* orderedCombos = shortcut.orderedCombos;
         
         /*
          
@@ -107,53 +107,29 @@
          // [cmd-K cmd-R] = "raise"
          // [cmd-K cmd-S] = "splice"
          
-         {cmd-I = "indent"}
-         {cmd-K = {cmd-R = "raise", cmd-S = "splice"}}
-         
-         Plan:
-         
-         1. Combine them, so that:
-         
-         // [cmd-I, "indent"]
-         // [cmd-K, cmd-R, "raise"]
-         
-         2. Take the last two off, join them as a single key-value dictionary, add it back onto array:
-         
-         // [{cmd-I: "indent"}]
-         // [cmd-K, {cmd-R: "raise"}]
-         
-         3. Loop until the list only has 1 element. That's the action!
-         
-         // [{cmd-I: "indent"}]
-         // [{cmd-K: {cmd-R: "raise"}}]
-         
-         // {cmd-I: "indent"}
-         // {cmd-K: {cmd-R: "raise"}}
-         
-         4. But they might have like, hash-key collisions. So we need to add them back into the main one manually.
+         1. Remove the first one, and keep it.
+         2. If the list is empty, just set the action in the current hash.
+         3. Otherwise, look for a hash in the current hash by this key, or create one if it's not there. Set it to current hash and loop.
          
          */
         
-        do {
-            id action = [orderedCombos lastObject];
-            [orderedCombos removeLastObject];
+        NSMutableDictionary* currentHash = self.shortcutCombos;
+        
+        while ([orderedCombos count] > 1) {
+            NSArray* combo = [orderedCombos firstObject];
+            [orderedCombos removeObjectAtIndex:0];
             
-            NSArray* combo = [orderedCombos lastObject];
-            [orderedCombos removeLastObject];
+            NSMutableDictionary* newHash = currentHash[combo];
+            if (!newHash) {
+                newHash = [NSMutableDictionary dictionary];
+                currentHash[combo] = newHash;
+            }
             
-            NSDictionary* combined = @{combo: action};
-            [orderedCombos addObject:combined];
-        } while ([orderedCombos count] > 1);
+            currentHash = newHash;
+        }
         
-        NSDictionary* action = [orderedCombos lastObject];
-        
-        // now add it carefully into the main tree
-        
-        NSLog(@"%@", action);
-        
-//        for (NSArray* combo in orderedCombos) {
-//            comboGroup[combo] = next;
-//        }
+        NSArray* combo = [orderedCombos lastObject];
+        currentHash[combo] = selName;
     }
     
     [self adjustMenuItemStrings];

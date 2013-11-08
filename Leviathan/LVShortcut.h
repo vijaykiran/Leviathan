@@ -13,6 +13,6 @@
 + (LVShortcut*) with:(NSArray*)combo;
 
 @property NSString* keyEquivalentString;
-@property NSArray* orderedCombos;
+@property NSMutableArray* orderedCombos;
 
 @end
