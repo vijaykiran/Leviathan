@@ -68,14 +68,14 @@
     method_setImplementation(m, imp_implementationWithBlock([^(id self, id arg) {
 //        [[self undoManager] beginUndoGrouping];
         oldImp(self, sel, arg);
-        [self indentText];
+        [self indentCurrentSectionRecursively];
 //        [[self undoManager] endUndoGrouping];
     } copy]));
 }
 
 - (void) setupAutoIndentation {
     [self swizzleMethodWithIndentation:@selector(insertNewline:)];
-    [self swizzleMethodWithIndentation:@selector(insertText:)];
+//    [self swizzleMethodWithIndentation:@selector(insertText:)];
 }
 
 - (void) defaultsFontChanged:(NSNotification*)note {
@@ -430,11 +430,11 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
                     insertString = [@" " stringByAppendingString:insertString];
                 
                 // if not at very end and next character is NOT space or newline, add space after
-                if (pos < [self.textStorage.string length] - 1) {
-                    unichar c = [self.textStorage.string characterAtIndex:pos];
-                    if (c != ' ' && c != '\n')
-                        insertString = [insertString stringByAppendingString:@" "], adjustedBy++;
-                }
+//                if (pos < [self.textStorage.string length] - 1) {
+//                    unichar c = [self.textStorage.string characterAtIndex:pos];
+//                    if (c != ' ' && c != '\n')
+//                        insertString = [insertString stringByAppendingString:@" "], adjustedBy++;
+//                }
             }
         }
     }
@@ -778,10 +778,6 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
             }
         }
     }
-}
-
-- (void) indentText {
-    // for (LVToken* tok = doc->firstToken->nextToken; tok->nextToken; tok = tok->nextToken)
 }
 
 - (void) stripWhitespace {
