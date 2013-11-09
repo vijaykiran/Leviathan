@@ -670,12 +670,16 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
 }
 
 - (IBAction) indentCurrentSection:(id)sender {
+    [self.clojureTextStorage beginEditing];
+    [self indentCurrentSectionRecursively];
+    [self.clojureTextStorage endEditing];
+    [self setNeedsDisplay:YES];
+}
+
+- (void) indentCurrentSectionRecursively {
     LVDoc* doc = self.clojureTextStorage.doc;
     if (!doc)
         return;
-    
-    NSMutableArray* replacementRanges = [NSMutableArray array];
-    NSMutableArray* replacementStrings = [NSMutableArray array];
     
     LVAtom* element = LVFindAtomFollowingIndex(doc, self.selectedRange.location);
     LVColl* iter = element->parent;
@@ -753,36 +757,27 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
                 NSUInteger difference = expectedSpaces - existingSpaces;
                 
                 NSString* spaces = [@"" stringByPaddingToLength:difference withString:@" " startingAtIndex:0];
+                NSRange range = NSMakeRange(nextTok->pos, 0);
                 
-                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(nextTok->pos, 0)]];
-                [replacementStrings addObject:spaces];
+                [self shouldChangeTextInRange:range replacementString:spaces];
+                [self.textStorage replaceCharactersInRange:range withString:spaces];
+                [self didChangeText];
+                [self indentCurrentSectionRecursively];
+                return;
             }
             else if (existingSpaces > expectedSpaces) {
                 // you have too many spaces, so we should delete some
                 NSUInteger difference = existingSpaces - expectedSpaces;
                 
-                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(nextTok->pos, difference)]];
-                [replacementStrings addObject:@""];
+                NSRange range = NSMakeRange(nextTok->pos, difference);
+                
+                [self shouldChangeTextInRange:range replacementString:@""];
+                [self.textStorage replaceCharactersInRange:range withString:@""];
+                [self didChangeText];
+                [self indentCurrentSectionRecursively];
+                return;
             }
         }
-    }
-    
-    if ([replacementRanges count] > 0) {
-        [self shouldChangeTextInRanges:replacementRanges replacementStrings:replacementStrings];
-        [self.clojureTextStorage withDisabledParsing:^{
-            NSInteger offset = 0;
-            
-            for (NSUInteger i = 0; i < [replacementStrings count]; i++) {
-                NSRange r = [[replacementRanges objectAtIndex:i] rangeValue];
-                NSString* str = [replacementStrings objectAtIndex:i];
-                
-                r.location += offset;
-                [self.textStorage replaceCharactersInRange:r withString:str];
-                offset += [str length] - r.length;
-            }
-        }];
-        [self didChangeText];
-        [self indentCurrentSection:sender];
     }
 }
 
