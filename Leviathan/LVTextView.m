@@ -18,7 +18,7 @@
 
 @interface LVTextView ()
 
-@property BOOL dimmed;
+@property CALayer* dimLayer;
 
 @end
 
@@ -28,7 +28,7 @@
 - (BOOL) resignFirstResponder {
     BOOL did = [super resignFirstResponder];
     if (did) {
-        self.dimmed = YES;
+        [self dim];
         [self setupUserDefinedProperties];
     }
     return did;
@@ -38,7 +38,7 @@
     BOOL did = [super becomeFirstResponder];
     if (did) {
         [self.customDelegate textViewWasFocused:self];
-        self.dimmed = NO;
+        [self undim];
         [self setupUserDefinedProperties];
     }
     return did;
@@ -61,16 +61,27 @@
     [self setupAutoIndentation];
 }
 
-// sel must return (void) and take one (id) arg
 - (void) swizzleMethodWithIndentation:(SEL)sel {
+    // sel must return (void) and take one (id) arg
     Method m = class_getInstanceMethod([self class], sel);
     IMP oldImp = method_getImplementation(m);
     method_setImplementation(m, imp_implementationWithBlock([^(id self, id arg) {
-//        [[self undoManager] beginUndoGrouping];
         oldImp(self, sel, arg);
         [self indentCurrentSectionRecursively];
-//        [[self undoManager] endUndoGrouping];
     } copy]));
+}
+
+- (void) dim {
+    self.dimLayer = [CALayer layer];
+    self.dimLayer.frame = [[[self enclosingScrollView] layer] bounds];
+    self.dimLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    self.dimLayer.backgroundColor = [NSColor blackColor].CGColor;
+    self.dimLayer.opacity = 0.33;
+    [[[self enclosingScrollView] layer] addSublayer:self.dimLayer];
+}
+
+- (void) undim {
+    [self.dimLayer removeFromSuperlayer];
 }
 
 - (void) setupAutoIndentation {
@@ -95,17 +106,13 @@
     self.automaticDashSubstitutionEnabled = NO;
     self.automaticLinkDetectionEnabled = NO;
     self.automaticDataDetectionEnabled = NO;
-//    self.textContainerInset = NSMakeSize(0.0f, 4.0f);
+    self.textContainerInset = NSMakeSize(0.0f, 4.0f);
 }
 
 - (void) setupUserDefinedProperties {
     self.enclosingScrollView.verticalScroller.knobStyle = self.enclosingScrollView.horizontalScroller.knobStyle = NSScrollerKnobStyleLight;
     
-    NSColor* backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
-    if (self.dimmed)
-        backgroundColor = [backgroundColor blendedColorWithFraction:0.025 ofColor:[NSColor whiteColor]];
-    
-    self.backgroundColor = backgroundColor;
+    self.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
     self.insertionPointColor = [LVThemeManager sharedThemeManager].currentTheme.cursorColor;
     self.selectedTextAttributes = [LVThemeManager sharedThemeManager].currentTheme.selection;
 }
