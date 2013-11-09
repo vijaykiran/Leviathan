@@ -82,7 +82,26 @@
     }
 }
 
+- (NSURL*) findProjectFor:(NSURL*)url {
+    NSURL* origURL = url;
+    
+    while (![[url pathComponents] isEqualToArray:@[@"/"]]) {
+        NSArray* contents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:url
+                                                          includingPropertiesForKeys:@[]
+                                                                             options:NSDirectoryEnumerationSkipsSubdirectoryDescendants
+                                                                               error:NULL];
+        if ([[contents valueForKey:@"lastPathComponent"] containsObject:@"project.clj"])
+            return url;
+        
+        url = [[url URLByDeletingLastPathComponent] URLByStandardizingPath];
+    }
+    
+    return origURL;
+}
+
 - (LVProjectWindowController*) openProjectForURL:(NSURL*)url {
+    url = [self findProjectFor:url];
+    
     for (LVProjectWindowController* existing in self.projectWindowControllers) {
         if ([existing.project.projectURL isEqual: url]) {
             return existing;
