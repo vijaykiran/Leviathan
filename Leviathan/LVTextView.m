@@ -353,7 +353,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     [self scrollRangeToVisible:self.selectedRange];
 }
 
-- (void) wrapNextInThing:(NSString*)open and:(NSString*)close {
+- (void) wrapNextWithOpener:(NSString*)open closer:(NSString*)close {
     LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     if (next) {
         NSUInteger afterPos = LVGetAbsolutePosition(next) + LVElementLength(next);
@@ -376,15 +376,15 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
 }
 
 - (IBAction) wrapNextExpressionInBrackets:(id)sender {
-    [self wrapNextInThing:@"[" and:@"]"];
+    [self wrapNextWithOpener:@"[" closer:@"]"];
 }
 
 - (IBAction) wrapNextExpressionInBraces:(id)sender {
-    [self wrapNextInThing:@"{" and:@"}"];
+    [self wrapNextWithOpener:@"{" closer:@"}"];
 }
 
 - (IBAction) wrapNextExpressionInParentheses:(id)sender {
-    [self wrapNextInThing:@"(" and:@")"];
+    [self wrapNextWithOpener:@"(" closer:@")"];
 }
 
 - (void) insertText:(id)insertString {
@@ -630,6 +630,45 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     return count;
 }
 
+CFArrayRef LVFunctionlikesForIndentation() {
+    static CFMutableArrayRef functionLikes; if (!functionLikes) {
+        functionLikes = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
+        CFArrayAppendValue(functionLikes, CFSTR("ns"));
+        CFArrayAppendValue(functionLikes, CFSTR("let"));
+        CFArrayAppendValue(functionLikes, CFSTR("for"));
+        CFArrayAppendValue(functionLikes, CFSTR("assoc"));
+        CFArrayAppendValue(functionLikes, CFSTR("if"));
+        CFArrayAppendValue(functionLikes, CFSTR("if-let"));
+        CFArrayAppendValue(functionLikes, CFSTR("cond"));
+        CFArrayAppendValue(functionLikes, CFSTR("doto"));
+        CFArrayAppendValue(functionLikes, CFSTR("case"));
+        CFArrayAppendValue(functionLikes, CFSTR("list"));
+    }
+    return functionLikes;
+}
+
+BOOL LVListIndentsLikeFunction(LVColl* list) {
+    LVElement* semanticChildren[list->childrenLen];
+    NSUInteger semanticChildrenCount;
+    LVGetSemanticDirectChildren(list, 0, semanticChildren, &semanticChildrenCount);
+    
+    if (semanticChildrenCount < 1)
+        return NO;
+    
+    LVAtom* firstAtom = (LVAtom*)semanticChildren[0];
+    
+    if (!firstAtom->isAtom)
+        return NO;
+    
+    if (!(firstAtom->atomType & LVAtomType_Symbol))
+        return NO;
+    
+    CFArrayRef fLikes = LVFunctionlikesForIndentation();
+    return CFArrayContainsValue(fLikes,
+                                CFRangeMake(0, CFArrayGetCount(fLikes)),
+                                firstAtom->token->string);
+}
+
 - (IBAction) indentCurrentSection:(id)sender {
     LVDoc* doc = self.clojureTextStorage.doc;
     if (!doc)
@@ -638,13 +677,29 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     NSMutableArray* replacementRanges = [NSMutableArray array];
     NSMutableArray* replacementStrings = [NSMutableArray array];
     
-    LVElement* element = (LVElement*)LVFindAtomFollowingIndex(doc, self.selectedRange.location);
-    while (element->parent)
-        element = (LVElement*)element->parent;
+    LVAtom* element = LVFindAtomFollowingIndex(doc, self.selectedRange.location);
+    LVColl* iter = element->parent;
+    LVColl* highestColl = iter;
     
-    LVColl* highestColl = (LVColl*)element;
+    if (!iter->parent)
+        return;
+    
+    while (iter->parent) {
+        highestColl = iter;
+        iter = iter->parent;
+    }
+    
     LVToken* startToken = ((LVAtom*)highestColl->children[0])->token;
     LVToken* endToken = ((LVAtom*)highestColl->children[highestColl->childrenLen - 1])->token;
+    
+    /*
+     
+     1. At each newline, figure out what collection type it's in.
+     2. If the coll is a function-like list, indent to (expectedSpaces + 1).
+     3. If the coll is another kind of list and if the first line has a semantic element, indent to its pos.
+     4. Otherwise, leave it at expectedSpaces.
+     
+     */
     
     for (LVToken* tok = startToken; tok != endToken; tok = tok->nextToken) {
         if (tok->tokenType & LVTokenType_Newlines) {
@@ -661,66 +716,35 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
             NSUInteger expectedSpaces = indentationForInsideOfColl; // default to aligning with the coll's open-token
             
             if (newlineParent->collType & LVCollType_List) {
-                if (newlineParent->collType & LVCollType_Definition) {
-                    // its function-like:
+                if ((newlineParent->collType & LVCollType_Definition) || LVListIndentsLikeFunction(newlineParent)) {
+                    // its function-like!
                     expectedSpaces += 1;
                 }
                 else {
-                    int semanticChildrenFound = 0;
-                    LVElement* firstChildOnSameLine = NULL;
-                    LVElement* secondChildOnSameLine = NULL;
-                    NSUInteger len = 0; // we'll just add all the children things up to this point, JUST IN CASE
+                    LVElement* firstGoodChild = NULL;
+                    LVElement* secondGoodChild = NULL;
+                    NSUInteger len = 0;
                     
                     for (NSUInteger i = 1; i < newlineParent->childrenLen; i++) {
                         LVElement* child = newlineParent->children[i];
                         
                         if (LVElementIsSemantic(child)) {
-                            semanticChildrenFound++;
-                            if (semanticChildrenFound == 1) {
-                                firstChildOnSameLine = child;
+                            if (firstGoodChild == NULL) {
+                                firstGoodChild = child;
                             }
-                            else if (semanticChildrenFound == 2) {
-                                secondChildOnSameLine = child;
+                            else {
+                                secondGoodChild = child;
                                 break;
                             }
                         }
-                        else if (child->isAtom && ((LVAtom*)child)->atomType & LVAtomType_Newlines) {
+                        else if (child->isAtom && ((LVAtom*)child)->atomType & LVAtomType_Newlines)
                             break;
-                        }
+                        
                         len += LVElementLength(child);
                     }
                     
-                    // TODO: this is totally incorrect. both Deflikes and IndentLikeFns should indent 2 spaces on every-but-first line NO MATTER WHAT.
-                    //       the only time it should care if there's a second-semantic-child on the first line is when it's not one of these types (i.e. just a normal list).
-                    
-                    // does it have two semantic elements on the first line of this coll?
-                    if (secondChildOnSameLine) {
-                        static CFMutableArrayRef functionLikes; if (!functionLikes) {
-                            functionLikes = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
-                            CFArrayAppendValue(functionLikes, CFSTR("ns"));
-                            CFArrayAppendValue(functionLikes, CFSTR("let"));
-                            CFArrayAppendValue(functionLikes, CFSTR("for"));
-                            CFArrayAppendValue(functionLikes, CFSTR("assoc"));
-                            CFArrayAppendValue(functionLikes, CFSTR("if"));
-                            CFArrayAppendValue(functionLikes, CFSTR("if-let"));
-                            CFArrayAppendValue(functionLikes, CFSTR("cond"));
-                            CFArrayAppendValue(functionLikes, CFSTR("case"));
-                            CFArrayAppendValue(functionLikes, CFSTR("list"));
-                        }
-                        
-                        // is the first child def-like indentation-wise?
-                        if (firstChildOnSameLine->isAtom &&
-                            (((LVAtom*)firstChildOnSameLine)->atomType & LVAtomType_Symbol) &&
-                            CFArrayContainsValue(functionLikes, CFRangeMake(0, CFArrayGetCount(functionLikes)), ((LVAtom*)firstChildOnSameLine)->token->string))
-                        {
-                            // if so, make it indent like a function
-                            expectedSpaces += 1;
-                        }
-                        else {
-                            // if not, indent to align with the second one
-                            expectedSpaces += len;
-                        }
-                    }
+                    if (secondGoodChild)
+                        expectedSpaces += len;
                 }
             }
             
