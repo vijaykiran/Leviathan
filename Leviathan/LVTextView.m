@@ -672,6 +672,7 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
     [self.clojureTextStorage beginEditing];
     [self indentCurrentSectionRecursively];
     [self.clojureTextStorage endEditing];
+    [self didChangeText];
     [self setNeedsDisplay:YES];
 }
 
@@ -760,7 +761,6 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
                 
                 [self shouldChangeTextInRange:range replacementString:spaces];
                 [self.textStorage replaceCharactersInRange:range withString:spaces];
-                [self didChangeText];
                 [self indentCurrentSectionRecursively];
                 return;
             }
@@ -772,7 +772,6 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
                 
                 [self shouldChangeTextInRange:range replacementString:@""];
                 [self.textStorage replaceCharactersInRange:range withString:@""];
-                [self didChangeText];
                 [self indentCurrentSectionRecursively];
                 return;
             }
