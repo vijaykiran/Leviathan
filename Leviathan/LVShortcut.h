@@ -8,11 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+@interface LVShortcutString : NSObject
+
+@property NSString* mods;
+@property NSString* key;
+
+- (NSString*) joinedWithTab;
+- (NSString*) joinedWithoutTab;
+
+@end
+
 @interface LVShortcut : NSObject
 
 + (LVShortcut*) with:(NSArray*)combo;
 
-@property NSString* keyEquivalentString;
+@property NSMutableArray* keyEquivalentStrings;
 @property NSMutableArray* orderedCombos;
 
 @end

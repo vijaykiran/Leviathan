@@ -97,9 +97,23 @@
         
         for (NSMenuItem* item in [menu itemArray]) {
             NSString* title = [item title];
-            NSString* keyEquiv = self.shortcutKeyEquivalents[NSStringFromSelector([item action])];
-            NSString* modsString = (keyEquiv ?: @"");
-            NSString* newTitle = [NSString stringWithFormat:@"%@\t%@", title, modsString];
+            
+            NSString* keyEquiv;
+            NSMutableArray* shortcutStrings = self.shortcutKeyEquivalents[NSStringFromSelector([item action])];
+            if (shortcutStrings) {
+                LVShortcutString* firstPair = [shortcutStrings objectAtIndex:0];
+                [shortcutStrings removeObjectAtIndex:0];
+                
+                shortcutStrings = [[shortcutStrings valueForKeyPath:@"joinedWithoutTab"] mutableCopy];
+                [shortcutStrings insertObject:[firstPair joinedWithTab] atIndex:0];
+                
+                keyEquiv = [shortcutStrings componentsJoinedByString:@", "];
+            }
+            else {
+                keyEquiv = @"";
+            }
+            
+            NSString* newTitle = [NSString stringWithFormat:@"%@\t%@", title, keyEquiv];
             NSAttributedString* attrTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:attrs];
             [item setAttributedTitle:attrTitle];
         }
@@ -115,7 +129,7 @@
         NSString* selName = [shortcuts objectForKey:combo];
         
         LVShortcut* shortcut = [LVShortcut with:combo];
-        self.shortcutKeyEquivalents[selName] = shortcut.keyEquivalentString;
+        self.shortcutKeyEquivalents[selName] = shortcut.keyEquivalentStrings;
         
         NSMutableArray* orderedCombos = shortcut.orderedCombos;
         

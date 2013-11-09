@@ -11,6 +11,18 @@
 #import "LVKeyTranslator.h"
 #import <Carbon/Carbon.h>
 
+@implementation LVShortcutString
+
+- (NSString*) joinedWithTab {
+    return [NSString stringWithFormat:@"%@\t%@", self.mods, self.key];
+}
+
+- (NSString*) joinedWithoutTab {
+    return [NSString stringWithFormat:@"%@ %@", self.mods, self.key];
+}
+
+@end
+
 @implementation LVShortcut
 
 + (LVShortcut*) with:(NSArray*)combos {
@@ -19,8 +31,8 @@
     
     LVShortcut* shortcut = [[LVShortcut alloc] init];
     
-    NSMutableArray* keyEquivStrings = [NSMutableArray array];
-    NSMutableArray* orderedCombos = [NSMutableArray array];
+    shortcut.keyEquivalentStrings = [NSMutableArray array];
+    shortcut.orderedCombos = [NSMutableArray array];
     
     for (NSArray* combo in combos) {
         NSMutableArray* mods = [combo mutableCopy];
@@ -43,12 +55,13 @@
             keyCode == kVK_DownArrow)
             testMods |= NSFunctionKeyMask | NSNumericPadKeyMask;
         
-        [keyEquivStrings addObject:[NSString stringWithFormat:@"%@\t%@", [self buildPrettyMods:prettyMods], [key capitalizedString]]];
-        [orderedCombos addObject:@[@(keyCode), @(testMods)]];
+        LVShortcutString* shortcutString = [[LVShortcutString alloc] init];
+        shortcutString.mods = [self buildPrettyMods:prettyMods];
+        shortcutString.key = [key capitalizedString];
+        
+        [shortcut.keyEquivalentStrings addObject:shortcutString];
+        [shortcut.orderedCombos addObject:@[@(keyCode), @(testMods)]];
     }
-    
-    shortcut.keyEquivalentString = [keyEquivStrings componentsJoinedByString:@", "];
-    shortcut.orderedCombos = orderedCombos;
     
     return shortcut;
 }
