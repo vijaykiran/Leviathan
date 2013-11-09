@@ -14,8 +14,6 @@
 #import "LVThemeManager.h"
 #import "LVPreferences.h"
 
-#import <objc/runtime.h>
-
 @interface LVTextView ()
 
 @property CALayer* dimLayer;
@@ -58,17 +56,6 @@
     [self setupUserDefinedProperties];
     [self setupHardcodedProperties];
     [self disableLineWrapping];
-    [self setupAutoIndentation];
-}
-
-- (void) swizzleMethodWithIndentation:(SEL)sel {
-    // sel must return (void) and take one (id) arg
-    Method m = class_getInstanceMethod([self class], sel);
-    IMP oldImp = method_getImplementation(m);
-    method_setImplementation(m, imp_implementationWithBlock([^(id self, id arg) {
-        oldImp(self, sel, arg);
-        [self indentCurrentSectionRecursively];
-    } copy]));
 }
 
 - (void) dim {
@@ -84,9 +71,9 @@
     [self.dimLayer removeFromSuperlayer];
 }
 
-- (void) setupAutoIndentation {
-    [self swizzleMethodWithIndentation:@selector(insertNewline:)];
-//    [self swizzleMethodWithIndentation:@selector(insertText:)];
+- (IBAction) insertNewline:(id)sender {
+    [super insertNewline:sender];
+    [self indentCurrentSection:nil];
 }
 
 - (void) defaultsFontChanged:(NSNotification*)note {

@@ -133,6 +133,7 @@
     textLayer.shadowOffset = CGSizeMake(0, -1);
     textLayer.shadowOpacity = 1.0;
     textLayer.shadowRadius = 0.0;
+    textLayer.actions = @{@"contents": [NSNull null]};
     return textLayer;
 }
 
