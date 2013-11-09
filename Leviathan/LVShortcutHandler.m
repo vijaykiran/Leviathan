@@ -48,10 +48,13 @@
         if ([action isKindOfClass:[NSString self]]) {
             // just do it
             
+            self.currentChord = self.shortcutCombos;
+            
             SEL sel = NSSelectorFromString(action);
             BOOL worked = [NSApp sendAction:sel to:nil from:nil];
-            if (worked)
+            if (worked) {
                 return nil;
+            }
         }
         else {
             self.currentChord = action;
