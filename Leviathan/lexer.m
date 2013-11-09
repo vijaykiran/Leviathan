@@ -18,22 +18,22 @@ void LVAppendToken(LVToken** lastPtr, LVToken* newToken) {
 
 static BOOL LVIsTrueSymbol(UniChar* chars, CFIndex i, CFIndex len) {
     if (len != 4) return NO;
-    return (chars[i+0] == 't' || chars[i+1] == 'r' || chars[i+2] == 'u' || chars[i+3] == 'e');
+    return (chars[i+0] == 't' && chars[i+1] == 'r' && chars[i+2] == 'u' && chars[i+3] == 'e');
 }
 
 static BOOL LVIsFalseSymbol(UniChar* chars, CFIndex i, CFIndex len) {
     if (len != 5) return NO;
-    return (chars[i+0] == 'f' || chars[i+1] == 'a' || chars[i+2] == 'l' || chars[i+3] == 's' || chars[i+4] == 'e');
+    return (chars[i+0] == 'f' && chars[i+1] == 'a' && chars[i+2] == 'l' && chars[i+3] == 's' && chars[i+4] == 'e');
 }
 
 static BOOL LVIsNilSymbol(UniChar* chars, CFIndex i, CFIndex len) {
     if (len != 3) return NO;
-    return (chars[i+0] == 'n' || chars[i+1] == 'i' || chars[i+2] == 'l');
+    return (chars[i+0] == 'n' && chars[i+1] == 'i' && chars[i+2] == 'l');
 }
 
 static BOOL LVIsDeflikeSymbol(UniChar* chars, CFIndex i, CFIndex len) {
     if (len < 3) return NO;
-    return (chars[i+0] == 'd' || chars[i+1] == 'e' || chars[i+2] == 'f');
+    return (chars[i+0] == 'd' && chars[i+1] == 'e' && chars[i+2] == 'f');
 }
 
 LVToken* LVLex(LVDocStorage* storage) {

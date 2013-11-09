@@ -74,8 +74,8 @@
 }
 
 - (void) setupAutoIndentation {
-//    [self swizzleMethodWithIndentation:@selector(insertNewline:)];
-//    [self swizzleMethodWithIndentation:@selector(insertText:)];
+    [self swizzleMethodWithIndentation:@selector(insertNewline:)];
+    [self swizzleMethodWithIndentation:@selector(insertText:)];
 }
 
 - (void) defaultsFontChanged:(NSNotification*)note {
