@@ -663,10 +663,9 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
     if (!(firstAtom->atomType & LVAtomType_Symbol))
         return NO;
     
-    CFArrayRef fLikes = LVFunctionlikesForIndentation();
-    return CFArrayContainsValue(fLikes,
-                                CFRangeMake(0, CFArrayGetCount(fLikes)),
-                                LVStringForToken(firstAtom->token));
+    CFStringRef atomString = LVStringForToken(firstAtom->token);
+    CFArrayRef functionLikes = LVFunctionlikesForIndentation();
+    return CFArrayContainsValue(functionLikes, CFRangeMake(0, CFArrayGetCount(functionLikes)), atomString);
 }
 
 - (IBAction) indentCurrentSection:(id)sender {
