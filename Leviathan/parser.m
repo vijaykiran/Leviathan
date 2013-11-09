@@ -11,27 +11,25 @@
 #import "lexer.h"
 #import "atom.h"
 
-#import "LVParseError.h"
+static LVColl* parseColl(LVDocStorage* storage, LVToken** iter, LVCollType collType, LVTokenType endTokenType, BOOL* parseError);
 
-static LVColl* parseColl(LVDocStorage* storage, LVToken** iter, LVCollType collType, LVTokenType endTokenType);
-
-static LVElement* parseOne(LVDocStorage* storage, LVToken** iter) {
+static LVElement* parseOne(LVDocStorage* storage, LVToken** iter, BOOL* parseError) {
     LVToken* currentToken = *iter;
     
     if (currentToken->tokenType & LVTokenType_LParen) {
-        return (LVElement*)parseColl(storage, iter, LVCollType_List, LVTokenType_RParen);
+        return (LVElement*)parseColl(storage, iter, LVCollType_List, LVTokenType_RParen, parseError);
     }
     else if (currentToken->tokenType & LVTokenType_LBracket) {
-        return (LVElement*)parseColl(storage, iter, LVCollType_Vector, LVTokenType_RBracket);
+        return (LVElement*)parseColl(storage, iter, LVCollType_Vector, LVTokenType_RBracket, parseError);
     }
     else if (currentToken->tokenType & LVTokenType_LBrace) {
-        return (LVElement*)parseColl(storage, iter, LVCollType_Map, LVTokenType_RBrace);
+        return (LVElement*)parseColl(storage, iter, LVCollType_Map, LVTokenType_RBrace, parseError);
     }
     else if (currentToken->tokenType & LVTokenType_AnonFnStart) {
-        return (LVElement*)parseColl(storage, iter, LVCollType_AnonFn, LVTokenType_RParen);
+        return (LVElement*)parseColl(storage, iter, LVCollType_AnonFn, LVTokenType_RParen, parseError);
     }
     else if (currentToken->tokenType & LVTokenType_SetStart) {
-        return (LVElement*)parseColl(storage, iter, LVCollType_Set, LVTokenType_RBrace);
+        return (LVElement*)parseColl(storage, iter, LVCollType_Set, LVTokenType_RBrace, parseError);
     }
     else if (currentToken->tokenType & LVTokenType_Spaces) {
         *iter = (*iter)->nextToken;
@@ -110,14 +108,16 @@ static LVElement* parseOne(LVDocStorage* storage, LVToken** iter) {
     }
     else if (currentToken->tokenType & LVTokenType_FileEnd) {
         printf("reached end of tokens too early\n");
-        @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
+        *parseError = YES;
+        return NULL;
     }
     
     printf("Can't handle this token type: %llu, %s\n", currentToken->tokenType, CFStringGetCStringPtr(LVStringForToken(currentToken), kCFStringEncodingUTF8));
-    @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
+    *parseError = YES;
+    return NULL;
 }
 
-static LVColl* parseColl(LVDocStorage* storage, LVToken** iter, LVCollType collType, LVTokenType endTokenType) {
+static LVColl* parseColl(LVDocStorage* storage, LVToken** iter, LVCollType collType, LVTokenType endTokenType, BOOL* parseError) {
     LVColl* coll = LVCollCreate(storage);
     coll->collType = collType;
     
@@ -136,10 +136,13 @@ static LVColl* parseColl(LVDocStorage* storage, LVToken** iter, LVCollType collT
         
         if (currentToken->tokenType == LVTokenType_FileEnd) {
             printf("unclosed coll somewhere :(\n");
-            @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
+            *parseError = YES;
+            return NULL;
         }
         
-        LVElement* child = parseOne(storage, iter);
+        LVElement* child = parseOne(storage, iter, parseError);
+        if (*parseError) return NULL;
+        
         LVElementListAppend(coll, child);
     }
     
@@ -174,8 +177,9 @@ static LVColl* parseColl(LVDocStorage* storage, LVToken** iter, LVCollType collT
     return coll;
 }
 
-LVColl* LVParseTokens(LVDocStorage* storage, LVToken* firstToken) {
-    LVColl* topLevelColl = parseColl(storage, &firstToken, LVCollType_TopLevel, LVTokenType_FileEnd);
+LVColl* LVParseTokens(LVDocStorage* storage, LVToken* firstToken, BOOL* parseError) {
+    LVColl* topLevelColl = parseColl(storage, &firstToken, LVCollType_TopLevel, LVTokenType_FileEnd, parseError);
+    if (*parseError) return NULL;
     topLevelColl->parent = NULL;
     return topLevelColl;
 }

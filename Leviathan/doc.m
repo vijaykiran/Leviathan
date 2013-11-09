@@ -11,8 +11,6 @@
 #import "lexer.h"
 #import "parser.h"
 
-#import "LVParseError.h"
-
 LVDoc* LVDocCreate(NSString* raw) {
     LVDoc* doc = malloc(sizeof(LVDoc));
     LVDocStorage* storage = &doc->storage;
@@ -28,16 +26,21 @@ LVDoc* LVDocCreate(NSString* raw) {
     
     storage->wholeString = (__bridge_retained CFStringRef)raw;
     
-    @try {
-        doc->firstToken = LVLex(storage);
-        doc->topLevelColl = LVParseTokens(storage, doc->firstToken);
-    }
-    @catch (LVParseError *exception) {
-        LVDocDestroy(doc);
-        return NULL;
-    }
+    BOOL parseError = NO;
+    doc->firstToken = LVLex(storage, &parseError);
+    if (parseError)
+        goto PARSE_ERROR;
+    
+    doc->topLevelColl = LVParseTokens(storage, doc->firstToken, &parseError);
+    if (parseError)
+        goto PARSE_ERROR;
     
     return doc;
+    
+PARSE_ERROR:
+    
+    LVDocDestroy(doc);
+    return NULL;
 }
 
 void LVDocDestroy(LVDoc* doc) {

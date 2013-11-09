@@ -44,7 +44,6 @@
 		9490D84118107FD6006ECA5E /* SDChoiceTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83918107FD6006ECA5E /* SDChoiceTableView.m */; };
 		9490D84218107FD6006ECA5E /* SDChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83B18107FD6006ECA5E /* SDChoice.m */; };
 		9490D84318107FD6006ECA5E /* NSString+Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83D18107FD6006ECA5E /* NSString+Score.m */; };
-		9493C77D18232CE5004FEBBB /* LVParseError.m in Sources */ = {isa = PBXBuildFile; fileRef = 9493C77C18232CE5004FEBBB /* LVParseError.m */; };
 		949EC52218138102001C9CAB /* parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52018138102001C9CAB /* parser.m */; };
 		949EC5251813811E001C9CAB /* lexer.m in Sources */ = {isa = PBXBuildFile; fileRef = 949EC5231813811E001C9CAB /* lexer.m */; };
 		94ABB12F181463B6003415B5 /* atom.m in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB12D181463B5003415B5 /* atom.m */; };
@@ -138,8 +137,6 @@
 		9490D83B18107FD6006ECA5E /* SDChoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDChoice.m; sourceTree = "<group>"; };
 		9490D83C18107FD6006ECA5E /* NSString+Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Score.h"; sourceTree = "<group>"; };
 		9490D83D18107FD6006ECA5E /* NSString+Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Score.m"; sourceTree = "<group>"; };
-		9493C77B18232CE5004FEBBB /* LVParseError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVParseError.h; sourceTree = "<group>"; };
-		9493C77C18232CE5004FEBBB /* LVParseError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVParseError.m; sourceTree = "<group>"; };
 		949EC52018138102001C9CAB /* parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = parser.m; sourceTree = "<group>"; };
 		949EC52118138102001C9CAB /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
 		949EC5231813811E001C9CAB /* lexer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = lexer.m; sourceTree = "<group>"; };
@@ -447,8 +444,6 @@
 				949EC5231813811E001C9CAB /* lexer.m */,
 				949EC52118138102001C9CAB /* parser.h */,
 				949EC52018138102001C9CAB /* parser.m */,
-				9493C77B18232CE5004FEBBB /* LVParseError.h */,
-				9493C77C18232CE5004FEBBB /* LVParseError.m */,
 			);
 			name = Parser;
 			sourceTree = "<group>";
@@ -571,7 +566,6 @@
 				94E7DF3F182AA69300A97D82 /* LVPathWatcher.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
-				9493C77D18232CE5004FEBBB /* LVParseError.m in Sources */,
 				949EC52218138102001C9CAB /* parser.m in Sources */,
 				949EC5251813811E001C9CAB /* lexer.m in Sources */,
 				94ABB132181463C4003415B5 /* coll.m in Sources */,

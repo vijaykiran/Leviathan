@@ -11,4 +11,4 @@
 
 struct __LVDocStorage;
 
-LVColl* LVParseTokens(struct __LVDocStorage* storage, LVToken* firstToken);
+LVColl* LVParseTokens(struct __LVDocStorage* storage, LVToken* firstToken, BOOL* parseError);

@@ -8,8 +8,6 @@
 
 #include "lexer.h"
 
-#import "LVParseError.h"
-
 void LVAppendToken(LVToken** lastPtr, LVToken* newToken) {
     (*lastPtr)->nextToken = newToken;
     newToken->prevToken = *lastPtr;
@@ -36,7 +34,7 @@ static BOOL LVIsDeflikeSymbol(UniChar* chars, CFIndex i, CFIndex len) {
     return (chars[i+0] == 'd' && chars[i+1] == 'e' && chars[i+2] == 'f');
 }
 
-LVToken* LVLex(LVDocStorage* storage) {
+LVToken* LVLex(LVDocStorage* storage, BOOL* parseError) {
     NSUInteger inputStringLength = CFStringGetLength(storage->wholeString);
     
     UniChar chars[inputStringLength];
@@ -116,7 +114,8 @@ LVToken* LVLex(LVDocStorage* storage) {
                     do seeker++; while (seeker < inputStringLength && chars[seeker] != '"');
                     if (seeker == inputStringLength) {
                         printf("error: unclosed string\n");
-                        @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
+                        *parseError = YES;
+                        return NULL;
                     }
                 } while (chars[seeker - 1] == '\\');
                 
@@ -146,7 +145,8 @@ LVToken* LVLex(LVDocStorage* storage) {
             case '#': {
                 if (i + 1 == inputStringLength) {
                     printf("error: unclosed dispatch\n");
-                    @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
+                    *parseError = YES;
+                    return NULL;
                 }
                 
                 UniChar next = chars[i + 1];
@@ -158,7 +158,8 @@ LVToken* LVLex(LVDocStorage* storage) {
                             do seeker++; while (seeker < inputStringLength && chars[seeker] != '"');
                             if (seeker == inputStringLength) {
                                 printf("error: unclosed regex\n");
-                                @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
+                                *parseError = YES;
+                                return NULL;
                             }
                         } while (chars[seeker - 1] == '\\');
                         
