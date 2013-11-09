@@ -25,7 +25,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
-#define PRINT_PARSE_TIMES (NO)
+#define PRINT_PARSE_TIMES ( NO )
 double get_time() { struct timeval t; struct timezone tzp; gettimeofday(&t, &tzp); return t.tv_sec + t.tv_usec*1e-6; }
 
 @implementation LVClojureTextStorage
@@ -52,7 +52,7 @@ double get_time() { struct timeval t; struct timezone tzp; gettimeofday(&t, &tzp
     double T1 = get_time();
     self.doc = LVDocCreate(self.internalStorage);
     double T2 = get_time();
-    if (PRINT_PARSE_TIMES) printf("%f ", T2-T1);
+    if (PRINT_PARSE_TIMES) printf("%f\n", T2-T1);
     
     if (self.doc)
         self.highlights = LVHighlightsForDoc(self.doc);

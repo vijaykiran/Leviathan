@@ -62,10 +62,13 @@ struct __LVToken {
     LVToken* nextToken;
     
     LVTokenType tokenType;
-    CFStringRef string;
     NSUInteger pos;
+    NSUInteger len;
+    struct __LVDocStorage* storage; // weak
     struct __LVAtom* atom;
 };
 
 
 LVToken* LVTokenCreate(struct __LVDocStorage* storage, NSUInteger pos, NSUInteger len, LVTokenType type);
+
+CFStringRef LVStringForToken(LVToken* token);

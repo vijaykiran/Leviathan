@@ -18,11 +18,9 @@ LVHighlights* LVHighlightsForDoc(LVDoc* doc) {
     int idx = 0;
     
     for (LVToken* tok = doc->firstToken->nextToken; tok; tok = tok->nextToken) {
-        CFIndex len = CFStringGetLength(tok->string);
-        
-        for (int ii = 0; ii < len; ii++) {
+        for (int ii = 0; ii < tok->len; ii++) {
             hs[idx].pos = tok->pos;
-            hs[idx].len = len;
+            hs[idx].len = tok->len;
             hs[idx].atom = tok->atom;
             hs[idx].attrs = NULL;
             idx++;

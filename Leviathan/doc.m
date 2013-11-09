@@ -46,11 +46,6 @@ void LVDocDestroy(LVDoc* doc) {
     
     CFRelease(doc->storage.wholeString);
     
-    for (int i = 0; i < doc->storage.tokenCount; i++) {
-        CFStringRef s = doc->storage.tokens[i].string;
-        CFRelease(s);
-    }
-    
     for (int i = 0; i < doc->storage.collCount; i++) {
         LVColl coll = doc->storage.colls[i];
         free(coll.children);
@@ -172,7 +167,7 @@ LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, NSUInteger pos) {
         return doc->firstToken->atom;
     }
     for (LVToken* tok = doc->firstToken->nextToken; tok; tok = tok->nextToken) {
-        if (pos >= tok->pos + 1 && pos <= tok->pos + CFStringGetLength(tok->string))
+        if (pos >= tok->pos + 1 && pos <= tok->pos + tok->len)
             return tok->atom;
     }
     abort();
@@ -181,7 +176,7 @@ LVAtom* LVFindAtomPrecedingIndex(LVDoc* doc, NSUInteger pos) {
 LVAtom* LVFindAtomFollowingIndex(LVDoc* doc, NSUInteger pos) {
     LVToken* tok = doc->firstToken->nextToken;
     for (; tok->nextToken; tok = tok->nextToken) {
-        if (pos >= tok->pos && pos < tok->pos + CFStringGetLength(tok->string))
+        if (pos >= tok->pos && pos < tok->pos + tok->len)
             return tok->atom;
     }
     return tok->atom;

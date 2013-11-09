@@ -13,7 +13,12 @@
 LVToken* LVTokenCreate(struct __LVDocStorage* storage, NSUInteger pos, NSUInteger len, LVTokenType type) {
     LVToken* tok = storage->tokens + storage->tokenCount++;
     tok->tokenType = type;
-    tok->string = CFStringCreateWithSubstring(NULL, storage->wholeString, CFRangeMake(pos, len));
     tok->pos = pos;
+    tok->len = len;
+    tok->storage = storage;
     return tok;
+}
+
+CFStringRef LVStringForToken(LVToken* token) {
+    return CFStringCreateWithSubstring(NULL, token->storage->wholeString, CFRangeMake(token->pos, token->len));
 }

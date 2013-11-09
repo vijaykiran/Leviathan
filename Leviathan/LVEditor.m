@@ -24,7 +24,7 @@
 
 - (void) jumpToDefinition:(LVDefinition*)def {
     NSUInteger absPos = def.defName->token->pos;
-    self.textView.selectedRange = NSMakeRange(absPos, CFStringGetLength(def.defName->token->string));
+    self.textView.selectedRange = NSMakeRange(absPos, def.defName->token->len);
     [self.textView centerSelectionInVisibleArea:nil];
 }
 

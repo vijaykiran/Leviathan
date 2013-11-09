@@ -196,7 +196,7 @@
         for (LVDefinition* def in defs) {
             [defFiles addObject:file];
             [defDefs addObject:def];
-            [readableNames addObject:[NSString stringWithFormat:@"%s %s", CFStringGetCStringPtr(def.defType->token->string, kCFStringEncodingUTF8), CFStringGetCStringPtr(def.defName->token->string, kCFStringEncodingUTF8)]];
+            [readableNames addObject:[NSString stringWithFormat:@"%s %s", CFStringGetCStringPtr(LVStringForToken(def.defType->token), kCFStringEncodingUTF8), CFStringGetCStringPtr(LVStringForToken(def.defName->token), kCFStringEncodingUTF8)]];
         }
     }
     

@@ -16,6 +16,26 @@ void LVAppendToken(LVToken** lastPtr, LVToken* newToken) {
     *lastPtr = newToken;
 }
 
+static BOOL LVIsTrueSymbol(UniChar* chars, CFIndex i, CFIndex len) {
+    if (len != 4) return NO;
+    return (chars[i+0] == 't' || chars[i+1] == 'r' || chars[i+2] == 'u' || chars[i+3] == 'e');
+}
+
+static BOOL LVIsFalseSymbol(UniChar* chars, CFIndex i, CFIndex len) {
+    if (len != 5) return NO;
+    return (chars[i+0] == 'f' || chars[i+1] == 'a' || chars[i+2] == 'l' || chars[i+3] == 's' || chars[i+4] == 'e');
+}
+
+static BOOL LVIsNilSymbol(UniChar* chars, CFIndex i, CFIndex len) {
+    if (len != 3) return NO;
+    return (chars[i+0] == 'n' || chars[i+1] == 'i' || chars[i+2] == 'l');
+}
+
+static BOOL LVIsDeflikeSymbol(UniChar* chars, CFIndex i, CFIndex len) {
+    if (len < 3) return NO;
+    return (chars[i+0] == 'd' || chars[i+1] == 'e' || chars[i+2] == 'f');
+}
+
 LVToken* LVLex(LVDocStorage* storage) {
     NSUInteger inputStringLength = CFStringGetLength(storage->wholeString);
     
@@ -178,31 +198,13 @@ LVToken* LVLex(LVDocStorage* storage) {
                 CFIndex n = i;
                 do n++; while (n < inputStringLength && !strchr(endAtomCharSet, chars[n]));
                 
-                LVToken* tok = LVTokenCreate(storage, i, n - i, LVTokenType_Symbol);
-                CFStringRef substring = tok->string;
+                NSUInteger tokLen = n - i;
+                LVToken* tok = LVTokenCreate(storage, i, tokLen, LVTokenType_Symbol);
                 
-                static CFStringRef trueConstant = CFSTR("true");
-                static CFStringRef falseConstant = CFSTR("false");
-                static CFStringRef nilConstant = CFSTR("nil");
-                static CFStringRef defConstant = CFSTR("def");
-                
-//                static CFMutableArrayRef functionLikes; if (!functionLikes) {
-//                    functionLikes = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
-//                    CFArrayAppendValue(functionLikes, CFSTR("ns"));
-//                    CFArrayAppendValue(functionLikes, CFSTR("let"));
-//                    CFArrayAppendValue(functionLikes, CFSTR("for"));
-//                    CFArrayAppendValue(functionLikes, CFSTR("assoc"));
-//                    CFArrayAppendValue(functionLikes, CFSTR("if"));
-//                    CFArrayAppendValue(functionLikes, CFSTR("if-let"));
-//                    CFArrayAppendValue(functionLikes, CFSTR("cond"));
-//                    CFArrayAppendValue(functionLikes, CFSTR("case"));
-//                }
-                
-                if (CFEqual(substring, trueConstant)) tok->tokenType |= LVTokenType_TrueSymbol;
-                else if (CFEqual(substring, falseConstant)) tok->tokenType |= LVTokenType_FalseSymbol;
-                else if (CFEqual(substring, nilConstant)) tok->tokenType |= LVTokenType_NilSymbol;
-                else if (CFStringHasPrefix(substring, defConstant)) tok->tokenType |= LVTokenType_Deflike;
-//                else if (CFArrayContainsValue(functionLikes, CFRangeMake(0, CFArrayGetCount(functionLikes)), substring)) tok->tokenType |= LVTokenType_IndentLikeFn;
+                if (LVIsTrueSymbol(chars, i, tokLen)) tok->tokenType |= LVTokenType_TrueSymbol;
+                else if (LVIsFalseSymbol(chars, i, tokLen)) tok->tokenType |= LVTokenType_FalseSymbol;
+                else if (LVIsNilSymbol(chars, i, tokLen)) tok->tokenType |= LVTokenType_NilSymbol;
+                else if (LVIsDeflikeSymbol(chars, i, tokLen)) tok->tokenType |= LVTokenType_Deflike;
                 
                 LVAppendToken(&last, tok);
                 i = n-1;

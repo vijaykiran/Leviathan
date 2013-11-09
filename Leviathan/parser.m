@@ -113,7 +113,7 @@ static LVElement* parseOne(LVDocStorage* storage, LVToken** iter) {
         @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
     }
     
-    printf("Can't handle this token type: %llu, %s\n", currentToken->tokenType, CFStringGetCStringPtr(currentToken->string, kCFStringEncodingUTF8));
+    printf("Can't handle this token type: %llu, %s\n", currentToken->tokenType, CFStringGetCStringPtr(LVStringForToken(currentToken), kCFStringEncodingUTF8));
     @throw [LVParseError exceptionWithName:@"uhh" reason:@"heh" userInfo:nil];
 }
 

@@ -225,7 +225,7 @@ NSRange LVElementRange(LVElement* element) {
 }
 
 BOOL LVIsMultiNewlineToken(LVToken* token) {
-    return ((token->tokenType & LVTokenType_Newlines) && CFStringGetLength(token->string) > 1);
+    return ((token->tokenType & LVTokenType_Newlines) && token->len > 1);
 }
 
 
@@ -473,7 +473,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
         token = token->prevToken;
     
     // but if its a newline, cold-stop!
-    if (token->tokenType & LVTokenType_Newlines && CFStringGetLength(token->string) > 1 && selection.location < token->pos + CFStringGetLength(token->string))
+    if (token->tokenType & LVTokenType_Newlines && token->len > 1 && selection.location < token->pos + token->len)
         return;
     
     // move to the next token while its spaces
@@ -577,7 +577,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     LVToken* token = LVFindAtomPrecedingIndex(self.clojureTextStorage.doc, self.selectedRange.location)->token;
     do token = token->nextToken; while (token && !(token->tokenType & LVTokenType_FileEnd) && !LVIsMultiNewlineToken(token));
     
-    self.selectedRange = NSMakeRange(token->pos + MIN(1, CFStringGetLength(token->string)), 0);
+    self.selectedRange = NSMakeRange(token->pos + MIN(1, token->len), 0);
     [self scrollRangeToVisible:self.selectedRange];
 }
 
@@ -585,7 +585,7 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     LVToken* token = LVFindAtomFollowingIndex(self.clojureTextStorage.doc, self.selectedRange.location)->token;
     do token = token->prevToken; while (token && !(token->tokenType & LVTokenType_FileBegin) && !LVIsMultiNewlineToken(token));
     
-    self.selectedRange = NSMakeRange(token->pos + MIN(1, CFStringGetLength(token->string)), 0);
+    self.selectedRange = NSMakeRange(token->pos + MIN(1, token->len), 0);
     [self scrollRangeToVisible:self.selectedRange];
 }
 
@@ -624,7 +624,7 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     
     LVAtom* openingAtom = (LVAtom*)coll->children[0];
     for (LVToken* token = openingAtom->token; !((token->tokenType & LVTokenType_Newlines) || (token->prevToken == NULL)); token = token->prevToken) {
-        count += CFStringGetLength(token->string);
+        count += token->len;
     }
     
     return count;
@@ -666,7 +666,7 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
     CFArrayRef fLikes = LVFunctionlikesForIndentation();
     return CFArrayContainsValue(fLikes,
                                 CFRangeMake(0, CFArrayGetCount(fLikes)),
-                                firstAtom->token->string);
+                                LVStringForToken(firstAtom->token));
 }
 
 - (IBAction) indentCurrentSection:(id)sender {
@@ -711,7 +711,7 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
             
             NSUInteger existingSpaces = 0;
             if (nextTok->tokenType & LVTokenType_Spaces)
-                existingSpaces = CFStringGetLength(nextTok->string);
+                existingSpaces = nextTok->len;
             
             LVAtom* newlineAtom = tok->atom;
             LVColl* newlineParent = newlineAtom->parent;
@@ -795,7 +795,7 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
             // empty-out any whitespace tokens IMMEDIATELY BEFORE IT
             LVToken* prevTok = tok->prevToken;
             if (prevTok->tokenType & LVTokenType_Spaces) {
-                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(prevTok->pos, CFStringGetLength(prevTok->string))]];
+                [replacementRanges addObject:[NSValue valueWithRange:NSMakeRange(prevTok->pos, prevTok->len)]];
                 [replacementStrings addObject:@""];
             }
         }

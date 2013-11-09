@@ -46,7 +46,7 @@ static void appendToString(LVColl* coll, CFMutableStringRef str) {
         LVElement* child = coll->children[i];
         if (child->isAtom) {
             LVAtom* atom = (void*)child;
-            CFStringAppend(str, atom->token->string);
+            CFStringAppend(str, LVStringForToken(atom->token));
         }
         else {
             appendToString((void*)child, str);

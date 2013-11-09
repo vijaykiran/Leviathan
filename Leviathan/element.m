@@ -10,11 +10,12 @@
 
 #import "coll.h"
 #import "atom.h"
+#import "doc.h"
 
 NSUInteger LVElementLength(LVElement* element) {
     if (element->isAtom) {
         LVAtom* atom = (LVAtom*)element;
-        return CFStringGetLength(atom->token->string);
+        return atom->token->len;
     }
     else {
         LVColl* coll = (LVColl*)element;
@@ -82,7 +83,7 @@ NSUInteger LVGetElementDepth(LVElement* needle) {
 
 CFStringRef LVStringForElement(LVElement* element) {
     if (element->isAtom)
-        return CFStringCreateCopy(NULL, ((LVAtom*)element)->token->string);
+        return LVStringForToken(((LVAtom*)element)->token);
     else
         return LVStringForColl((void*)element);
 }
