@@ -15,8 +15,8 @@
 + (LVThemeManager*) sharedThemeManager;
 
 @property LVTheme* currentTheme;
-- (NSArray*) potentialThemeNames;
 
+- (NSArray*) potentialThemeNames;
 - (void) loadTheme;
 
 @end

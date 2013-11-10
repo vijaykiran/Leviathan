@@ -219,6 +219,17 @@
 			path = Leviathan;
 			sourceTree = "<group>";
 		};
+		94391D54183005BE006895EA /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				944492E6182F7736008EA078 /* LVSettings.h */,
+				944492E7182F7736008EA078 /* LVSettings.m */,
+				94E7DF3D182AA69300A97D82 /* LVPathWatcher.h */,
+				94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		944492E5182F4F92008EA078 /* nREPL */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,10 +267,6 @@
 				94855A10181109A700220186 /* LVPreferencesWindowController.m */,
 				94855A1518110E2200220186 /* LVPreferences.h */,
 				94855A1618110E2200220186 /* LVPreferences.m */,
-				94E7DF3D182AA69300A97D82 /* LVPathWatcher.h */,
-				94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */,
-				944492E6182F7736008EA078 /* LVSettings.h */,
-				944492E7182F7736008EA078 /* LVSettings.m */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -313,11 +320,12 @@
 				9490D7E718104D58006ECA5E /* MainMenu.xib */,
 				9490D7E418104D58006ECA5E /* LVAppDelegate.h */,
 				9490D7E518104D58006ECA5E /* LVAppDelegate.m */,
-				944492E5182F4F92008EA078 /* nREPL */,
+				94391D54183005BE006895EA /* Settings */,
 				94855A14181109AE00220186 /* Preferences */,
 				94E7DF36182A8B1600A97D82 /* Key Bindings */,
 				945544FC18187B5600D69E63 /* Types */,
 				94EB3DCB18161DD5002E639F /* Parser */,
+				944492E5182F4F92008EA078 /* nREPL */,
 				9490D83218107FCD006ECA5E /* Fuzzy Matcher */,
 				9490D82E18107DC5006ECA5E /* Theme */,
 				9490D82918106B45006ECA5E /* Project Window */,

@@ -29,7 +29,7 @@ static NSMutableDictionary *relocatableKeys;
         kVK_ANSI_LeftBracket, kVK_ANSI_Quote, kVK_ANSI_Semicolon, kVK_ANSI_Backslash,
         kVK_ANSI_Comma, kVK_ANSI_Slash, kVK_ANSI_Period };
     
-    relocatableKeys = [[NSMutableDictionary alloc] init];
+    relocatableKeys = [NSMutableDictionary dictionary];
     
     TISInputSourceRef currentKeyboard = TISCopyCurrentKeyboardInputSource();
     CFDataRef layoutData = TISGetInputSourceProperty(currentKeyboard, kTISPropertyUnicodeKeyLayoutData);
@@ -135,21 +135,7 @@ static NSMutableDictionary *relocatableKeys;
         //    if ([str isEqualToString:@"RIGHT_SHIFT"]) return kVK_RightShift;
     }
     
-    // TODO: make this do something smarter than return -1 for unknowns
     return -1;
-}
-
-+ (NSUInteger) modifierFlagsForStrings:(NSArray*)strs {
-    strs = [strs valueForKeyPath:@"uppercaseString"];
-    
-    NSUInteger result = 0;
-    
-    if ([strs containsObject:@"SHIFT"]) result |= NSShiftKeyMask;
-    if ([strs containsObject:@"CTRL"]) result |= NSControlKeyMask;
-    if ([strs containsObject:@"ALT"]) result |= NSAlternateKeyMask;
-    if ([strs containsObject:@"CMD"]) result |= NSCommandKeyMask;
-    
-    return result;
 }
 
 @end

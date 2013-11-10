@@ -33,7 +33,7 @@
 - (id) init {
     if (self = [super init]) {
         self.oldThemes = [NSMutableArray array];
-        self.pathWatcher = [LVPathWatcher watcherFor:[self themesDirectory] handler:^{
+        self.pathWatcher = [LVPathWatcher watcherFor:[LVThemeManager themesDirectory] handler:^{
             [LVPreferences setTheme:[LVPreferences theme]];
         }];
     }
@@ -57,7 +57,7 @@
 }
 
 - (NSArray*) potentialThemeNames {
-    NSArray* themeURLs = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self themesDirectory]
+    NSArray* themeURLs = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[LVThemeManager themesDirectory]
                                                        includingPropertiesForKeys:@[]
                                                                           options:NSDirectoryEnumerationSkipsSubdirectoryDescendants
                                                                             error:NULL];
@@ -73,19 +73,19 @@
 
 - (NSURL*) themeFileURL {
     NSString* themeName = [LVPreferences theme];
-    NSURL* themeDestURL = [[self themesDirectory] URLByAppendingPathComponent:themeName];
+    NSURL* themeDestURL = [[LVThemeManager themesDirectory] URLByAppendingPathComponent:themeName];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:[themeDestURL path]]) {
         if ([themeName isEqualToString: LVDefaultThemeName]) {
             // copy file and try again
             NSURL* bundledThemesDir = [[NSBundle mainBundle] URLForResource:@"Themes" withExtension:@""];
-            [[NSFileManager defaultManager] createDirectoryAtURL:[self themesDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+            [[NSFileManager defaultManager] createDirectoryAtURL:[LVThemeManager themesDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
             
             NSArray* bundledThemeURLs = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:bundledThemesDir includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsSubdirectoryDescendants error:NULL];
             
             for (NSURL* themeURL in bundledThemeURLs) {
                 [[NSFileManager defaultManager] copyItemAtURL:themeURL
-                                                        toURL:[[self themesDirectory] URLByAppendingPathComponent:[themeURL lastPathComponent]]
+                                                        toURL:[[LVThemeManager themesDirectory] URLByAppendingPathComponent:[themeURL lastPathComponent]]
                                                         error:NULL];
             }
         }
@@ -99,7 +99,7 @@
     return themeDestURL;
 }
 
-- (NSURL*) themesDirectory {
++ (NSURL*) themesDirectory {
     NSURL* dataDirURL = [[LVPreferences settingsDirectory] URLByAppendingPathComponent:@"Themes"];
     
     [[NSFileManager defaultManager] createDirectoryAtURL:dataDirURL

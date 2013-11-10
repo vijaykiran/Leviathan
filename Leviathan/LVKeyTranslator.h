@@ -11,6 +11,5 @@
 @interface LVKeyTranslator : NSObject
 
 + (NSUInteger) keyCodeForString:(NSString*)str;
-+ (NSUInteger) modifierFlagsForStrings:(NSArray*)strs;
 
 @end

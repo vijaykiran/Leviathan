@@ -82,6 +82,14 @@
     }
 }
 
+- (IBAction) enterModalityMode:(id)sender {
+    
+}
+
+- (IBAction) exitModalityMode:(id)sender {
+    
+}
+
 - (NSURL*) findProjectFor:(NSURL*)url {
     NSURL* origURL = url;
     
