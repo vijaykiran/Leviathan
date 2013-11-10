@@ -48,12 +48,15 @@ static NSString* LVEncodeThing(id thing) {
 
 enum {
     LVNREPL_LISTENING_ANY,
+    LVNREPL_LISTENING_INT,
+    LVNREPL_LISTENING_STR1,
+    LVNREPL_LISTENING_STR2,
 };
 
 - (void) connect {
     self.actions = [NSMutableArray array];
     
-    NSInteger port = 55720;
+    NSInteger port = 56046;
     self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_queue_create("foo", NULL)];
     [self.socket connectToHost:@"localhost" onPort:port error:NULL];
 }
@@ -85,7 +88,7 @@ enum {
 
 - (void) listenForKeyIn:(NSMutableDictionary*)dict {
     [self listenForAnything:^(id key) {
-        if (key == nil) {
+        if (key) {
             [self listenForAnything:^(id val) {
                 [dict setObject:val forKey:key];
                 [self listenForKeyIn:dict];
@@ -110,36 +113,40 @@ enum {
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
-    if (tag == LVNREPL_LISTENING_ANY) {
+    if (tag == LVNREPL_LISTENING_INT) {
+        NSMutableString* str = [[NSMutableString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        [str deleteCharactersInRange:NSMakeRange([str length] - 1, 1)];
+        [self popActionWith:str];
+    }
+    else if (tag == LVNREPL_LISTENING_STR1) {
+        NSString* firstHalf = [self.actions lastObject];
+        [self.actions removeLastObject];
+        
+        NSMutableString* str = [[NSMutableString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        [str deleteCharactersInRange:NSMakeRange([str length] - 1, 1)];
+        NSUInteger len = [[firstHalf stringByAppendingString:str] integerValue];
+        
+        [self.socket readDataToLength:len withTimeout:-1 tag:LVNREPL_LISTENING_STR2];
+    }
+    else if (tag == LVNREPL_LISTENING_STR2) {
+        NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        [self popActionWith:str];
+    }
+    else if (tag == LVNREPL_LISTENING_ANY) {
         NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         unichar c = [str characterAtIndex:0];
         
-        if (c == 'e') {
-            // we finished either a dict, list, or int!
+        if (c == 'e')
             [self popActionWith:nil];
-        }
-        else if (c == 'd') {
-            NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-            [self listenForKeyIn:dict];
-        }
-        else if (c == 'l') {
-            NSMutableArray* array = [NSMutableArray array];
-            [self listenForElementIn:array];
-        }
-        else if (c == 'i') {
-            
-            [self.socket readDataToData:[@"e" dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:-1];
-            
-            // integer!
-            // listen for E
-        }
+        else if (c == 'd')
+            [self listenForKeyIn:[NSMutableDictionary dictionary]];
+        else if (c == 'l')
+            [self listenForElementIn:[NSMutableArray array]];
+        else if (c == 'i')
+            [self.socket readDataToData:[@"e" dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:LVNREPL_LISTENING_INT];
         else {
-            // string!
-            
-            // listen for :
-            [sock readDataToData:[@":" dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:-1];
-            
-            // listen for [the length]
+            [self.actions addObject:str];
+            [self.socket readDataToData:[@":" dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:LVNREPL_LISTENING_STR1];
         }
     }
 }
