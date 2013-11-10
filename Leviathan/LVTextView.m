@@ -626,10 +626,6 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
     return count;
 }
 
-CFArrayRef LVFunctionlikesForIndentation() {
-    return (__bridge CFArrayRef)[[LVSettings sharedSettings].cachedSettings objectForKey:@"indent-like-functions"];
-}
-
 BOOL LVListIndentsLikeFunction(LVColl* list) {
     LVElement* semanticChildren[list->childrenLen];
     NSUInteger semanticChildrenCount;
@@ -647,7 +643,7 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
         return NO;
     
     CFStringRef atomString = LVStringForToken(firstAtom->token);
-    CFArrayRef functionLikes = LVFunctionlikesForIndentation();
+    CFArrayRef functionLikes = (__bridge CFArrayRef)[[LVSettings sharedSettings].cachedSettings objectForKey:@"indent-like-functions"];
     return CFArrayContainsValue(functionLikes, CFRangeMake(0, CFArrayGetCount(functionLikes)), atomString);
 }
 
