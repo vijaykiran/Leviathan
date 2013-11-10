@@ -126,7 +126,24 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
 - (IBAction) evaluateFile:(id)sender {
     NSString* code = self.tabView.currentTab.currentEditor.file.clojureTextStorage.string;
     [self.repl sendRawCommand:@{@"op": @"eval", @"code": code}];
-    NSLog(@"eval result: %@", [self.repl receiveRawResponse]);
+    
+    while (1) {
+        NSDictionary* result = [self.repl receiveRawResponse];
+//        NSLog(@"result: %@", result);
+        
+        NSString* outString = [result objectForKey:@"out"];
+        NSString* valueString = [result objectForKey:@"value"];
+        
+        if (outString)
+            NSLog(@"%@", outString);
+        
+        if (valueString)
+            NSLog(@"%@", valueString);
+        
+        NSString* status = [result objectForKey:@"status"];
+        if ([status isEqual:@[@"done"]])
+            break;
+    }
 }
 
 - (IBAction) evaluatePrecedingExpression:(id)sender {
