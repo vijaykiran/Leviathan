@@ -13,6 +13,7 @@
 		944492DC182F3097008EA078 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492DB182F3097008EA078 /* GCDAsyncSocket.m */; };
 		944492DE182F30A2008EA078 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 944492DD182F30A2008EA078 /* Security.framework */; };
 		944492E4182F39E4008EA078 /* LVReplClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492E3182F39E4008EA078 /* LVReplClient.m */; };
+		944492E8182F7736008EA078 /* LVSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492E7182F7736008EA078 /* LVSettings.m */; };
 		945544FE18187BFF00D69E63 /* element.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544FD18187BFF00D69E63 /* element.m */; };
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
 		94855A12181109A700220186 /* LVPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A10181109A700220186 /* LVPreferencesWindowController.m */; };
@@ -87,6 +88,8 @@
 		944492DD182F30A2008EA078 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		944492E2182F39E4008EA078 /* LVReplClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVReplClient.h; sourceTree = "<group>"; };
 		944492E3182F39E4008EA078 /* LVReplClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVReplClient.m; sourceTree = "<group>"; };
+		944492E6182F7736008EA078 /* LVSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVSettings.h; sourceTree = "<group>"; };
+		944492E7182F7736008EA078 /* LVSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVSettings.m; sourceTree = "<group>"; };
 		945544FD18187BFF00D69E63 /* element.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = element.m; sourceTree = "<group>"; };
 		94855A061810D92500220186 /* SDExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDExpectation.h; sourceTree = "<group>"; };
 		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
@@ -255,6 +258,8 @@
 				94855A1618110E2200220186 /* LVPreferences.m */,
 				94E7DF3D182AA69300A97D82 /* LVPathWatcher.h */,
 				94E7DF3E182AA69300A97D82 /* LVPathWatcher.m */,
+				944492E6182F7736008EA078 /* LVSettings.h */,
+				944492E7182F7736008EA078 /* LVSettings.m */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -579,6 +584,7 @@
 			files = (
 				94E7DF39182A94E500A97D82 /* LVShortcutHandler.m in Sources */,
 				94E7DF42182ACE4600A97D82 /* LVKeyTranslator.m in Sources */,
+				944492E8182F7736008EA078 /* LVSettings.m in Sources */,
 				9490D81018105023006ECA5E /* LVTabView.m in Sources */,
 				9490D82D1810781D006ECA5E /* LVTextView.m in Sources */,
 				94E7DF3C182A9AD200A97D82 /* LVShortcut.m in Sources */,

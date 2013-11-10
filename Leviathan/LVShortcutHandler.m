@@ -8,10 +8,8 @@
 
 #import "LVShortcutHandler.h"
 
-#import "LVPreferences.h"
+#import "LVSettings.h"
 #import "LVShortcut.h"
-
-#import "LVPathWatcher.h"
 
 @interface LVShortcutHandler ()
 
@@ -21,24 +19,9 @@
 
 @property NSDictionary* currentChord;
 
-@property LVPathWatcher* pathWatcher;
-
 @end
 
 @implementation LVShortcutHandler
-
-- (NSURL*) settingsFileURL {
-    NSURL* settingsDestURL = [[LVPreferences settingsDirectory] URLByAppendingPathComponent:@"Settings.clj"];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[settingsDestURL path]]) {
-        NSURL* origFile = [[NSBundle mainBundle] URLForResource:@"Settings" withExtension:@"clj"];
-        [[NSFileManager defaultManager] copyItemAtURL:origFile
-                                                toURL:settingsDestURL
-                                                error:NULL];
-    }
-    
-    return settingsDestURL;
-}
 
 - (NSEvent*) handleEvent:(NSEvent*)event {
     NSArray* combo = @[@([event keyCode]), @([event modifierFlags] & NSDeviceIndependentModifierFlagsMask)];
@@ -127,8 +110,7 @@
     self.shortcutCombos = [NSMutableDictionary dictionary];
     self.shortcutKeyEquivalents = [NSMutableDictionary dictionary];
     
-    NSDictionary* settings = LVParseConfigWithDefs([self settingsFileURL]);
-    NSDictionary* shortcuts = [settings objectForKey:@"key-bindings"];
+    NSDictionary* shortcuts = [[LVSettings sharedSettings].cachedSettings objectForKey:@"key-bindings"];
     
     for (NSArray* combo in shortcuts) {
         NSString* selName = [shortcuts objectForKey:combo];
@@ -179,9 +161,11 @@
     self.globalKeyDownObserver = [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent*(NSEvent* event) {
         return [self handleEvent:event];
     }];
-    self.pathWatcher = [LVPathWatcher watcherFor:[self settingsFileURL] handler:^{
-        [self reloadKeyBindings];
-    }];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsReloaded:) name:LVSettingsReloadedNotification object:nil];
+}
+
+- (void) settingsReloaded:(NSNotification*)note {
+    [self reloadKeyBindings];
 }
 
 @end

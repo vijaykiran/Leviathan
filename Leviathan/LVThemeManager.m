@@ -9,6 +9,7 @@
 #import "LVThemeManager.h"
 
 #import "LVPreferences.h"
+#import "LVSettings.h"
 #import "LVPathWatcher.h"
 
 @interface LVThemeManager ()

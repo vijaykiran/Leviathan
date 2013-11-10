@@ -10,8 +10,8 @@
 
 #import "LVThemeManager.h"
 
-NSString* LVDefaultsFontChangedNotification = @"LVDefaultsFontChangedNotification";
-NSString* LVCurrentThemeChangedNotification = @"LVCurrentThemeChangedNotification";
+LV_DEFINE(LVDefaultsFontChangedNotification);
+LV_DEFINE(LVCurrentThemeChangedNotification);
 
 NSString* LVDefaultThemeName = @"TomorrowNightEighties.clj";
 

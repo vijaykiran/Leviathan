@@ -14,6 +14,8 @@
 #import "LVThemeManager.h"
 #import "LVPreferences.h"
 
+#import "LVSettings.h"
+
 @interface LVTextView ()
 
 @property CALayer* dimLayer;
@@ -625,20 +627,7 @@ NSUInteger LVGetIndentationForInsideOfColl(LVColl* coll) {
 }
 
 CFArrayRef LVFunctionlikesForIndentation() {
-    static CFMutableArrayRef functionLikes; if (!functionLikes) {
-        functionLikes = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
-        CFArrayAppendValue(functionLikes, CFSTR("ns"));
-        CFArrayAppendValue(functionLikes, CFSTR("let"));
-        CFArrayAppendValue(functionLikes, CFSTR("for"));
-        CFArrayAppendValue(functionLikes, CFSTR("assoc"));
-        CFArrayAppendValue(functionLikes, CFSTR("if"));
-        CFArrayAppendValue(functionLikes, CFSTR("if-let"));
-        CFArrayAppendValue(functionLikes, CFSTR("cond"));
-        CFArrayAppendValue(functionLikes, CFSTR("doto"));
-        CFArrayAppendValue(functionLikes, CFSTR("case"));
-        CFArrayAppendValue(functionLikes, CFSTR("list"));
-    }
-    return functionLikes;
+    return (__bridge CFArrayRef)[[LVSettings sharedSettings].cachedSettings objectForKey:@"indent-like-functions"];
 }
 
 BOOL LVListIndentsLikeFunction(LVColl* list) {

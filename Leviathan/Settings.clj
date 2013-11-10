@@ -62,3 +62,15 @@
 
    [:alt :shift "]"] "moveToNextBlankLines:"
    [:alt :shift "["] "moveToPreviousBlankLines:"})
+
+(def indent-like-functions
+  ["ns"
+   "let"
+   "for"
+   "assoc"
+   "if"
+   "if-let"
+   "cond"
+   "doto"
+   "case"
+   "list"])
