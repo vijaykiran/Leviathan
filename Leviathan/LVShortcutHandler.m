@@ -19,6 +19,8 @@
 
 @property NSDictionary* currentChord;
 
+@property BOOL modalityMode;
+
 @end
 
 @implementation LVShortcutHandler
@@ -112,6 +114,13 @@
     
     NSDictionary* shortcuts = [[LVSettings sharedSettings].cachedSettings objectForKey:@"key-bindings"];
     
+    if (self.modalityMode) {
+        NSDictionary* modalityShortcuts = [[LVSettings sharedSettings].cachedSettings objectForKey:@"modal-key-bindings"];
+        NSMutableDictionary* combinedShortcuts = [NSMutableDictionary dictionaryWithDictionary:shortcuts];
+        [combinedShortcuts addEntriesFromDictionary:modalityShortcuts];
+        shortcuts = combinedShortcuts;
+    }
+    
     for (NSArray* combo in shortcuts) {
         NSString* selName = [shortcuts objectForKey:combo];
         
@@ -154,6 +163,16 @@
     self.currentChord = self.shortcutCombos;
     
     [self adjustMenuItemStrings];
+}
+
+- (void) enterModalityMode {
+    self.modalityMode = YES;
+    [self reloadKeyBindings];
+}
+
+- (void) exitModalityMode {
+    self.modalityMode = NO;
+    [self reloadKeyBindings];
 }
 
 - (void) setup {

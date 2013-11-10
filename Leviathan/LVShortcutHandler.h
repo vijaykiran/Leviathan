@@ -14,4 +14,7 @@
 
 - (void) reloadKeyBindings;
 
+- (void) enterModalityMode;
+- (void) exitModalityMode;
+
 @end

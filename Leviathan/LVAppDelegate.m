@@ -83,11 +83,11 @@
 }
 
 - (IBAction) enterModalityMode:(id)sender {
-    
+    [self.shortcutHandler enterModalityMode];
 }
 
 - (IBAction) exitModalityMode:(id)sender {
-    
+    [self.shortcutHandler exitModalityMode];
 }
 
 - (NSURL*) findProjectFor:(NSURL*)url {
