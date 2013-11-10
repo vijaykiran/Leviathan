@@ -16,6 +16,7 @@
 #import "SDFuzzyMatcher.h"
 
 #import "LVReplClient.h"
+#import "LVEmbeddedRepl.h"
 
 @interface LVProjectWindowController ()
 
@@ -23,6 +24,7 @@
 @property (weak) IBOutlet LVTabView* tabView;
 
 @property LVReplClient* repl;
+@property LVEmbeddedRepl* embeddedRepl;
 
 @end
 
@@ -87,28 +89,44 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
     return nil;
 }
 
+- (void) openRepl:(NSUInteger)port {
+    self.repl = [[LVReplClient alloc] init];
+    [self.repl connect:port ready:^{
+        NSLog(@"ready!");
+        
+//        [self.repl sendRawCommand:@{@"op": @"describe"}];
+//        NSLog(@"sent");
+//        
+//        while (1) {
+//            NSLog(@"waiting...");
+//            NSLog(@"got: %@", [self.repl receiveRawResponse]);
+//        }
+    }];
+}
+
 - (IBAction) connectToNRepl:(id)sender {
     NSUInteger port = [LVGetQuickStringFromUser(@"nREPL port:") integerValue];
     if (!port)
         return;
     
-    self.repl = [[LVReplClient alloc] init];
-    [self.repl connect:port ready:^{
-        [self.repl sendRawCommand:@{@"op": @"eval", @"code": @"(+ 1 2)"}];
-        NSLog(@"got: %@", [self.repl receiveRawResponse]);
-    }];
+    [self openRepl:port];
 }
 
 - (IBAction) startNReplServerAndConnect:(id)sender {
-//    NSTask* task = [[NSTask alloc] init];
-//    task.currentDirectoryPath = [self.project.projectURL path];
-//    task.launchPath = @"/Users/sdegutis/bin/lein";
-//    task.arguments = @[@"repl"];
-//    [task launch];
+    __weak LVProjectWindowController* _self = self;
+    
+    self.embeddedRepl = [[LVEmbeddedRepl alloc] init];
+    self.embeddedRepl.baseURL = self.project.projectURL;
+    self.embeddedRepl.ready = ^(NSUInteger port) {
+        [_self openRepl:port];
+    };
+    [self.embeddedRepl open];
 }
 
 - (IBAction) evaluateFile:(id)sender {
-    
+    NSString* code = self.tabView.currentTab.currentEditor.file.clojureTextStorage.string;
+    [self.repl sendRawCommand:@{@"op": @"eval", @"code": code}];
+    NSLog(@"eval result: %@", [self.repl receiveRawResponse]);
 }
 
 - (IBAction) evaluatePrecedingExpression:(id)sender {

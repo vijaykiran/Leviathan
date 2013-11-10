@@ -10,6 +10,7 @@
 		940F83811828C629005C77B1 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 940F83801828C629005C77B1 /* Themes */; };
 		94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94370E721820DD2300EBB871 /* libBeowulf.a */; };
 		94370E761820DD7800EBB871 /* prelude.bwlf in Resources */ = {isa = PBXBuildFile; fileRef = 94370E751820DD7800EBB871 /* prelude.bwlf */; };
+		94391D5718301E1D006895EA /* LVEmbeddedRepl.m in Sources */ = {isa = PBXBuildFile; fileRef = 94391D5618301E1D006895EA /* LVEmbeddedRepl.m */; };
 		944492DC182F3097008EA078 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492DB182F3097008EA078 /* GCDAsyncSocket.m */; };
 		944492DE182F30A2008EA078 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 944492DD182F30A2008EA078 /* Security.framework */; };
 		944492E4182F39E4008EA078 /* LVReplClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492E3182F39E4008EA078 /* LVReplClient.m */; };
@@ -83,6 +84,8 @@
 		94370E711820DD2300EBB871 /* BWEnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWEnv.h; sourceTree = "<group>"; };
 		94370E721820DD2300EBB871 /* libBeowulf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBeowulf.a; sourceTree = "<group>"; };
 		94370E751820DD7800EBB871 /* prelude.bwlf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = prelude.bwlf; sourceTree = "<group>"; };
+		94391D5518301E1D006895EA /* LVEmbeddedRepl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVEmbeddedRepl.h; sourceTree = "<group>"; };
+		94391D5618301E1D006895EA /* LVEmbeddedRepl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVEmbeddedRepl.m; sourceTree = "<group>"; };
 		944492DA182F3097008EA078 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		944492DB182F3097008EA078 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		944492DD182F30A2008EA078 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -237,6 +240,8 @@
 				944492DB182F3097008EA078 /* GCDAsyncSocket.m */,
 				944492E2182F39E4008EA078 /* LVReplClient.h */,
 				944492E3182F39E4008EA078 /* LVReplClient.m */,
+				94391D5518301E1D006895EA /* LVEmbeddedRepl.h */,
+				94391D5618301E1D006895EA /* LVEmbeddedRepl.m */,
 			);
 			name = nREPL;
 			sourceTree = "<group>";
@@ -604,6 +609,7 @@
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
 				949EC52218138102001C9CAB /* parser.m in Sources */,
+				94391D5718301E1D006895EA /* LVEmbeddedRepl.m in Sources */,
 				949EC5251813811E001C9CAB /* lexer.m in Sources */,
 				94ABB132181463C4003415B5 /* coll.m in Sources */,
 				94F05D85181DAAF4008E9353 /* LVClojureTextStorage.m in Sources */,
