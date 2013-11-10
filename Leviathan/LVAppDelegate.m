@@ -14,16 +14,12 @@
 
 #import "LVShortcutHandler.h"
 
-#import "LVReplClient.h" // TODO: move me
-
 @interface LVAppDelegate ()
 
 @property IBOutlet NSMenuItem* closeWindowItem;
 @property IBOutlet NSMenuItem* closeTabItem;
 @property IBOutlet NSMenuItem* closeSplitItem;
 @property IBOutlet NSMenuItem* closeItem;
-
-@property LVReplClient* repl; // TODO: move me too
 
 @property BOOL quitting;
 
@@ -140,18 +136,6 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-//    self.repl = [[LVReplClient alloc] init];
-//    [self.repl connect:56301 ready:^{
-////        [self.repl sendRawCommand:@{@"op": @"ls-sessions"}];
-//        [self.repl sendRawCommand:@{@"op": @"eval", @"code": @"(+ 1 foo)"}];
-////        [self.repl sendRawCommand:@{@"op": @"eval", @"code": @"(def foo (+ 1 2))"}];
-////        NSLog(@"got: %@", [self.repl receiveRawResponse]);
-//        NSLog(@"got: %@", [self.repl receiveRawResponse]);
-//    }];
-    
-    
-    
-    
     self.shortcutHandler = [[LVShortcutHandler alloc] init];
     [self.shortcutHandler setup];
     

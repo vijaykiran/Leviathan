@@ -15,10 +15,14 @@
 
 #import "SDFuzzyMatcher.h"
 
+#import "LVReplClient.h"
+
 @interface LVProjectWindowController ()
 
 @property (weak) id<LVProjectWindowController> delegate;
 @property (weak) IBOutlet LVTabView* tabView;
+
+@property LVReplClient* repl;
 
 @end
 
@@ -74,12 +78,34 @@
 
 // repl
 
-- (IBAction) connectToNRepl:(id)sender {
+NSString* LVGetQuickStringFromUser(NSString* prompt) {
+    NSAlert *alert = [NSAlert alertWithMessageText:prompt defaultButton:@"OK" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@""];
     
+    NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 22)];
+    [alert setAccessoryView:input];
+    
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [input validateEditing];
+        return [input stringValue];
+    }
+    
+    return nil;
+}
+
+- (IBAction) connectToNRepl:(id)sender {
+    NSUInteger port = [LVGetQuickStringFromUser(@"nREPL port:") integerValue];
+    if (!port)
+        return;
+    
+    self.repl = [[LVReplClient alloc] init];
+    [self.repl connect:port ready:^{
+        [self.repl sendRawCommand:@{@"op": @"eval", @"code": @"(+ 1 2)"}];
+        NSLog(@"got: %@", [self.repl receiveRawResponse]);
+    }];
 }
 
 - (IBAction) startNReplServerAndConnect:(id)sender {
-    
 }
 
 - (IBAction) evaluateFile:(id)sender {
