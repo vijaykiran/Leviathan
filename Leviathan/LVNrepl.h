@@ -12,6 +12,9 @@
 
 @interface LVNrepl : NSObject <GCDAsyncSocketDelegate>
 
-- (void) connect;
+- (void) connect:(NSUInteger)port ready:(void(^)())ready;
+
+- (id) receiveRawResponse;
+- (void) sendRawCommand:(NSDictionary*)msg;
 
 @end

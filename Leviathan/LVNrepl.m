@@ -40,6 +40,7 @@ static NSString* LVEncodeThing(id thing) {
 
 @property GCDAsyncSocket* socket;
 @property NSMutableArray* actions;
+@property (copy) void(^ready)();
 
 @end
 
@@ -53,24 +54,32 @@ enum {
     LVNREPL_LISTENING_STR2,
 };
 
-- (void) connect {
+- (void) connect:(NSUInteger)port ready:(void(^)())ready {
+    self.ready = ready;
     self.actions = [NSMutableArray array];
-    
-    NSInteger port = 56046;
-    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_queue_create("foo", NULL)];
+    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_queue_create("nrepl", DISPATCH_QUEUE_CONCURRENT)];
     [self.socket connectToHost:@"localhost" onPort:port error:NULL];
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port {
-    [self listenForAnything:^(id obj){
-        NSLog(@"got it! %@", obj);
-    }];
-    
-    // write a test command
-    [self sendMessage:@{@"op": @"eval", @"code": @"(+ 1 2)"}];
+    self.ready();
 }
 
-- (void) sendMessage:(NSDictionary*)msg {
+- (id) receiveRawResponse {
+    __block id returnVal;
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+    
+    [self listenForAnything:^(id obj) {
+        returnVal = obj;
+        dispatch_group_leave(group);
+    }];
+    
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    return returnVal;
+}
+
+- (void) sendRawCommand:(NSDictionary*)msg {
     NSString* outstr = LVEncodeThing(msg);
     [self.socket writeData:[outstr dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:-1];
 }

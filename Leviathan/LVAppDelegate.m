@@ -141,7 +141,12 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     self.repl = [[LVNrepl alloc] init];
-    [self.repl connect];
+    [self.repl connect:56195 ready:^{
+        [self.repl sendRawCommand:@{@"op": @"ls-sessions"}];
+        [self.repl sendRawCommand:@{@"op": @"eval", @"code": @"(def foo (+ 1 2))"}];
+        NSLog(@"got: %@", [self.repl receiveRawResponse]);
+        NSLog(@"got: %@", [self.repl receiveRawResponse]);
+    }];
     
     
     
