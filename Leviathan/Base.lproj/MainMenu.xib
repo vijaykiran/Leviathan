@@ -390,9 +390,9 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="Paredit" id="QBs-Py-2mA">
+                <menuItem title="Structural Editing" id="QBs-Py-2mA">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Paredit" id="7Yv-mS-iAe">
+                    <menu key="submenu" title="Structural Editing" id="7Yv-mS-iAe">
                         <items>
                             <menuItem title="Comment Line's First Expression" id="61u-sd-Y2B">
                                 <modifierMask key="keyEquivalentModifierMask"/>

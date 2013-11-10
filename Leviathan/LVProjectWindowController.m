@@ -123,36 +123,36 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
     [self.embeddedRepl open];
 }
 
-- (IBAction) evaluateFile:(id)sender {
-    NSString* code = self.tabView.currentTab.currentEditor.file.clojureTextStorage.string;
-    [self.repl sendRawCommand:@{@"op": @"eval", @"code": code}];
-    
-    while (1) {
-        NSDictionary* result = [self.repl receiveRawResponse];
-//        NSLog(@"result: %@", result);
-        
-        NSString* outString = [result objectForKey:@"out"];
-        NSString* valueString = [result objectForKey:@"value"];
-        
-        if (outString)
-            NSLog(@"%@", outString);
-        
-        if (valueString)
-            NSLog(@"%@", valueString);
-        
-        NSString* status = [result objectForKey:@"status"];
-        if ([status isEqual:@[@"done"]])
-            break;
-    }
-}
-
-- (IBAction) evaluatePrecedingExpression:(id)sender {
-    
-}
-
-- (IBAction) evaluateFollowingExpression:(id)sender {
-    
-}
+//- (IBAction) evaluateFile:(id)sender {
+//    NSString* code = self.tabView.currentTab.currentEditor.file.clojureTextStorage.string;
+//    [self.repl sendRawCommand:@{@"op": @"eval", @"code": code}];
+//    
+//    while (1) {
+//        NSDictionary* result = [self.repl receiveRawResponse];
+////        NSLog(@"result: %@", result);
+//        
+//        NSString* outString = [result objectForKey:@"out"];
+//        NSString* valueString = [result objectForKey:@"value"];
+//        
+//        if (outString)
+//            NSLog(@"%@", outString);
+//        
+//        if (valueString)
+//            NSLog(@"%@", valueString);
+//        
+//        NSString* status = [result objectForKey:@"status"];
+//        if ([status isEqual:@[@"done"]])
+//            break;
+//    }
+//}
+//
+//- (IBAction) evaluatePrecedingExpression:(id)sender {
+//    
+//}
+//
+//- (IBAction) evaluateFollowingExpression:(id)sender {
+//    
+//}
 
 
 // closing things

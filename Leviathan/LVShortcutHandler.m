@@ -59,7 +59,7 @@
 }
 
 - (void) adjustMenuItemStrings {
-    NSArray* specialMenus = @[@"Project", @"Paredit", @"REPL"];
+    NSArray* specialMenus = @[@"Project", @"Structural Editing", @"REPL"];
     
     for (NSString* specialMenu in specialMenus) {
         NSMenu* menu = [[[NSApp menu] itemWithTitle:specialMenu] submenu];
