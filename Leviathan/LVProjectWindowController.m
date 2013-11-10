@@ -72,6 +72,28 @@
 
 
 
+// repl
+
+- (IBAction) connectToNRepl:(id)sender {
+    
+}
+
+- (IBAction) startNReplServerAndConnect:(id)sender {
+    
+}
+
+- (IBAction) evaluateFile:(id)sender {
+    
+}
+
+- (IBAction) evaluatePrecedingExpression:(id)sender {
+    
+}
+
+- (IBAction) evaluateFollowingExpression:(id)sender {
+    
+}
+
 
 // closing things
 

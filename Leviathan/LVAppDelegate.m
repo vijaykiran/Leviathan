@@ -14,7 +14,7 @@
 
 #import "LVShortcutHandler.h"
 
-#import "LVNrepl.h" // TODO: move me
+#import "LVReplClient.h" // TODO: move me
 
 @interface LVAppDelegate ()
 
@@ -23,7 +23,7 @@
 @property IBOutlet NSMenuItem* closeSplitItem;
 @property IBOutlet NSMenuItem* closeItem;
 
-@property LVNrepl* repl; // TODO: move me too
+@property LVReplClient* repl; // TODO: move me too
 
 @property BOOL quitting;
 
@@ -140,13 +140,14 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    self.repl = [[LVNrepl alloc] init];
-    [self.repl connect:56195 ready:^{
-        [self.repl sendRawCommand:@{@"op": @"ls-sessions"}];
-        [self.repl sendRawCommand:@{@"op": @"eval", @"code": @"(def foo (+ 1 2))"}];
-        NSLog(@"got: %@", [self.repl receiveRawResponse]);
-        NSLog(@"got: %@", [self.repl receiveRawResponse]);
-    }];
+//    self.repl = [[LVReplClient alloc] init];
+//    [self.repl connect:56301 ready:^{
+////        [self.repl sendRawCommand:@{@"op": @"ls-sessions"}];
+//        [self.repl sendRawCommand:@{@"op": @"eval", @"code": @"(+ 1 foo)"}];
+////        [self.repl sendRawCommand:@{@"op": @"eval", @"code": @"(def foo (+ 1 2))"}];
+////        NSLog(@"got: %@", [self.repl receiveRawResponse]);
+//        NSLog(@"got: %@", [self.repl receiveRawResponse]);
+//    }];
     
     
     

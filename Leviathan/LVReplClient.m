@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Steven Degutis. All rights reserved.
 //
 
-#import "LVNrepl.h"
+#import "LVReplClient.h"
 
 static NSString* LVEncodeThing(id thing) {
     if ([thing isKindOfClass:[NSNumber self]]) {
@@ -36,7 +36,7 @@ static NSString* LVEncodeThing(id thing) {
     abort();
 }
 
-@interface LVNrepl ()
+@interface LVReplClient ()
 
 @property GCDAsyncSocket* socket;
 @property NSMutableArray* actions;
@@ -45,7 +45,7 @@ static NSString* LVEncodeThing(id thing) {
 @end
 
 
-@implementation LVNrepl
+@implementation LVReplClient
 
 enum {
     LVNREPL_LISTENING_ANY,

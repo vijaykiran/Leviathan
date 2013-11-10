@@ -10,7 +10,7 @@
 
 #import "GCDAsyncSocket.h"
 
-@interface LVNrepl : NSObject <GCDAsyncSocketDelegate>
+@interface LVReplClient : NSObject <GCDAsyncSocketDelegate>
 
 - (void) connect:(NSUInteger)port ready:(void(^)())ready;
 

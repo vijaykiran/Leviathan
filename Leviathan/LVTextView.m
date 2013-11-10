@@ -822,7 +822,6 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
 
 
 
-
 /************************************************ Semantic Selection ************************************************/
 
 - (NSRange)selectionRangeForProposedRange:(NSRange)proposedSelRange granularity:(NSSelectionGranularity)granularity {

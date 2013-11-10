@@ -517,6 +517,44 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="REPL" id="YzA-3r-kn7">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="REPL" id="IZS-xg-woU">
+                        <items>
+                            <menuItem title="Connect to nREPL" id="XFS-Rb-uph">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="connectToNRepl:" target="-1" id="pyj-yl-R6B"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Start nREPL Server and Connect" id="cwG-f9-QhU">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="startNReplServerAndConnect:" target="-1" id="BbO-l6-6xs"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="SIi-PM-RbT"/>
+                            <menuItem title="Evaluate File" id="5TN-6d-uQx">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="evaluateFile:" target="-1" id="C57-4m-IXk"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Evaluate Preceding Expression" id="05g-yb-esQ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="evaluatePrecedingExpression:" target="-1" id="XaU-06-xia"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Evaluate Following Expression" id="IZc-Az-bpp">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="evaluateFollowingExpression:" target="-1" id="ldc-5Y-O1W"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Window" id="19">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Window" systemMenu="window" id="YSR-bW-Z8o">
