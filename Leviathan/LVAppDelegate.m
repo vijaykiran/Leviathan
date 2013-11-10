@@ -14,12 +14,16 @@
 
 #import "LVShortcutHandler.h"
 
+#import "LVNrepl.h" // TODO: move me
+
 @interface LVAppDelegate ()
 
 @property IBOutlet NSMenuItem* closeWindowItem;
 @property IBOutlet NSMenuItem* closeTabItem;
 @property IBOutlet NSMenuItem* closeSplitItem;
 @property IBOutlet NSMenuItem* closeItem;
+
+@property LVNrepl* repl; // TODO: move me too
 
 @property BOOL quitting;
 
@@ -136,6 +140,12 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    self.repl = [[LVNrepl alloc] init];
+    [self.repl connect];
+    
+    
+    
+    
     self.shortcutHandler = [[LVShortcutHandler alloc] init];
     [self.shortcutHandler setup];
     

@@ -56,6 +56,12 @@
 - (void)windowDidLoad {
     [super windowDidLoad];
     [self newTab:nil];
+    
+//    NSTask* task = [[NSTask alloc] init];
+//    task.currentDirectoryPath = [self.project.projectURL path];
+//    task.launchPath = @"/Users/sdegutis/bin/lein";
+//    task.arguments = @[@"repl"];
+//    [task launch];
 }
 
 - (void) makeTitleBarPrettier {
