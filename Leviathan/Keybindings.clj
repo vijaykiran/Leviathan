@@ -1,4 +1,14 @@
-{;; Project menu
+{
+
+ ;; nREPL menu
+
+ [:cmd "i"] "connectToNRepl:"
+ [[:ctrl "x"] [:ctrl "e"]] "evaluatePrecedingExpression:"
+ ;; TODO: moar
+
+
+
+ ;; Project menu
 
  [:fn "o"] "openProject:"
  [:cmd "t"] "newTab:"
