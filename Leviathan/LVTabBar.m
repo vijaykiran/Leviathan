@@ -126,6 +126,7 @@
     CATextLayer* textLayer = [CATextLayer layer];
     textLayer.frame = rect;
     textLayer.contentsScale = self.layer.contentsScale;
+    textLayer.truncationMode = kCATruncationEnd;
     textLayer.font = (__bridge CGFontRef)font;
     textLayer.fontSize = fontSize;
     textLayer.foregroundColor = [NSColor colorWithCalibratedWhite:0.20 alpha:1.0].CGColor;
