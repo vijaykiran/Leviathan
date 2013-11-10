@@ -172,12 +172,12 @@
     [self expireSoon];
 }
 
-- (IBAction) editKeyBindingsFile:(id)sender {
+- (IBAction) editSettingsFile:(id)sender {
     LVProjectWindowController* pc = [self openProjectForURL:[LVPreferences settingsDirectory]];
-    [pc editFileWithLongName:@"Keybindings.clj"];
+    [pc editFileWithLongName:@"Settings.clj"];
 }
 
-- (IBAction) editThemeFile:(id)sender {
+- (IBAction) editCurrentThemeFile:(id)sender {
     LVProjectWindowController* pc = [self openProjectForURL:[LVPreferences settingsDirectory]];
     [pc editFileWithLongName:[@"Themes" stringByAppendingPathComponent:[LVPreferences theme]]];
 }

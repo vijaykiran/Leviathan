@@ -31,16 +31,16 @@
                                     <action selector="showPreferencesWindow:" target="494" id="kVX-Ze-eeO"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Edit Key Bindings" id="kBk-WU-FtA">
+                            <menuItem title="Edit Settings File" id="kBk-WU-FtA">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="editKeyBindingsFile:" target="-1" id="mwf-U4-eCl"/>
+                                    <action selector="editSettingsFile:" target="-1" id="1s0-K4-Lsx"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Edit Theme" id="kf5-oY-ORB">
+                            <menuItem title="Edit Current Theme File" id="kf5-oY-ORB">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="editThemeFile:" target="-1" id="I43-fz-DrQ"/>
+                                    <action selector="editCurrentThemeFile:" target="-1" id="g2a-uj-CtS"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">

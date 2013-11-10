@@ -27,11 +27,11 @@
 
 @implementation LVShortcutHandler
 
-- (NSURL*) keybindingsFileURL {
-    NSURL* settingsDestURL = [[LVPreferences settingsDirectory] URLByAppendingPathComponent:@"Keybindings.clj"];
+- (NSURL*) settingsFileURL {
+    NSURL* settingsDestURL = [[LVPreferences settingsDirectory] URLByAppendingPathComponent:@"Settings.clj"];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:[settingsDestURL path]]) {
-        NSURL* origFile = [[NSBundle mainBundle] URLForResource:@"Keybindings" withExtension:@"clj"];
+        NSURL* origFile = [[NSBundle mainBundle] URLForResource:@"Settings" withExtension:@"clj"];
         [[NSFileManager defaultManager] copyItemAtURL:origFile
                                                 toURL:settingsDestURL
                                                 error:NULL];
@@ -127,7 +127,9 @@
     self.shortcutCombos = [NSMutableDictionary dictionary];
     self.shortcutKeyEquivalents = [NSMutableDictionary dictionary];
     
-    NSDictionary* shortcuts = LVParseConfig([self keybindingsFileURL]);
+    NSDictionary* settings = LVParseConfigWithDefs([self settingsFileURL]);
+    NSDictionary* shortcuts = [settings objectForKey:@"key-bindings"];
+    
     for (NSArray* combo in shortcuts) {
         NSString* selName = [shortcuts objectForKey:combo];
         
@@ -177,7 +179,7 @@
     self.globalKeyDownObserver = [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent*(NSEvent* event) {
         return [self handleEvent:event];
     }];
-    self.pathWatcher = [LVPathWatcher watcherFor:[self keybindingsFileURL] handler:^{
+    self.pathWatcher = [LVPathWatcher watcherFor:[self settingsFileURL] handler:^{
         [self reloadKeyBindings];
     }];
 }

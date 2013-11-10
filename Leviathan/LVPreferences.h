@@ -26,3 +26,4 @@ extern NSString* LVDefaultThemeName;
 @end
 
 id LVParseConfig(NSURL* url);
+NSDictionary* LVParseConfigWithDefs(NSURL* url);
