@@ -292,71 +292,61 @@
                                     <action selector="selectAll:" target="-1" id="232"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="d9H-Ap-F1n">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Find…" tag="1" keyEquivalent="f" id="209">
+                                <connections>
+                                    <action selector="performFindPanelAction:" target="-1" id="241"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Find and Replace…" tag="12" keyEquivalent="f" id="534">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="performFindPanelAction:" target="-1" id="535"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Find Next" tag="2" keyEquivalent="g" id="208">
+                                <connections>
+                                    <action selector="performFindPanelAction:" target="-1" id="487"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Find Previous" tag="3" keyEquivalent="G" id="213">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                <connections>
+                                    <action selector="performFindPanelAction:" target="-1" id="488"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Use Selection for Find" tag="7" keyEquivalent="e" id="221">
+                                <connections>
+                                    <action selector="performFindPanelAction:" target="-1" id="489"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Jump to Selection" keyEquivalent="j" id="210">
+                                <connections>
+                                    <action selector="centerSelectionInVisibleArea:" target="-1" id="245"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="214">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Find" id="218">
-                                <menu key="submenu" title="Find" id="220">
-                                    <items>
-                                        <menuItem title="Find…" tag="1" keyEquivalent="f" id="209">
-                                            <connections>
-                                                <action selector="performFindPanelAction:" target="-1" id="241"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Find and Replace…" tag="12" keyEquivalent="f" id="534">
-                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="performFindPanelAction:" target="-1" id="535"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Find Next" tag="2" keyEquivalent="g" id="208">
-                                            <connections>
-                                                <action selector="performFindPanelAction:" target="-1" id="487"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Find Previous" tag="3" keyEquivalent="G" id="213">
-                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="performFindPanelAction:" target="-1" id="488"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Use Selection for Find" tag="7" keyEquivalent="e" id="221">
-                                            <connections>
-                                                <action selector="performFindPanelAction:" target="-1" id="489"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Jump to Selection" keyEquivalent="j" id="210">
-                                            <connections>
-                                                <action selector="centerSelectionInVisibleArea:" target="-1" id="245"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem title="Transformations" id="450">
+                            <menuItem title="Make Upper Case" id="452">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Transformations" id="451">
-                                    <items>
-                                        <menuItem title="Make Upper Case" id="452">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="uppercaseWord:" target="-1" id="464"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Make Lower Case" id="465">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="lowercaseWord:" target="-1" id="468"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Capitalize" id="466">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="capitalizeWord:" target="-1" id="467"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
+                                <connections>
+                                    <action selector="uppercaseWord:" target="-1" id="464"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Make Lower Case" id="465">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="lowercaseWord:" target="-1" id="468"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Capitalize" id="466">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="capitalizeWord:" target="-1" id="467"/>
+                                </connections>
                             </menuItem>
                         </items>
                     </menu>
