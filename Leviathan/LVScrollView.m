@@ -52,7 +52,9 @@
     [contentView setFrame:contentViewFrame];
     
     NSTextView* lineNumberTextView = [self.lineNumberClipView documentView];
+    lineNumberFrame.origin = NSZeroPoint;
     [lineNumberTextView setFrame:lineNumberFrame];
+//    NSLog(@"%@", lineNumberTextView);
     
     NSScroller* scroller = [self horizontalScroller];
     NSRect scrollerFrame = [scroller frame], bla;
@@ -103,7 +105,7 @@
 - (void) setupUserDefinedProperties {
     NSTextView* lineNumberTextView = [self.lineNumberClipView documentView];
     lineNumberTextView.backgroundColor = [[LVThemeManager sharedThemeManager].currentTheme.backgroundColor blendedColorWithFraction:0.2 ofColor:[NSColor blackColor]];
-    [self forceAdjustLineNumbers];
+    [self adjustLineNumbers];
 }
 
 - (void) adjustLineNumbers:(NSUInteger)max {
@@ -111,37 +113,41 @@
         return;
     
     self.currentLineNums = max;
-    [self forceAdjustLineNumbers];
+    [self adjustLineNumbers];
     
     self.maxDigits = [[NSString stringWithFormat:@"%ld", self.currentLineNums] length];
     [self tile];
 }
 
-- (void) forceAdjustLineNumbers {
+- (void) adjustLineNumbers {
     if (self.currentLineNums == 0)
         return;
     
     NSTextView* lineNumberTextView = [self.lineNumberClipView documentView];
     
+    NSUInteger stringLength = [[lineNumberTextView textStorage] length];
+    NSUInteger oldCurrentLines = stringLength / 2;
+    NSUInteger newCurrentLines = self.currentLineNums;
+    
+    if (newCurrentLines == oldCurrentLines)
+        return;
+    
     [[lineNumberTextView textStorage] beginEditing];
     
-    NSUInteger stringLength = [[lineNumberTextView textStorage] length];
-    NSUInteger currentLines = stringLength / 2;
-    
-    if (self.currentLineNums < currentLines) {
+    if (newCurrentLines > oldCurrentLines) {
         // need more
-        NSUInteger difference = currentLines - self.currentLineNums;
+        NSUInteger difference = newCurrentLines - oldCurrentLines;
         
-        for (NSUInteger i = self.currentLineNums; i < currentLines; i++)
+        for (NSUInteger i = oldCurrentLines; i < newCurrentLines; i++)
             [[[lineNumberTextView textStorage] mutableString] appendFormat:@"%ld\n", i + 1];
         
-        NSRange rangeToStyle = NSMakeRange(currentLines * 2, difference * 2);
+        NSRange rangeToStyle = NSMakeRange(oldCurrentLines * 2, difference * 2);
         NSDictionary* attrs = [LVThemeManager sharedThemeManager].currentTheme.symbol;
         [[lineNumberTextView textStorage] addAttributes:attrs range:rangeToStyle];
     }
-    else if (self.currentLineNums > currentLines) {
+    else if (newCurrentLines < oldCurrentLines) {
         // have too much
-        NSUInteger difference = self.currentLineNums - currentLines;
+        NSUInteger difference = oldCurrentLines - newCurrentLines;
         NSRange rangeToDelete = NSMakeRange(stringLength - (difference * 2), difference * 2);
         [[lineNumberTextView textStorage] deleteCharactersInRange:rangeToDelete];
     }
