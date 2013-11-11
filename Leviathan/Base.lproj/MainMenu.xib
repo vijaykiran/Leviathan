@@ -79,47 +79,6 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="File" id="83">
-                    <menu key="submenu" title="File" id="81">
-                        <items>
-                            <menuItem title="Close Window" keyEquivalent="W" id="73">
-                                <connections>
-                                    <action selector="closeProjectWindow:" target="-1" id="96v-O2-DpQ"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Close Tab" keyEquivalent="w" id="tzN-Tt-urc">
-                                <connections>
-                                    <action selector="closeProjectTab:" target="-1" id="Liw-rd-uqd"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Close Split" keyEquivalent="w" id="XxB-As-YfA">
-                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
-                                <connections>
-                                    <action selector="closeProjectTabSplit:" target="-1" id="Sv1-UG-w4C"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Close" keyEquivalent="w" id="ygs-ZB-Sl7">
-                                <connections>
-                                    <action selector="performClose:" target="-1" id="bVb-ow-EOl"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="yAm-iJ-f4F">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
-                            <menuItem title="Save…" keyEquivalent="s" id="75">
-                                <connections>
-                                    <action selector="saveDocument:" target="-1" id="362"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Revert to Saved" id="112">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="revertDocumentToSaved:" target="-1" id="364"/>
-                                </connections>
-                            </menuItem>
-                        </items>
-                    </menu>
-                </menuItem>
                 <menuItem title="Project" id="qB5-qr-pdq">
                     <menu key="submenu" title="Project" id="JPs-dO-ZjT">
                         <items>
@@ -141,7 +100,43 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="yAm-iJ-f4F">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Save…" id="75">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="saveDocument:" target="-1" id="362"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Revert to Saved" id="112">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="revertDocumentToSaved:" target="-1" id="364"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="XJa-0G-3Nd">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Close Tab" id="tzN-Tt-urc">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="performClose:" target="-1" id="Nvw-uA-M63"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Close Window" id="73">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="closeProjectWindow:" target="-1" id="96v-O2-DpQ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Close Split" id="XxB-As-YfA">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="closeProjectTabSplit:" target="-1" id="Sv1-UG-w4C"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="qRu-gN-Y4A">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
                             <menuItem title="New Tab" id="SXE-hk-h9X">
@@ -599,10 +594,7 @@
         </menu>
         <customObject id="494" customClass="LVAppDelegate">
             <connections>
-                <outlet property="closeItem" destination="ygs-ZB-Sl7" id="syF-Me-sTr"/>
-                <outlet property="closeSplitItem" destination="XxB-As-YfA" id="CtP-Ak-r8z"/>
-                <outlet property="closeTabItem" destination="tzN-Tt-urc" id="MPi-01-aqV"/>
-                <outlet property="closeWindowItem" destination="73" id="i1b-IQ-3yc"/>
+                <outlet property="closeItem" destination="tzN-Tt-urc" id="Vl0-Hj-EVE"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>

@@ -12,6 +12,11 @@
    [:fn "o"] "openProject:"
    [:cmd "t"] "newTab:"
 
+   [:cmd "s"] "saveDocument:"
+   [:cmd "w"] "performClose:"
+   [:cmd :shift "w"] "closeProjectWindow:"
+   [:cmd :ctrl "w"] "closeProjectTabSplit:"
+
    [:cmd "o"] "jumpToFile:"
    [:cmd :shift "o"] "jumpToDefinition:"
    [:cmd :ctrl "e"] "jumpToDefinitionAtPoint:"

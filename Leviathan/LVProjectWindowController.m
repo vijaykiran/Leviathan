@@ -18,6 +18,20 @@
 #import "LVReplClient.h"
 #import "LVEmbeddedRepl.h"
 
+@interface LVProjectWindow : NSWindow
+@end
+
+@implementation LVProjectWindow
+
+- (BOOL) respondsToSelector:(SEL)aSelector {
+    if (aSelector == @selector(performClose:))
+        return NO;
+    else
+        return [super respondsToSelector:aSelector];
+}
+
+@end
+
 @interface LVProjectWindowController ()
 
 @property (weak) id<LVProjectWindowController> delegate;
@@ -183,6 +197,9 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
     [self tryClosingCompletely];
 }
 
+- (IBAction) performClose:(id)sender {
+    [self closeProjectTab:sender];
+}
 
 - (BOOL) tryClosingCompletely {
     NSArray* unsavedFiles = [self.project.files filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.hasChanges = TRUE"]];

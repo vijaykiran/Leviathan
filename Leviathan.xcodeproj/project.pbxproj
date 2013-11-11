@@ -497,6 +497,7 @@
 			buildPhases = (
 				9490D7CB18104D58006ECA5E /* Sources */,
 				9490D7CC18104D58006ECA5E /* Frameworks */,
+				9408777218306EC9006D0C62 /* Increment Build Number */,
 				9490D7CD18104D58006ECA5E /* Resources */,
 			);
 			buildRules = (
@@ -589,6 +590,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9408777218306EC9006D0C62 /* Increment Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9490D7CB18104D58006ECA5E /* Sources */ = {
