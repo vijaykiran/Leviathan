@@ -8,6 +8,9 @@
 
 #import "LVScrollView.h"
 
+#import "LVPreferences.h"
+#import "LVThemeManager.h"
+
 @interface LVScrollView ()
 
 @property NSClipView* myView;
@@ -31,7 +34,7 @@
 - (void)reflectScrolledClipView:(NSClipView *)aClipView {
     [super reflectScrolledClipView:aClipView];
     
-    NSView* box = [self.myView documentView];
+    NSTextView* box = [self.myView documentView];
     NSRect boxFrame = [aClipView documentRect];
     
     if (boxFrame.size.height != [box frame].size.height) {
@@ -41,14 +44,23 @@
     }
     
     NSRect r = [aClipView documentVisibleRect];
-    NSPoint p = NSMakePoint(0, NSMaxY(boxFrame) - NSMaxY(r));
+    NSPoint p = NSMakePoint(0, NSMinY(r));
     [self.myView scrollToPoint:p];
 }
 
 - (void) awakeFromNib {
     [super awakeFromNib];
     
-    NSView* box = [[NSBox alloc] init];
+    NSTextView* box = [[NSTextView alloc] init];
+    box.font = [LVPreferences userFont];
+    box.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
+    box.textColor = [[LVThemeManager sharedThemeManager].currentTheme.symbol objectForKey:NSForegroundColorAttributeName];
+    box.textContainerInset = NSMakeSize(0.0f, 4.0f);
+    
+    for (int i = 0; i < 50; i++) {
+        [box insertText:[NSString stringWithFormat:@"%d\n", i + 1]];
+    }
+    
     self.myView = [[NSClipView alloc] init];
     self.myView.backgroundColor = [NSColor yellowColor];
     [self.myView setDrawsBackground:YES];
