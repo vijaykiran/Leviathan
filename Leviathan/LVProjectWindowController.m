@@ -37,6 +37,9 @@
 @property (weak) id<LVProjectWindowController> delegate;
 @property (weak) IBOutlet LVTabView* tabView;
 
+@property IBOutlet NSScrollView* replScrollView;
+@property IBOutlet NSTextView* replTextView;
+
 @property LVReplClient* repl;
 @property LVEmbeddedRepl* embeddedRepl;
 
@@ -103,19 +106,33 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
     return nil;
 }
 
+- (void) insertReplText:(NSString*)text {
+    NSUInteger len = [[self.replTextView textStorage] length];
+    [self.replTextView shouldChangeTextInRange:NSMakeRange(len, 0) replacementString:text];
+    [self.replTextView replaceCharactersInRange:NSMakeRange(len, 0) withString:text];
+    [self.replTextView didChangeText];
+    [self.replTextView setNeedsDisplay:YES];
+    [self.replTextView scrollToEndOfDocument:self];
+}
+
 - (void) openRepl:(NSUInteger)port {
     self.repl = [[LVReplClient alloc] init];
     [self.repl connect:port ready:^{
-        NSLog(@"ready!");
-        
-//        [self.repl sendRawCommand:@{@"op": @"describe"}];
-//        NSLog(@"sent");
-//        
-//        while (1) {
-//            NSLog(@"waiting...");
-//            NSLog(@"got: %@", [self.repl receiveRawResponse]);
-//        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self insertReplText:@"Done!\n\n"];
+        });
     }];
+}
+
+- (void) addReplView {
+    NSRect tabViewFrame = [self.tabView frame];
+    NSRect replViewFrame;
+    NSDivideRect(tabViewFrame, &replViewFrame, &tabViewFrame, 100.0, NSMinYEdge);
+    
+    [self.tabView setFrame:tabViewFrame];
+    [self.replScrollView setFrame:replViewFrame];
+    [[self.tabView superview] addSubview:self.replScrollView];
+    [self insertReplText:@"Connecting... "];
 }
 
 - (IBAction) connectToNRepl:(id)sender {
@@ -123,43 +140,48 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
     if (!port)
         return;
     
+    [self addReplView];
     [self openRepl:port];
 }
 
 - (IBAction) startNReplServerAndConnect:(id)sender {
+    [self addReplView];
+    
     __weak LVProjectWindowController* _self = self;
     
     self.embeddedRepl = [[LVEmbeddedRepl alloc] init];
     self.embeddedRepl.baseURL = self.project.projectURL;
     self.embeddedRepl.ready = ^(NSUInteger port) {
-        [_self openRepl:port];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_self openRepl:port];
+        });
     };
     [self.embeddedRepl open];
 }
 
-//- (IBAction) evaluateFile:(id)sender {
-//    NSString* code = self.tabView.currentTab.currentEditor.file.clojureTextStorage.string;
-//    [self.repl sendRawCommand:@{@"op": @"eval", @"code": code}];
-//    
-//    while (1) {
-//        NSDictionary* result = [self.repl receiveRawResponse];
-////        NSLog(@"result: %@", result);
-//        
-//        NSString* outString = [result objectForKey:@"out"];
-//        NSString* valueString = [result objectForKey:@"value"];
-//        
-//        if (outString)
-//            NSLog(@"%@", outString);
-//        
-//        if (valueString)
-//            NSLog(@"%@", valueString);
-//        
-//        NSString* status = [result objectForKey:@"status"];
-//        if ([status isEqual:@[@"done"]])
-//            break;
-//    }
-//}
-//
+- (IBAction) evaluateFile:(id)sender {
+    NSString* code = self.tabView.currentTab.currentEditor.file.clojureTextStorage.string;
+    [self.repl sendRawCommand:@{@"op": @"eval", @"code": code}];
+    
+    while (1) {
+        NSDictionary* result = [self.repl receiveRawResponse];
+//        NSLog(@"result: %@", result);
+        
+        NSString* outString = [result objectForKey:@"out"];
+        NSString* valueString = [result objectForKey:@"value"];
+        
+        if (outString)
+            [self insertReplText: [outString stringByAppendingString:@"\n"]];
+        
+        if (valueString)
+            [self insertReplText: [[@"=> " stringByAppendingString:valueString] stringByAppendingString:@"\n"]];
+        
+        NSString* status = [result objectForKey:@"status"];
+        if ([status isEqual:@[@"done"]])
+            break;
+    }
+}
+
 //- (IBAction) evaluatePrecedingExpression:(id)sender {
 //    
 //}
