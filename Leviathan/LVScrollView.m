@@ -83,10 +83,7 @@
 
 - (void) updateLineNumberPosition {
     NSRect clojureViewVisibleRect = [[self contentView] documentVisibleRect];
-//    CGFloat y = [self.lineNumberClipView frame].size.height;
-    
-    CGFloat y = 0 - NSMaxY(clojureViewVisibleRect) + [[self contentView] documentRect].size.height;
-    
+    CGFloat y = -(NSHeight([self.lineNumberClipView frame])) - NSMinY(clojureViewVisibleRect) + [[self.lineNumberClipView documentView] frame].size.height; // GOOD!
     [self.lineNumberClipView scrollToPoint:NSMakePoint(0, y)];
 }
 
