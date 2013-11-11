@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9408777518308BB0006D0C62 /* LVScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408777418308BB0006D0C62 /* LVScrollView.m */; };
 		940F83811828C629005C77B1 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 940F83801828C629005C77B1 /* Themes */; };
 		94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94370E721820DD2300EBB871 /* libBeowulf.a */; };
 		94370E761820DD7800EBB871 /* prelude.bwlf in Resources */ = {isa = PBXBuildFile; fileRef = 94370E751820DD7800EBB871 /* prelude.bwlf */; };
@@ -78,6 +79,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9408777318308BB0006D0C62 /* LVScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVScrollView.h; sourceTree = "<group>"; };
+		9408777418308BB0006D0C62 /* LVScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVScrollView.m; sourceTree = "<group>"; };
 		940F83801828C629005C77B1 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
 		94370E6F1820DD2300EBB871 /* Beowulf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beowulf.h; sourceTree = "<group>"; };
 		94370E701820DD2300EBB871 /* BWCallable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWCallable.h; sourceTree = "<group>"; };
@@ -382,6 +385,8 @@
 				9490D82118105B2D006ECA5E /* Editor.xib */,
 				9490D81F18105B2D006ECA5E /* LVEditor.h */,
 				9490D82018105B2D006ECA5E /* LVEditor.m */,
+				9408777318308BB0006D0C62 /* LVScrollView.h */,
+				9408777418308BB0006D0C62 /* LVScrollView.m */,
 				9490D82B1810781D006ECA5E /* LVTextView.h */,
 				9490D82C1810781D006ECA5E /* LVTextView.m */,
 			);
@@ -636,6 +641,7 @@
 				94D7947A18112CC0003307F4 /* highlights.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
 				9490D813181050AA006ECA5E /* LVTabBar.m in Sources */,
+				9408777518308BB0006D0C62 /* LVScrollView.m in Sources */,
 				945544FE18187BFF00D69E63 /* element.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
 				94EB3DCA18161106002E639F /* token.m in Sources */,
