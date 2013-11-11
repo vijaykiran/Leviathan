@@ -22,6 +22,7 @@
 
 @property NSClipView* myView;
 @property NSUInteger currentLineNums;
+@property NSUInteger maxDigits;
 
 @end
 
@@ -35,17 +36,24 @@
 - (void) tile {
     [super tile];
     
+    NSFont* font = [LVPreferences userFont];
+    CGFloat width = [font boundingRectForFont].size.width;
+    CGFloat fullWidth = width * self.maxDigits * 2;
+    
+    fullWidth = 25.0;
+    NSLog(@"%f", fullWidth);
+    
     NSView* contentView = [self contentView];
     NSRect contentViewFrame = [contentView frame];
     NSRect lineNumberFrame;
-    NSDivideRect(contentViewFrame, &lineNumberFrame, &contentViewFrame, 35.0, NSMinXEdge);
+    NSDivideRect(contentViewFrame, &lineNumberFrame, &contentViewFrame, fullWidth, NSMinXEdge);
     
     [self.myView setFrame:lineNumberFrame];
     [contentView setFrame:contentViewFrame];
     
     NSScroller* scroller = [self horizontalScroller];
     NSRect scrollerFrame = [scroller frame], bla;
-    NSDivideRect(scrollerFrame, &bla, &scrollerFrame, 35.0, NSMinXEdge);
+    NSDivideRect(scrollerFrame, &bla, &scrollerFrame, fullWidth, NSMinXEdge);
     [scroller setFrame:scrollerFrame];
 }
 
@@ -76,9 +84,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];
     
     NSTextView* box = [[LVLineNumbersTextView alloc] init];
-    box.editable = NO;
-    box.selectable = NO;
-    box.textContainerInset = NSMakeSize(0.0f, 4.0f);
+    [box setEditable:NO];
+    [box setSelectable:NO];
+    [box setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
+    [box setAlignment:NSRightTextAlignment];
     
     self.myView = [[NSClipView alloc] init];
     self.myView.backgroundColor = [NSColor yellowColor];
@@ -109,6 +118,9 @@
     
     self.currentLineNums = max;
     [self forceAdjustLineNumbers];
+    
+    self.maxDigits = [[NSString stringWithFormat:@"%ld", self.currentLineNums] length];
+    [self tile];
 }
 
 - (void) forceAdjustLineNumbers {
@@ -118,6 +130,8 @@
     
     [[box textStorage] beginEditing];
     [[box textStorage] deleteCharactersInRange:NSMakeRange(0, [[box textStorage] length])];
+    
+    NSLog(@"%ld", self.currentLineNums);
     
     for (int i = 0; i < self.currentLineNums; i++)
         [[[box textStorage] mutableString] appendFormat:@"%d\n", i + 1];
