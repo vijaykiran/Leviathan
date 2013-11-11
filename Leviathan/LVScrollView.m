@@ -32,10 +32,15 @@
     NSView* contentView = [self contentView];
     NSRect contentViewFrame = [contentView frame];
     NSRect lineNumberFrame;
-    NSDivideRect(contentViewFrame, &lineNumberFrame, &contentViewFrame, 30.0, NSMinXEdge);
+    NSDivideRect(contentViewFrame, &lineNumberFrame, &contentViewFrame, 35.0, NSMinXEdge);
     
     [self.myView setFrame:lineNumberFrame];
     [contentView setFrame:contentViewFrame];
+    
+    NSScroller* scroller = [self horizontalScroller];
+    NSRect scrollerFrame = [scroller frame], bla;
+    NSDivideRect(scrollerFrame, &bla, &scrollerFrame, 35.0, NSMinXEdge);
+    [scroller setFrame:scrollerFrame];
 }
 
 - (void)reflectScrolledClipView:(NSClipView *)aClipView {
