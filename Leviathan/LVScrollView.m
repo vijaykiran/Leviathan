@@ -35,8 +35,8 @@
 - (void) tile {
     [super tile];
     
-//    if (self.maxDigits < 1)
-//        self.maxDigits = 1;
+    if (self.maxDigits < 2)
+        self.maxDigits = 2;
     
     NSFont* font = [LVPreferences userFont];
     CGFloat width = [font boundingRectForFont].size.width;
@@ -140,7 +140,7 @@
     for (NSUInteger i = 0; i < newCurrentLines; i++)
         [[[lineNumberTextView textStorage] mutableString] appendFormat:@"%ld\n", i + 1];
     
-//    [[lineNumberTextView textStorage] addAttributes:attrs range:NSMakeRange(0, [[lineNumberTextView textStorage] length])];
+    [[lineNumberTextView textStorage] addAttributes:attrs range:NSMakeRange(0, [[lineNumberTextView textStorage] length])];
     [[lineNumberTextView textStorage] endEditing];
 }
 
