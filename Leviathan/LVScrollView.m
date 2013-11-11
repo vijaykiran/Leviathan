@@ -33,9 +33,12 @@
     
     NSView* box = [self.myView documentView];
     NSRect boxFrame = [aClipView documentRect];
-    boxFrame.size.width = [self.myView frame].size.width;
-    boxFrame.origin.x = 0;
-    [box setFrame:boxFrame];
+    
+    if (boxFrame.size.height != [box frame].size.height) {
+        boxFrame.size.width = [self.myView frame].size.width;
+        boxFrame.origin.x = 0;
+        [box setFrame:boxFrame];
+    }
     
     NSRect r = [aClipView documentVisibleRect];
     NSPoint p = NSMakePoint(0, NSMaxY(boxFrame) - NSMaxY(r));
@@ -47,6 +50,8 @@
     
     NSView* box = [[NSBox alloc] init];
     self.myView = [[NSClipView alloc] init];
+    self.myView.backgroundColor = [NSColor yellowColor];
+    [self.myView setDrawsBackground:YES];
     [self.myView setDocumentView:box];
     [self addSubview:self.myView];
 }
