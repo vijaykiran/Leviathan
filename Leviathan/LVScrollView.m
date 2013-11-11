@@ -8,6 +8,7 @@
 
 #import "LVScrollView.h"
 
+#import "LVPreferences.h"
 #import "LVThemeManager.h"
 
 @interface LVLineNumbersTextView : NSTextView
@@ -25,6 +26,11 @@
 @end
 
 @implementation LVScrollView
+
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 - (void) tile {
     [super tile];
@@ -66,10 +72,12 @@
 - (void) awakeFromNib {
     [super awakeFromNib];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];
+    
     NSTextView* box = [[LVLineNumbersTextView alloc] init];
     box.editable = NO;
     box.selectable = NO;
-    box.backgroundColor = [[LVThemeManager sharedThemeManager].currentTheme.backgroundColor blendedColorWithFraction:0.2 ofColor:[NSColor blackColor]];
     box.textContainerInset = NSMakeSize(0.0f, 4.0f);
     
     self.myView = [[NSClipView alloc] init];
@@ -77,6 +85,22 @@
     [self.myView setDrawsBackground:YES];
     [self.myView setDocumentView:box];
     [self addSubview:self.myView];
+    
+    [self setupUserDefinedProperties];
+}
+
+- (void) defaultsFontChanged:(NSNotification*)note {
+    [self setupUserDefinedProperties];
+}
+
+- (void) defaultsThemeChanged:(NSNotification*)note {
+    [self setupUserDefinedProperties];
+}
+
+- (void) setupUserDefinedProperties {
+    NSTextView* box = [self.myView documentView];
+    box.backgroundColor = [[LVThemeManager sharedThemeManager].currentTheme.backgroundColor blendedColorWithFraction:0.2 ofColor:[NSColor blackColor]];
+    [self forceAdjustLineNumbers];
 }
 
 - (void) adjustLineNumbers:(NSUInteger)max {
@@ -84,7 +108,10 @@
         return;
     
     self.currentLineNums = max;
-    
+    [self forceAdjustLineNumbers];
+}
+
+- (void) forceAdjustLineNumbers {
     NSTextView* box = [self.myView documentView];
     
     NSDictionary* attrs = [LVThemeManager sharedThemeManager].currentTheme.symbol;
@@ -92,9 +119,8 @@
     [[box textStorage] beginEditing];
     [[box textStorage] deleteCharactersInRange:NSMakeRange(0, [[box textStorage] length])];
     
-    for (int i = 0; i < max; i++) {
+    for (int i = 0; i < self.currentLineNums; i++)
         [[[box textStorage] mutableString] appendFormat:@"%d\n", i + 1];
-    }
     
     [[box textStorage] addAttributes:attrs range:NSMakeRange(0, [[box textStorage] length])];
     [[box textStorage] endEditing];
