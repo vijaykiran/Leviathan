@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9408777518308BB0006D0C62 /* LVScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408777418308BB0006D0C62 /* LVScrollView.m */; };
+		940877781831552B006D0C62 /* LVThemeMenuDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 940877771831552B006D0C62 /* LVThemeMenuDelegate.m */; };
 		940F83811828C629005C77B1 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 940F83801828C629005C77B1 /* Themes */; };
 		94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94370E721820DD2300EBB871 /* libBeowulf.a */; };
 		94370E761820DD7800EBB871 /* prelude.bwlf in Resources */ = {isa = PBXBuildFile; fileRef = 94370E751820DD7800EBB871 /* prelude.bwlf */; };
@@ -18,8 +19,6 @@
 		944492E8182F7736008EA078 /* LVSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492E7182F7736008EA078 /* LVSettings.m */; };
 		945544FE18187BFF00D69E63 /* element.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544FD18187BFF00D69E63 /* element.m */; };
 		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
-		94855A12181109A700220186 /* LVPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A10181109A700220186 /* LVPreferencesWindowController.m */; };
-		94855A13181109A700220186 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94855A11181109A700220186 /* PreferencesWindow.xib */; };
 		94855A1718110E2200220186 /* LVPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A1618110E2200220186 /* LVPreferences.m */; };
 		9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D7D218104D58006ECA5E /* Cocoa.framework */; };
 		9490D7DD18104D58006ECA5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9490D7DB18104D58006ECA5E /* InfoPlist.strings */; };
@@ -81,6 +80,8 @@
 /* Begin PBXFileReference section */
 		9408777318308BB0006D0C62 /* LVScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVScrollView.h; sourceTree = "<group>"; };
 		9408777418308BB0006D0C62 /* LVScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVScrollView.m; sourceTree = "<group>"; };
+		940877761831552B006D0C62 /* LVThemeMenuDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeMenuDelegate.h; sourceTree = "<group>"; };
+		940877771831552B006D0C62 /* LVThemeMenuDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeMenuDelegate.m; sourceTree = "<group>"; };
 		940F83801828C629005C77B1 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
 		94370E6F1820DD2300EBB871 /* Beowulf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beowulf.h; sourceTree = "<group>"; };
 		94370E701820DD2300EBB871 /* BWCallable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWCallable.h; sourceTree = "<group>"; };
@@ -99,9 +100,6 @@
 		945544FD18187BFF00D69E63 /* element.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = element.m; sourceTree = "<group>"; };
 		94855A061810D92500220186 /* SDExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDExpectation.h; sourceTree = "<group>"; };
 		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
-		94855A0F181109A700220186 /* LVPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVPreferencesWindowController.h; sourceTree = "<group>"; };
-		94855A10181109A700220186 /* LVPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVPreferencesWindowController.m; sourceTree = "<group>"; };
-		94855A11181109A700220186 /* PreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		94855A1518110E2200220186 /* LVPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVPreferences.h; sourceTree = "<group>"; };
 		94855A1618110E2200220186 /* LVPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVPreferences.m; sourceTree = "<group>"; };
 		9490D7CF18104D58006ECA5E /* Leviathan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leviathan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,9 +268,6 @@
 			isa = PBXGroup;
 			children = (
 				94D1B35F182A004800D9CE49 /* Settings.clj */,
-				94855A11181109A700220186 /* PreferencesWindow.xib */,
-				94855A0F181109A700220186 /* LVPreferencesWindowController.h */,
-				94855A10181109A700220186 /* LVPreferencesWindowController.m */,
 				94855A1518110E2200220186 /* LVPreferences.h */,
 				94855A1618110E2200220186 /* LVPreferences.m */,
 			);
@@ -441,6 +436,8 @@
 			isa = PBXGroup;
 			children = (
 				940F83801828C629005C77B1 /* Themes */,
+				940877761831552B006D0C62 /* LVThemeMenuDelegate.h */,
+				940877771831552B006D0C62 /* LVThemeMenuDelegate.m */,
 				94D794321811226D003307F4 /* LVThemeManager.h */,
 				94D794331811226D003307F4 /* LVThemeManager.m */,
 				94EF5CF61811E744004836A0 /* LVTheme.h */,
@@ -578,7 +575,6 @@
 				940F83811828C629005C77B1 /* Themes in Resources */,
 				94D1B360182A004800D9CE49 /* Settings.clj in Resources */,
 				9490D82318105B2D006ECA5E /* Editor.xib in Resources */,
-				94855A13181109A700220186 /* PreferencesWindow.xib in Resources */,
 				9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */,
 				9490D81E181054EE006ECA5E /* Tab.xib in Resources */,
 				9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */,
@@ -636,7 +632,6 @@
 				949EC5251813811E001C9CAB /* lexer.m in Sources */,
 				94ABB132181463C4003415B5 /* coll.m in Sources */,
 				94F05D85181DAAF4008E9353 /* LVClojureTextStorage.m in Sources */,
-				94855A12181109A700220186 /* LVPreferencesWindowController.m in Sources */,
 				944492E4182F39E4008EA078 /* LVReplClient.m in Sources */,
 				94D7947A18112CC0003307F4 /* highlights.m in Sources */,
 				9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */,
@@ -645,6 +640,7 @@
 				945544FE18187BFF00D69E63 /* element.m in Sources */,
 				9490D7DF18104D58006ECA5E /* main.m in Sources */,
 				94EB3DCA18161106002E639F /* token.m in Sources */,
+				940877781831552B006D0C62 /* LVThemeMenuDelegate.m in Sources */,
 				94CA3656181E165900926D6B /* doc.m in Sources */,
 				94ABB12F181463B6003415B5 /* atom.m in Sources */,
 				9490D84018107FD6006ECA5E /* SDFuzzyMatcherWindowController.m in Sources */,

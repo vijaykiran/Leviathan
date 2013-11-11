@@ -26,10 +26,13 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129">
-                                <connections>
-                                    <action selector="showPreferencesWindow:" target="494" id="kVX-Ze-eeO"/>
-                                </connections>
+                            <menuItem title="Theme" id="7nx-Gi-RNJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Theme" id="AAf-e0-Se3">
+                                    <connections>
+                                        <outlet property="delegate" destination="mMR-10-qbe" id="9zj-LF-hyh"/>
+                                    </connections>
+                                </menu>
                             </menuItem>
                             <menuItem title="Edit Settings File" id="kBk-WU-FtA">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -582,11 +585,8 @@
                 <outlet property="delegate" destination="494" id="83C-T5-s4S"/>
             </connections>
         </menu>
-        <customObject id="494" customClass="LVAppDelegate">
-            <connections>
-                <outlet property="closeItem" destination="tzN-Tt-urc" id="Vl0-Hj-EVE"/>
-            </connections>
-        </customObject>
+        <customObject id="494" customClass="LVAppDelegate"/>
         <customObject id="420" customClass="NSFontManager"/>
+        <customObject id="mMR-10-qbe" customClass="LVThemeMenuDelegate"/>
     </objects>
 </document>

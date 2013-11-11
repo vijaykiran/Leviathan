@@ -8,7 +8,6 @@
 
 #import "LVAppDelegate.h"
 
-#import "LVPreferencesWindowController.h"
 #import "LVPreferences.h"
 #import "LVThemeManager.h"
 
@@ -169,10 +168,6 @@
     
     if (!self.quitting)
         [self saveProjects];
-}
-
-- (IBAction) showPreferencesWindow:(id)sender {
-    [[LVPreferencesWindowController sharedPreferencesWindowController] showWindow:sender];
 }
 
 - (void)changeFont:(id)sender {
