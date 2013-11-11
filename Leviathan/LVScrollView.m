@@ -11,11 +11,22 @@
 #import "LVPreferences.h"
 #import "LVThemeManager.h"
 
-@interface LVLineNumbersTextView : NSTextView
+@interface LVLineNumbersView : NSView
+
+@property NSString* numbers;
+
 @end
 
-@implementation LVLineNumbersTextView
-- (BOOL) acceptsFirstResponder { return NO; }
+@implementation LVLineNumbersView
+
+- (void) drawRect:(NSRect)dirtyRect {
+    [[[NSColor darkGrayColor] colorWithAlphaComponent:0.5] drawSwatchInRect:[self bounds]];
+    
+    NSDictionary* attrs = [LVThemeManager sharedThemeManager].currentTheme.symbol;
+    
+    [self.numbers drawAtPoint:NSZeroPoint withAttributes:attrs];
+}
+
 @end
 
 @interface LVScrollView ()
@@ -51,9 +62,10 @@
     [self.lineNumberClipView setFrame:lineNumberFrame];
     [contentView setFrame:contentViewFrame];
     
-    NSTextView* lineNumberTextView = [self.lineNumberClipView documentView];
-    lineNumberFrame.origin = NSZeroPoint;
-    [lineNumberTextView setFrame:lineNumberFrame];
+//    LVLineNumbersView* lineNumberTextView = [self.lineNumberClipView documentView];
+//    lineNumberFrame.origin = NSZeroPoint;
+//    lineNumberFrame.size.height = 200;
+//    [lineNumberTextView setFrame:lineNumberFrame];
 //    NSLog(@"%@", lineNumberTextView);
     
     NSScroller* scroller = [self horizontalScroller];
@@ -71,7 +83,11 @@
 
 - (void) updateLineNumberPosition {
     NSRect clojureViewVisibleRect = [[self contentView] documentVisibleRect];
-    [self.lineNumberClipView scrollToPoint:NSMakePoint(0, NSMinY(clojureViewVisibleRect))];
+//    CGFloat y = [self.lineNumberClipView frame].size.height;
+    
+    CGFloat y = 0 - NSMaxY(clojureViewVisibleRect) + [[self contentView] documentRect].size.height;
+    
+    [self.lineNumberClipView scrollToPoint:NSMakePoint(0, y)];
 }
 
 - (void) awakeFromNib {
@@ -80,14 +96,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];
     
-    NSTextView* lineNumberTextView = [[LVLineNumbersTextView alloc] init];
-    [lineNumberTextView setEditable:NO];
-    [lineNumberTextView setSelectable:NO];
-    [lineNumberTextView setTextContainerInset:NSMakeSize(0.0f, 4.0f)];
-//    [lineNumberTextView setAlignment:NSRightTextAlignment];
+    LVLineNumbersView* lineNumberTextView = [[LVLineNumbersView alloc] init];
     
     self.lineNumberClipView = [[NSClipView alloc] init];
-    [self.lineNumberClipView setDrawsBackground:NO];
+    [self.lineNumberClipView setDrawsBackground:YES];
     [self.lineNumberClipView setDocumentView:lineNumberTextView];
     [self addSubview:self.lineNumberClipView];
     
@@ -103,8 +115,7 @@
 }
 
 - (void) setupUserDefinedProperties {
-    NSTextView* lineNumberTextView = [self.lineNumberClipView documentView];
-    lineNumberTextView.backgroundColor = [[LVThemeManager sharedThemeManager].currentTheme.backgroundColor blendedColorWithFraction:0.2 ofColor:[NSColor blackColor]];
+    self.lineNumberClipView.backgroundColor = [[LVThemeManager sharedThemeManager].currentTheme.backgroundColor blendedColorWithFraction:0.2 ofColor:[NSColor blackColor]];
     [self adjustLineNumbers];
 }
 
@@ -123,36 +134,20 @@
     if (self.currentLineNums == 0)
         return;
     
-    NSTextView* lineNumberTextView = [self.lineNumberClipView documentView];
+    LVLineNumbersView* lineNumberTextView = [self.lineNumberClipView documentView];
     
-    NSUInteger stringLength = [[lineNumberTextView textStorage] length];
-    NSUInteger oldCurrentLines = stringLength / 2;
-    NSUInteger newCurrentLines = self.currentLineNums;
+    NSMutableArray* nums = [NSMutableArray arrayWithCapacity:self.currentLineNums];
     
-    if (newCurrentLines == oldCurrentLines)
-        return;
+    for (NSUInteger i = 0; i < self.currentLineNums; i++)
+        [nums addObject:@(i+1)];
     
-    [[lineNumberTextView textStorage] beginEditing];
+    lineNumberTextView.numbers = [nums componentsJoinedByString:@"\n"];
     
-    if (newCurrentLines > oldCurrentLines) {
-        // need more
-        NSUInteger difference = newCurrentLines - oldCurrentLines;
-        
-        for (NSUInteger i = oldCurrentLines; i < newCurrentLines; i++)
-            [[[lineNumberTextView textStorage] mutableString] appendFormat:@"%ld\n", i + 1];
-        
-        NSRange rangeToStyle = NSMakeRange(oldCurrentLines * 2, difference * 2);
-        NSDictionary* attrs = [LVThemeManager sharedThemeManager].currentTheme.symbol;
-        [[lineNumberTextView textStorage] addAttributes:attrs range:rangeToStyle];
-    }
-    else if (newCurrentLines < oldCurrentLines) {
-        // have too much
-        NSUInteger difference = oldCurrentLines - newCurrentLines;
-        NSRange rangeToDelete = NSMakeRange(stringLength - (difference * 2), difference * 2);
-        [[lineNumberTextView textStorage] deleteCharactersInRange:rangeToDelete];
-    }
+    NSRect f = NSMakeRect(0, 0, 30, self.currentLineNums * 18);
     
-    [[lineNumberTextView textStorage] endEditing];
+    [lineNumberTextView setFrame:f];
+    
+    [lineNumberTextView setNeedsDisplay:YES];
 }
 
 @end
