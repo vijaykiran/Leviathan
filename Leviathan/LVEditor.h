@@ -11,6 +11,7 @@
 #import "LVFile.h"
 
 #import "LVTextView.h"
+#import "LVScrollView.h"
 
 @class LVEditor;
 
@@ -25,6 +26,7 @@
 @property LVFile* file;
 @property (weak) id<LVEditorDelegate> delegate;
 @property IBOutlet LVTextView* textView;
+@property (weak) IBOutlet LVScrollView* scrollView;
 
 - (void) startEditingFile:(LVFile*)file;
 

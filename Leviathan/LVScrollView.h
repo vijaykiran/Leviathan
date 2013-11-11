@@ -10,4 +10,6 @@
 
 @interface LVScrollView : NSScrollView
 
+- (void) adjustLineNumbers:(NSUInteger)max;
+
 @end

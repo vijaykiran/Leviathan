@@ -53,19 +53,26 @@
     
     NSTextView* box = [[NSTextView alloc] init];
     box.font = [LVPreferences userFont];
-    box.backgroundColor = [LVThemeManager sharedThemeManager].currentTheme.backgroundColor;
+    box.backgroundColor = [[LVThemeManager sharedThemeManager].currentTheme.backgroundColor blendedColorWithFraction:0.2 ofColor:[NSColor blackColor]];
     box.textColor = [[LVThemeManager sharedThemeManager].currentTheme.symbol objectForKey:NSForegroundColorAttributeName];
     box.textContainerInset = NSMakeSize(0.0f, 4.0f);
-    
-    for (int i = 0; i < 50; i++) {
-        [box insertText:[NSString stringWithFormat:@"%d\n", i + 1]];
-    }
     
     self.myView = [[NSClipView alloc] init];
     self.myView.backgroundColor = [NSColor yellowColor];
     [self.myView setDrawsBackground:YES];
     [self.myView setDocumentView:box];
     [self addSubview:self.myView];
+}
+
+- (void) adjustLineNumbers:(NSUInteger)max {
+    NSTextView* box = [self.myView documentView];
+    
+    [box delete:self];
+    [box setSelectedRange:NSMakeRange(0, [[box textStorage] length])];
+    
+    for (int i = 0; i < max; i++) {
+        [box insertText:[NSString stringWithFormat:@"%d\n", i + 1]];
+    }
 }
 
 @end

@@ -35,6 +35,8 @@
     [[self.textView layoutManager] replaceTextStorage:file.clojureTextStorage];
     
     [self.textView setSelectedRange:NSMakeRange(0, 0)];
+    
+    [self adjustLineNumbers];
 }
 
 - (void) makeFirstResponder {
@@ -48,6 +50,15 @@
 - (IBAction) saveDocument:(id)sender {
     [self.textView stripWhitespace];
     [self.file save];
+}
+
+- (void)textDidChange:(NSNotification *)aNotification {
+    [self adjustLineNumbers];
+}
+
+- (void) adjustLineNumbers {
+    NSUInteger lineNums = [[[[self.textView textStorage] string] componentsSeparatedByString:@"\n"] count];
+    [self.scrollView adjustLineNumbers:lineNums];
 }
 
 @end
