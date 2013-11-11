@@ -18,7 +18,7 @@
 }
 
 - (NSString*) joinedWithoutTab {
-    return [NSString stringWithFormat:@"%@ %@", self.mods, self.key];
+    return [NSString stringWithFormat:@"%@%@", self.mods, self.key];
 }
 
 @end
@@ -72,7 +72,7 @@
     if (mods & NSAlternateKeyMask) [string appendString:@"⌥"];
     if (mods & NSShiftKeyMask) [string appendString:@"⇧"];
     if (mods & NSCommandKeyMask) [string appendString:@"⌘"];
-    if (mods & NSFunctionKeyMask) [string appendString:@"Fn"];
+    if (mods & NSFunctionKeyMask) [string appendString:@"[Fn]"];
     return string;
 }
 
