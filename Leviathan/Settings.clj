@@ -3,6 +3,7 @@
 
    [:cmd "i"] "connectToNRepl:"
    [[:ctrl "x"] [:ctrl "e"]] "evaluatePrecedingExpression:"
+   [[:ctrl "x"] [:ctrl "f"]] "evaluateFile:"
    ;; TODO: moar
 
 

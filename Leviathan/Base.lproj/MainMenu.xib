@@ -23,7 +23,7 @@
                                     <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="236">
+                            <menuItem isSeparatorItem="YES" id="ute-CB-cwM">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
                             <menuItem title="Theme" id="7nx-Gi-RNJ">
@@ -44,6 +44,21 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="editCurrentThemeFile:" target="-1" id="g2a-uj-CtS"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="236">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Reveal Settings Folder" toolTip="So you can move it to Dropbox" id="KAF-qV-EqM">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="revealSettingsFolder:" target="494" id="TxV-QK-IW8"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Use Different Settings Folder..." toolTip="So you use the one you moved to Dropbox on your other computer" id="0Lp-KZ-g8O">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="useDifferentSettingsFolder:" target="494" id="MfD-AW-Ha0"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">

@@ -69,6 +69,9 @@
 
 - (void) restoreProjects {
     NSData* data = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedProjects"];
+    if (!data)
+        return;
+    
     NSArray* projectURLs = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
     for (NSURL* url in projectURLs) {
@@ -135,6 +138,20 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         exit(1);
     });
+}
+
+- (IBAction) revealSettingsFolder:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[LVPreferences settingsDirectory]];
+}
+
+- (IBAction) useDifferentSettingsFolder:(id)sender {
+    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+    openPanel.canChooseDirectories = YES;
+    openPanel.canChooseFiles = NO;
+    openPanel.allowsMultipleSelection = NO;
+    if ([openPanel runModal] == NSFileHandlingPanelOKButton) {
+        [LVPreferences setSettingsDirectory:[openPanel URL]];
+    }
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {

@@ -56,6 +56,11 @@ NSString* LVDefaultThemeName = @"TomorrowNightEighties.clj";
     return dir;
 }
 
++ (void) setSettingsDirectory:(NSURL*)settingsDirectory {
+    [[NSUserDefaults standardUserDefaults] setObject:[self dataForURL:settingsDirectory]
+                                              forKey:@"settingsDirectoryData"];
+}
+
 + (NSData*) defaultSettingsDirectoryBookmarkData {
     NSURL* appSupportDirectory = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory
                                                                         inDomain:NSUserDomainMask
@@ -63,18 +68,22 @@ NSString* LVDefaultThemeName = @"TomorrowNightEighties.clj";
                                                                           create:YES
                                                                            error:NULL];
     
-    NSURL* dataDirURL = [[appSupportDirectory URLByAppendingPathComponent:@"Leviathan"] URLByAppendingPathComponent:@"Settings"];
+    NSURL* dataDirURL = [[appSupportDirectory URLByAppendingPathComponent:@"Leviathan"] URLByAppendingPathComponent:@"MovableLeviathanSettingsFolder"];
     
     [[NSFileManager defaultManager] createDirectoryAtURL:dataDirURL
                              withIntermediateDirectories:YES
                                               attributes:nil
                                                    error:NULL];
     
+    return [self dataForURL:dataDirURL];
+}
+
++ (NSData*) dataForURL:(NSURL*)url {
     NSError* __autoreleasing error;
-    return [[dataDirURL filePathURL] bookmarkDataWithOptions:0
-                              includingResourceValuesForKeys:@[]
-                                               relativeToURL:nil
-                                                       error:&error];
+    return [url bookmarkDataWithOptions:0
+         includingResourceValuesForKeys:@[]
+                          relativeToURL:nil
+                                  error:&error];
 }
 
 + (NSString*) theme {
