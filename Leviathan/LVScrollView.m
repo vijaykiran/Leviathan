@@ -34,7 +34,7 @@
 
 - (void) tile {
     [super tile];
-    return;
+//    return;
     
     if (self.maxDigits < 2)
         self.maxDigits = 2;
@@ -42,7 +42,7 @@
     NSFont* font = [LVPreferences userFont];
     CGFloat width = [font boundingRectForFont].size.width;
     CGFloat fullWidth = self.maxDigits * width;
-//    CGFloat fullWidth = 35.0;
+    fullWidth = 35.0;
     
     NSView* contentView = [self contentView];
     NSRect contentViewFrame = [contentView frame];
@@ -77,7 +77,7 @@
 
 - (void) awakeFromNib {
     [super awakeFromNib];
-    return;
+//    return;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];
@@ -128,7 +128,7 @@
     
     NSTextView* lineNumberTextView = [self.lineNumberClipView documentView];
     
-    NSDictionary* attrs = [LVThemeManager sharedThemeManager].currentTheme.symbol;
+    NSDictionary* attrs = [LVThemeManager sharedThemeManager].currentTheme.comment;
     NSUInteger stringLength = [[lineNumberTextView textStorage] length];
     NSUInteger oldCurrentLines = stringLength / 2;
     NSUInteger newCurrentLines = self.currentLineNums;

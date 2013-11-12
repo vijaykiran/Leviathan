@@ -74,6 +74,7 @@
 - (void) awakeFromNib {
     [super awakeFromNib];
     [self makeTitleBarPrettier];
+    [self.tabView undim];
 }
 
 - (void)windowDidLoad {
