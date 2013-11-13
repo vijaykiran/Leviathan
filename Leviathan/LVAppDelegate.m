@@ -131,9 +131,9 @@
 }
 
 - (void) quitTrial:(NSTimer*)timer {
-    NSRunAlertPanel(@"This build has expired", @"I've probably got a new build. If I haven't sent it to you, please email me.\n\nAfter you close this popup, you've got 3 minutes to save your work.", @"OK", @"", nil);
+    NSRunAlertPanel(@"Beta Build Has Expired", @"Check your email for a new one.\n\nLeviathan will hard-quit in 60 minutes.", @"OK", @"", nil);
     
-    double delayInSeconds = 60.0 * 3.0;
+    double delayInSeconds = 60.0 * 60.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         exit(1);

@@ -234,7 +234,7 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
             [self editFileInNewTab:file];
         }
         
-        NSInteger result = NSRunAlertPanel(@"Unsaved Files", @"You have some unsaved files. I opened them for you so you can take a look.", @"Close window", @"Take a look", nil);
+        NSInteger result = NSRunAlertPanel(@"Unsaved Changes", @"All these tabs have unsaved changes.", @"Close", @"Review Changes", nil);
         
         if (result != NSAlertDefaultReturn)
             return NO;
