@@ -19,14 +19,12 @@
 }
 
 - (LVFile*) openNewFile {
-    LVFile* file = [LVFile fileWithURL:nil shortName:@"Untitled" longName:@""];
+    LVFile* file = [LVFile untitledFileInProject:self];
     [self.files addObject:file];
     return file;
 }
 
 - (void) loadFiles {
-    NSUInteger baselen = [[self.projectURL path] length] + 1;
-    
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
     
     NSDirectoryEnumerator *dirEnumerator = [localFileManager enumeratorAtURL:self.projectURL
@@ -35,9 +33,6 @@
                                                                 errorHandler:nil];
     
     for (NSURL *theURL in dirEnumerator) {
-        NSString *shortName;
-        [theURL getResourceValue:&shortName forKey:NSURLNameKey error:NULL];
-        
         NSNumber *isDirectory;
         [theURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
         
@@ -55,10 +50,8 @@
             BOOL isClojure = [[theURL pathExtension] isEqualToString:@"clj"];
             
             if (isClojure) {
-                NSMutableString* longName = [[theURL path] mutableCopy];
-                [longName deleteCharactersInRange:NSMakeRange(0, baselen)];
-                
-                LVFile* file = [LVFile fileWithURL:theURL shortName:shortName longName:longName];
+                LVFile* file = [LVFile untitledFileInProject:self];
+                [file loadFromFileURL:theURL];
                 [self.files addObject:file];
             }
         }

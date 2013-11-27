@@ -760,6 +760,9 @@ BOOL LVListIndentsLikeFunction(LVColl* list) {
 }
 
 - (void) stripWhitespace {
+    if (!self.clojureTextStorage.doc)
+        return;
+    
     NSMutableArray* replacementRanges = [NSMutableArray array];
     NSMutableArray* replacementStrings = [NSMutableArray array];
     

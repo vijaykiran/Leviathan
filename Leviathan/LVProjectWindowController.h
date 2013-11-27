@@ -10,6 +10,7 @@
 
 #import "LVProject.h"
 
+extern NSString* LVTabTitleChangedNotification;
 
 @class LVProjectWindowController;
 @protocol LVProjectWindowController <NSObject>

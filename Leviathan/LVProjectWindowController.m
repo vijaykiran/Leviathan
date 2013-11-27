@@ -18,6 +18,8 @@
 #import "LVReplClient.h"
 #import "LVEmbeddedRepl.h"
 
+LV_DEFINE(LVTabTitleChangedNotification);
+
 @interface LVProjectWindow : NSWindow
 @end
 
@@ -56,7 +58,17 @@
     [c setWindowFrameAutosaveName:[url path]];
     [c showWindow:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:c selector:@selector(tabTitleChanged:) name:LVTabTitleChangedNotification object:nil];
+    
     return c;
+}
+
+- (void) tabTitleChanged:(NSNotification*)note {
+    [self.tabView updateTabTitles];
+}
+
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSString*) windowNibName {

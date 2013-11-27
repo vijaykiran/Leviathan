@@ -55,7 +55,7 @@
                                     <action selector="revealSettingsFolder:" target="494" id="TxV-QK-IW8"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Use Different Settings Folder..." toolTip="So you use the one you moved to Dropbox on your other computer" id="0Lp-KZ-g8O">
+                            <menuItem title="Use Different Settings Folder..." toolTip="So you can use the one you moved to Dropbox on your other computer" id="0Lp-KZ-g8O">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="useDifferentSettingsFolder:" target="494" id="MfD-AW-Ha0"/>

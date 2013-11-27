@@ -8,6 +8,8 @@
 
 #import "LVFile.h"
 
+#import "LVProject.h"
+
 @interface LVFile ()
 
 @property NSString* textOnDisk;
@@ -16,16 +18,39 @@
 
 @implementation LVFile
 
-+ (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName {
++ (LVFile*) untitledFileInProject:(LVProject*)project {
     LVFile* file = [[LVFile alloc] init];
     
-    file.fileURL = theURL;
-    file.longName = longName;
-    file.shortName = shortName;
+    file.project = project;
+    
+    file.fileURL = nil;
+    file.longName = @"";
+    file.shortName = @"Untitled";
     
     [file loadFromFile];
     
     return file;
+}
+
+- (void) useFileURL:(NSURL*)fileURL {
+    NSUInteger baselen = [[self.project.projectURL path] length] + 1;
+    
+    NSMutableString* longName = [[fileURL path] mutableCopy];
+    [longName deleteCharactersInRange:NSMakeRange(0, baselen)];
+    
+    self.fileURL = fileURL;
+    self.longName = longName;
+    self.shortName = [fileURL lastPathComponent];
+}
+
+- (void) loadFromFileURL:(NSURL*)fileURL {
+    [self useFileURL:fileURL];
+    [self loadFromFile];
+}
+
+- (void) saveToFileURL:(NSURL*)fileURL {
+    [self useFileURL:fileURL];
+    [self save];
 }
 
 - (void) loadFromFile {
@@ -46,25 +71,20 @@
 }
 
 - (void) save {
-    if (self.fileURL) {
-        NSString* tempString = [self.clojureTextStorage string];
-        
-        NSError* __autoreleasing error;
-        BOOL success =
-        [tempString writeToURL:self.fileURL
-                    atomically:YES
-                      encoding:NSUTF8StringEncoding
-                         error:&error];
-        
-        if (!success) {
-            [NSApp presentError:error];
-        }
-        
-        self.textOnDisk = tempString;
+    NSString* tempString = [self.clojureTextStorage string];
+    
+    NSError* __autoreleasing error;
+    BOOL success =
+    [tempString writeToURL:self.fileURL
+                atomically:YES
+                  encoding:NSUTF8StringEncoding
+                     error:&error];
+    
+    if (!success) {
+        [NSApp presentError:error];
     }
-    else {
-        // TODO: save it based on the namespace
-    }
+    
+    self.textOnDisk = tempString;
 }
 
 @end

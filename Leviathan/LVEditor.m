@@ -8,6 +8,10 @@
 
 #import "LVEditor.h"
 
+#import "LVProject.h"
+
+#import "LVProjectWindowController.h"
+
 @implementation LVEditor
 
 //- (void) dealloc {
@@ -48,6 +52,27 @@
 }
 
 - (IBAction) saveDocument:(id)sender {
+    if (!self.file.fileURL) {
+        // TODO: save it based on the namespace
+        
+        NSSavePanel* savePanel = [NSSavePanel savePanel];
+        [savePanel setCanCreateDirectories:YES];
+        [savePanel setDirectoryURL:self.file.project.projectURL];
+        
+        [savePanel beginSheetModalForWindow:[self.textView window] completionHandler:^(NSInteger result) {
+            if (result == NSFileHandlingPanelOKButton) {
+                [self.textView stripWhitespace];
+                
+                [self.file saveToFileURL: savePanel.URL];
+                self.title = self.file.shortName;
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:LVTabTitleChangedNotification object:nil];
+            }
+        }];
+        
+        return;
+    }
+    
     [self.textView stripWhitespace];
     [self.file save];
 }

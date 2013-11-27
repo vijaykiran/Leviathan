@@ -10,17 +10,24 @@
 
 #import "LVClojureTextStorage.h"
 
+@class LVProject;
+
 @interface LVFile : NSObject
 
-+ (LVFile*) fileWithURL:(NSURL*)theURL shortName:(NSString*)shortName longName:(NSString*)longName;
++ (LVFile*) untitledFileInProject:(LVProject*)project;
+
+- (void) loadFromFileURL:(NSURL*)fileURL;
+- (void) saveToFileURL:(NSURL*)fileURL;
+
+- (void) save;
+- (BOOL) hasChanges;
 
 @property NSURL* fileURL;
 @property NSString* longName;
 @property NSString* shortName;
 
-@property LVClojureTextStorage* clojureTextStorage;
+@property (weak) LVProject* project;
 
-- (void) save;
-- (BOOL) hasChanges;
+@property LVClojureTextStorage* clojureTextStorage;
 
 @end
