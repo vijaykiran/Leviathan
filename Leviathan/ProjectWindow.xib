@@ -7,7 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LVProjectWindowController">
             <connections>
-                <outlet property="replScrollView" destination="7Rw-9w-8Cv" id="7Tn-6f-tUD"/>
                 <outlet property="replTextView" destination="RGo-Jo-kUx" id="ltC-Io-hf0"/>
                 <outlet property="tabView" destination="hbW-xw-717" id="vSW-9o-DCj"/>
                 <outlet property="window" destination="1" id="3"/>
@@ -63,5 +62,13 @@
                 <autoresizingMask key="autoresizingMask"/>
             </scroller>
         </scrollView>
+        <drawer preferredEdge="minY" trailingOffset="15" id="CXG-E0-cv3">
+            <size key="contentSize" width="100" height="100"/>
+            <size key="maxContentSize" width="10000" height="10000"/>
+            <connections>
+                <outlet property="contentView" destination="7Rw-9w-8Cv" id="SI0-Np-BCm"/>
+                <outlet property="parentWindow" destination="1" id="Cjb-bU-R2s"/>
+            </connections>
+        </drawer>
     </objects>
 </document>

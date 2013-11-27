@@ -39,7 +39,6 @@ LV_DEFINE(LVTabTitleChangedNotification);
 @property (weak) id<LVProjectWindowController> delegate;
 @property (weak) IBOutlet LVTabView* tabView;
 
-@property IBOutlet NSScrollView* replScrollView;
 @property IBOutlet NSTextView* replTextView;
 
 @property LVReplClient* repl;
@@ -138,13 +137,9 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
 }
 
 - (void) addReplView {
-    NSRect tabViewFrame = [self.tabView frame];
-    NSRect replViewFrame;
-    NSDivideRect(tabViewFrame, &replViewFrame, &tabViewFrame, 100.0, NSMinYEdge);
+    NSDrawer* d = [[self.window drawers] firstObject];
+    [d open];
     
-    [self.tabView setFrame:tabViewFrame];
-    [self.replScrollView setFrame:replViewFrame];
-    [[self.tabView superview] addSubview:self.replScrollView];
     [self insertReplText:@"Connecting... "];
 }
 
