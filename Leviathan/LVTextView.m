@@ -269,6 +269,57 @@ BOOL LVIsMultiNewlineToken(LVToken* token) {
     }
 }
 
+- (IBAction) ejectRightMostExpression:(id)sender {
+    // TODO
+    NSBeep();
+    return;
+    
+    NSRange selection = self.selectedRange;
+    
+    NSUInteger childIndex;
+    LVColl* parent = LVFindElementAtPosition(self.clojureTextStorage.doc, selection.location, &childIndex);
+    
+    if (parent->collType & LVCollType_TopLevel)
+        return;
+    
+    // (foo bar baz)
+    // (foo bar) baz
+    
+    // (foo)
+    // ()foo
+    
+    [self.clojureTextStorage withDisabledParsing:^{
+        LVElement* semanticChildren[parent->childrenLen];
+        NSUInteger semanticChildrenCount;
+        LVGetSemanticDirectChildren(parent, 0, semanticChildren, &semanticChildrenCount);
+        
+        if (semanticChildrenCount == 0)
+            return;
+        
+        LVAtom* lastDelim = (LVAtom*)parent->children[parent->childrenLen - 1];
+        
+        NSRange rangeToDelete = NSMakeRange(lastDelim->token->pos, lastDelim->token->len);
+        NSString* stringToInsert = (__bridge_transfer NSString*)LVStringForToken(lastDelim->token);
+        
+        [self shouldChangeTextInRange:rangeToDelete replacementString:@""];
+        [self replaceCharactersInRange:rangeToDelete withString:@""];
+        [self didChangeText];
+        
+        LVElement* elementToInsertAfter;
+        if (semanticChildrenCount > 1)
+            elementToInsertAfter = semanticChildren[semanticChildrenCount - 2];
+        else
+            elementToInsertAfter = parent->children[0];
+        
+        NSUInteger posToInsert = LVGetAbsolutePosition(elementToInsertAfter) + LVElementLength(elementToInsertAfter);
+        NSRange rangeToInsert = NSMakeRange(posToInsert, 0);
+        
+        [self shouldChangeTextInRange:rangeToInsert replacementString:stringToInsert];
+        [self replaceCharactersInRange:rangeToInsert withString:stringToInsert];
+        [self didChangeText];
+    }];
+}
+
 - (IBAction) deleteNextExpression:(id)sender {
     LVElement* next = LVFindNextSemanticElementStartingAtPosition(self.clojureTextStorage.doc, self.selectedRange.location);
     if (next) {
