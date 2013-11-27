@@ -13,6 +13,9 @@
 
 #import "LVShortcutHandler.h"
 
+#define EXPIRATION_DATE (60.0 * 60.0 * 24.0 * 7.0)
+//#define EXPIRATION_DATE (3.0)
+
 @interface LVAppDelegate ()
 
 @property BOOL quitting;
@@ -124,16 +127,16 @@
     NSString* s = [NSString stringWithFormat:@"%s, %s", __DATE__, __TIME__];
     NSDate* compileDate = [NSDate dateWithNaturalLanguageString:s];
     
-    NSDate* fireDate = [compileDate dateByAddingTimeInterval:60.0 * 60.0 * 24.0 * 7.0];
+    NSDate* fireDate = [compileDate dateByAddingTimeInterval: EXPIRATION_DATE];
     
     NSTimer* expirationTimer = [[NSTimer alloc] initWithFireDate:fireDate interval:0 target:self selector:@selector(quitTrial:) userInfo:nil repeats:NO];
     [[NSRunLoop mainRunLoop] addTimer:expirationTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void) quitTrial:(NSTimer*)timer {
-    NSRunAlertPanel(@"Beta Build Has Expired", @"Check your email for a new one.\n\nLeviathan will hard-quit in 60 minutes.", @"OK", @"", nil);
+    NSRunAlertPanel(@"This beta build has expired", @"Save your stuff and check your email for a new build.\n\nLeviathan will hard-quit in 30 minutes.", @"OK", @"", nil);
     
-    double delayInSeconds = 60.0 * 60.0;
+    double delayInSeconds = 60.0 * 30.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         exit(1);
