@@ -96,6 +96,8 @@ LV_DEFINE(LVTabTitleChangedNotification);
     
     [self.projectTreeDrawer open];
     [self.replDrawer close];
+    
+    [self.tabView.currentTab.currentEditor makeFirstResponder];
 }
 
 - (void)windowDidLoad {
