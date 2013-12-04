@@ -7,7 +7,9 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LVProjectWindowController">
             <connections>
+                <outlet property="projectTreeDrawer" destination="brV-ng-Buf" id="Yjp-zl-AH9"/>
                 <outlet property="projectTreeView" destination="cRl-Hl-vMd" id="djO-EE-vog"/>
+                <outlet property="replDrawer" destination="CXG-E0-cv3" id="PiE-iW-t5R"/>
                 <outlet property="replTextView" destination="RGo-Jo-kUx" id="ltC-Io-hf0"/>
                 <outlet property="tabView" destination="hbW-xw-717" id="vSW-9o-DCj"/>
                 <outlet property="window" destination="1" id="3"/>
@@ -72,7 +74,7 @@
             </connections>
         </drawer>
         <drawer preferredEdge="minX" trailingOffset="15" id="brV-ng-Buf">
-            <size key="contentSize" width="100" height="100"/>
+            <size key="contentSize" width="200" height="100"/>
             <size key="maxContentSize" width="10000" height="10000"/>
             <connections>
                 <outlet property="contentView" destination="cEg-sz-Psb" id="eIk-oH-bMW"/>

@@ -41,6 +41,9 @@ LV_DEFINE(LVTabTitleChangedNotification);
 
 @property (weak) IBOutlet NSOutlineView* projectTreeView;
 
+@property IBOutlet NSDrawer* replDrawer;
+@property IBOutlet NSDrawer* projectTreeDrawer;
+
 @property IBOutlet NSTextView* replTextView;
 
 @property LVReplClient* repl;
@@ -91,8 +94,8 @@ LV_DEFINE(LVTabTitleChangedNotification);
     
     [self.projectTreeView setDoubleAction:@selector(selectFileFromProjectNavView:)];
     
-    // TODO: this is a temporary hack
-    [[[self window] drawers] makeObjectsPerformSelector:@selector(open)];
+    [self.projectTreeDrawer open];
+    [self.replDrawer close];
 }
 
 - (void)windowDidLoad {
