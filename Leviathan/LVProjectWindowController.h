@@ -21,7 +21,7 @@ extern NSString* LVTabTitleChangedNotification;
 
 
 
-@interface LVProjectWindowController : NSWindowController <NSWindowDelegate>
+@interface LVProjectWindowController : NSWindowController <NSWindowDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate>
 
 + (LVProjectWindowController*) openWith:(NSURL*)url delegate:(id<LVProjectWindowController>)delegate;
 

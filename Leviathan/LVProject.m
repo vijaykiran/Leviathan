@@ -56,6 +56,48 @@
             }
         }
     }
+    
+    [self buildFileTree];
 }
 
+- (void) buildFileTree {
+    self.fileTree = [[LVProjectTreeItem alloc] init];
+    self.fileTree.children = [NSMutableArray array];
+    
+    for (LVFile* file in self.files) {
+        NSMutableArray* sections = [[[file longName] pathComponents] mutableCopy];
+        NSString* name = [sections lastObject];
+        [sections removeLastObject];
+        
+        LVProjectTreeItem* subtree = self.fileTree;
+        
+        for (NSString* section in sections) {
+            NSUInteger found = [subtree.children indexOfObjectPassingTest:^BOOL(LVProjectTreeItem* maybe, NSUInteger idx, BOOL *stop) {
+                return [maybe.name isEqual: section];
+            }];
+            
+            LVProjectTreeItem* nextSubtree;
+            if (found == NSNotFound) {
+                nextSubtree = [[LVProjectTreeItem alloc] init];
+                nextSubtree.children = [NSMutableArray array];
+                nextSubtree.name = section;
+                [subtree.children addObject: nextSubtree];
+            }
+            else {
+                nextSubtree = [subtree.children objectAtIndex:found];
+            }
+            
+            subtree = nextSubtree;
+        }
+        
+        LVProjectTreeItem* tail = [[LVProjectTreeItem alloc] init];
+        tail.name = name;
+        tail.file = file;
+        [subtree.children addObject: tail];
+    }
+}
+
+@end
+
+@implementation LVProjectTreeItem
 @end

@@ -10,10 +10,20 @@
 
 #import "LVFile.h"
 
+
+@interface LVProjectTreeItem : NSObject
+@property NSString* name;
+@property NSMutableArray* children;
+@property LVFile* file;
+@end
+
+
 @interface LVProject : NSObject
 
 @property NSURL *projectURL;
 @property NSMutableArray* files;
+
+@property LVProjectTreeItem* fileTree;
 
 + (LVProject*) openProjectAtURL:(NSURL*)url;
 

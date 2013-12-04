@@ -39,6 +39,8 @@ LV_DEFINE(LVTabTitleChangedNotification);
 @property (weak) id<LVProjectWindowController> delegate;
 @property (weak) IBOutlet LVTabView* tabView;
 
+@property (weak) IBOutlet NSOutlineView* projectTreeView;
+
 @property IBOutlet NSTextView* replTextView;
 
 @property LVReplClient* repl;
@@ -86,6 +88,11 @@ LV_DEFINE(LVTabTitleChangedNotification);
     [super awakeFromNib];
     [self makeTitleBarPrettier];
     [self.tabView dim];
+    
+    [self.projectTreeView setDoubleAction:@selector(selectFileFromProjectNavView:)];
+    
+    // TODO: this is a temporary hack
+    [[[self window] drawers] makeObjectsPerformSelector:@selector(open)];
 }
 
 - (void)windowDidLoad {
@@ -410,6 +417,7 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
         for (LVEditor* editor in [tab editors]) {
             if (editor.file == file) {
                 [self.tabView selectTab:tab];
+                // TODO: what happens when it switches to a new tab but its in another split in that tab? also, that might need to refresh tab titles.
                 [editor makeFirstResponder];
                 
                 return YES;
@@ -439,6 +447,72 @@ NSString* LVGetQuickStringFromUser(NSString* prompt) {
             return;
         }
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// project tree
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(LVProjectTreeItem*)item {
+    if (!item) item = self.project.fileTree;
+    return [item.children count];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(LVProjectTreeItem*)item {
+    if (!item) item = self.project.fileTree;
+    return item.children != nil;
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(LVProjectTreeItem*)item {
+    if (!item) item = self.project.fileTree;
+    return [item.children objectAtIndex:index];
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(LVProjectTreeItem*)item {
+    if (!item) item = self.project.fileTree;
+    return item.name;
+}
+
+- (void) selectFileFromProjectNavView:(id)sender {
+    NSInteger row = [self.projectTreeView selectedRow];
+    if (row == -1)
+        return;
+    
+    LVProjectTreeItem* item = [self.projectTreeView itemAtRow:row];
+    
+    if (item.children)
+        return;
+    
+    [self editFileInCurrentEditor:item.file];
+    [self.tabView.currentTab.currentEditor makeFirstResponder];
+}
+
+@end
+
+
+
+@interface LVProjectTreeOutlineView : NSOutlineView
+@end
+
+@implementation LVProjectTreeOutlineView
+
+- (void) keyDown:(NSEvent*)theEvent {
+    unichar key = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];
+    if (key == NSCarriageReturnCharacter) {
+        [NSApp sendAction:@selector(selectFileFromProjectNavView:) to:nil from:self];
+        return;
+    }
+    
+    [super keyDown:theEvent];
 }
 
 @end

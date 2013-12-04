@@ -10,7 +10,7 @@
 		9408777518308BB0006D0C62 /* LVScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408777418308BB0006D0C62 /* LVScrollView.m */; };
 		940877781831552B006D0C62 /* LVThemeMenuDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 940877771831552B006D0C62 /* LVThemeMenuDelegate.m */; };
 		940F83811828C629005C77B1 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 940F83801828C629005C77B1 /* Themes */; };
-		94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94370E721820DD2300EBB871 /* libBeowulf.a */; };
+		94357FF1184EECA1001E781E /* libBeowulf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94370E721820DD2300EBB871 /* libBeowulf.a */; };
 		94370E761820DD7800EBB871 /* prelude.bwlf in Resources */ = {isa = PBXBuildFile; fileRef = 94370E751820DD7800EBB871 /* prelude.bwlf */; };
 		94391D5718301E1D006895EA /* LVEmbeddedRepl.m in Sources */ = {isa = PBXBuildFile; fileRef = 94391D5618301E1D006895EA /* LVEmbeddedRepl.m */; };
 		944492DC182F3097008EA078 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492DB182F3097008EA078 /* GCDAsyncSocket.m */; };
@@ -194,7 +194,7 @@
 				94E7DF44182ACE8000A97D82 /* Carbon.framework in Frameworks */,
 				9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */,
 				9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */,
-				94370E731820DD2300EBB871 /* libBeowulf.a in Frameworks */,
+				94357FF1184EECA1001E781E /* libBeowulf.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -788,6 +788,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/sdegutis/Dropbox/projects/leviathan/Leviathan,
+					/Users/sdegutis/Dropbox/Steven/projects/leviathan/Leviathan,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -805,6 +806,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/sdegutis/Dropbox/projects/leviathan/Leviathan,
+					/Users/sdegutis/Dropbox/Steven/projects/leviathan/Leviathan,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
