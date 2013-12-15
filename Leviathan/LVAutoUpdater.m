@@ -9,7 +9,7 @@
 #import "LVAutoUpdater.h"
 
 static NSString* LVUpdateURL = @"https://raw.github.com/sdegutis/Leviathan/master/Updates/latest-version.txt";
-static NSString* LVUpdateChangesURL = @"https://github.com/sdegutis/Leviathan/blob/master/Updates/changes.txt";
+static NSString* LVUpdateChangesURL = @"https://raw.github.com/sdegutis/Leviathan/master/Updates/changes.txt";
 
 @implementation LVAutoUpdater
 
