@@ -19,6 +19,7 @@
 - Although the settings allow for vim-style modality, there's no especially-vim-like commands yet
 - It doesn't stop you from deleting or commenting out parentheses/brackets/etc
 - Once you close a whole project-window, all the undos in that project's files are reset
+- Instead of MovableLeviathanSettingsFolder, it should just be symlinkable, so that you can symlink it right into Dropbox if you want to (might be better as `~/.leviathan` in that case)
 
 #### Known bugs
 
