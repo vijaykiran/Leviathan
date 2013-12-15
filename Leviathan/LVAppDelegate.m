@@ -13,9 +13,6 @@
 
 #import "LVShortcutHandler.h"
 
-#define EXPIRATION_DATE (60.0 * 60.0 * 24.0 * 7.0)
-//#define EXPIRATION_DATE (3.0)
-
 @interface LVAppDelegate ()
 
 @property BOOL quitting;
@@ -170,6 +167,14 @@
 
 - (void)changeFont:(id)sender {
     [LVPreferences setUserFont: [sender convertFont:[LVPreferences userFont]]];
+}
+
+- (void) relaunch {
+	NSTask *task = [[NSTask alloc] init];
+	[task setLaunchPath:@"/bin/sh"];
+	[task setArguments: @[@"-c", @"sleep 0.5; open -a Leviathan"]];
+	[task launch];
+    exit(0);
 }
 
 @end
