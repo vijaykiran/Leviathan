@@ -19,7 +19,6 @@ extern NSString* LVDefaultThemeName;
 + (void) setUserFont:(NSFont*)font;
 
 + (NSURL*) settingsDirectory;
-+ (void) setSettingsDirectory:(NSURL*)settingsDirectory;
 
 + (NSString*) theme;
 + (void) setTheme:(NSString*)theme;

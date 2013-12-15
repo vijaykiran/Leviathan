@@ -126,16 +126,6 @@
     [[NSWorkspace sharedWorkspace] openURL:[LVPreferences settingsDirectory]];
 }
 
-- (IBAction) useDifferentSettingsFolder:(id)sender {
-    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-    openPanel.canChooseDirectories = YES;
-    openPanel.canChooseFiles = NO;
-    openPanel.allowsMultipleSelection = NO;
-    if ([openPanel runModal] == NSFileHandlingPanelOKButton) {
-        [LVPreferences setSettingsDirectory:[openPanel URL]];
-    }
-}
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     self.shortcutHandler = [[LVShortcutHandler alloc] init];
     [self.shortcutHandler setup];

@@ -34,58 +34,12 @@ NSString* LVDefaultThemeName = @"TomorrowNightEighties.clj";
 
 
 + (NSURL*) settingsDirectory {
-    NSData* dirData = [[NSUserDefaults standardUserDefaults] dataForKey:@"settingsDirectoryData"];
-    
-    if (!dirData) {
-        [[NSUserDefaults standardUserDefaults] setObject:[self defaultSettingsDirectoryBookmarkData]
-                                                  forKey:@"settingsDirectoryData"];
-        return [self settingsDirectory];
-    }
-    
-    BOOL stale;
-    NSError* __autoreleasing error;
-    NSURL* dir = [NSURL URLByResolvingBookmarkData:dirData
-                                           options:0
-                                     relativeToURL:nil
-                               bookmarkDataIsStale:&stale
-                                             error:&error];
-    
-    if ([[dir pathComponents] containsObject: @".Trash"]) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"settingsDirectoryData"];
-        return [self settingsDirectory];
-    }
-    
-    return dir;
-}
-
-+ (void) setSettingsDirectory:(NSURL*)settingsDirectory {
-    [[NSUserDefaults standardUserDefaults] setObject:[self dataForURL:settingsDirectory]
-                                              forKey:@"settingsDirectoryData"];
-}
-
-+ (NSData*) defaultSettingsDirectoryBookmarkData {
-    NSURL* appSupportDirectory = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory
-                                                                        inDomain:NSUserDomainMask
-                                                               appropriateForURL:nil
-                                                                          create:YES
-                                                                           error:NULL];
-    
-    NSURL* dataDirURL = [[appSupportDirectory URLByAppendingPathComponent:@"Leviathan"] URLByAppendingPathComponent:@"MovableLeviathanSettingsFolder"];
-    
-    [[NSFileManager defaultManager] createDirectoryAtURL:dataDirURL
-                             withIntermediateDirectories:YES
-                                              attributes:nil
-                                                   error:NULL];
-    
-    return [self dataForURL:dataDirURL];
-}
-
-+ (NSData*) dataForURL:(NSURL*)url {
-    NSError* __autoreleasing error;
-    return [url bookmarkDataWithOptions:0
-         includingResourceValuesForKeys:@[]
-                          relativeToURL:nil
-                                  error:&error];
+    NSURL* url = [NSURL fileURLWithPath:[@"~/.leviathan" stringByStandardizingPath] isDirectory:YES];
+    [[NSFileManager defaultManager] createDirectoryAtPath:[url path]
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:NULL];
+    return url;
 }
 
 + (NSString*) theme {
