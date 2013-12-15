@@ -53,6 +53,13 @@ static NSString* LVNewAppURL = @"https://raw.github.com/sdegutis/Leviathan/maste
     [data writeToFile:tempFile atomically:YES];
 }
 
+- (void) extractNewVersionFrom:(NSString*)tempFile {
+	NSTask *task = [[NSTask alloc] init];
+	[task setLaunchPath:@"/bin/sh"];
+	[task setArguments: @[@"-c", @"TBD"]];
+	[task launch];
+}
+
 - (void) relaunch {
 	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath:@"/bin/sh"];
