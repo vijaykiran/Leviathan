@@ -40,6 +40,7 @@ Leviathan was originally intended to be a commercial IDE. But I've been brought 
 - Line numbers are kinda buggy in general (disabled for now)
 - If you have syntax errors in your settings/theme files, Leviathan will probably just crash
 - Project file tree should be part of the window, not just a drawer (disabled for now)
+- Typing and scrolling can make the app take up to 70% CPU
 
 #### Internal things left to do
 
