@@ -16,7 +16,6 @@
 		944492E4182F39E4008EA078 /* LVReplClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492E3182F39E4008EA078 /* LVReplClient.m */; };
 		944492E8182F7736008EA078 /* LVSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492E7182F7736008EA078 /* LVSettings.m */; };
 		945544FE18187BFF00D69E63 /* element.m in Sources */ = {isa = PBXBuildFile; fileRef = 945544FD18187BFF00D69E63 /* element.m */; };
-		94855A081810D92500220186 /* SDExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A071810D92500220186 /* SDExpectation.m */; };
 		94855A1718110E2200220186 /* LVPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 94855A1618110E2200220186 /* LVPreferences.m */; };
 		9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D7D218104D58006ECA5E /* Cocoa.framework */; };
 		9490D7DD18104D58006ECA5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9490D7DB18104D58006ECA5E /* InfoPlist.strings */; };
@@ -25,10 +24,6 @@
 		9490D7E618104D58006ECA5E /* LVAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D7E518104D58006ECA5E /* LVAppDelegate.m */; };
 		9490D7E918104D58006ECA5E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D7E718104D58006ECA5E /* MainMenu.xib */; };
 		9490D7EB18104D58006ECA5E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9490D7EA18104D58006ECA5E /* Images.xcassets */; };
-		9490D7F218104D59006ECA5E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D7F118104D59006ECA5E /* XCTest.framework */; };
-		9490D7F318104D59006ECA5E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9490D7D218104D58006ECA5E /* Cocoa.framework */; };
-		9490D7FB18104D59006ECA5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9490D7F918104D59006ECA5E /* InfoPlist.strings */; };
-		9490D7FD18104D59006ECA5E /* LeviathanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D7FC18104D59006ECA5E /* LeviathanTests.m */; };
 		9490D80918104DE1006ECA5E /* LVProjectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D80718104DE1006ECA5E /* LVProjectWindowController.m */; };
 		9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9490D80818104DE1006ECA5E /* ProjectWindow.xib */; };
 		9490D80D18104E81006ECA5E /* LVProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D80C18104E81006ECA5E /* LVProject.m */; };
@@ -67,16 +62,6 @@
 		94F05D85181DAAF4008E9353 /* LVClojureTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F05D84181DAAF4008E9353 /* LVClojureTextStorage.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		9490D7F418104D59006ECA5E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9490D7C718104D58006ECA5E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9490D7CE18104D58006ECA5E;
-			remoteInfo = Leviathan;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		9408777318308BB0006D0C62 /* LVScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVScrollView.h; sourceTree = "<group>"; };
 		9408777418308BB0006D0C62 /* LVScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVScrollView.m; sourceTree = "<group>"; };
@@ -93,8 +78,6 @@
 		944492E6182F7736008EA078 /* LVSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVSettings.h; sourceTree = "<group>"; };
 		944492E7182F7736008EA078 /* LVSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVSettings.m; sourceTree = "<group>"; };
 		945544FD18187BFF00D69E63 /* element.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = element.m; sourceTree = "<group>"; };
-		94855A061810D92500220186 /* SDExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDExpectation.h; sourceTree = "<group>"; };
-		94855A071810D92500220186 /* SDExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDExpectation.m; sourceTree = "<group>"; };
 		94855A1518110E2200220186 /* LVPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVPreferences.h; sourceTree = "<group>"; };
 		94855A1618110E2200220186 /* LVPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVPreferences.m; sourceTree = "<group>"; };
 		9490D7CF18104D58006ECA5E /* Leviathan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leviathan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,11 +94,7 @@
 		9490D7E518104D58006ECA5E /* LVAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LVAppDelegate.m; sourceTree = "<group>"; };
 		9490D7E818104D58006ECA5E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		9490D7EA18104D58006ECA5E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		9490D7F018104D59006ECA5E /* LeviathanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeviathanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9490D7F118104D59006ECA5E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		9490D7F818104D59006ECA5E /* LeviathanTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LeviathanTests-Info.plist"; sourceTree = "<group>"; };
-		9490D7FA18104D59006ECA5E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		9490D7FC18104D59006ECA5E /* LeviathanTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LeviathanTests.m; sourceTree = "<group>"; };
 		9490D80618104DE1006ECA5E /* LVProjectWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVProjectWindowController.h; sourceTree = "<group>"; };
 		9490D80718104DE1006ECA5E /* LVProjectWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVProjectWindowController.m; sourceTree = "<group>"; };
 		9490D80818104DE1006ECA5E /* ProjectWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProjectWindow.xib; sourceTree = "<group>"; };
@@ -195,15 +174,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9490D7ED18104D59006ECA5E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9490D7F318104D59006ECA5E /* Cocoa.framework in Frameworks */,
-				9490D7F218104D59006ECA5E /* XCTest.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -274,7 +244,6 @@
 			children = (
 				94370E741820DD2700EBB871 /* beowulf */,
 				9490D7D818104D58006ECA5E /* Leviathan */,
-				9490D7F618104D59006ECA5E /* LeviathanTests */,
 				9490D7D118104D58006ECA5E /* Frameworks */,
 				9490D7D018104D58006ECA5E /* Products */,
 			);
@@ -284,7 +253,6 @@
 			isa = PBXGroup;
 			children = (
 				9490D7CF18104D58006ECA5E /* Leviathan.app */,
-				9490D7F018104D59006ECA5E /* LeviathanTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -345,26 +313,6 @@
 				9490D7DE18104D58006ECA5E /* main.m */,
 				9490D7E018104D58006ECA5E /* Leviathan-Prefix.pch */,
 				9490D7E118104D58006ECA5E /* Credits.rtf */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		9490D7F618104D59006ECA5E /* LeviathanTests */ = {
-			isa = PBXGroup;
-			children = (
-				94855A061810D92500220186 /* SDExpectation.h */,
-				94855A071810D92500220186 /* SDExpectation.m */,
-				9490D7FC18104D59006ECA5E /* LeviathanTests.m */,
-				9490D7F718104D59006ECA5E /* Supporting Files */,
-			);
-			path = LeviathanTests;
-			sourceTree = "<group>";
-		};
-		9490D7F718104D59006ECA5E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				9490D7F818104D59006ECA5E /* LeviathanTests-Info.plist */,
-				9490D7F918104D59006ECA5E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -506,24 +454,6 @@
 			productReference = 9490D7CF18104D58006ECA5E /* Leviathan.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9490D7EF18104D59006ECA5E /* LeviathanTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9490D80318104D59006ECA5E /* Build configuration list for PBXNativeTarget "LeviathanTests" */;
-			buildPhases = (
-				9490D7EC18104D59006ECA5E /* Sources */,
-				9490D7ED18104D59006ECA5E /* Frameworks */,
-				9490D7EE18104D59006ECA5E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9490D7F518104D59006ECA5E /* PBXTargetDependency */,
-			);
-			name = LeviathanTests;
-			productName = LeviathanTests;
-			productReference = 9490D7F018104D59006ECA5E /* LeviathanTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -533,11 +463,6 @@
 				CLASSPREFIX = LV;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Steven Degutis";
-				TargetAttributes = {
-					9490D7EF18104D59006ECA5E = {
-						TestTargetID = 9490D7CE18104D58006ECA5E;
-					};
-				};
 			};
 			buildConfigurationList = 9490D7CA18104D58006ECA5E /* Build configuration list for PBXProject "Leviathan" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -553,7 +478,6 @@
 			projectRoot = "";
 			targets = (
 				9490D7CE18104D58006ECA5E /* Leviathan */,
-				9490D7EF18104D59006ECA5E /* LeviathanTests */,
 			);
 		};
 /* End PBXProject section */
@@ -574,14 +498,6 @@
 				9490D81E181054EE006ECA5E /* Tab.xib in Resources */,
 				9490D80A18104DE1006ECA5E /* ProjectWindow.xib in Resources */,
 				9490D7E918104D58006ECA5E /* MainMenu.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9490D7EE18104D59006ECA5E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9490D7FB18104D59006ECA5E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -650,24 +566,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9490D7EC18104D59006ECA5E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9490D7FD18104D59006ECA5E /* LeviathanTests.m in Sources */,
-				94855A081810D92500220186 /* SDExpectation.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		9490D7F518104D59006ECA5E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9490D7CE18104D58006ECA5E /* Leviathan */;
-			targetProxy = 9490D7F418104D59006ECA5E /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9490D7DB18104D58006ECA5E /* InfoPlist.strings */ = {
@@ -692,14 +591,6 @@
 				9490D7E818104D58006ECA5E /* Base */,
 			);
 			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		9490D7F918104D59006ECA5E /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9490D7FA18104D59006ECA5E /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -807,48 +698,6 @@
 			};
 			name = Release;
 		};
-		9490D80418104D59006ECA5E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Leviathan.app/Contents/MacOS/Leviathan";
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Leviathan/Leviathan-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "LeviathanTests/LeviathanTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		9490D80518104D59006ECA5E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Leviathan.app/Contents/MacOS/Leviathan";
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Leviathan/Leviathan-Prefix.pch";
-				INFOPLIST_FILE = "LeviathanTests/LeviathanTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -866,15 +715,6 @@
 			buildConfigurations = (
 				9490D80118104D59006ECA5E /* Debug */,
 				9490D80218104D59006ECA5E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9490D80318104D59006ECA5E /* Build configuration list for PBXNativeTarget "LeviathanTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9490D80418104D59006ECA5E /* Debug */,
-				9490D80518104D59006ECA5E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
