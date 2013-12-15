@@ -22,8 +22,20 @@ static NSString* LVUpdateURL = @"https://raw.github.com/sdegutis/Leviathan/maste
 }
 
 - (void) checkForUpdate {
-    NSString* latestVersion = [NSString stringWithContentsOfURL:[NSURL URLWithString:LVUpdateURL] encoding:NSUTF8StringEncoding error:NULL];
-    NSLog(@"latest version = %@", latestVersion);
+    NSDictionary* localVersionTuple = [[NSBundle mainBundle] infoDictionary];
+    NSString* localRobot = localVersionTuple[(id)kCFBundleVersionKey];
+    NSLog(@"localRobot = %@", localRobot);
+    
+    
+    
+    NSString* remoteVersionTuple = [NSString stringWithContentsOfURL:[NSURL URLWithString:LVUpdateURL] encoding:NSUTF8StringEncoding error:NULL];
+    NSArray* remoteVersions = [remoteVersionTuple componentsSeparatedByString:@"\n"];
+    NSString* remoteHuman = remoteVersions[0];
+    NSString* remoteRobot = remoteVersions[1];
+    
+    
+    NSLog(@"latest version = %@", remoteHuman);
+    NSLog(@"latest version = %@", remoteRobot);
 }
 
 @end
