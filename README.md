@@ -28,6 +28,11 @@
 #### Internal things left to do
 
 - Change the way we modify text in NSTextView to stop relying on Cocoa at all (hard!)
+- Make it easier to manipulate the internal AST
+- Make it easier to generate a new string based on the internal AST
+- Start modifying the NSTextStorage by generating new strings based on the internal AST and replacing the contents wholesale (with proper undo support)
+- Undo support should handle not only text but also selection range(s)
+- Support multiple cursors (maybe)
 
 #### License
 
