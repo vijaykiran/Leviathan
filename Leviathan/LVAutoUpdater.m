@@ -10,7 +10,7 @@
 
 static NSString* LVUpdateURL = @"https://raw.github.com/sdegutis/Leviathan/master/Updates/latest-version.txt";
 static NSString* LVUpdateChangesURL = @"https://raw.github.com/sdegutis/Leviathan/master/Updates/changes.txt";
-static NSString* LVNewAppURL = @"https://raw.github.com/sdegutis/Leviathan/master/Builds/Leviathan-LATEST.app.tar.gz";
+static NSString* LVNewAppURL = @"https://github.com/sdegutis/Leviathan/raw/master/Builds/Leviathan-LATEST.app.tar.gz";
 
 @implementation LVAutoUpdater
 
@@ -24,6 +24,8 @@ static NSString* LVNewAppURL = @"https://raw.github.com/sdegutis/Leviathan/maste
 }
 
 - (void) checkForUpdate {
+    return;
+    
     NSDictionary* localVersionTuple = [[NSBundle mainBundle] infoDictionary];
     NSString* localRobot = localVersionTuple[(id)kCFBundleVersionKey];
     
@@ -35,10 +37,10 @@ static NSString* LVNewAppURL = @"https://raw.github.com/sdegutis/Leviathan/maste
     NSString* remoteRobot = remoteVersions[1];
     NSInteger remoteRobotInt = [remoteRobot integerValue];
     
-//    if (remoteRobotInt > localRobotInt) {
+    if (remoteRobotInt > localRobotInt) {
         NSString* changes = [NSString stringWithContentsOfURL:[NSURL URLWithString:LVUpdateChangesURL] encoding:NSUTF8StringEncoding error:NULL];
         [self.delegate updateIsAvailable:remoteHuman notes:changes];
-//    }
+    }
 }
 
 - (void) updateApp {
@@ -54,9 +56,11 @@ static NSString* LVNewAppURL = @"https://raw.github.com/sdegutis/Leviathan/maste
 }
 
 - (void) extractNewVersionFrom:(NSString*)tempFile {
+    NSString* destParentDir = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+    
 	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath:@"/bin/sh"];
-	[task setArguments: @[@"-c", @"TBD"]];
+	[task setArguments: @[@"-c", [NSString stringWithFormat:@"tar -zxf %@ -C %@", tempFile, destParentDir]]];
 	[task launch];
 }
 
