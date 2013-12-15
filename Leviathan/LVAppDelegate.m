@@ -182,7 +182,8 @@
     exit(0);
 }
 
-- (void) updateIsAvailable:(NSString*)notes {
+- (void) updateIsAvailable:(NSString*)version notes:(NSString*)notes {
+    
     NSLog(@"update is avaialbe! %@", notes);
 }
 

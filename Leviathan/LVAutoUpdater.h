@@ -10,7 +10,7 @@
 
 @protocol LVAutoUpdaterDelegate <NSObject>
 
-- (void) updateIsAvailable:(NSString*)notes;
+- (void) updateIsAvailable:(NSString*)version notes:(NSString*)notes;
 
 @end
 
