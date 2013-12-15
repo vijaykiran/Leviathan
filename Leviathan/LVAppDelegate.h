@@ -10,7 +10,9 @@
 
 #import "LVProjectWindowController.h"
 
-@interface LVAppDelegate : NSObject <NSApplicationDelegate, LVProjectWindowController>
+#import "LVAutoUpdater.h"
+
+@interface LVAppDelegate : NSObject <NSApplicationDelegate, LVProjectWindowController, LVAutoUpdaterDelegate>
 
 @property NSMutableArray *projectWindowControllers;
 

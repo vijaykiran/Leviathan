@@ -18,6 +18,7 @@
 @property BOOL quitting;
 
 @property LVShortcutHandler* shortcutHandler;
+@property LVAutoUpdater* autoUpdater;
 
 @end
 
@@ -138,6 +139,10 @@
     self.shortcutHandler = [[LVShortcutHandler alloc] init];
     [self.shortcutHandler setup];
     
+    self.autoUpdater = [[LVAutoUpdater alloc] init];
+    self.autoUpdater.delegate = self;
+    [self.autoUpdater startChecking];
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultDefaults]];
     [[NSFontManager sharedFontManager] setTarget:self];
     
@@ -175,6 +180,10 @@
 	[task setArguments: @[@"-c", @"sleep 0.5; open -a Leviathan"]];
 	[task launch];
     exit(0);
+}
+
+- (void) updateIsAvailable:(NSString*)notes {
+    NSLog(@"update is avaialbe! %@", notes);
 }
 
 @end

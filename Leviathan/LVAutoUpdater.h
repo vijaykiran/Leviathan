@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol LVAutoUpdaterDelegate <NSObject>
+
+- (void) updateIsAvailable:(NSString*)notes;
+
+@end
+
 @interface LVAutoUpdater : NSObject
+
+@property id<LVAutoUpdaterDelegate> delegate;
+
+- (void) startChecking;
 
 @end
