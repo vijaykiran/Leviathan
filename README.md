@@ -23,16 +23,6 @@ Some permanent project goals:
 
 Leviathan was originally intended to be a commercial IDE. But together, we can make this an even higher quality app.
 
-#### Internal things left to do
-
-- Change the way we modify text in NSTextView to stop relying on Cocoa at all (hard!)
-- Make it easier to manipulate the internal AST
-- Make it easier to generate a new string based on the internal AST
-- Start modifying the NSTextStorage by generating new strings based on the internal AST and replacing the contents wholesale (with proper undo support)
-- Undo support should handle not only text but also selection range(s)
-- Support multiple cursors (maybe)
-- Split coll/atom type fields into multiple fields (possible separated by semantic/syntactic) to support >64 types
-
 #### License
 
 > Released under MIT license.
