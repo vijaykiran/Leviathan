@@ -8,6 +8,7 @@
 
 #### Known incomplete things
 
+- Needs in-app auto-updater (but not Sparkle)
 - "Comment line's first expression" command does nothing
 - Most structural-editing commands assume you don't have any text highlighted
 - Once you connect to nREPL, the only way to disconnect is to quit Leviathan
