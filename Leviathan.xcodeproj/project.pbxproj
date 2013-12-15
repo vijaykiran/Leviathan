@@ -787,7 +787,6 @@
 				INFOPLIST_FILE = "Leviathan/Leviathan-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/sdegutis/Dropbox/projects/leviathan/Leviathan,
 					/Users/sdegutis/Dropbox/Steven/projects/leviathan/Leviathan,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -805,7 +804,6 @@
 				INFOPLIST_FILE = "Leviathan/Leviathan-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/sdegutis/Dropbox/projects/leviathan/Leviathan,
 					/Users/sdegutis/Dropbox/Steven/projects/leviathan/Leviathan,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
