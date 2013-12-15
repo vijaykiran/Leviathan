@@ -1,6 +1,6 @@
 ## Leviathan
 
-*Whatever.*
+*Clojure IDE for OS X*
 
 * Current version: **0.1**
 * Requires: OS X 10.9 and up
