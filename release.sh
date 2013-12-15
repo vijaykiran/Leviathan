@@ -20,5 +20,5 @@ cp $FILENAME $LATEST
 echo "Created $LATEST"
 
 # update latest-version file
-echo $VERSION > Updates/latest-version.txt
-echo $VERSION_ROBOT >> Updates/latest-version.txt
+echo $VERSION > Builds/latest-version.txt
+echo $VERSION_ROBOT >> Builds/latest-version.txt

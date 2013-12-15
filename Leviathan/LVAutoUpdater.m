@@ -8,8 +8,8 @@
 
 #import "LVAutoUpdater.h"
 
-static NSString* LVUpdateURL = @"https://raw.github.com/sdegutis/Leviathan/master/Updates/latest-version.txt";
-static NSString* LVUpdateChangesURL = @"https://raw.github.com/sdegutis/Leviathan/master/Updates/changes.txt";
+static NSString* LVUpdateURL = @"https://raw.github.com/sdegutis/Leviathan/master/Builds/latest-version.txt";
+static NSString* LVUpdateChangesURL = @"https://raw.github.com/sdegutis/Leviathan/master/Builds/changes.txt";
 static NSString* LVNewAppURL = @"https://github.com/sdegutis/Leviathan/raw/master/Builds/Leviathan-LATEST.app.tar.gz";
 
 @implementation LVAutoUpdater
@@ -33,18 +33,18 @@ static NSString* LVNewAppURL = @"https://github.com/sdegutis/Leviathan/raw/maste
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSDictionary* localVersionTuple = [[NSBundle mainBundle] infoDictionary];
         NSString* localRobot = localVersionTuple[(id)kCFBundleVersionKey];
-        
+
         NSInteger localRobotInt = [localRobot integerValue];
-        
+
         NSString* remoteVersionTuple = [self stringAtURL: LVUpdateURL];
         NSArray* remoteVersions = [remoteVersionTuple componentsSeparatedByString:@"\n"];
         NSString* remoteHuman = remoteVersions[0];
         NSString* remoteRobot = remoteVersions[1];
         NSInteger remoteRobotInt = [remoteRobot integerValue];
-        
+
         if (remoteRobotInt > localRobotInt) {
             NSString* changes = [self stringAtURL:LVUpdateChangesURL];
-            
+
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self.delegate updateIsAvailable:remoteHuman notes:changes];
             });
@@ -55,17 +55,17 @@ static NSString* LVNewAppURL = @"https://github.com/sdegutis/Leviathan/raw/maste
 - (void) updateApp {
     NSString* tempFile = @"/tmp/leviathan.tar.gz";
     NSString* destParentDir = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
-    
+
     NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:LVNewAppURL]];
     [data writeToFile:tempFile atomically:YES];
-    
+
     NSString* horribleShellCommand = [NSString stringWithFormat:@"tar -zxf %@ -C %@; sleep 0.5; open -a Leviathan", tempFile, destParentDir];
-    
+
 	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath:@"/bin/sh"];
 	[task setArguments: @[@"-c", horribleShellCommand]];
 	[task launch];
-    
+
     exit(0);
 }
 
