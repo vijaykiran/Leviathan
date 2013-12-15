@@ -34,7 +34,7 @@
 
 - (void) tile {
     [super tile];
-//    return;
+    return; // FIXME: ditto
     
     if (self.maxDigits < 2)
         self.maxDigits = 2;
@@ -77,7 +77,7 @@
 
 - (void) awakeFromNib {
     [super awakeFromNib];
-//    return;
+    return; // FIXME: line number are totally broken
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsFontChanged:) name:LVDefaultsFontChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsThemeChanged:) name:LVCurrentThemeChangedNotification object:nil];

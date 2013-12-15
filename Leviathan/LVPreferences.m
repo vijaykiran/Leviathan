@@ -10,6 +10,8 @@
 
 #import "LVThemeManager.h"
 
+#import "Beowulf.h"
+
 LV_DEFINE(LVDefaultsFontChangedNotification);
 LV_DEFINE(LVCurrentThemeChangedNotification);
 
@@ -98,24 +100,22 @@ NSString* LVDefaultThemeName = @"TomorrowNightEighties.clj";
 
 @end
 
+
+
 #import "Beowulf.h"
 
 id LVParseConfig(NSURL* url) {
     NSData* data = [NSData dataWithContentsOfURL:url];
     NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    BWEnv* env = [Beowulf basicEnv];
-    NSString* prelude = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"prelude" withExtension:@"bwlf"] encoding:NSUTF8StringEncoding error:NULL];
-    [Beowulf eval:prelude env:env error:NULL];
-    return [Beowulf eval:str env:env error:NULL];
+    return [BWEval(str, BWFreshEnv(), NULL) toObjC];
 }
 
 NSDictionary* LVParseConfigWithDefs(NSURL* url) {
     NSData* data = [NSData dataWithContentsOfURL:url];
     NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    BWEnv* env = [BWEnv env];
-    env.parent = [Beowulf basicEnv];
-    NSString* prelude = [NSString stringWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"prelude" withExtension:@"bwlf"] encoding:NSUTF8StringEncoding error:NULL];
-    [Beowulf eval:prelude env:env error:NULL];
-    [Beowulf eval:str env:env error:NULL];
+    
+    BWEnv* env = BWFreshEnv();
+    
+    BWEval(str, env, NULL);
     return env.names;
 }

@@ -10,8 +10,6 @@
 		9408777518308BB0006D0C62 /* LVScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408777418308BB0006D0C62 /* LVScrollView.m */; };
 		940877781831552B006D0C62 /* LVThemeMenuDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 940877771831552B006D0C62 /* LVThemeMenuDelegate.m */; };
 		940F83811828C629005C77B1 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 940F83801828C629005C77B1 /* Themes */; };
-		94357FF1184EECA1001E781E /* libBeowulf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94370E721820DD2300EBB871 /* libBeowulf.a */; };
-		94370E761820DD7800EBB871 /* prelude.bwlf in Resources */ = {isa = PBXBuildFile; fileRef = 94370E751820DD7800EBB871 /* prelude.bwlf */; };
 		94391D5718301E1D006895EA /* LVEmbeddedRepl.m in Sources */ = {isa = PBXBuildFile; fileRef = 94391D5618301E1D006895EA /* LVEmbeddedRepl.m */; };
 		944492DC182F3097008EA078 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492DB182F3097008EA078 /* GCDAsyncSocket.m */; };
 		944492DE182F30A2008EA078 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 944492DD182F30A2008EA078 /* Security.framework */; };
@@ -51,6 +49,8 @@
 		9490D84318107FD6006ECA5E /* NSString+Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490D83D18107FD6006ECA5E /* NSString+Score.m */; };
 		949EC52218138102001C9CAB /* parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 949EC52018138102001C9CAB /* parser.m */; };
 		949EC5251813811E001C9CAB /* lexer.m in Sources */ = {isa = PBXBuildFile; fileRef = 949EC5231813811E001C9CAB /* lexer.m */; };
+		94A634A7185D52D90084A073 /* Beowulf.bwlf in Resources */ = {isa = PBXBuildFile; fileRef = 94A634A4185D52D90084A073 /* Beowulf.bwlf */; };
+		94A634A8185D52D90084A073 /* Beowulf.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A634A6185D52D90084A073 /* Beowulf.m */; };
 		94ABB12F181463B6003415B5 /* atom.m in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB12D181463B5003415B5 /* atom.m */; };
 		94ABB132181463C4003415B5 /* coll.m in Sources */ = {isa = PBXBuildFile; fileRef = 94ABB130181463C4003415B5 /* coll.m */; };
 		94CA3656181E165900926D6B /* doc.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA3655181E165900926D6B /* doc.m */; };
@@ -83,11 +83,6 @@
 		940877761831552B006D0C62 /* LVThemeMenuDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeMenuDelegate.h; sourceTree = "<group>"; };
 		940877771831552B006D0C62 /* LVThemeMenuDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeMenuDelegate.m; sourceTree = "<group>"; };
 		940F83801828C629005C77B1 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
-		94370E6F1820DD2300EBB871 /* Beowulf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beowulf.h; sourceTree = "<group>"; };
-		94370E701820DD2300EBB871 /* BWCallable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWCallable.h; sourceTree = "<group>"; };
-		94370E711820DD2300EBB871 /* BWEnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWEnv.h; sourceTree = "<group>"; };
-		94370E721820DD2300EBB871 /* libBeowulf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBeowulf.a; sourceTree = "<group>"; };
-		94370E751820DD7800EBB871 /* prelude.bwlf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = prelude.bwlf; sourceTree = "<group>"; };
 		94391D5518301E1D006895EA /* LVEmbeddedRepl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVEmbeddedRepl.h; sourceTree = "<group>"; };
 		94391D5618301E1D006895EA /* LVEmbeddedRepl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVEmbeddedRepl.m; sourceTree = "<group>"; };
 		944492DA182F3097008EA078 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
@@ -156,6 +151,9 @@
 		949EC52118138102001C9CAB /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
 		949EC5231813811E001C9CAB /* lexer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = lexer.m; sourceTree = "<group>"; };
 		949EC5241813811E001C9CAB /* lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
+		94A634A4185D52D90084A073 /* Beowulf.bwlf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Beowulf.bwlf; sourceTree = "<group>"; };
+		94A634A5185D52D90084A073 /* Beowulf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beowulf.h; sourceTree = "<group>"; };
+		94A634A6185D52D90084A073 /* Beowulf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beowulf.m; sourceTree = "<group>"; };
 		94ABB12D181463B5003415B5 /* atom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = atom.m; sourceTree = "<group>"; };
 		94ABB12E181463B5003415B5 /* atom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atom.h; sourceTree = "<group>"; };
 		94ABB130181463C4003415B5 /* coll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = coll.m; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 				94E7DF44182ACE8000A97D82 /* Carbon.framework in Frameworks */,
 				9490D82518105EBB006ECA5E /* QuartzCore.framework in Frameworks */,
 				9490D7D318104D58006ECA5E /* Cocoa.framework in Frameworks */,
-				94357FF1184EECA1001E781E /* libBeowulf.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,11 +210,9 @@
 		94370E741820DD2700EBB871 /* beowulf */ = {
 			isa = PBXGroup;
 			children = (
-				94370E6F1820DD2300EBB871 /* Beowulf.h */,
-				94370E701820DD2300EBB871 /* BWCallable.h */,
-				94370E711820DD2300EBB871 /* BWEnv.h */,
-				94370E751820DD7800EBB871 /* prelude.bwlf */,
-				94370E721820DD2300EBB871 /* libBeowulf.a */,
+				94A634A4185D52D90084A073 /* Beowulf.bwlf */,
+				94A634A5185D52D90084A073 /* Beowulf.h */,
+				94A634A6185D52D90084A073 /* Beowulf.m */,
 			);
 			name = beowulf;
 			path = Leviathan;
@@ -569,10 +564,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9490D7DD18104D58006ECA5E /* InfoPlist.strings in Resources */,
-				94370E761820DD7800EBB871 /* prelude.bwlf in Resources */,
 				9490D7EB18104D58006ECA5E /* Images.xcassets in Resources */,
 				9490D7E318104D58006ECA5E /* Credits.rtf in Resources */,
 				940F83811828C629005C77B1 /* Themes in Resources */,
+				94A634A7185D52D90084A073 /* Beowulf.bwlf in Resources */,
 				94D1B360182A004800D9CE49 /* Settings.clj in Resources */,
 				9490D82318105B2D006ECA5E /* Editor.xib in Resources */,
 				9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */,
@@ -614,6 +609,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94A634A8185D52D90084A073 /* Beowulf.m in Sources */,
 				94E7DF39182A94E500A97D82 /* LVShortcutHandler.m in Sources */,
 				94E7DF42182ACE4600A97D82 /* LVKeyTranslator.m in Sources */,
 				944492E8182F7736008EA078 /* LVSettings.m in Sources */,

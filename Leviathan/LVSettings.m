@@ -11,6 +11,8 @@
 #import "LVPreferences.h"
 #import "LVPathWatcher.h"
 
+#import "Beowulf.h"
+
 LV_DEFINE(LVSettingsReloadedNotification);
 
 @interface LVSettings ()
@@ -41,7 +43,18 @@ LV_DEFINE(LVSettingsReloadedNotification);
 }
 
 - (void) recacheSettings {
-    self.cachedSettings = LVParseConfigWithDefs([LVSettings settingsFileURL]);
+    NSDictionary* rawSettings = LVParseConfigWithDefs([LVSettings settingsFileURL]);
+    NSMutableDictionary* sanitizedSettings = [NSMutableDictionary dictionary];
+    NSArray* knownSettingKeys = @[@"indent-like-functions", @"modal-key-bindings", @"key-bindings"];
+    
+    for (NSString* key in knownSettingKeys) {
+        id val = [[rawSettings objectForKey:key] toObjC];
+        if (val) {
+            sanitizedSettings[key] = val;
+        }
+    }
+    
+    self.cachedSettings = sanitizedSettings;
 }
 
 + (NSURL*) settingsFileURL {
