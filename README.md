@@ -6,6 +6,19 @@
 * Requires: OS X 10.9 and up
 * Download: get [.zip file](https://raw.github.com/sdegutis/Leviathan/master/Builds/Leviathan-LATEST.app.tar.gz), unzip, right-click app, choose "Open"
 
+#### Elevator pitch
+
+Leviathan aims to be to Clojure what Xcode is to ObjC and IntelliJ is to Java.
+
+Some permanent project goals:
+
+- Lightweight and fast
+- Minimalist UI
+- Favors keyboard shortcuts
+- Highly Clojure-specific refactoring functions
+- User-customizable refactoring functions
+- Completely customizable key bindings
+
 #### Free and Open Source
 
 Leviathan was originally intended to be a commercial IDE. But constant external demoralization brought me to my senses, and I finally understood that it's not a realistic goal. So I'm open sourcing the whole app, in the hopes that maybe it'll be useful to someone some day.
