@@ -10,6 +10,7 @@
 
 static NSString* LVUpdateURL = @"https://raw.github.com/sdegutis/Leviathan/master/Updates/latest-version.txt";
 static NSString* LVUpdateChangesURL = @"https://raw.github.com/sdegutis/Leviathan/master/Updates/changes.txt";
+static NSString* LVNewAppURL = @"https://raw.github.com/sdegutis/Leviathan/master/Builds/Leviathan-LATEST.app.tar.gz";
 
 @implementation LVAutoUpdater
 
@@ -34,10 +35,22 @@ static NSString* LVUpdateChangesURL = @"https://raw.github.com/sdegutis/Leviatha
     NSString* remoteRobot = remoteVersions[1];
     NSInteger remoteRobotInt = [remoteRobot integerValue];
     
-    if (remoteRobotInt > localRobotInt) {
+//    if (remoteRobotInt > localRobotInt) {
         NSString* changes = [NSString stringWithContentsOfURL:[NSURL URLWithString:LVUpdateChangesURL] encoding:NSUTF8StringEncoding error:NULL];
         [self.delegate updateIsAvailable:remoteHuman notes:changes];
-    }
+//    }
+}
+
+- (void) updateApp {
+    
+}
+
+- (void) relaunch {
+	NSTask *task = [[NSTask alloc] init];
+	[task setLaunchPath:@"/bin/sh"];
+	[task setArguments: @[@"-c", @"sleep 0.5; open -a Leviathan"]];
+	[task launch];
+    exit(0);
 }
 
 @end

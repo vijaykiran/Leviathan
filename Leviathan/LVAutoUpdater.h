@@ -20,4 +20,6 @@
 
 - (void) startChecking;
 
+- (void) updateApp;
+
 @end

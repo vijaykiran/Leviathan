@@ -174,17 +174,12 @@
     [LVPreferences setUserFont: [sender convertFont:[LVPreferences userFont]]];
 }
 
-- (void) relaunch {
-	NSTask *task = [[NSTask alloc] init];
-	[task setLaunchPath:@"/bin/sh"];
-	[task setArguments: @[@"-c", @"sleep 0.5; open -a Leviathan"]];
-	[task launch];
-    exit(0);
-}
-
 - (void) updateIsAvailable:(NSString*)version notes:(NSString*)notes {
+    NSInteger result = NSRunAlertPanel([NSString stringWithFormat:@"Upgrade to version %@", version], notes, @"Upgrade", @"Remind me later", nil);
     
-    NSLog(@"update is avaialbe! %@", notes);
+    if (result == NSAlertDefaultReturn) {
+        [self.autoUpdater updateApp];
+    }
 }
 
 @end
