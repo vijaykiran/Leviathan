@@ -21,7 +21,7 @@ Some permanent project goals:
 
 #### Free and Open Source
 
-Leviathan was originally intended to be a commercial IDE. But together, the community can make this an even higher quality app.
+Leviathan was originally intended to be a commercial IDE. But together, we can make this an even higher quality app.
 
 #### Known incomplete things
 
