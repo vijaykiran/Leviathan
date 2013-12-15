@@ -42,7 +42,15 @@ static NSString* LVNewAppURL = @"https://raw.github.com/sdegutis/Leviathan/maste
 }
 
 - (void) updateApp {
-    
+    NSString* tempFile = @"/tmp/leviathan.tar.gz";
+    [self downloadNewVersionTo:tempFile];
+    [self extractNewVersionFrom:tempFile];
+    [self relaunch];
+}
+
+- (void) downloadNewVersionTo:(NSString*)tempFile {
+    NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:LVNewAppURL]];
+    [data writeToFile:tempFile atomically:YES];
 }
 
 - (void) relaunch {
