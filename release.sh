@@ -4,7 +4,7 @@ set -e
 
 # build app
 xcodebuild clean build
-VERSION=$(defaults read $(pwd)/Leviathan/Leviathan-Info CFBundleVersion)
+VERSION=$(defaults read $(pwd)/Leviathan/Leviathan-Info CFBundleShortVersionString)
 FILENAME="Builds/Leviathan-$VERSION.app.tar.gz"
 LATEST="Builds/Leviathan-LATEST.app.tar.gz"
 
