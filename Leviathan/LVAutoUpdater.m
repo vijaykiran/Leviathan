@@ -23,52 +23,49 @@ static NSString* LVNewAppURL = @"https://github.com/sdegutis/Leviathan/raw/maste
     [timer fire];
 }
 
+- (NSString*) stringAtURL:(NSString*)urlString {
+    NSURLResponse* __autoreleasing response;
+    NSData* data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]] returningResponse:&response error:NULL];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
 - (void) checkForUpdate {
-    return;
-    
-    NSDictionary* localVersionTuple = [[NSBundle mainBundle] infoDictionary];
-    NSString* localRobot = localVersionTuple[(id)kCFBundleVersionKey];
-    
-    NSInteger localRobotInt = [localRobot integerValue];
-    
-    NSString* remoteVersionTuple = [NSString stringWithContentsOfURL:[NSURL URLWithString:LVUpdateURL] encoding:NSUTF8StringEncoding error:NULL];
-    NSArray* remoteVersions = [remoteVersionTuple componentsSeparatedByString:@"\n"];
-    NSString* remoteHuman = remoteVersions[0];
-    NSString* remoteRobot = remoteVersions[1];
-    NSInteger remoteRobotInt = [remoteRobot integerValue];
-    
-    if (remoteRobotInt > localRobotInt) {
-        NSString* changes = [NSString stringWithContentsOfURL:[NSURL URLWithString:LVUpdateChangesURL] encoding:NSUTF8StringEncoding error:NULL];
-        [self.delegate updateIsAvailable:remoteHuman notes:changes];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSDictionary* localVersionTuple = [[NSBundle mainBundle] infoDictionary];
+        NSString* localRobot = localVersionTuple[(id)kCFBundleVersionKey];
+        
+        NSInteger localRobotInt = [localRobot integerValue];
+        
+        NSString* remoteVersionTuple = [self stringAtURL: LVUpdateURL];
+        NSArray* remoteVersions = [remoteVersionTuple componentsSeparatedByString:@"\n"];
+        NSString* remoteHuman = remoteVersions[0];
+        NSString* remoteRobot = remoteVersions[1];
+        NSInteger remoteRobotInt = [remoteRobot integerValue];
+        
+        if (remoteRobotInt > localRobotInt) {
+            NSString* changes = [self stringAtURL:LVUpdateChangesURL];
+            
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.delegate updateIsAvailable:remoteHuman notes:changes];
+            });
+        }
+    });
 }
 
 - (void) updateApp {
     NSString* tempFile = @"/tmp/leviathan.tar.gz";
-    [self downloadNewVersionTo:tempFile];
-    [self extractNewVersionFrom:tempFile];
-    [self relaunch];
-}
-
-- (void) downloadNewVersionTo:(NSString*)tempFile {
+    NSString* destParentDir = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+    
     NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:LVNewAppURL]];
     [data writeToFile:tempFile atomically:YES];
-}
-
-- (void) extractNewVersionFrom:(NSString*)tempFile {
-    NSString* destParentDir = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+    
+    NSString* horribleShellCommand = [NSString stringWithFormat:@"tar -zxf %@ -C %@; sleep 0.5; open -a Leviathan", tempFile, destParentDir];
     
 	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath:@"/bin/sh"];
-	[task setArguments: @[@"-c", [NSString stringWithFormat:@"tar -zxf %@ -C %@", tempFile, destParentDir]]];
+	[task setArguments: @[@"-c", horribleShellCommand]];
 	[task launch];
-}
-
-- (void) relaunch {
-	NSTask *task = [[NSTask alloc] init];
-	[task setLaunchPath:@"/bin/sh"];
-	[task setArguments: @[@"-c", @"sleep 0.5; open -a Leviathan"]];
-	[task launch];
+    
     exit(0);
 }
 

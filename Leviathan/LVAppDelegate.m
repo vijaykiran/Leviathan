@@ -19,6 +19,7 @@
 
 @property LVShortcutHandler* shortcutHandler;
 @property LVAutoUpdater* autoUpdater;
+@property LVUpdateWindowController* updateWindowController;
 
 @end
 
@@ -175,11 +176,20 @@
 }
 
 - (void) updateIsAvailable:(NSString*)version notes:(NSString*)notes {
-    NSInteger result = NSRunAlertPanel([NSString stringWithFormat:@"Upgrade to version %@", version], notes, @"Upgrade", @"Remind me later", nil);
-    
-    if (result == NSAlertDefaultReturn) {
-        [self.autoUpdater updateApp];
-    }
+    self.updateWindowController = [[LVUpdateWindowController alloc] init];
+    self.updateWindowController.version = version;
+    self.updateWindowController.notes = notes;
+    self.updateWindowController.updateDelegate = self;
+    [self.updateWindowController showWindow:self];
+}
+
+- (void) userWantsUpdate {
+    self.updateWindowController = nil;
+    [self.autoUpdater updateApp];
+}
+
+- (void) userHatesUs {
+    self.updateWindowController = nil;
 }
 
 @end

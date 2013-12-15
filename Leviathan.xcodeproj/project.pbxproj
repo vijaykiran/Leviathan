@@ -10,6 +10,8 @@
 		9408777518308BB0006D0C62 /* LVScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408777418308BB0006D0C62 /* LVScrollView.m */; };
 		940877781831552B006D0C62 /* LVThemeMenuDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 940877771831552B006D0C62 /* LVThemeMenuDelegate.m */; };
 		940F83811828C629005C77B1 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 940F83801828C629005C77B1 /* Themes */; };
+		941A7552185E21B2003CD168 /* LVUpdateWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 941A7550185E21B2003CD168 /* LVUpdateWindowController.m */; };
+		941A7553185E21B2003CD168 /* UpdateWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 941A7551185E21B2003CD168 /* UpdateWindow.xib */; };
 		94391D5718301E1D006895EA /* LVEmbeddedRepl.m in Sources */ = {isa = PBXBuildFile; fileRef = 94391D5618301E1D006895EA /* LVEmbeddedRepl.m */; };
 		944492DC182F3097008EA078 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 944492DB182F3097008EA078 /* GCDAsyncSocket.m */; };
 		944492DE182F30A2008EA078 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 944492DD182F30A2008EA078 /* Security.framework */; };
@@ -69,6 +71,9 @@
 		940877761831552B006D0C62 /* LVThemeMenuDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVThemeMenuDelegate.h; sourceTree = "<group>"; };
 		940877771831552B006D0C62 /* LVThemeMenuDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVThemeMenuDelegate.m; sourceTree = "<group>"; };
 		940F83801828C629005C77B1 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
+		941A754F185E21B2003CD168 /* LVUpdateWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVUpdateWindowController.h; path = Leviathan/LVUpdateWindowController.h; sourceTree = SOURCE_ROOT; };
+		941A7550185E21B2003CD168 /* LVUpdateWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LVUpdateWindowController.m; path = Leviathan/LVUpdateWindowController.m; sourceTree = SOURCE_ROOT; };
+		941A7551185E21B2003CD168 /* UpdateWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UpdateWindow.xib; path = Leviathan/UpdateWindow.xib; sourceTree = SOURCE_ROOT; };
 		94391D5518301E1D006895EA /* LVEmbeddedRepl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LVEmbeddedRepl.h; sourceTree = "<group>"; };
 		94391D5618301E1D006895EA /* LVEmbeddedRepl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LVEmbeddedRepl.m; sourceTree = "<group>"; };
 		944492DA182F3097008EA078 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
@@ -180,6 +185,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		941A7554185E27A3003CD168 /* Auto Updating */ = {
+			isa = PBXGroup;
+			children = (
+				94A634A9185D6C010084A073 /* LVAutoUpdater.h */,
+				94A634AA185D6C010084A073 /* LVAutoUpdater.m */,
+				941A7551185E21B2003CD168 /* UpdateWindow.xib */,
+				941A754F185E21B2003CD168 /* LVUpdateWindowController.h */,
+				941A7550185E21B2003CD168 /* LVUpdateWindowController.m */,
+			);
+			name = "Auto Updating";
+			sourceTree = "<group>";
+		};
 		94370E741820DD2700EBB871 /* beowulf */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,8 +306,7 @@
 				9490D7E718104D58006ECA5E /* MainMenu.xib */,
 				9490D7E418104D58006ECA5E /* LVAppDelegate.h */,
 				9490D7E518104D58006ECA5E /* LVAppDelegate.m */,
-				94A634A9185D6C010084A073 /* LVAutoUpdater.h */,
-				94A634AA185D6C010084A073 /* LVAutoUpdater.m */,
+				941A7554185E27A3003CD168 /* Auto Updating */,
 				94391D54183005BE006895EA /* Settings */,
 				94855A14181109AE00220186 /* Preferences */,
 				94E7DF36182A8B1600A97D82 /* Key Bindings */,
@@ -498,6 +514,7 @@
 				940F83811828C629005C77B1 /* Themes in Resources */,
 				94A634A7185D52D90084A073 /* Beowulf.bwlf in Resources */,
 				94D1B360182A004800D9CE49 /* Settings.clj in Resources */,
+				941A7553185E21B2003CD168 /* UpdateWindow.xib in Resources */,
 				9490D82318105B2D006ECA5E /* Editor.xib in Resources */,
 				9490D83F18107FD6006ECA5E /* SDFuzzyMatcherWindow.xib in Resources */,
 				9490D81E181054EE006ECA5E /* Tab.xib in Resources */,
@@ -544,6 +561,7 @@
 				94E7DF3F182AA69300A97D82 /* LVPathWatcher.m in Sources */,
 				944492DC182F3097008EA078 /* GCDAsyncSocket.m in Sources */,
 				9490D819181053F2006ECA5E /* LVFile.m in Sources */,
+				941A7552185E21B2003CD168 /* LVUpdateWindowController.m in Sources */,
 				9490D84218107FD6006ECA5E /* SDChoice.m in Sources */,
 				949EC52218138102001C9CAB /* parser.m in Sources */,
 				94391D5718301E1D006895EA /* LVEmbeddedRepl.m in Sources */,
