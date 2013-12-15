@@ -50,7 +50,7 @@ Leviathan was originally intended to be a commercial IDE. But together, we can m
 - Start modifying the NSTextStorage by generating new strings based on the internal AST and replacing the contents wholesale (with proper undo support)
 - Undo support should handle not only text but also selection range(s)
 - Support multiple cursors (maybe)
-- Split coll/atom types into multiple types (possible semantic/syntactic) to support >64 types
+- Split coll/atom type fields into multiple fields (possible separated by semantic/syntactic) to support >64 types
 
 #### License
 
