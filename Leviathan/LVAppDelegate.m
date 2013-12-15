@@ -123,26 +123,6 @@
     return controller;
 }
 
-- (void) expireSoon {
-    NSString* s = [NSString stringWithFormat:@"%s, %s", __DATE__, __TIME__];
-    NSDate* compileDate = [NSDate dateWithNaturalLanguageString:s];
-    
-    NSDate* fireDate = [compileDate dateByAddingTimeInterval: EXPIRATION_DATE];
-    
-    NSTimer* expirationTimer = [[NSTimer alloc] initWithFireDate:fireDate interval:0 target:self selector:@selector(quitTrial:) userInfo:nil repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:expirationTimer forMode:NSRunLoopCommonModes];
-}
-
-- (void) quitTrial:(NSTimer*)timer {
-    NSRunAlertPanel(@"This beta build has expired", @"Save your stuff and check your email for a new build.\n\nLeviathan will hard-quit in 30 minutes.", @"OK", @"", nil);
-    
-    double delayInSeconds = 60.0 * 30.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        exit(1);
-    });
-}
-
 - (IBAction) revealSettingsFolder:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[LVPreferences settingsDirectory]];
 }
@@ -169,8 +149,6 @@
     self.projectWindowControllers = [NSMutableArray array];
     
     [self restoreProjects];
-    
-    [self expireSoon];
 }
 
 - (IBAction) editSettingsFile:(id)sender {

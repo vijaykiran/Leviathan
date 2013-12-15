@@ -94,7 +94,7 @@ LV_DEFINE(LVTabTitleChangedNotification);
     
     [self.projectTreeView setDoubleAction:@selector(selectFileFromProjectNavView:)];
     
-    [self.projectTreeDrawer open];
+    [self.projectTreeDrawer close]; // pseudo-disable for now cuz it kinda sucks
     [self.replDrawer close];
     
     [self.tabView.currentTab.currentEditor makeFirstResponder];
