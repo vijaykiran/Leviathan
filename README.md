@@ -23,6 +23,10 @@ Some permanent project goals:
 
 Leviathan was originally intended to be a commercial IDE. But together, we can make this an even higher quality app.
 
+#### Screenshot (v 0.0)
+
+![leviathan.png](leviathan.png)
+
 #### License
 
 > Released under MIT license.
